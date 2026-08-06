@@ -22,7 +22,7 @@ from attentionrag.postprocessor import AttentionRAGPostprocessor
 from socrag.index import get_retriever
 
 NUM_QUERIES = 20
-TOP_K = 28               # SOCBench's k (CHUNKS)
+TOP_K = 10               # SOCBench's k (CHUNKS)
 TOP_K_TOKENS = 10        # AttentionRAG's k (TOKENS)
 API = "tmdb"             # "spotify" or "tmdb"
 CHUNKING_STRATEGY = "ENDPOINT_SPLIT_1024_0"
