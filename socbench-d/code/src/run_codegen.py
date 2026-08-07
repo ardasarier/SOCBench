@@ -15,7 +15,7 @@ import benchmark
 from composition import generate_composition
 from scoring import build_templates, extract_endpoints_from_code, score
 
-INPUT_PATH = "data/task1_contexts_tmdb_k10_jsonsplit120.json"
+INPUT_PATH = "data/contexts_tmdb_k10_all.json"
 
 restbench = benchmark.get_restbench()
 templates = build_templates(restbench.queries[0].openapis)

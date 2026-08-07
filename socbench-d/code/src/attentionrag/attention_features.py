@@ -17,11 +17,11 @@ from .anchor_token import ANCHOR_TOKEN_TEMPLATE
 from .models import DEVICE, compress_model as model, compress_tokenizer as tokenizer
 
 
-def compute_attention_feature(chunk: str, question: str, prefix_hint: str, anchor_token: str):
+def compute_attention_feature(chunk: str, question: str, prefix_hint: str, anchor_token: str, layer_range=None):
     """
     Returns (token_scores, num_layers) where each score is a dict of
     token / score / char_start / char_end. Character offsets are relative to
-    the chunk and are what Eq. 3 uses to map tokens back to sentences.
+    the chunk and are what Eq. 3 uses to map tokens back to segments.
     """
     prompt_text = ANCHOR_TOKEN_TEMPLATE.format(
         chunk=chunk, question=question, prefix_hint=prefix_hint
@@ -46,10 +46,17 @@ def compute_attention_feature(chunk: str, question: str, prefix_hint: str, ancho
 
     anchor_position = encoding["input_ids"].shape[1] - 1
 
-    num_layers = len(outputs.attentions)
+    # Eq. 2 sums over all layers. layer_range restricts it to a band, so the
+    # paper's Table 9 ablation (shallow/middle/deep vs all) can be replicated
+    # on structured API text rather than prose QA.
+    layers = outputs.attentions
+    if layer_range is not None:
+        layers = layers[layer_range[0]:layer_range[1]]
+
+    num_layers = len(layers)
     attention_feature = torch.zeros(len(context_token_indices), device=DEVICE)
 
-    for layer_attn in outputs.attentions:          # (1, heads, seq, seq) per layer
+    for layer_attn in layers:                       # (1, heads, seq, seq) per layer
         avg_over_heads = layer_attn[0].mean(dim=0)  # heads averaged (our choice)
         anchor_row = avg_over_heads[anchor_position]
         attention_feature += anchor_row[context_token_indices]  # summed over layers

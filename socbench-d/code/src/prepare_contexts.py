@@ -21,7 +21,10 @@ from attentionrag.models import empty_cache
 from attentionrag.postprocessor import AttentionRAGPostprocessor
 from socrag.index import get_retriever
 
-NUM_QUERIES = 20
+# Qwen2.5-0.5B has 24 layers.
+LAYER_RANGE = (8, 16)    # None | (0, 8) shallow | (8, 16) middle | (16, 24) deep
+LAYER_LABEL = "middle"   # "all" | "shallow" | "middle" | "deep"
+NUM_QUERIES = 10         # halved -- four configs to run in limited time
 TOP_K = 10               # SOCBench's k (CHUNKS)
 TOP_K_TOKENS = 10        # AttentionRAG's k (TOKENS)
 API = "tmdb"             # "spotify" or "tmdb"
@@ -37,7 +40,7 @@ else:
     QUERY_START = SPOTIFY_QUERY_COUNT
     BASE_URL, BASE_PATH = "https://api.themoviedb.org/3", "/3"
 
-OUTPUT_PATH = f"data/task1_contexts_{API}_k{TOP_K}.json"
+OUTPUT_PATH = f"data/contexts_{API}_k{TOP_K}_{LAYER_LABEL}.json"
 
 embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
 Settings.embed_model = embed_model
@@ -50,7 +53,7 @@ retriever = get_retriever(
     restbench.name, "bge_small", queryset.name, CHUNKING_STRATEGY,
     queryset.openapis, embed_model, EMBEDDING_DIMENSIONS, TOP_K,
 )
-postprocessor = AttentionRAGPostprocessor(top_k_tokens=TOP_K_TOKENS)
+postprocessor = AttentionRAGPostprocessor(top_k_tokens=TOP_K_TOKENS, layer_range=LAYER_RANGE)
 
 
 def texts_of(nodes) -> list:

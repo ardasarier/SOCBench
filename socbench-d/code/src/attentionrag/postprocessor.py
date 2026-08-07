@@ -29,7 +29,7 @@ Three consequences of this pipeline position:
 Smoke test: python -m attentionrag.postprocessor   (from src/)
 """
 from copy import deepcopy
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 from llama_index.core.postprocessor.types import BaseNodePostprocessor
 from llama_index.core.schema import NodeWithScore, QueryBundle
@@ -47,6 +47,7 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
     top_k_tokens: int = 10     # AttentionRAG's k (TOKENS), not SOCBench's k (CHUNKS)
     skip_on_none: bool = True  # Algorithm 1, lines 12-13
     verbose: bool = False
+    layer_range: Optional[Tuple[int, int]] = None  # None = all layers (paper default)
 
     # Algorithm 1 generates the hint once from the query alone (line 5), before
     # chunking. Caching turns 10 LLM calls per query into 1.
@@ -88,7 +89,7 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
                     print("[AttentionRAG] dropped chunk (anchor='none')")
                 continue
 
-            token_scores, _ = compute_attention_feature(chunk, query, hint, anchor)
+            token_scores, _ = compute_attention_feature(chunk, query, hint, anchor, layer_range=self.layer_range)
             compressed, _ = compress_chunk(chunk, token_scores, k=self.top_k_tokens)
 
             if not compressed.strip():
