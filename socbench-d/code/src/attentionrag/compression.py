@@ -150,17 +150,43 @@ def split_into_segments(text: str):
     return segments
 
 
-def compress_chunk(chunk: str, token_scores: list, k: int = 3):
-    """Returns (compressed_text, top_k_entries)."""
-    top_k = sorted(token_scores, key=lambda t: -t["score"])[:k]
-    top_k_starts = [t["char_start"] for t in top_k]
+def select_tokens(token_scores: list, k: int = None, threshold_ratio: float = None):
+    """
+    Two selection strategies.
+
+    k                -- Eq. 3 as published: the k highest-scoring tokens.
+    threshold_ratio  -- keep every token scoring at least
+                        threshold_ratio * max_score for this chunk.
+
+    The threshold is RELATIVE, not absolute, because raw attention scores are
+    not comparable across chunks: they depend on sequence length and on how
+    many layers were summed.
+
+    It also adapts to how peaked a chunk's distribution is, which fixed k
+    cannot. Measured on a Spotify endpoint: top token 0.65, everything else
+    clustered 0.16-0.25. k=5 retained four irrelevant parameter definitions;
+    threshold_ratio=0.5 retains only the relevant one.
+    """
+    if not token_scores:
+        return []
+    if threshold_ratio is not None:
+        cutoff = max(t["score"] for t in token_scores) * threshold_ratio
+        return [t for t in token_scores if t["score"] >= cutoff]
+    return sorted(token_scores, key=lambda t: -t["score"])[:k]
+
+
+def compress_chunk(chunk: str, token_scores: list, k: int = 3,
+                   threshold_ratio: float = None):
+    """Returns (compressed_text, selected_entries)."""
+    selected = select_tokens(token_scores, k=k, threshold_ratio=threshold_ratio)
+    selected_starts = [t["char_start"] for t in selected]
 
     kept = [
         segment
         for segment, start, end, always_keep in split_into_segments(chunk)
-        if always_keep or any(start <= token_start < end for token_start in top_k_starts)
+        if always_keep or any(start <= token_start < end for token_start in selected_starts)
     ]
-    return " ".join(kept), top_k
+    return " ".join(kept), selected
 
 
 if __name__ == "__main__":

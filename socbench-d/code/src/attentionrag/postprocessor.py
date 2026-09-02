@@ -48,6 +48,8 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
     skip_on_none: bool = True  # Algorithm 1, lines 12-13
     verbose: bool = False
     layer_range: Optional[Tuple[int, int]] = None  # None = all layers (paper default)
+    use_anchor: bool = True   # False = skip anchor generation, use the hint's last token
+    threshold_ratio: Optional[float] = None   # None = use top_k_tokens instead
 
     # Algorithm 1 generates the hint once from the query alone (line 5), before
     # chunking. Caching turns 10 LLM calls per query into 1.
@@ -83,14 +85,25 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
         for node_with_score in nodes:
             chunk = node_with_score.node.get_content()
 
-            anchor = generate_anchor_token(chunk, query, hint)
-            if self.skip_on_none and anchor.strip().lower() == "none":
-                if self.verbose:
-                    print("[AttentionRAG] dropped chunk (anchor='none')")
-                continue
+            if self.use_anchor:
+                anchor = generate_anchor_token(chunk, query, hint)
+                if self.skip_on_none and anchor.strip().lower() == "none":
+                    if self.verbose:
+                        print("[AttentionRAG] dropped chunk (anchor='none')")
+                    continue
+            else:
+                # The prompt already ends with `Answer: {prefix_hint}`, so the
+                # final position is the hint's last token. Saves one forward
+                # pass per chunk and removes the "none" gate entirely.
+                anchor = ""
 
             token_scores, _ = compute_attention_feature(chunk, query, hint, anchor, layer_range=self.layer_range)
-            compressed, _ = compress_chunk(chunk, token_scores, k=self.top_k_tokens)
+
+            compressed, _ = compress_chunk(
+                chunk, token_scores,
+                k=self.top_k_tokens,
+                threshold_ratio=self.threshold_ratio,
+            )
 
             if not compressed.strip():
                 if self.verbose:

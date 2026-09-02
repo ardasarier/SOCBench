@@ -22,8 +22,8 @@ from attentionrag.postprocessor import AttentionRAGPostprocessor
 from socrag.index import get_retriever
 
 # Qwen2.5-0.5B has 24 layers.
-LAYER_RANGE = (8, 16)    # None | (0, 8) shallow | (8, 16) middle | (16, 24) deep
-LAYER_LABEL = "middle"   # "all" | "shallow" | "middle" | "deep"
+LAYER_RANGE = None    # None | (0, 8) shallow | (8, 16) middle | (16, 24) deep
+LAYER_LABEL = "all"   # "all" | "shallow" | "middle" | "deep"
 NUM_QUERIES = 10         # halved -- four configs to run in limited time
 TOP_K = 10               # SOCBench's k (CHUNKS)
 TOP_K_TOKENS = 10        # AttentionRAG's k (TOKENS)
@@ -40,7 +40,12 @@ else:
     QUERY_START = SPOTIFY_QUERY_COUNT
     BASE_URL, BASE_PATH = "https://api.themoviedb.org/3", "/3"
 
-OUTPUT_PATH = f"data/contexts_{API}_k{TOP_K}_{LAYER_LABEL}.json"
+USE_ANCHOR = False           # False = anchor-free variant
+ANCHOR_LABEL = "anchor" if USE_ANCHOR else "noanchor"
+THRESHOLD_RATIO = 0.7   # None = fixed top-k; or 0.1 / 0.25 / 0.5 for threshold mode
+
+SELECT_LABEL = f"k{TOP_K_TOKENS}" if THRESHOLD_RATIO is None else f"t{int(THRESHOLD_RATIO * 100)}"
+OUTPUT_PATH = f"data/contexts_{API}_k{TOP_K}_{LAYER_LABEL}_{ANCHOR_LABEL}_{SELECT_LABEL}.json"
 
 embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
 Settings.embed_model = embed_model
@@ -53,8 +58,13 @@ retriever = get_retriever(
     restbench.name, "bge_small", queryset.name, CHUNKING_STRATEGY,
     queryset.openapis, embed_model, EMBEDDING_DIMENSIONS, TOP_K,
 )
-postprocessor = AttentionRAGPostprocessor(top_k_tokens=TOP_K_TOKENS, layer_range=LAYER_RANGE)
 
+postprocessor = AttentionRAGPostprocessor(
+    top_k_tokens=TOP_K_TOKENS,
+    threshold_ratio=THRESHOLD_RATIO,
+    layer_range=LAYER_RANGE,
+    use_anchor=USE_ANCHOR,
+)
 
 def texts_of(nodes) -> list:
     return [n.node.get_content() for n in nodes]

@@ -17,7 +17,7 @@ from .anchor_token import ANCHOR_TOKEN_TEMPLATE
 from .models import DEVICE, compress_model as model, compress_tokenizer as tokenizer
 
 
-def compute_attention_feature(chunk: str, question: str, prefix_hint: str, anchor_token: str, layer_range=None):
+def compute_attention_feature(chunk: str, question: str, prefix_hint: str, anchor_token: str = "", layer_range=None):
     """
     Returns (token_scores, num_layers) where each score is a dict of
     token / score / char_start / char_end. Character offsets are relative to
