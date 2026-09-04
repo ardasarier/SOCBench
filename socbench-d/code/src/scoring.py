@@ -42,10 +42,14 @@ def match_to_template(endpoint: str, templates: set):
     """
     Map a concrete generated path back to its OpenAPI template.
 
-    Generated code never contains a literal "{user_id}" -- it emits a real
-    value, a placeholder, or an empty segment where socbenchsc could not
-    statically resolve a runtime variable. All three must map back or correct
-    code scores zero:
+    A path can match several templates: "/movie/now_playing" satisfies both
+    the literal "/movie/now_playing" and the parameterised "/movie/{movie_id}".
+    Returning the first match found while iterating a set was nondeterministic
+    -- Python randomises string hashes per process, so the same input scored
+    differently between runs (measured: 13 of 100 queries).
+
+    Prefer the most specific match, counting literal segment equalities, and
+    sort for a deterministic tie-break.
 
         "POST /users/YOUR_USER_ID/playlists" -> "POST /users/{user_id}/playlists"
         "POST /playlists//tracks"            -> "POST /playlists/{playlist_id}/tracks"
@@ -54,16 +58,26 @@ def match_to_template(endpoint: str, templates: set):
     """
     verb, _, path = endpoint.partition(" ")
     segs = path.lstrip("/").split("/")
-    for template in templates:
+
+    best, best_score = None, -1
+    for template in sorted(templates):
         t_verb, _, t_path = template.partition(" ")
         if t_verb != verb:
             continue
         t_segs = t_path.lstrip("/").split("/")
         if len(t_segs) != len(segs):
             continue
-        if all(ts.startswith("{") or ts == s for ts, s in zip(t_segs, segs)):
-            return template
-    return None
+
+        score, matches = 0, True
+        for t_seg, seg in zip(t_segs, segs):
+            if t_seg == seg:
+                score += 1                    # literal is more specific
+            elif not t_seg.startswith("{"):
+                matches = False
+                break
+        if matches and score > best_score:
+            best, best_score = template, score
+    return best
 
 
 def score(generated_endpoints: set, solution: list, templates: set, base_path: str = "") -> dict:
