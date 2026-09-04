@@ -53,12 +53,12 @@ def match_to_template(endpoint: str, templates: set):
     Returns None when nothing matches, i.e. a hallucinated endpoint.
     """
     verb, _, path = endpoint.partition(" ")
-    segs = path.strip("/").split("/")
+    segs = path.lstrip("/").split("/")
     for template in templates:
         t_verb, _, t_path = template.partition(" ")
         if t_verb != verb:
             continue
-        t_segs = t_path.strip("/").split("/")
+        t_segs = t_path.lstrip("/").split("/")
         if len(t_segs) != len(segs):
             continue
         if all(ts.startswith("{") or ts == s for ts, s in zip(t_segs, segs)):

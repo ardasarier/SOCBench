@@ -75,9 +75,10 @@ def generate_composition(
                 temperature=0,
             )
             return strip_code_fences(response.choices[0].message.content).strip()
-        except RateLimitError:
+        except RateLimitError as e:
             wait = 25 * (attempt + 1)
-            print(f"    [rate limited, waiting {wait}s]")
+            print(f"    [rate limited: {e}]")
+            print(f"    [waiting {wait}s]")
             time.sleep(wait)
 
     raise RuntimeError("rate limited after 6 attempts")

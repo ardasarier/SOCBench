@@ -22,12 +22,14 @@ from attentionrag.postprocessor import AttentionRAGPostprocessor
 from socrag.index import get_retriever
 
 # Qwen2.5-0.5B has 24 layers.
-LAYER_RANGE = None    # None | (0, 8) shallow | (8, 16) middle | (16, 24) deep
-LAYER_LABEL = "all"   # "all" | "shallow" | "middle" | "deep"
-NUM_QUERIES = 10         # halved -- four configs to run in limited time
+LAYER_RANGE = None       # None | (0, 8) shallow | (8, 16) middle | (16, 24) deep
+LAYER_LABEL = "all"      # "all" | "shallow" | "middle" | "deep"
+NUM_QUERIES = 100        # all TMDB queries
 TOP_K = 10               # SOCBench's k (CHUNKS)
 TOP_K_TOKENS = 10        # AttentionRAG's k (TOKENS)
+THRESHOLD_RATIO = None   # None = fixed top-k; or 0.1 / 0.25 / 0.5 for threshold mode
 API = "tmdb"             # "spotify" or "tmdb"
+USE_ANCHOR = False       # False = anchor-free variant
 CHUNKING_STRATEGY = "ENDPOINT_SPLIT_1024_0"
 EMBEDDING_DIMENSIONS = 384
 
@@ -40,9 +42,7 @@ else:
     QUERY_START = SPOTIFY_QUERY_COUNT
     BASE_URL, BASE_PATH = "https://api.themoviedb.org/3", "/3"
 
-USE_ANCHOR = False           # False = anchor-free variant
 ANCHOR_LABEL = "anchor" if USE_ANCHOR else "noanchor"
-THRESHOLD_RATIO = 0.7   # None = fixed top-k; or 0.1 / 0.25 / 0.5 for threshold mode
 
 SELECT_LABEL = f"k{TOP_K_TOKENS}" if THRESHOLD_RATIO is None else f"t{int(THRESHOLD_RATIO * 100)}"
 OUTPUT_PATH = f"data/contexts_{API}_k{TOP_K}_{LAYER_LABEL}_{ANCHOR_LABEL}_{SELECT_LABEL}.json"
