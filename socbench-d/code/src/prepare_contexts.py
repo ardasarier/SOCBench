@@ -22,8 +22,8 @@ from attentionrag.postprocessor import AttentionRAGPostprocessor
 from socrag.index import get_retriever
 
 # Qwen2.5-0.5B has 24 layers.
-LAYER_RANGE = None       # None | (0, 8) shallow | (8, 16) middle | (16, 24) deep
-LAYER_LABEL = "all"      # "all" | "shallow" | "middle" | "deep"
+LAYER_RANGE = (8, 24)    # None | (0, 8) shallow | (8, 16) middle | (16, 24) deep
+LAYER_LABEL = "middeep"  # "all" | "shallow" | "middle" | "deep"
 NUM_QUERIES = 100        # all TMDB queries
 TOP_K = 10               # SOCBench's k (CHUNKS)
 TOP_K_TOKENS = 10        # AttentionRAG's k (TOKENS)

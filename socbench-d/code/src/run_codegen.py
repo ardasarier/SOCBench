@@ -26,7 +26,7 @@ import benchmark
 from composition import generate_composition
 from scoring import build_templates, extract_endpoints_from_code, score
 
-INPUT_PATH = "data/contexts_tmdb_k10_all_noanchor_k10.json"
+INPUT_PATH = "data/contexts_tmdb_k10_middeep_noanchor_k10.json"
 # One cache per (API, k). Conditions differing only in compression settings
 # share a baseline; different retrieval settings must not.
 BASELINE_CACHE_PATH = "data/baseline_codegen_tmdb_k10.json"
