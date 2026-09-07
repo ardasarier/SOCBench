@@ -1,0 +1,217 @@
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+[models] using device: mps
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/restbench/bge_small/endpoint_split_1024_0/restbench/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/restbench/bge_small/endpoint_split_1024_0/restbench/vector_store/index_store.json.
+[1/100] 'give me the number of movies directed by Sofia Coppola'
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/transformers/generation/configuration_utils.py:628: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.7` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
+  warnings.warn(
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/transformers/generation/configuration_utils.py:633: UserWarning: `do_sample` is set to `False`. However, `top_p` is set to `0.8` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_p`.
+  warnings.warn(
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/transformers/generation/configuration_utils.py:650: UserWarning: `do_sample` is set to `False`. However, `top_k` is set to `20` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_k`.
+  warnings.warn(
+    2 -> 2 chunks, 2048 -> 529 tokens (CR 3.87x), 7.7s
+[2/100] 'Who was the lead actor in the movie The Dark Knight?'
+    2 -> 2 chunks, 1730 -> 430 tokens (CR 4.02x), 5.5s
+[3/100] 'Who directed the top-1 rated movie?'
+    2 -> 2 chunks, 1730 -> 384 tokens (CR 4.51x), 4.8s
+[4/100] 'give me a image for the collection Star Wars'
+    2 -> 2 chunks, 1527 -> 1285 tokens (CR 1.19x), 3.9s
+[5/100] 'What is the logo of the Walt Disney?'
+    2 -> 2 chunks, 2048 -> 1295 tokens (CR 1.58x), 5.9s
+[6/100] 'What dose the lead actor of Titanic look like?'
+    2 -> 2 chunks, 1281 -> 379 tokens (CR 3.38x), 2.8s
+[7/100] 'give me some reviews of the first movie that is similar to Titanic'
+    2 -> 2 chunks, 1507 -> 340 tokens (CR 4.43x), 2.8s
+[8/100] 'I just finished watching Titanic and I want some other movie recommendations'
+    2 -> 2 chunks, 2048 -> 1311 tokens (CR 1.56x), 4.9s
+[9/100] 'What is the latest movie directed by Christopher Nolan?'
+    2 -> 2 chunks, 2048 -> 2048 tokens (CR 1.00x), 9.4s
+[10/100] 'tell me the highest rated movie directed by Martin Scorsese'
+    2 -> 2 chunks, 2048 -> 1226 tokens (CR 1.67x), 8.0s
+[11/100] "Who is the director of Leonardo DiCaprio's latest movie?"
+    2 -> 2 chunks, 1730 -> 1220 tokens (CR 1.42x), 7.6s
+[12/100] 'tell me a TV show recently directed by Catherine Hardwicke'
+    2 -> 2 chunks, 2048 -> 2048 tokens (CR 1.00x), 4.1s
+[13/100] 'Please recommend me some TV shows similar to Breaking Bad'
+    2 -> 2 chunks, 2048 -> 1295 tokens (CR 1.58x), 5.8s
+[14/100] "Who is the director of today's most trending movie?"
+    2 -> 2 chunks, 1459 -> 1459 tokens (CR 1.00x), 9.3s
+[15/100] 'Who is the director of the movie "Twilight"?'
+    2 -> 2 chunks, 2048 -> 2048 tokens (CR 1.00x), 5.9s
+[16/100] 'give me a photo belong to the second episode of the first season of the Witcher'
+    2 -> 2 chunks, 1989 -> 778 tokens (CR 2.56x), 11.0s
+[17/100] 'What is top-1 rated movie?'
+    2 -> 2 chunks, 1452 -> 590 tokens (CR 2.46x), 13.3s
+[18/100] 'What is the release date of the movie "The Matrix"?'
+    2 -> 2 chunks, 2048 -> 2048 tokens (CR 1.00x), 9.3s
+[19/100] 'Who is the most popular person?'
+    2 -> 2 chunks, 2048 -> 2048 tokens (CR 1.00x), 4.5s
+[20/100] 'Give me some cover images of movies directed by Christopher Nolan.'
+    2 -> 2 chunks, 1730 -> 1221 tokens (CR 1.42x), 3.6s
+[21/100] 'What are some common keywords associated with movie "Titanic"?'
+    2 -> 2 chunks, 2048 -> 258 tokens (CR 7.94x), 4.8s
+[22/100] 'Give me a show that is currently on the air'
+    2 -> 2 chunks, 2048 -> 1171 tokens (CR 1.75x), 9.6s
+[23/100] "When is Clint Eastwood's latest movie scheduled to be released?"
+    2 -> 2 chunks, 1459 -> 1459 tokens (CR 1.00x), 6.7s
+[24/100] 'Give me some movie reviews about The Dark Knight'
+    2 -> 2 chunks, 1730 -> 546 tokens (CR 3.17x), 4.1s
+[25/100] 'What are some movies that are similar to one of the movies directed by Francis Ford Coppola?'
+    2 -> 2 chunks, 1507 -> 1186 tokens (CR 1.27x), 6.7s
+[26/100] 'Who is the lead actor in the latest released movie?'
+    2 -> 2 chunks, 1459 -> 1459 tokens (CR 1.00x), 3.4s
+[27/100] 'give me one image of the movie that is currently showing in theaters'
+    2 -> 2 chunks, 2048 -> 2048 tokens (CR 1.00x), 4.0s
+[28/100] 'What is the most popular movie right now and what is its keywords?'
+    2 -> 2 chunks, 2048 -> 325 tokens (CR 6.30x), 4.6s
+[29/100] 'What are the keywords of the most popular movie right now'
+    2 -> 2 chunks, 2048 -> 474 tokens (CR 4.32x), 4.2s
+[30/100] 'Who has starred in a movie "Titanic"'
+    2 -> 2 chunks, 2048 -> 2048 tokens (CR 1.00x), 1.1s
+[31/100] 'What do the logo looks like for Paramount Pictures?'
+    2 -> 2 chunks, 1185 -> 648 tokens (CR 1.83x), 2.4s
+[32/100] 'tell me where the company "universal pictures" was founded?'
+    2 -> 2 chunks, 2048 -> 1271 tokens (CR 1.61x), 3.6s
+[33/100] 'When is the movie "Titanic" released?'
+    2 -> 2 chunks, 2048 -> 1152 tokens (CR 1.78x), 4.7s
+[34/100] 'Who has starred in the first movie of Star Wars collection?'
+    2 -> 2 chunks, 1730 -> 1230 tokens (CR 1.41x), 3.8s
+[35/100] 'give me a movie cover of a movie from the collection Harry Potter'
+    2 -> 2 chunks, 2048 -> 537 tokens (CR 3.81x), 7.6s
+[36/100] 'What are some keywords for a movie of the collection The Hunger Games?'
+    2 -> 2 chunks, 2048 -> 360 tokens (CR 5.69x), 7.2s
+[37/100] 'When are the release dates for the movies of the collection The Hobbit?'
+    2 -> 2 chunks, 2048 -> 1136 tokens (CR 1.80x), 4.0s
+[38/100] 'List movies from The Fast and the Furious collection'
+    2 -> 2 chunks, 2048 -> 415 tokens (CR 4.93x), 3.9s
+[39/100] 'Give me a review of a movie from the collection The Fast and the Furious.'
+    2 -> 2 chunks, 1730 -> 407 tokens (CR 4.25x), 3.7s
+[40/100] 'When was the first movie of the collection Lord of the Rings released?'
+    2 -> 2 chunks, 1364 -> 349 tokens (CR 3.91x), 8.6s
+[41/100] 'tell me the directors of the first season of House of Cards'
+    2 -> 2 chunks, 1532 -> 793 tokens (CR 1.93x), 6.4s
+[42/100] 'I want some tv shows that similar to House of Cards'
+    2 -> 2 chunks, 2048 -> 1262 tokens (CR 1.62x), 5.0s
+[43/100] 'When did the most popular TV show currently on the air start?'
+    2 -> 2 chunks, 1891 -> 1193 tokens (CR 1.59x), 4.1s
+[44/100] 'tell me a few more works directed by the director of Django Unchained'
+    2 -> 2 chunks, 2048 -> 1204 tokens (CR 1.70x), 5.2s
+[45/100] 'tell me the cast of a TV show on the air'
+    2 -> 2 chunks, 1891 -> 1292 tokens (CR 1.46x), 8.4s
+[46/100] 'I need a review for Breaking Bad'
+    2 -> 2 chunks, 2048 -> 1228 tokens (CR 1.67x), 4.1s
+[47/100] "I'm watching the tv series The Last Of Us and I need some more recommendations"
+    2 -> 2 chunks, 2048 -> 2048 tokens (CR 1.00x), 9.3s
+[48/100] "I'm watching a TV show called The Last Of Us and I need some more recommendations"
+    2 -> 2 chunks, 2048 -> 2048 tokens (CR 1.00x), 3.7s
+[49/100] 'tell me the guest star from season 3, episode 24 of Friends'
+    2 -> 2 chunks, 2048 -> 1224 tokens (CR 1.67x), 4.4s
+[50/100] 'Who is the lead actor in the most popular TV show?'
+    2 -> 2 chunks, 2048 -> 1235 tokens (CR 1.66x), 4.8s
+[51/100] 'give me a keyword of the top-1 rated TV show'
+    2 -> 2 chunks, 2048 -> 1227 tokens (CR 1.67x), 8.2s
+[52/100] 'give me a poster of 2 Broke Girls'
+    2 -> 2 chunks, 2048 -> 429 tokens (CR 4.77x), 4.4s
+[53/100] 'How many episodes does 2 Broke Girls have in total?'
+    2 -> 2 chunks, 2048 -> 2048 tokens (CR 1.00x), 7.6s
+[54/100] 'When was the company that produced The Big Bang Theory founded?'
+    2 -> 2 chunks, 2048 -> 1342 tokens (CR 1.53x), 4.5s
+[55/100] 'When was the TV show The Big Bang Theory created?'
+    2 -> 2 chunks, 2048 -> 1263 tokens (CR 1.62x), 7.5s
+[56/100] 'give me a keyword of the most popular TV show'
+    2 -> 2 chunks, 2048 -> 1221 tokens (CR 1.68x), 3.4s
+[57/100] 'What did the third episode of the second season of Westworld talk about?'
+    2 -> 2 chunks, 2048 -> 2048 tokens (CR 1.00x), 4.1s
+[58/100] 'Tell me the air date of the second season of Game of Thrones'
+    2 -> 2 chunks, 1968 -> 1232 tokens (CR 1.60x), 4.8s
+[59/100] 'give me a poster of the third episode of Band of Brothers'
+    2 -> 2 chunks, 1968 -> 1298 tokens (CR 1.52x), 7.5s
+[60/100] 'What is the logo of the network that produced Game of Thrones?'
+    2 -> 2 chunks, 1968 -> 1171 tokens (CR 1.68x), 8.3s
+[61/100] 'give me the homepage of the network that produced Game of Thrones'
+    2 -> 2 chunks, 1968 -> 1146 tokens (CR 1.72x), 9.3s
+[62/100] 'give me a keyword of the most popular TV show currently'
+    2 -> 2 chunks, 2048 -> 2049 tokens (CR 1.00x), 11.3s
+[63/100] 'Where is the headquarter of the company that produced currently the most popular TV show?'
+    2 -> 2 chunks, 2048 -> 2050 tokens (CR 1.00x), 8.8s
+[64/100] 'What is the genre of The Mandalorian?'
+    2 -> 2 chunks, 2048 -> 2048 tokens (CR 1.00x), 3.7s
+[65/100] "When is the birthday of the lead actor of today's most trending TV show?"
+    2 -> 2 chunks, 2048 -> 413 tokens (CR 4.96x), 4.9s
+[66/100] "What is the homepage of the network that produced today's most trending TV show?"
+    2 -> 2 chunks, 1891 -> 443 tokens (CR 4.27x), 10.0s
+[67/100] "give me a review of today's most trending TV show"
+    2 -> 2 chunks, 1891 -> 406 tokens (CR 4.66x), 8.6s
+[68/100] "I prefer a TV show that similar to today's most trending TV show"
+    2 -> 2 chunks, 2048 -> 2048 tokens (CR 1.00x), 8.8s
+[69/100] "I need a poster of today's most trending TV show"
+    2 -> 2 chunks, 1891 -> 468 tokens (CR 4.04x), 6.9s
+[70/100] 'Who has worked with Jeremy Clarkson in his most popular TV show?'
+    2 -> 2 chunks, 2048 -> 1332 tokens (CR 1.54x), 10.6s
+[71/100] 'What does the lead actor of the first episode of second season of Black Mirror look like?'
+    2 -> 2 chunks, 2048 -> 457 tokens (CR 4.48x), 6.8s
+[72/100] 'When is the lead actor of The Mandalorian born?'
+    2 -> 2 chunks, 1459 -> 1459 tokens (CR 1.00x), 11.3s
+[73/100] "Who is the lead actor of today's most popular TV show?"
+    2 -> 2 chunks, 2048 -> 378 tokens (CR 5.42x), 4.8s
+[74/100] 'give me a photo of the lead actor of the most popular TV show of this week'
+    2 -> 2 chunks, 2048 -> 323 tokens (CR 6.34x), 4.6s
+[75/100] "give me some reviews of Cate Blanchett's latest TV show"
+    2 -> 2 chunks, 1794 -> 528 tokens (CR 3.40x), 4.1s
+[76/100] "What is David Schwimmer's most popular TV show?"
+    2 -> 2 chunks, 2048 -> 443 tokens (CR 4.62x), 4.3s
+[77/100] 'Who directed the third episode of the second season of Black Mirror?'
+    2 -> 2 chunks, 2048 -> 1174 tokens (CR 1.74x), 7.0s
+[78/100] 'give me some movies that Christopher Nolan known for'
+    2 -> 2 chunks, 2048 -> 1227 tokens (CR 1.67x), 10.9s
+[79/100] 'Avatar versus Avatar: The Way of Water, which has a higher rating'
+    2 -> 2 chunks, 1452 -> 438 tokens (CR 3.32x), 4.0s
+[80/100] 'Show me some English movies rating no less than 7.0 and no earlier than 2021'
+    2 -> 2 chunks, 2048 -> 2048 tokens (CR 1.00x), 6.5s
+[81/100] 'What is the genre of the movie Lord of the Ring?'
+    2 -> 2 chunks, 2048 -> 1293 tokens (CR 1.58x), 13.0s
+[82/100] 'What is the birthday of the most popular person right now?'
+    2 -> 2 chunks, 2048 -> 377 tokens (CR 5.43x), 12.6s
+[83/100] 'give me a poster of the second season of Big Bang Theory'
+    2 -> 2 chunks, 1891 -> 370 tokens (CR 5.11x), 10.4s
+[84/100] 'What is the name of the third episod of the second season of Mandalorian?'
+    2 -> 2 chunks, 2048 -> 2048 tokens (CR 1.00x), 4.9s
+[85/100] 'When is the bitrhday of the lead actor of the movie The Shawshank Redemptionn?'
+    2 -> 2 chunks, 2048 -> 519 tokens (CR 3.95x), 5.8s
+[86/100] 'When is the birthday of the director of the movie The Shawshank Redemption?'
+    2 -> 2 chunks, 2048 -> 582 tokens (CR 3.52x), 11.3s
+[87/100] 'Where is the headquarter of the company that created the movie The Shawshank Redemption?'
+    2 -> 2 chunks, 2048 -> 515 tokens (CR 3.98x), 10.5s
+[88/100] 'Where is the headquarter of the company that created the collection Star Wars?'
+    2 -> 2 chunks, 1364 -> 1184 tokens (CR 1.15x), 9.8s
+[89/100] 'Who has an earlier release date, The Double Life of Veronique or Mulholland Drive?'
+    2 -> 2 chunks, 1459 -> 1459 tokens (CR 1.00x), 4.8s
+[90/100] 'Is the director of Twin Peaks Season 1 and Mulholland Drive the same person?'
+    2 -> 2 chunks, 2048 -> 472 tokens (CR 4.34x), 5.7s
+[91/100] 'Where was the director of Mulholland Drive born?'
+    2 -> 2 chunks, 1281 -> 387 tokens (CR 3.31x), 10.8s
+[92/100] 'Is Mulholland Drive in the Top-10 rated list of the TMDB?'
+    2 -> 2 chunks, 2048 -> 424 tokens (CR 4.83x), 6.2s
+[93/100] 'Who directed more movies, Akira Kurosawa or Spielberg?'
+    2 -> 2 chunks, 2048 -> 1259 tokens (CR 1.63x), 8.8s
+[94/100] 'What TV series has the director of Mulholland Drive directed?'
+    2 -> 2 chunks, 2048 -> 1260 tokens (CR 1.63x), 4.3s
+[95/100] "Tell me about actor Scarlett Johansson's birthday"
+    2 -> 2 chunks, 1281 -> 189 tokens (CR 6.78x), 6.8s
+[96/100] 'How many seasons of Sword Art Online are there?'
+    2 -> 2 chunks, 1704 -> 1317 tokens (CR 1.29x), 3.5s
+[97/100] 'Are Yui Aragaki and Gen Hoshino co-starring in We Married as Job?'
+    2 -> 2 chunks, 1281 -> 390 tokens (CR 3.28x), 2.8s
+[98/100] 'Who is older, by how many years, the director of film Barbie or the lead actor of television DEATH NOTE?'
+    2 -> 2 chunks, 1459 -> 1459 tokens (CR 1.00x), 3.3s
+[99/100] "Tell me about Katherine LaNasa's latest movie appearance."
+    2 -> 2 chunks, 2048 -> 1114 tokens (CR 1.84x), 5.1s
+[100/100] 'Give me one cover image of the movie Oppenheimer.'
+    2 -> 2 chunks, 2048 -> 394 tokens (CR 5.20x), 8.3s
+
+wrote 100 records to data/contexts_tmdb_k2_all_noanchor_k10.json
+overall CR: 1.76x
+total time: 10.8 min

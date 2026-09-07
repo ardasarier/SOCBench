@@ -1,0 +1,1299 @@
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+loaded 100 prepared contexts from data/contexts_tmdb_k3_all_noanchor_k10.json
+loaded 100 cached baseline generations from data/baseline_codegen_tmdb_k3.json
+
+
+[1/100] 'give me the number of movies directed by Sofia Coppola'
+    solution: ['GET /search/person', 'GET /person/{person_id}/movie_credits']
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type GeneratorExp
+    without: recall 1.00  prec 1.00  halluc 1  found ['GET /person/{person_id}/movie_credits', 'GET /search/person']
+    with:    recall 1.00  prec 1.00  halluc 1  found ['GET /person/{person_id}/movie_credits', 'GET /search/person']
+    2.3s
+
+[2/100] 'Who was the lead actor in the movie The Dark Knight?'
+    solution: ['GET /search/movie', 'GET /movie/{movie_id}/credits']
+    without: recall 1.00  prec 1.00  halluc 1  found ['GET /movie/{movie_id}/credits', 'GET /search/movie']
+    with:    recall 1.00  prec 1.00  halluc 1  found ['GET /movie/{movie_id}/credits', 'GET /search/movie']
+    1.9s
+
+[3/100] 'Who directed the top-1 rated movie?'
+    solution: ['GET /movie/top_rated', 'GET /movie/{movie_id}/credits']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 0.50  halluc 0  found ['GET /movie/top_rated', 'GET /movie/{movie_id}']
+    with:    recall 0.50  prec 0.50  halluc 0  found ['GET /movie/top_rated', 'GET /movie/{movie_id}']
+    2.6s
+
+[4/100] 'give me a image for the collection Star Wars'
+    solution: ['GET /search/collection', 'GET /collection/{collection_id}/images']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /collection/{collection_id}/images']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /collection/{collection_id}/images']
+    1.6s
+
+[5/100] 'What is the logo of the Walt Disney?'
+    solution: ['GET /search/company', 'GET /company/{company_id}/images']
+WARNING:root:Unsupported argument type IfExp
+    without: recall 0.00  prec 0.00  halluc 0  found ['GET /company/{company_id}']
+    with:    recall 0.00  prec 0.00  halluc 0  found ['GET /company/{company_id}']
+    1.0s
+
+[6/100] 'What dose the lead actor of Titanic look like?'
+    solution: ['GET /search/movie', 'GET /movie/{movie_id}/credits', 'GET /person/{person_id}/images']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.67  prec 0.67  halluc 0  found ['GET /movie/{movie_id}/credits', 'GET /person/{person_id}', 'GET /search/movie']
+    with:    recall 0.67  prec 0.67  halluc 0  found ['GET /movie/{movie_id}/credits', 'GET /person/{person_id}', 'GET /search/movie']
+    2.1s
+
+[7/100] 'give me some reviews of the first movie that is similar to Titanic'
+    solution: ['GET /search/movie', 'GET /movie/{movie_id}/similar', 'GET /movie/{movie_id}/reviews']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /movie/{movie_id}/reviews', 'GET /movie/{movie_id}/similar']
+    with:    recall 0.67  prec 1.00  halluc 0  found ['GET /movie/{movie_id}/reviews', 'GET /movie/{movie_id}/similar']
+    1.6s
+
+[8/100] 'I just finished watching Titanic and I want some other movie recommendations'
+    solution: ['GET /search/movie', 'GET /movie/{movie_id}/recommendations']
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /movie/{movie_id}/recommendations']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /movie/{movie_id}/recommendations']
+    2.2s
+
+[9/100] 'What is the latest movie directed by Christopher Nolan?'
+    solution: ['GET /search/person', 'GET /person/{person_id}/movie_credits']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /person/{person_id}/movie_credits', 'GET /search/person']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /person/{person_id}/movie_credits', 'GET /search/person']
+    1.9s
+
+[10/100] 'tell me the highest rated movie directed by Martin Scorsese'
+    solution: ['GET /search/person', 'GET /person/{person_id}/movie_credits']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.00  prec 0.00  halluc 0  found ['GET /movie/top_rated', 'GET /movie/{movie_id}']
+    with:    recall 0.00  prec 0.00  halluc 0  found ['GET /movie/top_rated', 'GET /movie/{movie_id}']
+    1.9s
+
+[11/100] "Who is the director of Leonardo DiCaprio's latest movie?"
+    solution: ['GET /search/person', 'GET /person/{person_id}/movie_credits', 'GET /movie/{movie_id}/credits']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type GeneratorExp
+    without: recall 0.67  prec 0.67  halluc 0  found ['GET /movie/{movie_id}', 'GET /person/{person_id}/movie_credits', 'GET /search/person']
+    with:    recall 1.00  prec 0.75  halluc 0  found ['GET /movie/{movie_id}', 'GET /movie/{movie_id}/credits', 'GET /person/{person_id}/movie_credits', 'GET /search/person']
+    2.1s
+
+[12/100] 'tell me a TV show recently directed by Catherine Hardwicke'
+    solution: ['GET /search/person', 'GET /person/{person_id}/tv_credits']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /person/{person_id}/tv_credits', 'GET /search/person']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /person/{person_id}/tv_credits', 'GET /search/person']
+    1.9s
+
+[13/100] 'Please recommend me some TV shows similar to Breaking Bad'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}/recommendations']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /tv/{tv_id}/recommendations']
+    with:    recall 0.00  prec 0.00  halluc 0  found ['GET /tv/{tv_id}/similar']
+    1.4s
+
+[14/100] "Who is the director of today's most trending movie?"
+    solution: ['GET /trending/{media_type}/{time_window}', 'GET /movie/{movie_id}/credits']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type GeneratorExp
+    without: recall 1.00  prec 0.67  halluc 0  found ['GET /movie/{movie_id}', 'GET /movie/{movie_id}/credits', 'GET /trending/{media_type}/{time_window}']
+    with:    recall 1.00  prec 0.67  halluc 0  found ['GET /movie/{movie_id}', 'GET /movie/{movie_id}/credits', 'GET /trending/{media_type}/{time_window}']
+    1.8s
+
+[15/100] 'Who is the director of the movie "Twilight"?'
+    solution: ['GET /search/movie', 'GET /movie/{movie_id}/credits']
+    without: recall 1.00  prec 1.00  halluc 1  found ['GET /movie/{movie_id}/credits', 'GET /search/movie']
+    with:    recall 1.00  prec 1.00  halluc 1  found ['GET /movie/{movie_id}/credits', 'GET /search/movie']
+    2.1s
+
+[16/100] 'give me a photo belong to the second episode of the first season of the Witcher'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}/episode/{episode_number}/images']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /tv/{tv_id}/season/{season_number}/episode/{episode_number}/images']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /tv/{tv_id}/season/{season_number}/episode/{episode_number}/images']
+    3.5s
+
+[17/100] 'What is top-1 rated movie?'
+    solution: ['GET /movie/top_rated']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /movie/top_rated']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /movie/top_rated']
+    0.9s
+
+[18/100] 'What is the release date of the movie "The Matrix"?'
+    solution: ['GET /search/movie', 'GET /movie/{movie_id}/release_dates']
+    without: recall 0.00  prec 0.00  halluc 0  found ['GET /movie/now_playing']
+    with:    recall 0.00  prec 0.00  halluc 0  found ['GET /movie/now_playing']
+    1.3s
+
+[19/100] 'Who is the most popular person?'
+    solution: ['GET /person/popular']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /person/popular']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /person/popular']
+    1.1s
+
+[20/100] 'Give me some cover images of movies directed by Christopher Nolan.'
+    solution: ['GET /search/person', 'GET /person/{person_id}/movie_credits', 'GET /movie/{movie_id}/images']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /person/{person_id}/movie_credits', 'GET /search/person']
+    with:    recall 0.67  prec 1.00  halluc 0  found ['GET /person/{person_id}/movie_credits', 'GET /search/person']
+    1.7s
+
+[21/100] 'What are some common keywords associated with movie "Titanic"?'
+    solution: ['GET /search/movie', 'GET /movie/{movie_id}/keywords']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /movie/{movie_id}/keywords', 'GET /search/movie']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /movie/{movie_id}/keywords']
+    1.0s
+
+[22/100] 'Give me a show that is currently on the air'
+    solution: ['GET /tv/on_the_air']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /tv/on_the_air']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /tv/on_the_air']
+    1.1s
+
+[23/100] "When is Clint Eastwood's latest movie scheduled to be released?"
+    solution: ['GET /search/person', 'GET /person/{person_id}/movie_credits', 'GET /movie/{movie_id}/release_dates']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /person/{person_id}/movie_credits', 'GET /search/person']
+    with:    recall 0.00  prec 0.00  halluc 0  found ['GET /movie/now_playing']
+    1.7s
+
+[24/100] 'Give me some movie reviews about The Dark Knight'
+    solution: ['GET /search/movie', 'GET /movie/{movie_id}/reviews']
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /movie/{movie_id}/reviews']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /movie/{movie_id}/reviews']
+    1.1s
+
+[25/100] 'What are some movies that are similar to one of the movies directed by Francis Ford Coppola?'
+    solution: ['GET /search/person', 'GET /person/{person_id}/movie_credits', 'GET /movie/{movie_id}/similar']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+    without: recall 0.33  prec 1.00  halluc 0  found ['GET /movie/{movie_id}/similar']
+    with:    recall 0.33  prec 1.00  halluc 0  found ['GET /movie/{movie_id}/similar']
+    1.6s
+
+[26/100] 'Who is the lead actor in the latest released movie?'
+    solution: ['GET /movie/latest', 'GET /movie/{movie_id}/credits']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type IfExp
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /movie/latest', 'GET /movie/{movie_id}/credits']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /movie/latest', 'GET /movie/{movie_id}/credits']
+    1.5s
+
+[27/100] 'give me one image of the movie that is currently showing in theaters'
+    solution: ['GET /movie/now_playing', 'GET /movie/{movie_id}/images']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /movie/now_playing']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /movie/now_playing']
+    1.4s
+
+[28/100] 'What is the most popular movie right now and what is its keywords?'
+    solution: ['GET /movie/popular', 'GET /movie/{movie_id}/keywords']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /movie/popular', 'GET /movie/{movie_id}/keywords']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /movie/popular', 'GET /movie/{movie_id}/keywords']
+    1.6s
+
+[29/100] 'What are the keywords of the most popular movie right now'
+    solution: ['GET /movie/popular', 'GET /movie/{movie_id}/keywords']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /movie/popular', 'GET /movie/{movie_id}/keywords']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /movie/popular', 'GET /movie/{movie_id}/keywords']
+    1.7s
+
+[30/100] 'Who has starred in a movie "Titanic"'
+    solution: ['GET /search/movie', 'GET /movie/{movie_id}/credits']
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type ListComp
+    without: recall 1.00  prec 1.00  halluc 1  found ['GET /movie/{movie_id}/credits', 'GET /search/movie']
+    with:    recall 1.00  prec 1.00  halluc 1  found ['GET /movie/{movie_id}/credits', 'GET /search/movie']
+    1.7s
+
+[31/100] 'What do the logo looks like for Paramount Pictures?'
+    solution: ['GET /company/{company_id}', 'GET /company/{company_id}/images']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /company/{company_id}/images']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /company/{company_id}/images']
+    1.1s
+
+[32/100] 'tell me where the company "universal pictures" was founded?'
+    solution: ['GET /search/company', 'GET /company/{company_id}']
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /company/{company_id}']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /company/{company_id}']
+    1.0s
+
+[33/100] 'When is the movie "Titanic" released?'
+    solution: ['GET /search/movie', 'GET /movie/{movie_id}/release_dates']
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.00  prec 0.00  halluc 0  found ['GET /movie/upcoming']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /search/movie']
+    1.5s
+
+[34/100] 'Who has starred in the first movie of Star Wars collection?'
+    solution: ['GET /search/collection', 'GET /collection/{collection_id}', 'GET /movie/{movie_id}/credits']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /collection/{collection_id}', 'GET /movie/{movie_id}/credits']
+    with:    recall 0.67  prec 1.00  halluc 0  found ['GET /collection/{collection_id}', 'GET /movie/{movie_id}/credits']
+    1.4s
+
+[35/100] 'give me a movie cover of a movie from the collection Harry Potter'
+    solution: ['GET /search/collection', 'GET /collection/{collection_id}', 'GET /movie/{movie_id}/images']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.00  prec 0.00  halluc 0  found ['GET /movie/{movie_id}']
+    with:    recall 0.00  prec 0.00  halluc 0  found ['GET /search/movie']
+    1.4s
+
+[36/100] 'What are some keywords for a movie of the collection The Hunger Games?'
+    solution: ['GET /search/collection', 'GET /collection/{collection_id}', 'GET /movie/{movie_id}/keywords']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+    without: recall 0.33  prec 1.00  halluc 0  found ['GET /movie/{movie_id}/keywords']
+    with:    recall 0.33  prec 1.00  halluc 0  found ['GET /movie/{movie_id}/keywords']
+    1.3s
+
+[37/100] 'When are the release dates for the movies of the collection The Hobbit?'
+    solution: ['GET /search/collection', 'GET /collection/{collection_id}']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 0.50  halluc 0  found ['GET /collection/{collection_id}', 'GET /movie/{movie_id}/release_dates']
+    with:    recall 1.00  prec 0.67  halluc 1  found ['GET /collection/{collection_id}', 'GET /movie/{movie_id}/release_dates', 'GET /search/collection']
+    2.6s
+
+[38/100] 'List movies from The Fast and the Furious collection'
+    solution: ['GET /search/collection', 'GET /collection/{collection_id}']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /collection/{collection_id}']
+    with:    recall 0.00  prec 0.00  halluc 0  found ['GET /movie/popular']
+    1.7s
+
+[39/100] 'Give me a review of a movie from the collection The Fast and the Furious.'
+    solution: ['GET /search/collection', 'GET /collection/{collection_id}', 'GET /movie/{movie_id}/reviews']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+    without: recall 0.33  prec 1.00  halluc 0  found ['GET /movie/{movie_id}/reviews']
+    with:    recall 0.33  prec 1.00  halluc 0  found ['GET /movie/{movie_id}/reviews']
+    2.1s
+
+[40/100] 'When was the first movie of the collection Lord of the Rings released?'
+    solution: ['GET /search/collection', 'GET /collection/{collection_id}']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /collection/{collection_id}']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /collection/{collection_id}']
+    1.0s
+
+[41/100] 'tell me the directors of the first season of House of Cards'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}/credits']
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /tv/{tv_id}/season/{season_number}/credits']
+    with:    recall 0.50  prec 0.50  halluc 0  found ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}']
+    1.9s
+
+[42/100] 'I want some tv shows that similar to House of Cards'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}/similar']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /search/tv', 'GET /tv/{tv_id}/similar']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /search/tv', 'GET /tv/{tv_id}/similar']
+    9.9s
+
+[43/100] 'When did the most popular TV show currently on the air start?'
+    solution: ['GET /tv/on_the_air', 'GET /tv/{tv_id}']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.00  prec 0.00  halluc 0  found ['GET /tv/popular']
+    with:    recall 0.00  prec 0.00  halluc 0  found ['GET /tv/popular']
+    1.2s
+
+[44/100] 'tell me a few more works directed by the director of Django Unchained'
+    solution: ['GET /search/movie', 'GET /movie/{movie_id}/credits', 'GET /person/{person_id}/movie_credits']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.67  prec 1.00  halluc 1  found ['GET /movie/{movie_id}/credits', 'GET /person/{person_id}/movie_credits']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /movie/{movie_id}/credits', 'GET /person/{person_id}/movie_credits', 'GET /search/movie']
+    3.0s
+
+[45/100] 'tell me the cast of a TV show on the air'
+    solution: ['GET /tv/on_the_air', 'GET /tv/{tv_id}/credits']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /tv/on_the_air', 'GET /tv/{tv_id}/credits']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /tv/on_the_air', 'GET /tv/{tv_id}/credits']
+    2.7s
+
+[46/100] 'I need a review for Breaking Bad'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}/reviews']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+    without: recall 0.00  prec 0.00  halluc 0  found ['GET /tv/{tv_id}']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /tv/{tv_id}/reviews']
+    1.1s
+
+[47/100] "I'm watching the tv series The Last Of Us and I need some more recommendations"
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}/recommendations']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /tv/{tv_id}/recommendations']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /search/tv', 'GET /tv/{tv_id}/recommendations']
+    2.4s
+
+[48/100] "I'm watching a TV show called The Last Of Us and I need some more recommendations"
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}/recommendations']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /tv/{tv_id}/recommendations']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /search/tv', 'GET /tv/{tv_id}/recommendations']
+    2.0s
+
+[49/100] 'tell me the guest star from season 3, episode 24 of Friends'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}/episode/{episode_number}/credits']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 0.50  halluc 0  found ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}/episode/{episode_number}']
+    with:    recall 0.00  prec 0.00  halluc 0  found ['GET /tv/{tv_id}/season/{season_number}/episode/{episode_number}']
+    1.0s
+
+[50/100] 'Who is the lead actor in the most popular TV show?'
+    solution: ['GET /tv/popular', 'GET /tv/{tv_id}/credits']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /tv/popular', 'GET /tv/{tv_id}/credits']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /tv/popular', 'GET /tv/{tv_id}/credits']
+    2.2s
+
+[51/100] 'give me a keyword of the top-1 rated TV show'
+    solution: ['GET /tv/top_rated', 'GET /tv/{tv_id}/keywords']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /tv/top_rated']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /tv/top_rated']
+    1.5s
+
+[52/100] 'give me a poster of 2 Broke Girls'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}/images']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /search/tv']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /search/tv']
+    1.3s
+
+[53/100] 'How many episodes does 2 Broke Girls have in total?'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}']
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /tv/{tv_id}']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /tv/{tv_id}']
+    1.5s
+
+[54/100] 'When was the company that produced The Big Bang Theory founded?'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}', 'GET /company/{company_id}']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /company/{company_id}', 'GET /search/tv', 'GET /tv/{tv_id}']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /company/{company_id}', 'GET /search/tv', 'GET /tv/{tv_id}']
+    1.9s
+
+[55/100] 'When was the TV show The Big Bang Theory created?'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}']
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /search/tv']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /search/tv']
+    1.1s
+
+[56/100] 'give me a keyword of the most popular TV show'
+    solution: ['GET /tv/popular', 'GET /tv/{tv_id}/keywords']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /tv/popular']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /tv/popular']
+    2.2s
+
+[57/100] 'What did the third episode of the second season of Westworld talk about?'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}/episode/{episode_number}']
+    without: recall 0.50  prec 0.50  halluc 1  found ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}']
+    with:    recall 0.50  prec 0.50  halluc 1  found ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}']
+    2.3s
+
+[58/100] 'Tell me the air date of the second season of Game of Thrones'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}']
+    without: recall 0.00  prec 0.00  halluc 0  found ['GET /tv/{tv_id}']
+    with:    recall 0.00  prec 0.00  halluc 0  found ['GET /tv/{tv_id}']
+    1.8s
+
+[59/100] 'give me a poster of the third episode of Band of Brothers'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}/episode/{episode_number}/images']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported binary operator Sub
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 0.50  halluc 0  found ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}/episode/{episode_number}']
+    with:    recall 0.50  prec 0.50  halluc 0  found ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}']
+    1.8s
+
+[60/100] 'What is the logo of the network that produced Game of Thrones?'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}', 'GET /network/{network_id}/images']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.33  prec 1.00  halluc 0  found ['GET /tv/{tv_id}']
+    with:    recall 0.33  prec 1.00  halluc 0  found ['GET /tv/{tv_id}']
+    1.2s
+
+[61/100] 'give me the homepage of the network that produced Game of Thrones'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}', 'GET /network/{network_id}']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.33  prec 1.00  halluc 0  found ['GET /tv/{tv_id}']
+    with:    recall 0.33  prec 1.00  halluc 0  found ['GET /tv/{tv_id}']
+    1.9s
+
+[62/100] 'give me a keyword of the most popular TV show currently'
+    solution: ['GET /tv/popular', 'GET /tv/{tv_id}/keywords']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /tv/popular']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /tv/popular']
+    1.3s
+
+[63/100] 'Where is the headquarter of the company that produced currently the most popular TV show?'
+    solution: ['GET /tv/popular', 'GET /tv/{tv_id}', 'GET /company/{company_id}']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /tv/popular', 'GET /tv/{tv_id}']
+    with:    recall 0.67  prec 1.00  halluc 0  found ['GET /tv/popular', 'GET /tv/{tv_id}']
+    3.2s
+
+[64/100] 'What is the genre of The Mandalorian?'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}']
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type ListComp
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /tv/{tv_id}']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /tv/{tv_id}']
+    2.2s
+
+[65/100] "When is the birthday of the lead actor of today's most trending TV show?"
+    solution: ['GET /trending/{media_type}/{time_window}', 'GET /tv/{tv_id}/credits', 'GET /person/{person_id}']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 0.75  halluc 0  found ['GET /person/{person_id}', 'GET /trending/{media_type}/{time_window}', 'GET /tv/{tv_id}', 'GET /tv/{tv_id}/credits']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /person/{person_id}', 'GET /trending/{media_type}/{time_window}', 'GET /tv/{tv_id}/credits']
+    2.1s
+
+[66/100] "What is the homepage of the network that produced today's most trending TV show?"
+    solution: ['GET /trending/{media_type}/{time_window}', 'GET /tv/{tv_id}', 'GET /network/{network_id}']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /trending/{media_type}/{time_window}', 'GET /tv/{tv_id}']
+    with:    recall 0.67  prec 1.00  halluc 0  found ['GET /trending/{media_type}/{time_window}', 'GET /tv/{tv_id}']
+    1.3s
+
+[67/100] "give me a review of today's most trending TV show"
+    solution: ['GET /trending/{media_type}/{time_window}', 'GET /tv/{tv_id}/reviews']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /trending/{media_type}/{time_window}']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /trending/{media_type}/{time_window}']
+    1.8s
+
+[68/100] "I prefer a TV show that similar to today's most trending TV show"
+    solution: ['GET /trending/{media_type}/{time_window}', 'GET /tv/{tv_id}/similar']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /trending/{media_type}/{time_window}', 'GET /tv/{tv_id}/similar']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /trending/{media_type}/{time_window}', 'GET /tv/{tv_id}/similar']
+    1.3s
+
+[69/100] "I need a poster of today's most trending TV show"
+    solution: ['GET /trending/{media_type}/{time_window}', 'GET /tv/{tv_id}/images']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.00  prec 0.00  halluc 0  found ['GET /tv/airing_today']
+    with:    recall 0.00  prec 0.00  halluc 0  found ['GET /tv/airing_today']
+    1.8s
+
+[70/100] 'Who has worked with Jeremy Clarkson in his most popular TV show?'
+    solution: ['GET /search/person', 'GET /person/{person_id}/tv_credits', 'GET /tv/{tv_id}/credits']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /person/{person_id}/tv_credits', 'GET /search/person', 'GET /tv/{tv_id}/credits']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /person/{person_id}/tv_credits', 'GET /search/person', 'GET /tv/{tv_id}/credits']
+    2.6s
+
+[71/100] 'What does the lead actor of the first episode of second season of Black Mirror look like?'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}/credits', 'GET /person/{person_id}/images']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.33  prec 0.33  halluc 0  found ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}', 'GET /tv/{tv_id}/season/{season_number}/episode/{episode_number}/credits']
+    with:    recall 0.33  prec 0.33  halluc 0  found ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}', 'GET /tv/{tv_id}/season/{season_number}/episode/{episode_number}/credits']
+    3.4s
+
+[72/100] 'When is the lead actor of The Mandalorian born?'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}/credits', 'GET /person/{person_id}']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /person/{person_id}', 'GET /search/tv', 'GET /tv/{tv_id}/credits']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /person/{person_id}', 'GET /search/tv', 'GET /tv/{tv_id}/credits']
+    2.4s
+
+[73/100] "Who is the lead actor of today's most popular TV show?"
+    solution: ['GET /tv/popular', 'GET /tv/{tv_id}/credits']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /tv/popular', 'GET /tv/{tv_id}/credits']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /tv/popular', 'GET /tv/{tv_id}/credits']
+    2.1s
+
+[74/100] 'give me a photo of the lead actor of the most popular TV show of this week'
+    solution: ['GET /tv/popular', 'GET /tv/{tv_id}/credits', 'GET /person/{person_id}/images']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /tv/popular', 'GET /tv/{tv_id}/credits']
+    with:    recall 0.67  prec 0.67  halluc 0  found ['GET /person/{person_id}/images', 'GET /trending/{media_type}/{time_window}', 'GET /tv/{tv_id}/credits']
+    2.0s
+
+[75/100] "give me some reviews of Cate Blanchett's latest TV show"
+    solution: ['GET /search/person', 'GET /person/{person_id}/tv_credits', 'GET /tv/{tv_id}/reviews']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /search/person', 'GET /tv/{tv_id}/reviews']
+    with:    recall 0.67  prec 1.00  halluc 0  found ['GET /search/person', 'GET /tv/{tv_id}/reviews']
+    2.2s
+
+[76/100] "What is David Schwimmer's most popular TV show?"
+    solution: ['GET /search/person', 'GET /person/{person_id}/tv_credits']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /person/{person_id}/tv_credits', 'GET /search/person']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /person/{person_id}/tv_credits', 'GET /search/person']
+    1.5s
+
+[77/100] 'Who directed the third episode of the second season of Black Mirror?'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}/credits']
+    without: recall 0.50  prec 0.33  halluc 2  found ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}', 'GET /tv/{tv_id}/season/{season_number}/episode/{episode_number}/credits']
+    with:    recall 0.50  prec 0.33  halluc 2  found ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}', 'GET /tv/{tv_id}/season/{season_number}/episode/{episode_number}/credits']
+    2.6s
+
+[78/100] 'give me some movies that Christopher Nolan known for'
+    solution: ['GET /search/person']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /search/person']
+    with:    recall 1.00  prec 0.50  halluc 0  found ['GET /person/{person_id}/movie_credits', 'GET /search/person']
+    1.6s
+
+[79/100] 'Avatar versus Avatar: The Way of Water, which has a higher rating'
+    solution: ['GET /search/movie']
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /search/movie']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /search/movie']
+    1.9s
+
+[80/100] 'Show me some English movies rating no less than 7.0 and no earlier than 2021'
+    solution: ['GET /discover/movie']
+    without: recall 0.00  prec 0.00  halluc 0  found ['GET /movie/now_playing']
+    with:    recall 0.00  prec 0.00  halluc 0  found ['GET /movie/now_playing']
+    1.2s
+
+[81/100] 'What is the genre of the movie Lord of the Ring?'
+    solution: ['GET /search/movie', 'GET /movie/{movie_id}']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /search/movie']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /movie/{movie_id}', 'GET /search/movie']
+    1.4s
+
+[82/100] 'What is the birthday of the most popular person right now?'
+    solution: ['GET /person/popular', 'GET /person/{person_id}']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /person/popular', 'GET /person/{person_id}']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /person/popular', 'GET /person/{person_id}']
+    1.8s
+
+[83/100] 'give me a poster of the second season of Big Bang Theory'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}/images']
+    without: recall 0.00  prec 0.00  halluc 0  found ['GET /tv/{tv_id}/season/{season_number}']
+    with:    recall 0.50  prec 0.50  halluc 1  found ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}']
+    2.2s
+
+[84/100] 'What is the name of the third episod of the second season of Mandalorian?'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}/episode/{episode_number}']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 0.50  halluc 0  found ['GET /search/tv', 'GET /tv/{tv_id}/season/{season_number}']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /tv/{tv_id}/season/{season_number}/episode/{episode_number}']
+    2.8s
+
+[85/100] 'When is the bitrhday of the lead actor of the movie The Shawshank Redemptionn?'
+    solution: ['GET /search/movie', 'GET /movie/{movie_id}/credits', 'GET /person/{person_id}']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.67  prec 0.67  halluc 2  found ['GET /movie/top_rated', 'GET /movie/{movie_id}/credits', 'GET /person/{person_id}']
+    with:    recall 0.67  prec 0.67  halluc 2  found ['GET /movie/top_rated', 'GET /movie/{movie_id}/credits', 'GET /person/{person_id}']
+    2.0s
+
+[86/100] 'When is the birthday of the director of the movie The Shawshank Redemption?'
+    solution: ['GET /search/movie', 'GET /movie/{movie_id}/credits', 'GET /person/{person_id}']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.67  prec 1.00  halluc 1  found ['GET /movie/{movie_id}/credits', 'GET /person/{person_id}']
+    with:    recall 1.00  prec 1.00  halluc 1  found ['GET /movie/{movie_id}/credits', 'GET /person/{person_id}', 'GET /search/movie']
+    1.8s
+
+[87/100] 'Where is the headquarter of the company that created the movie The Shawshank Redemption?'
+    solution: ['GET /search/movie', 'GET /movie/{movie_id}', 'GET /company/{company_id}']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /company/{company_id}', 'GET /movie/{movie_id}']
+    with:    recall 0.67  prec 0.67  halluc 0  found ['GET /company/{company_id}', 'GET /movie/top_rated', 'GET /movie/{movie_id}']
+    2.0s
+
+[88/100] 'Where is the headquarter of the company that created the collection Star Wars?'
+    solution: ['GET /search/collection', 'GET /collection/{collection_id}', 'GET /company/{company_id}']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /collection/{collection_id}', 'GET /company/{company_id}']
+    with:    recall 0.67  prec 1.00  halluc 0  found ['GET /collection/{collection_id}', 'GET /company/{company_id}']
+    1.6s
+
+[89/100] 'Who has an earlier release date, The Double Life of Veronique or Mulholland Drive?'
+    solution: ['GET /search/movie', 'GET /movie/{movie_id}']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type IfExp
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /search/movie']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /search/movie']
+    1.6s
+
+[90/100] 'Is the director of Twin Peaks Season 1 and Mulholland Drive the same person?'
+    solution: ['GET /search/tv', 'GET /search/movie', 'GET /movie/{movie_id}/credits', 'GET /tv/{tv_id}/season/{season_number}/credits']
+[scoring] generated code does not parse: invalid syntax (<unknown>, line 1)
+[scoring] generated code does not parse: invalid syntax (<unknown>, line 1)
+    without: recall 0.00  prec 0.00  halluc 0  found []
+    with:    recall 0.00  prec 0.00  halluc 0  found []
+    4.2s
+
+[91/100] 'Where was the director of Mulholland Drive born?'
+    solution: ['GET /search/movie', 'GET /movie/{movie_id}/credits', 'GET /person/{person_id}']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /movie/{movie_id}/credits', 'GET /person/{person_id}', 'GET /search/movie']
+    with:    recall 1.00  prec 1.00  halluc 1  found ['GET /movie/{movie_id}/credits', 'GET /person/{person_id}', 'GET /search/movie']
+    2.8s
+
+[92/100] 'Is Mulholland Drive in the Top-10 rated list of the TMDB?'
+    solution: ['GET /search/movie', 'GET /movie/top_rated']
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type Compare
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type Compare
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /movie/top_rated']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /movie/top_rated']
+    1.3s
+
+[93/100] 'Who directed more movies, Akira Kurosawa or Spielberg?'
+    solution: ['GET /search/person', 'GET /person/{person_id}/movie_credits']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /person/{person_id}/movie_credits', 'GET /search/person']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /person/{person_id}/movie_credits', 'GET /search/person']
+    2.1s
+
+[94/100] 'What TV series has the director of Mulholland Drive directed?'
+    solution: ['GET /search/movie', 'GET /person/{person_id}/tv_credits']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported argument type ListComp
+    without: recall 0.50  prec 0.50  halluc 1  found ['GET /person/{person_id}/tv_credits', 'GET /search/person']
+    with:    recall 0.50  prec 0.33  halluc 0  found ['GET /movie/{movie_id}/credits', 'GET /search/movie', 'GET /search/tv']
+    6.8s
+
+[95/100] "Tell me about actor Scarlett Johansson's birthday"
+    solution: ['GET /search/person', 'GET /person/{person_id}']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /person/{person_id}', 'GET /search/person']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /person/{person_id}', 'GET /search/person']
+    1.6s
+
+[96/100] 'How many seasons of Sword Art Online are there?'
+    solution: ['GET /search/tv', 'GET /tv/{tv_id}']
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /search/tv']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /search/tv']
+    1.3s
+
+[97/100] 'Are Yui Aragaki and Gen Hoshino co-starring in We Married as Job?'
+    solution: ['GET /search/movie', 'GET /movie/{movie_id}/credits']
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type Compare
+WARNING:root:Unsupported argument type Compare
+WARNING:root:Unsupported argument type BoolOp
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type BoolOp
+    without: recall 0.00  prec 0.00  halluc 1  found ['GET /search/tv', 'GET /tv/{tv_id}/credits']
+    with:    recall 0.00  prec 0.00  halluc 1  found ['GET /search/tv', 'GET /tv/{tv_id}/credits']
+    2.3s
+
+[98/100] 'Who is older, by how many years, the director of film Barbie or the lead actor of television DEATH NOTE?'
+    solution: ['GET /search/movie', 'GET /movie/{movie_id}/credits', 'GET /search/tv', 'GET /tv/{tv_id}/credits']
+[scoring] generated code does not parse: invalid syntax (<unknown>, line 1)
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported binary operator Sub
+WARNING:root:Unsupported argument type IfExp
+    without: recall 0.00  prec 0.00  halluc 0  found []
+    with:    recall 1.00  prec 0.80  halluc 0  found ['GET /movie/{movie_id}/credits', 'GET /person/{person_id}', 'GET /search/movie', 'GET /search/tv', 'GET /tv/{tv_id}/credits']
+    3.1s
+
+[99/100] "Tell me about Katherine LaNasa's latest movie appearance."
+    solution: ['GET /search/person', 'GET /person/{person_id}/movie_credits']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /person/{person_id}/movie_credits', 'GET /search/person']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /person/{person_id}/movie_credits', 'GET /search/person']
+    2.7s
+
+[100/100] 'Give me one cover image of the movie Oppenheimer.'
+    solution: ['GET /search/movie', 'GET /movie/{movie_id}/images']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /search/movie']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['GET /search/movie']
+    2.7s
+
+==============================================================================
+condition:          data/contexts_tmdb_k3_all_noanchor_k10.json
+baseline cache:     100 hits, 0 generated
+
+WITHOUT compression    recall 0.600   precision 0.796   exact 29/100   halluc 13   tokens 286431
+WITH compression       recall 0.628   precision 0.786   exact 33/100   halluc 14   tokens 154694
+
+Compression ratio:  1.85x
+Recall delta:       +0.028
+Total time:         3.3 min
+==============================================================================
