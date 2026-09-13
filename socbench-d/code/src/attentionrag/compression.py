@@ -176,8 +176,23 @@ def select_tokens(token_scores: list, k: int = None, threshold_ratio: float = No
 
 
 def compress_chunk(chunk: str, token_scores: list, k: int = 3,
-                   threshold_ratio: float = None):
+                   threshold_ratio: float = None, identity_only: bool = False):
     """Returns (compressed_text, selected_entries)."""
+    # Ablation: keep ONLY the always-retained identity prefix (path,
+    # operationId, summary, description) and drop everything else. Tests
+    # whether the composition model needs the endpoint's body at all, or
+    # whether it reconstructs behaviour from the path plus prior knowledge.
+    if identity_only:
+        segments = split_into_segments(chunk)
+        kept = [seg for seg, _, _, always_keep in segments if always_keep]
+        # Continuation fragments carry no Endpoint: header, so nothing is
+        # marked always_keep. Falling back to the first segment preserves the
+        # chunk count, so the ablation isolates "identity only" rather than
+        # also removing 86% of chunks.
+        if not kept and segments:
+            kept = [segments[0][0]]
+        return " ".join(kept), []
+
     selected = select_tokens(token_scores, k=k, threshold_ratio=threshold_ratio)
     selected_starts = [t["char_start"] for t in selected]
 

@@ -44,12 +44,13 @@ from .hint_prefix import generate_answer_hint_prefix
 class AttentionRAGPostprocessor(BaseNodePostprocessor):
     """Compresses each retrieved node's text using AttentionRAG's Algorithm 1."""
 
-    top_k_tokens: int = 10     # AttentionRAG's k (TOKENS), not SOCBench's k (CHUNKS)
-    skip_on_none: bool = True  # Algorithm 1, lines 12-13
+    top_k_tokens: int = 10          # AttentionRAG's k (TOKENS), not SOCBench's k (CHUNKS)
+    skip_on_none: bool = True       # Algorithm 1, lines 12-13
     verbose: bool = False
     layer_range: Optional[Tuple[int, int]] = None  # None = all layers (paper default)
-    use_anchor: bool = True   # False = skip anchor generation, use the hint's last token
+    use_anchor: bool = True         # False = skip anchor generation, use the hint's last token
     threshold_ratio: Optional[float] = None   # None = use top_k_tokens instead
+    identity_only: bool = False     # ablation: keep only the identity prefix
 
     # Algorithm 1 generates the hint once from the query alone (line 5), before
     # chunking. Caching turns 10 LLM calls per query into 1.
@@ -66,6 +67,21 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
     ) -> List[NodeWithScore]:
         if query_bundle is None:
             return nodes
+
+        # No attention needed for this ablation -- skip hint, anchor and the
+        # forward pass entirely.
+        if self.identity_only:
+            kept = []
+            for node_with_score in nodes:
+                compressed, _ = compress_chunk(
+                    node_with_score.node.get_content(), [], identity_only=True
+                )
+                if not compressed.strip():
+                    continue
+                new_node = deepcopy(node_with_score.node)
+                new_node.text = compressed
+                kept.append(NodeWithScore(node=new_node, score=node_with_score.score))
+            return kept
 
         query = query_bundle.query_str
 

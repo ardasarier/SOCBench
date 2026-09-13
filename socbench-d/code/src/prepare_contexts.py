@@ -32,6 +32,7 @@ API = "tmdb"             # "spotify" or "tmdb"
 USE_ANCHOR = False       # False = anchor-free variant
 CHUNKING_STRATEGY = "ENDPOINT_SPLIT_1024_0"
 EMBEDDING_DIMENSIONS = 384
+IDENTITY_ONLY = True
 
 # RestBench concatenates Spotify's 57 queries, then TMDB's 100.
 SPOTIFY_QUERY_COUNT = 57
@@ -44,7 +45,8 @@ else:
 
 ANCHOR_LABEL = "anchor" if USE_ANCHOR else "noanchor"
 
-SELECT_LABEL = f"k{TOP_K_TOKENS}" if THRESHOLD_RATIO is None else f"t{int(THRESHOLD_RATIO * 100)}"
+SELECT_LABEL = "identity" if IDENTITY_ONLY else (
+    f"k{TOP_K_TOKENS}" if THRESHOLD_RATIO is None else f"t{int(THRESHOLD_RATIO*100)}")
 OUTPUT_PATH = f"data/contexts_{API}_k{TOP_K}_{LAYER_LABEL}_{ANCHOR_LABEL}_{SELECT_LABEL}.json"
 
 embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
@@ -60,10 +62,8 @@ retriever = get_retriever(
 )
 
 postprocessor = AttentionRAGPostprocessor(
-    top_k_tokens=TOP_K_TOKENS,
-    threshold_ratio=THRESHOLD_RATIO,
-    layer_range=LAYER_RANGE,
-    use_anchor=USE_ANCHOR,
+    top_k_tokens=TOP_K_TOKENS, threshold_ratio=THRESHOLD_RATIO,
+    layer_range=LAYER_RANGE, use_anchor=USE_ANCHOR, identity_only=IDENTITY_ONLY,
 )
 
 def texts_of(nodes) -> list:
@@ -105,14 +105,16 @@ for i, query in enumerate(queries):
     })
 
     raw, comp = records[-1]["raw_tokens"], records[-1]["compressed_tokens"]
+    cr = raw / comp if comp else float("inf")
     print(f"    {len(raw_texts)} -> {len(compressed_texts)} chunks, "
-          f"{raw} -> {comp} tokens (CR {raw / comp:.2f}x), {time.time() - started:.1f}s")
+          f"{raw} -> {comp} tokens (CR {cr:.2f}x), {time.time() - started:.1f}s")
 
 with open(OUTPUT_PATH, "w") as f:
     json.dump(records, f, indent=2)
 
 total_raw = sum(r["raw_tokens"] for r in records)
 total_compressed = sum(r["compressed_tokens"] for r in records)
+cr = total_raw / total_compressed if total_compressed else float("inf")
 print(f"\nwrote {len(records)} records to {OUTPUT_PATH}")
-print(f"overall CR: {total_raw / total_compressed:.2f}x")
+print(f"overall CR: {cr:.2f}x")
 print(f"total time: {(time.time() - start_all) / 60:.1f} min")
