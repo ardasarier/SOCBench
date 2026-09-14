@@ -1,6 +1,6 @@
 """
 Reproduces a RestBench recall@k number from the socbench-d RAG pipeline,
-without evaluate.py's full sweep (15 chunking strategies x 3 k x 2 benchmarks).
+without evaluate.py's full sweep (chunking strategies x 3 k x 2 benchmarks).
 
 BGE-small embeddings, endpoint-split chunking. RestBench merges Spotify (57
 queries) and TMDB (100) into one index, matching the paper; this splits the
@@ -25,12 +25,12 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 import benchmark
 from socrag.index import get_retriever
 
-TOP_K = 10
 CHUNKING_STRATEGY = "ENDPOINT_SPLIT_1024_0"
 EMBEDDING_DIMENSIONS = 384
 SPOTIFY_QUERY_COUNT = 57
+TOP_K = 10
 
-os.makedirs("data", exist_ok=True)  # gitignored; evaluate.py assumes it exists
+os.makedirs("data", exist_ok=True)  # evaluate.py assumes it exists
 
 embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
 Settings.embed_model = embed_model

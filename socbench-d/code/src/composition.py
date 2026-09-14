@@ -11,7 +11,7 @@ import os
 import re
 import time
 
-from openai import OpenAI, RateLimitError
+from openai import OpenAI, RateLimitError, APIConnectionError, APITimeoutError
 
 # Matches the model socbench-d's own evaluate.py uses, so numbers are comparable.
 CODEGEN_MODEL_NAME = "gpt-4o-2024-11-20"
@@ -56,16 +56,13 @@ def _get_client() -> OpenAI:
     return _client
 
 
-def generate_composition(
-    chunks: list, query: str, base_url: str, max_new_tokens: int = 512
-) -> str:
+def generate_composition(chunks: list, query: str, base_url: str, max_new_tokens: int = 1024) -> str:
     """chunks is a list of plain strings, not LlamaIndex nodes."""
     client = _get_client()
-    prompt = COMPOSITION_PROMPT.format(
-        context="\n\n".join(chunks), query=query, base_url=base_url
-    )
+    prompt = COMPOSITION_PROMPT.format(context="\n\n".join(chunks), query=query, base_url=base_url)
 
-    # Tier-0 API keys allow 3 requests/minute; back off rather than lose a run.
+    # Tier-0 API keys allow 3 requests/minute. Connection and timeout errors
+    # are also transient and would otherwise abort a 550-query run.
     for attempt in range(6):
         try:
             response = client.chat.completions.create(
@@ -74,11 +71,21 @@ def generate_composition(
                 max_tokens=max_new_tokens,
                 temperature=0,
             )
-            return strip_code_fences(response.choices[0].message.content).strip()
-        except RateLimitError as e:
+            choice = response.choices[0]
+
+            # Truncated code fails to parse, so extract_endpoints_from_code
+            # returns an empty set and the query scores 0. Without this warning
+            # that is indistinguishable from the model getting it wrong.
+            # SOCBench-D queries need up to 10 endpoints, so it is a real risk.
+            if choice.finish_reason == "length":
+                print(f"    [WARNING: output truncated at {max_new_tokens} tokens]")
+
+            return strip_code_fences(choice.message.content).strip()
+
+        except (RateLimitError, APIConnectionError, APITimeoutError) as e:
             wait = 25 * (attempt + 1)
-            print(f"    [rate limited: {e}]")
+            print(f"    [{type(e).__name__}: {e}]")
             print(f"    [waiting {wait}s]")
             time.sleep(wait)
 
-    raise RuntimeError("rate limited after 6 attempts")
+    raise RuntimeError("API errors after 6 attempts")

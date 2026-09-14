@@ -10,6 +10,7 @@ Run from socbench-d/code/:
     python src/prepare_contexts.py
 """
 import json
+import os
 import time
 
 from llama_index.core import Settings
@@ -21,18 +22,24 @@ from attentionrag.models import empty_cache
 from attentionrag.postprocessor import AttentionRAGPostprocessor
 from socrag.index import get_retriever
 
-# Qwen2.5-0.5B has 24 layers.
-LAYER_RANGE = None       # None | (0, 8) shallow | (8, 16) middle | (16, 24) deep
-LAYER_LABEL = "all"      # "all" | "shallow" | "middle" | "deep"
-NUM_QUERIES = 100        # all TMDB queries
-TOP_K = 5                # SOCBench's k (CHUNKS)
-TOP_K_TOKENS = 10        # AttentionRAG's k (TOKENS)
-THRESHOLD_RATIO = None   # None = fixed top-k; or 0.1 / 0.25 / 0.5 for threshold mode
-API = "tmdb"             # "spotify" or "tmdb"
-USE_ANCHOR = False       # False = anchor-free variant
+# --- experiment scope ---
+API = "tmdb"                    # "spotify" or "tmdb"
+NUM_QUERIES = 100
+
+# --- retrieval ---
+TOP_K = 5                       # SOCBench's k (CHUNKS)
 CHUNKING_STRATEGY = "ENDPOINT_SPLIT_1024_0"
+EMBEDDING_MODEL = "BAAI/bge-small-en-v1.5"
+EMBEDDING_LABEL = "bge_small"   # index directory name
 EMBEDDING_DIMENSIONS = 384
-IDENTITY_ONLY = True
+
+# --- compression ---
+TOP_K_TOKENS = 10               # AttentionRAG's k (TOKENS)
+THRESHOLD_RATIO = None          # None = fixed top-k; else 0.1 / 0.25 / 0.5
+LAYER_RANGE = None              # None = all 24; (0,8) shallow, (8,16) mid, (16,24) deep; Qwen2.5-0.5B has 24 layers
+LAYER_LABEL = "all"
+USE_ANCHOR = False
+IDENTITY_ONLY = False           # ablation: identity prefix only, no attention
 
 # RestBench concatenates Spotify's 57 queries, then TMDB's 100.
 SPOTIFY_QUERY_COUNT = 57
@@ -46,15 +53,20 @@ else:
 ANCHOR_LABEL = "anchor" if USE_ANCHOR else "noanchor"
 
 SELECT_LABEL = "identity" if IDENTITY_ONLY else (
-    f"k{TOP_K_TOKENS}" if THRESHOLD_RATIO is None else f"t{int(THRESHOLD_RATIO*100)}")
-OUTPUT_PATH = f"data/contexts_{API}_k{TOP_K}_{LAYER_LABEL}_{ANCHOR_LABEL}_{SELECT_LABEL}.json"
+    f"k{TOP_K_TOKENS}" if THRESHOLD_RATIO is None else f"t{int(THRESHOLD_RATIO*100)}"
+)
+
+OUTPUT_PATH = (f"data/contexts/{API}_k{TOP_K}_{LAYER_LABEL}_{ANCHOR_LABEL}"
+               f"_{SELECT_LABEL}_n{NUM_QUERIES}.json")
+
+os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
 
 embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
 Settings.embed_model = embed_model
 
+encoding = benchmark.get_encoding()
 restbench = benchmark.get_restbench()
 queryset = restbench.queries[0]
-encoding = benchmark.get_encoding()
 
 retriever = get_retriever(
     restbench.name, "bge_small", queryset.name, CHUNKING_STRATEGY,
@@ -65,6 +77,7 @@ postprocessor = AttentionRAGPostprocessor(
     top_k_tokens=TOP_K_TOKENS, threshold_ratio=THRESHOLD_RATIO,
     layer_range=LAYER_RANGE, use_anchor=USE_ANCHOR, identity_only=IDENTITY_ONLY,
 )
+
 
 def texts_of(nodes) -> list:
     return [n.node.get_content() for n in nodes]
@@ -109,8 +122,10 @@ for i, query in enumerate(queries):
     print(f"    {len(raw_texts)} -> {len(compressed_texts)} chunks, "
           f"{raw} -> {comp} tokens (CR {cr:.2f}x), {time.time() - started:.1f}s")
 
-with open(OUTPUT_PATH, "w") as f:
-    json.dump(records, f, indent=2)
+    # Persist after every query: a crash at query 400 of 550 would otherwise
+    # throw away hours of compression work.
+    with open(OUTPUT_PATH, "w") as f:
+        json.dump(records, f, indent=2)
 
 total_raw = sum(r["raw_tokens"] for r in records)
 total_compressed = sum(r["compressed_tokens"] for r in records)

@@ -23,13 +23,13 @@ import os
 import time
 
 import benchmark
-from composition import generate_composition
+from composition import CODEGEN_MODEL_NAME, generate_composition
 from scoring import build_templates, extract_endpoints_from_code, score
 
-INPUT_PATH = "data/contexts_tmdb_k5_all_noanchor_identity.json"
 # One cache per (API, k). Conditions differing only in compression settings
 # share a baseline; different retrieval settings must not.
-BASELINE_CACHE_PATH = "data/baseline_codegen_tmdb_k5.json"
+BASELINE_CACHE_PATH = f"data/baselines/baseline_tmdb_k5_{CODEGEN_MODEL_NAME}.json"
+INPUT_PATH = ""
 
 restbench = benchmark.get_restbench()
 templates = build_templates(restbench.queries[0].openapis)
@@ -84,8 +84,8 @@ class Accumulator:
               f"tokens {self.tokens}")
 
 
-raw_acc = Accumulator("WITHOUT compression")
 compressed_acc = Accumulator("WITH compression")
+raw_acc = Accumulator("WITHOUT compression")
 
 cache_hits = 0
 cache_misses = 0
@@ -98,8 +98,8 @@ for i, record in enumerate(records):
     started = time.time()
 
     # --- uncompressed arm: cached ---
-    fingerprint = chunks_fingerprint(record["raw_chunks"])
     cached = baseline_cache.get(query)
+    fingerprint = chunks_fingerprint(record["raw_chunks"])
 
     if cached and cached["fingerprint"] == fingerprint:
         code_raw = cached["code"]
@@ -112,6 +112,8 @@ for i, record in enumerate(records):
         )
         baseline_cache[query] = {"fingerprint": fingerprint, "code": code_raw}
         cache_misses += 1
+        with open(BASELINE_CACHE_PATH, "w") as f:  # persist instantly
+            json.dump(baseline_cache, f, indent=2)
 
     result_raw = score(
         extract_endpoints_from_code(code_raw), record["solution"],

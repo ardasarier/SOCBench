@@ -33,12 +33,13 @@ def normalise(endpoint: str, base_path: str = "") -> str:
     return f"{verb} {path}"
 
 
-def build_templates(openapis) -> set:
+def build_templates(openapis) -> tuple:
     """All "VERB /path/{param}" templates from the specs."""
-    return {e for oas in openapis for e in extract_endpoints(oas)}
+    """Sorted so match_to_template's tie-break is deterministic across
+    processes; Python randomises set iteration order per run."""
+    return tuple(sorted({e for oas in openapis for e in extract_endpoints(oas)}))
 
-
-def match_to_template(endpoint: str, templates: set):
+def match_to_template(endpoint: str, templates: set) -> str | None:
     """
     Map a concrete generated path back to its OpenAPI template.
 
