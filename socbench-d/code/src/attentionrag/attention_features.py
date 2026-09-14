@@ -51,11 +51,13 @@ def compute_attention_feature(chunk: str, question: str, prefix_hint: str, ancho
     # paper's Table 9 ablation (shallow/middle/deep vs all) can be replicated
     # on structured API text rather than prose QA.
     #
-    # NOTE: output_attentions=True materialises attention for ALL layers
-    # (num_layers x heads x seq^2), even when layer_range uses only a third of
-    # them. Fine at current sizes; on a cluster GPU with longer sequences or a
-    # larger model this is the first thing that will OOM. Forward hooks on the
-    # needed layers would avoid it.
+    # NOTE: two separate costs here.
+    # (a) output_attentions=True materialises attention for ALL layers
+    #     (num_layers x heads x seq^2) even when layer_range uses a third.
+    #     Forward hooks on the needed layers would avoid it.
+    # (b) the model still RUNS every layer. To read attention at layer N only
+    #     layers 0..N are needed, so a truncated model would save memory and
+    #     compute -- this is what makes a larger model fit.
     layers = outputs.attentions
     if layer_range is not None:
         layers = layers[layer_range[0]:layer_range[1]]
