@@ -34,11 +34,11 @@ import re
 # Chunks produced by socrag's OpenApiParser start with this header.
 HEADER_PATTERN = re.compile(r"\A(Endpoint:[^\n]*\n(?:Specification:\n)?)")
 
-MAX_SEGMENT_CHARS = 120  # recurse into anything larger
-MIN_SEGMENT_CHARS = 25   # below this, a split produces scraps not content
-MAX_SEGMENT_DEPTH = 20   # guard against pathologically nested specs
+MAX_SEGMENT_CHARS = 120         # recurse into anything larger
+MIN_SEGMENT_CHARS = 25          # below this, a split produces scraps not content
+MAX_SEGMENT_DEPTH = 20          # guard against pathologically nested specs
 
-IDENTITY_PREFIX_CHARS = 350  # operationId + summary + description always lead the JSON
+IDENTITY_PREFIX_CHARS = 350     # operationId + summary + description always lead the JSON
 
 
 def _top_level_spans(text: str, offset: int):

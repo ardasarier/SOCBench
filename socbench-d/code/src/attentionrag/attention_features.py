@@ -38,6 +38,7 @@ def compute_attention_feature(chunk: str, question: str, prefix_hint: str, ancho
         outputs = model(**encoding, output_attentions=True)
 
     chunk_start = prompt_text.find(chunk)
+    assert chunk_start >= 0, "chunk not found in prompt -- empty or altered chunk?"
     chunk_end = chunk_start + len(chunk)
     context_token_indices = [
         i for i, (start, end) in enumerate(offsets.tolist())
@@ -49,6 +50,12 @@ def compute_attention_feature(chunk: str, question: str, prefix_hint: str, ancho
     # Eq. 2 sums over all layers. layer_range restricts it to a band, so the
     # paper's Table 9 ablation (shallow/middle/deep vs all) can be replicated
     # on structured API text rather than prose QA.
+    #
+    # NOTE: output_attentions=True materialises attention for ALL layers
+    # (num_layers x heads x seq^2), even when layer_range uses only a third of
+    # them. Fine at current sizes; on a cluster GPU with longer sequences or a
+    # larger model this is the first thing that will OOM. Forward hooks on the
+    # needed layers would avoid it.
     layers = outputs.attentions
     if layer_range is not None:
         layers = layers[layer_range[0]:layer_range[1]]
@@ -66,9 +73,9 @@ def compute_attention_feature(chunk: str, question: str, prefix_hint: str, ancho
         token_str = tokenizer.decode([encoding["input_ids"][0][token_idx]])
         char_start, char_end = offsets[token_idx].tolist()
 
-        # BPE bundles a leading space into the following word's token, while the
-        # sentence regex consumes trailing whitespace into the preceding
-        # sentence. Without this shift, the first word of every sentence is
+        # BPE bundles a leading space into the following word's token, while
+        # segment boundaries put that space at the end of the preceding
+        # segment. Without this shift, the first word of every segment is
         # credited to the previous one.
         if token_str.startswith(" "):
             char_start += 1

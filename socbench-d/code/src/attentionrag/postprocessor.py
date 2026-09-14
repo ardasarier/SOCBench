@@ -5,8 +5,7 @@ AttentionRAG as a LlamaIndex NodePostprocessor.
                               -> AttentionRAGPostprocessor
                               -> compressed [NodeWithScore] -> composition prompt
 
-Benchmarked on all 157 RestBench queries: 2.84x compression, recall
-0.509 -> 0.504 (Spotify 1.78x, TMDB 3.42x).
+See data/archive/restbench/README.md for measured results.
 
 Three consequences of this pipeline position:
 
@@ -44,13 +43,21 @@ from .hint_prefix import generate_answer_hint_prefix
 class AttentionRAGPostprocessor(BaseNodePostprocessor):
     """Compresses each retrieved node's text using AttentionRAG's Algorithm 1."""
 
-    top_k_tokens: int = 10          # AttentionRAG's k (TOKENS), not SOCBench's k (CHUNKS)
-    skip_on_none: bool = True       # Algorithm 1, lines 12-13
+    # selection
+    top_k_tokens: int = 10                          # AttentionRAG's k (TOKENS), not SOCBench's k (CHUNKS)
+    threshold_ratio: Optional[float] = None         # None = use top_k_tokens
+
+    # attention
+    layer_range: Optional[Tuple[int, int]] = None   # None = all layers (paper default)
+    use_anchor: bool = True                         # False = use the hint's last token
+
+    # gating
+    skip_on_none: bool = True                       # Algorithm 1, lines 12-13
+
+    # ablation -- overrides everything above
+    identity_only: bool = False
+
     verbose: bool = False
-    layer_range: Optional[Tuple[int, int]] = None  # None = all layers (paper default)
-    use_anchor: bool = True         # False = skip anchor generation, use the hint's last token
-    threshold_ratio: Optional[float] = None   # None = use top_k_tokens instead
-    identity_only: bool = False     # ablation: keep only the identity prefix
 
     # Algorithm 1 generates the hint once from the query alone (line 5), before
     # chunking. Caching turns 10 LLM calls per query into 1.
@@ -60,6 +67,18 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
     def class_name(cls) -> str:
         return "AttentionRAGPostprocessor"
 
+    @staticmethod
+    def _rebuild(node_with_score: NodeWithScore, text: str) -> NodeWithScore:
+        """Returns a copy of the node with replaced text.
+
+        deepcopy matters: retrieved nodes can be references into the loaded
+        index, so mutating .text in place would leave the index holding
+        compressed text and later queries in a benchmark loop would see it.
+        """
+        new_node = deepcopy(node_with_score.node)
+        new_node.text = text
+        return NodeWithScore(node=new_node, score=node_with_score.score)
+
     def _postprocess_nodes(
         self,
         nodes: List[NodeWithScore],
@@ -68,8 +87,9 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
         if query_bundle is None:
             return nodes
 
-        # No attention needed for this ablation -- skip hint, anchor and the
-        # forward pass entirely.
+        # Ablation: keep only the identity prefix. Skips hint, anchor and the
+        # forward pass entirely, and therefore IGNORES top_k_tokens,
+        # threshold_ratio, layer_range, use_anchor and skip_on_none.
         if self.identity_only:
             kept = []
             for node_with_score in nodes:
@@ -77,10 +97,10 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
                     node_with_score.node.get_content(), [], identity_only=True
                 )
                 if not compressed.strip():
+                    if self.verbose:
+                        print("[AttentionRAG] dropped chunk (identity-only: nothing retained)")
                     continue
-                new_node = deepcopy(node_with_score.node)
-                new_node.text = compressed
-                kept.append(NodeWithScore(node=new_node, score=node_with_score.score))
+                kept.append(self._rebuild(node_with_score, compressed))
             return kept
 
         query = query_bundle.query_str
@@ -126,9 +146,6 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
                     print("[AttentionRAG] dropped chunk (nothing survived compression)")
                 continue
 
-            # deepcopy: retrieved nodes can be references into the loaded index.
-            # Mutating .text in place would leave the index holding compressed
-            # text, so later queries in a benchmark loop would see it too.
             new_node = deepcopy(node_with_score.node)
             new_node.text = compressed
             kept.append(NodeWithScore(node=new_node, score=node_with_score.score))

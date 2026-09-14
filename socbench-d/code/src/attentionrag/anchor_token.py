@@ -44,8 +44,11 @@ def generate_anchor_token(chunk: str, question: str, prefix_hint: str) -> str:
     with torch.no_grad():
         output_ids = model.generate(
             **inputs,
-            max_new_tokens=1,  # exactly one anchor token per chunk
+            max_new_tokens=1,   # exactly one anchor token per chunk
             do_sample=False,
+            temperature=None,
+            top_p=None,
+            top_k=None,
             pad_token_id=tokenizer.eos_token_id,
         )
 

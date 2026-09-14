@@ -62,14 +62,18 @@ def generate_answer_hint_prefix(question: str) -> str:
     with torch.no_grad():
         output_ids = model.generate(
             **inputs,
-            max_new_tokens=20,
+            max_new_tokens=64,  # was 20; SOCBench-D...
             do_sample=False,
+            temperature=None,   # Qwen's generation_config sets these; with
+            top_p=None,         # do_sample=False they are ignored anyway and
+            top_k=None,         # transformers warns about it on every call
             pad_token_id=tokenizer.eos_token_id,
         )
 
     generated_ids = output_ids[0][inputs["input_ids"].shape[1]:]
+    if len(generated_ids) >= 64:
+        print(f"[hint] WARNING: prefix may be truncated for {question[:60]!r}")
     return tokenizer.decode(generated_ids, skip_special_tokens=True).strip()
-
 
 if __name__ == "__main__":
     for q in ["Where did the cat sit?", "Is Tom here?", "What time is it?"]:
