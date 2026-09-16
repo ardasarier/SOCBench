@@ -5,38 +5,51 @@ Generates twice per query -- once from the raw chunks, once from the compressed
 ones -- so any difference is attributable to compression alone.
 
 THE UNCOMPRESSED ARM IS CACHED. Retrieval is deterministic, so the raw chunks
-are byte-identical across every condition sharing an API and k. Regenerating
-them per condition wasted half the API budget and, worse, made comparisons
-unreadable: two runs on identical input gave recall 0.633 and 0.733, because
-gpt-4o is not deterministic even at temperature 0. Caching turns the baseline
-into one fixed reference every condition is measured against.
+are byte-identical across every condition sharing a benchmark and k.
+Regenerating them per condition wasted half the API budget and, worse, made
+comparisons unreadable: two runs on identical input gave recall 0.633 and
+0.733, because gpt-4o is not deterministic even at temperature 0. Caching turns
+the baseline into one fixed reference every condition is measured against.
 
 The cache stores generated CODE, not scores, so improvements to the scoring
-logic apply retroactively to cached generations.
+logic apply retroactively to cached generations. Its path is derived from the
+records and the model name, so it cannot be pointed at the wrong file by hand.
+
+SOCBench-D queries span 11 GICS sectors, each with its own five OpenAPI specs.
+Templates are therefore built PER QUERYSET -- a global set would let an
+endpoint from one sector match a generated path from another.
 
 Run from socbench-d/code/ after prepare_contexts.py:
-    python src/run_codegen.py 2>&1 | tee data/logs/task1_run.txt
+    python -u src/run_codegen.py 2>&1 | tee data/logs/<name>.txt
 """
 import hashlib
 import json
 import os
 import time
+from collections import defaultdict
 
-import benchmark
+from benchmark_loader import load_benchmark
 from composition import CODEGEN_MODEL_NAME, generate_composition
 from scoring import build_templates, extract_endpoints_from_code, score
 
-# One cache per (API, k). Conditions differing only in compression settings
-# share a baseline; different retrieval settings must not.
-BASELINE_CACHE_PATH = f"data/baselines/baseline_tmdb_k5_{CODEGEN_MODEL_NAME}.json"
-INPUT_PATH = ""
-
-restbench = benchmark.get_restbench()
-templates = build_templates(restbench.queries[0].openapis)
+INPUT_PATH = "data/contexts/socbenchd_1_k10_all_noanchor_k10_n110.json"
 
 with open(INPUT_PATH) as f:
     records = json.load(f)
 print(f"loaded {len(records)} prepared contexts from {INPUT_PATH}")
+
+# Derived, not configured: a hand-set path was easy to leave pointing at the
+# previous k, which silently overwrote the wrong cache.
+BENCHMARK_NAME = records[0]["benchmark"]
+TOP_K = records[0]["top_k"]
+BASELINE_CACHE_PATH = (f"data/baselines/{BENCHMARK_NAME}_k{TOP_K}"
+                       f"_{CODEGEN_MODEL_NAME}.json")
+os.makedirs(os.path.dirname(BASELINE_CACHE_PATH), exist_ok=True)
+
+bench = load_benchmark(BENCHMARK_NAME)
+templates_by_queryset = {qs.name: build_templates(qs.openapis) for qs in bench.queries}
+print(f"benchmark {BENCHMARK_NAME}, k={TOP_K}, "
+      f"{len(templates_by_queryset)} queryset(s)")
 
 if os.path.exists(BASELINE_CACHE_PATH):
     with open(BASELINE_CACHE_PATH) as f:
@@ -48,9 +61,14 @@ else:
     print(f"no baseline cache yet -- will create {BASELINE_CACHE_PATH}\n")
 
 
+def cache_key(record: dict) -> str:
+    """Queryset-scoped: the same query text could recur across sectors."""
+    return f"{record['queryset']}||{record['query']}"
+
+
 def chunks_fingerprint(chunks: list) -> str:
     """Guards against reusing a baseline whose raw chunks have changed (a
-    different k, a different chunking strategy, a rebuilt index)."""
+    different chunking strategy, a rebuilt index)."""
     joined = "\n".join(chunks).encode("utf-8")
     return hashlib.sha256(joined).hexdigest()[:16]
 
@@ -75,17 +93,34 @@ class Accumulator:
         self.tokens += tokens
         self.n += 1
 
+    @property
+    def mean_recall(self) -> float:
+        return self.recall / max(self.n, 1)
+
+    @property
+    def mean_precision(self) -> float:
+        return self.precision / max(self.n, 1)
+
+    @property
+    def f1(self) -> float:
+        """Reported so the numbers line up with Pesl et al.'s results_*.json."""
+        p, r = self.mean_precision, self.mean_recall
+        return 2 * p * r / (p + r) if (p + r) else 0.0
+
     def report(self) -> None:
-        n = max(self.n, 1)
-        print(f"{self.label:<22} recall {self.recall / n:.3f}   "
-              f"precision {self.precision / n:.3f}   "
+        print(f"{self.label:<22} recall {self.mean_recall:.3f}   "
+              f"precision {self.mean_precision:.3f}   "
+              f"f1 {self.f1:.3f}   "
               f"exact {self.exact}/{self.n}   "
               f"halluc {self.hallucinated}   "
               f"tokens {self.tokens}")
 
 
-compressed_acc = Accumulator("WITH compression")
 raw_acc = Accumulator("WITHOUT compression")
+compressed_acc = Accumulator("WITH compression")
+
+# Per-sector totals, so results are comparable with Pesl's per-domain numbers.
+per_queryset = defaultdict(lambda: (Accumulator("without"), Accumulator("with")))
 
 cache_hits = 0
 cache_misses = 0
@@ -93,12 +128,16 @@ start_all = time.time()
 
 for i, record in enumerate(records):
     query = record["query"]
-    print(f"\n[{i + 1}/{len(records)}] {query!r}")
+    queryset = record["queryset"]
+    templates = templates_by_queryset[queryset]
+
+    print(f"\n[{i + 1}/{len(records)}] ({queryset}) {query[:70]!r}")
     print(f"    solution: {record['solution']}")
     started = time.time()
 
     # --- uncompressed arm: cached ---
-    cached = baseline_cache.get(query)
+    key = cache_key(record)
+    cached = baseline_cache.get(key)
     fingerprint = chunks_fingerprint(record["raw_chunks"])
 
     if cached and cached["fingerprint"] == fingerprint:
@@ -110,7 +149,7 @@ for i, record in enumerate(records):
         code_raw = generate_composition(
             record["raw_chunks"], query, record["base_url"]
         )
-        baseline_cache[query] = {"fingerprint": fingerprint, "code": code_raw}
+        baseline_cache[key] = {"fingerprint": fingerprint, "code": code_raw}
         cache_misses += 1
         with open(BASELINE_CACHE_PATH, "w") as f:  # persist instantly
             json.dump(baseline_cache, f, indent=2)
@@ -120,6 +159,7 @@ for i, record in enumerate(records):
         templates, record["base_path"],
     )
     raw_acc.add(result_raw, record["raw_tokens"])
+    per_queryset[queryset][0].add(result_raw, record["raw_tokens"])
 
     # --- compressed arm: always fresh ---
     code_compressed = generate_composition(
@@ -130,6 +170,7 @@ for i, record in enumerate(records):
         templates, record["base_path"],
     )
     compressed_acc.add(result_compressed, record["compressed_tokens"])
+    per_queryset[queryset][1].add(result_compressed, record["compressed_tokens"])
 
     print(f"    without: recall {result_raw['recall']:.2f}  "
           f"prec {result_raw['precision']:.2f}  "
@@ -146,14 +187,22 @@ with open(BASELINE_CACHE_PATH, "w") as f:
 print("\n" + "=" * 78)
 print(f"condition:          {INPUT_PATH}")
 print(f"baseline cache:     {cache_hits} hits, {cache_misses} generated")
+
+if len(per_queryset) > 1:
+    print()
+    print(f"{'queryset':<26}{'recall':>18}{'precision':>18}")
+    print(f"{'':<26}{'without':>9}{'with':>9}{'without':>9}{'with':>9}")
+    for name in sorted(per_queryset):
+        without, with_ = per_queryset[name]
+        print(f"{name:<26}{without.mean_recall:>9.3f}{with_.mean_recall:>9.3f}"
+              f"{without.mean_precision:>9.3f}{with_.mean_precision:>9.3f}")
+
 print()
 raw_acc.report()
 compressed_acc.report()
 print()
 if compressed_acc.tokens:
     print(f"Compression ratio:  {raw_acc.tokens / compressed_acc.tokens:.2f}x")
-delta = (compressed_acc.recall / max(compressed_acc.n, 1)
-         - raw_acc.recall / max(raw_acc.n, 1))
-print(f"Recall delta:       {delta:+.3f}")
+print(f"Recall delta:       {compressed_acc.mean_recall - raw_acc.mean_recall:+.3f}")
 print(f"Total time:         {(time.time() - start_all) / 60:.1f} min")
 print("=" * 78)

@@ -1,7 +1,8 @@
 """
 Step 3.3 of Algorithm 1: segment-level compression (Eq. 3).
 
-Keeps the segments containing the top-k highest-attention tokens.
+Keeps the segments containing the top-k highest-attention tokens, plus the
+endpoint's identity unconditionally.
 
 DEVIATION FROM THE PAPER. Eq. 3 retains whole SENTENCES, which assumes prose.
 socrag chunks are `Endpoint: VERB /path\\nSpecification:\\n{minified JSON}`, and
@@ -21,9 +22,14 @@ That explains the failure mode measured on TMDB, where the composition model
 picked plausible neighbours (/movie/top_rated -> /movie/popular,
 /movie/{id}/release_dates -> /discover/movie) and recall fell ~0.10.
 
-This module segments on JSON structure instead, and always retains the
-`Endpoint:` header since it is the chunk's identity. Sentence splitting remains
-as a fallback for non-JSON text.
+This module segments on JSON structure instead, and retains the endpoint's
+identity by KEY rather than by a character prefix. A fixed prefix was tried
+first and does not work across benchmarks: SOCBench-D's top-level descriptions
+range from 142 to 370 chars, so a prefix long enough for all of them (350)
+made 52.7% of the text incompressible, capping the achievable ratio at ~1.9x.
+Matching on keys drops that floor to 27%.
+
+Sentence splitting remains as a fallback for non-JSON text.
 
 Pure functions -- no model imports at module level, so importing this is cheap.
 
@@ -38,7 +44,9 @@ MAX_SEGMENT_CHARS = 120         # recurse into anything larger
 MIN_SEGMENT_CHARS = 25          # below this, a split produces scraps not content
 MAX_SEGMENT_DEPTH = 20          # guard against pathologically nested specs
 
-IDENTITY_PREFIX_CHARS = 350     # operationId + summary + description always lead the JSON
+# What makes an endpoint distinguishable from its siblings. Retained whole and
+# unconditionally -- see the module docstring for why a character prefix fails.
+IDENTITY_KEYS = ('"summary"', '"description"', '"operationId"')
 
 
 def _top_level_spans(text: str, offset: int):
@@ -78,6 +86,13 @@ def _top_level_spans(text: str, offset: int):
 
 
 def _segment_json(text: str, start: int, end: int, out: list, depth: int = 0) -> None:
+    # Identity fields are kept whole regardless of length -- splitting a
+    # description would leave only its first fragment matchable by key.
+    if text[start:end].lstrip().startswith(IDENTITY_KEYS):
+        if text[start:end].strip():
+            out.append((text[start:end].strip(), start, end, True))
+        return
+
     if end - start <= MAX_SEGMENT_CHARS or depth >= MAX_SEGMENT_DEPTH:
         if text[start:end].strip():
             out.append((text[start:end].strip(), start, end, False))
@@ -131,15 +146,10 @@ def split_into_segments(text: str):
     body_start = 0
 
     if header:
-        # The endpoint's identity -- path, operationId, summary, description --
-        # is what distinguishes it from its siblings (/movie/top_rated vs
-        # /movie/popular). Leaving it to attention meant losing it whenever the
-        # top-k tokens landed in the response example payloads, which is the
-        # failure this whole module exists to fix. socrag serialises these three
-        # keys first, in order, so a positional prefix captures them reliably.
-        identity_end = min(header.end() + IDENTITY_PREFIX_CHARS, len(text))
-        segments.append((text[:identity_end].strip(), 0, identity_end, True))
-        body_start = identity_end
+        # The `Endpoint: VERB /path` line is the chunk's identity and is always
+        # kept. The identity FIELDS are marked by key in _segment_json.
+        segments.append((header.group(1).strip(), 0, header.end(), True))
+        body_start = header.end()
 
     body = text[body_start:]
     if "{" in body or "[" in body:
@@ -147,7 +157,28 @@ def split_into_segments(text: str):
     else:
         _split_sentences(body, body_start, segments)
 
-    return segments
+    # _segment_json marks every identity-keyed segment, but "responses" and
+    # "parameters" carry their own nested "description" fields. Only the FIRST
+    # occurrence of each key is the endpoint's own identity. Keeping the rest
+    # unconditionally raised the incompressible floor from 27% to 42% on
+    # SOCBench-D, and would take the selection job away from the attention
+    # scores -- those nested descriptions are exactly what the method should
+    # be choosing between.
+    seen = set()
+    result = []
+    for segment, start, end, always_keep in segments:
+        if always_keep:
+            key = next(
+                (k for k in IDENTITY_KEYS if segment.lstrip().startswith(k)), None
+            )
+            if key is not None:
+                if key in seen:
+                    always_keep = False
+                else:
+                    seen.add(key)
+        result.append((segment, start, end, always_keep))
+
+    return result
 
 
 def select_tokens(token_scores: list, k: int = None, threshold_ratio: float = None):
@@ -178,10 +209,10 @@ def select_tokens(token_scores: list, k: int = None, threshold_ratio: float = No
 def compress_chunk(chunk: str, token_scores: list, k: int = 3,
                    threshold_ratio: float = None, identity_only: bool = False):
     """Returns (compressed_text, selected_entries)."""
-    # Ablation: keep ONLY the always-retained identity prefix (path,
-    # operationId, summary, description) and drop everything else. Tests
-    # whether the composition model needs the endpoint's body at all, or
-    # whether it reconstructs behaviour from the path plus prior knowledge.
+    # Ablation: keep ONLY the unconditionally retained identity (path, summary,
+    # description) and drop everything else. Tests whether the composition
+    # model needs the endpoint's body at all, or whether it reconstructs
+    # behaviour from the identity plus prior knowledge of the API.
     if identity_only:
         segments = split_into_segments(chunk)
         kept = [seg for seg, _, _, always_keep in segments if always_keep]

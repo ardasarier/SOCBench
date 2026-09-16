@@ -1,0 +1,240 @@
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+loaded 22 prepared contexts from data/contexts/socbenchd_1_k5_all_noanchor_k10_n22.json
+benchmark socbenchd_1, k=5, 11 queryset(s)
+no baseline cache yet -- will create data/baselines/socbenchd_1_k5_gpt-4o-2024-11-20.json
+
+
+[1/22] (energy) 'Retrieve the status and performance metrics of all monitored energy eq'
+    solution: ['POST /renewable/integration/status', 'POST /alert-settings', 'GET /weather-impact-analysis', 'GET /alerts', 'GET /equipment-status']
+WARNING:root:Extraction from attributes is not supported yet
+    without: recall 0.20  prec 0.25  halluc 0  found ['GET /equipment-status', 'GET /generation/forecast', 'GET /resources/list', 'GET /resources/status']
+    with:    recall 0.20  prec 1.00  halluc 0  found ['GET /equipment-status']
+    5.8s
+
+[2/22] (energy) 'Submit data from smart meters installed in the facility to monitor ene'
+    solution: ['POST /smart-meters/data', 'GET /prediction-summary', 'GET /carbon-emissions', 'GET /resources/status', 'POST /report-feedback']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+    without: recall 0.40  prec 0.67  halluc 0  found ['GET /carbon-emissions', 'GET /equipment-monitoring', 'POST /smart-meters/data']
+    with:    recall 0.40  prec 0.67  halluc 0  found ['GET /carbon-emissions', 'GET /equipment-monitoring', 'POST /smart-meters/data']
+    4.4s
+
+[3/22] (materials) 'Provide the materials used in a specific project identified by its pro'
+    solution: ['POST /recyclers/suggestions', 'GET /projects/{id}/materials', 'GET /suggestions/material-improvements']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /suggestions/material-improvements', 'POST /recyclers/suggestions']
+    with:    recall 0.67  prec 1.00  halluc 0  found ['GET /suggestions/material-improvements', 'POST /recyclers/suggestions']
+    4.5s
+
+[4/22] (materials) 'Add a new mining site, schedule maintenance for its operational equipm'
+    solution: ['POST /equipment/maintenance-schedule', 'GET /equipment-status', 'GET /regulatory-updates', 'POST /sites/add', 'GET /projects/{id}/materials', 'DELETE /inventory/material/{material_id}', 'POST /custom-report']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+    without: recall 0.43  prec 0.75  halluc 0  found ['GET /equipment-status', 'GET /inventory/status', 'POST /equipment/maintenance-schedule', 'POST /sites/add']
+    with:    recall 0.43  prec 0.75  halluc 0  found ['GET /equipment-status', 'GET /inventory/status', 'POST /equipment/maintenance-schedule', 'POST /sites/add']
+    6.7s
+
+[5/22] (industrials) 'I need a comprehensive summary of all existing orders along with the r'
+    solution: ['GET /orders', 'GET /machinery_health', 'GET /forecast', 'POST /projects', 'GET /analytics/completion-rates', 'GET /resources', 'PUT /machinery_config/{id}']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+    without: recall 0.29  prec 1.00  halluc 0  found ['GET /machinery_health', 'PUT /machinery_config/{id}']
+    with:    recall 0.29  prec 1.00  halluc 0  found ['GET /machinery_health', 'PUT /machinery_config/{id}']
+    2.7s
+
+[6/22] (industrials) 'Update the emissions thresholds for a facility with ID 567 to ensure c'
+    solution: ['POST /support/tickets', 'GET /analytics/completion-rates', 'PUT /tasks/{taskId}', 'GET /facilities/{facility_id}/emissions']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+    without: recall 0.50  prec 0.67  halluc 0  found ['GET /facilities/{facility_id}/emissions', 'PUT /facilities/{facility_id}/thresholds', 'PUT /tasks/{taskId}']
+    with:    recall 0.50  prec 0.67  halluc 0  found ['GET /facilities/{facility_id}/emissions', 'PUT /facilities/{facility_id}/thresholds', 'PUT /tasks/{taskId}']
+    4.3s
+
+[7/22] (consumer discretionary) 'Update the details of an existing reservation with ID 123 to shift the'
+    solution: ['PUT /reservations/{id}', 'POST /inventory/optimize', 'GET /categories/performance', 'POST /payment/checkout']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+    without: recall 0.50  prec 1.00  halluc 0  found ['POST /inventory/optimize', 'PUT /reservations/{id}']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['POST /inventory/optimize', 'PUT /reservations/{id}']
+    3.6s
+
+[8/22] (consumer discretionary) 'Retrieve a detailed sales report for the dealership with ID "567" for '
+    solution: ['GET /dealerships/sales-report', 'POST /events/book', 'PUT /rooms/{id}']
+    without: recall 0.33  prec 1.00  halluc 0  found ['GET /dealerships/sales-report']
+    with:    recall 0.33  prec 1.00  halluc 0  found ['GET /dealerships/sales-report']
+    2.7s
+
+[9/22] (consumer staples) 'Retrieve the list of available product categories to categorize a new '
+    solution: ['POST /product/register', 'GET /analysis/trends', 'POST /analytics/forecast', 'GET /products/{product_id}', 'POST /supplier/add', 'GET /categories']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.50  prec 0.75  halluc 0  found ['GET /categories', 'GET /product/metrics', 'POST /product/register', 'POST /supplier/add']
+    with:    recall 0.50  prec 0.75  halluc 0  found ['GET /categories', 'GET /product/metrics', 'POST /product/register', 'POST /supplier/add']
+    6.0s
+
+[10/22] (consumer staples) 'Identify possible allergens in the current food supply chain overview '
+    solution: ['GET /allergens', 'GET /supplychain/overview']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type SetComp
+WARNING:root:Unsupported argument type SetComp
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /allergens', 'GET /supplychain/overview']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /allergens', 'GET /supplychain/overview']
+    3.5s
+
+[11/22] (health care) "Retrieve the system's current configuration settings to confirm compli"
+    solution: ['GET /settings', 'PUT /claims/{claim_id}', 'PUT /patients/{id}', 'GET /policies']
+    without: recall 0.50  prec 0.67  halluc 0  found ['GET /compliance/status', 'GET /policies', 'PUT /claims/{claim_id}']
+    with:    recall 0.50  prec 0.67  halluc 0  found ['GET /compliance/status', 'GET /policies', 'PUT /claims/{claim_id}']
+    3.2s
+
+[12/22] (health care) 'Retrieve active health alerts to identify patients requiring attention'
+    solution: ['POST /alerts/dismiss', 'PUT /claims/{claim_id}', 'GET /settings', 'GET /readings', 'GET /patients/{id}/records', 'POST /records/{patient_id}', 'POST /policies/validate']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.00  prec 0.00  halluc 0  found ['GET /alerts', 'GET /patients/{id}/history', 'GET /readings/{patient_id}']
+    with:    recall 0.00  prec 0.00  halluc 0  found ['GET /alerts', 'GET /patients/{id}/history', 'GET /readings/{patient_id}']
+    8.1s
+
+[13/22] (financials) 'Please provide insights regarding the currently scheduled financial ev'
+    solution: ['DELETE /policies/{policyId}', 'POST /risk/assessment', 'GET /financial-calendar']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+    without: recall 0.33  prec 0.50  halluc 0  found ['DELETE /policies/{policyId}', 'GET /diversification/analysis']
+    with:    recall 0.33  prec 0.50  halluc 0  found ['DELETE /policies/{policyId}', 'POST /portfolio/analyze']
+    3.4s
+
+[14/22] (financials) 'Submit my mortgage application with ID 12345 for review, analyze the s'
+    solution: ['POST /applications/{id}/submit', 'GET /financial-calendar', 'GET /applications/{id}/status', 'GET /alerts/thresholds', 'GET /stock-prices', 'GET /reports/summary']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type IfExp
+    without: recall 0.50  prec 0.75  halluc 0  found ['GET /applications/{id}/status', 'GET /stock-prices', 'POST /applications/{id}/submit', 'POST /portfolio/analyze']
+    with:    recall 0.50  prec 0.75  halluc 0  found ['GET /applications/{id}/status', 'GET /stock-prices', 'POST /applications/{id}/submit', 'POST /portfolio/analyze']
+    3.8s
+
+[15/22] (information technology) 'Log a new cybersecurity threat with details such as type, severity, an'
+    solution: ['GET /threats', 'POST /threats', 'GET /compliance/reports', 'GET /tracking/assets']
+    without: recall 0.50  prec 0.50  halluc 0  found ['GET /systems', 'GET /threats', 'POST /reports/generate', 'POST /threats']
+    with:    recall 0.50  prec 0.50  halluc 0  found ['GET /systems', 'GET /threats', 'POST /reports/generate', 'POST /threats']
+    9.8s
+
+[16/22] (information technology) 'Enable a hook to trigger automatic alerts for cybersecurity threats. R'
+    solution: ['POST /trigger-hook', 'GET /threats', 'GET /software', 'DELETE /alerts/{alert_id}', 'PUT /alerts/{alert_id}', 'GET /compliance/reports']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.33  prec 0.67  halluc 0  found ['GET /alerts', 'GET /threats', 'PUT /alerts/{alert_id}']
+    with:    recall 0.33  prec 0.67  halluc 0  found ['GET /alerts', 'GET /threats', 'PUT /alerts/{alert_id}']
+    4.1s
+
+[17/22] (communication services) 'Update an existing customer feedback entry by modifying its content an'
+    solution: ['PUT /feedbacks/{feedbackId}', 'GET /platform/health', 'POST /manual/recommendation', 'POST /video/upload', 'POST /analysis/customize']
+    without: recall 0.40  prec 1.00  halluc 0  found ['POST /analysis/customize', 'PUT /feedbacks/{feedbackId}']
+    with:    recall 0.40  prec 1.00  halluc 0  found ['POST /analysis/customize', 'PUT /feedbacks/{feedbackId}']
+    3.4s
+
+[18/22] (communication services) "Retrieve the history of all recent calls, update the user's alert sett"
+    solution: ['GET /calls/history', 'PUT /alerts/settings', 'GET /feedbacks/{feedbackId}', 'POST /feedbacks', 'POST /history/view', 'POST /live/{sessionID}/end']
+    without: recall 0.33  prec 0.67  halluc 0  found ['GET /feedbacks/{feedbackId}', 'POST /feedback', 'PUT /alerts/settings']
+    with:    recall 0.33  prec 0.67  halluc 0  found ['GET /feedbacks/{feedbackId}', 'POST /feedback', 'PUT /alerts/settings']
+    3.5s
+
+[19/22] (utilities) 'Analyze raw sensor data for a specified time range alongside efficienc'
+    solution: ['GET /sensor-data', 'POST /forecast', 'GET /regions/config', 'GET /efficiency/metrics']
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type IfExp
+    without: recall 0.75  prec 0.75  halluc 0  found ['GET /efficiency/metrics', 'GET /forecast', 'GET /regions/config', 'GET /sensor-data']
+    with:    recall 0.75  prec 0.75  halluc 0  found ['GET /efficiency/metrics', 'GET /forecast', 'GET /regions/config', 'GET /sensor-data']
+    4.5s
+
+[20/22] (utilities) 'Gather real-time electricity demand data, analyze and adjust the power'
+    solution: ['POST /alerts/notifications', 'PUT /adjust-distribution', 'POST /recommendations/generate', 'GET /billing/{template_id}', 'GET /realtime-demand', 'DELETE /distribution-points/{id}', 'GET /distribution-points']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported binary operator Sub
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported binary operator Sub
+WARNING:root:Extraction from attributes is not supported yet
+    without: recall 0.29  prec 1.00  halluc 0  found ['GET /realtime-demand', 'PUT /adjust-distribution']
+    with:    recall 0.29  prec 1.00  halluc 0  found ['GET /realtime-demand', 'PUT /adjust-distribution']
+    3.9s
+
+[21/22] (real estate) 'Find the estimated valuation of a property located in San Francisco wi'
+    solution: ['GET /properties/valuation', 'GET /reviews/{agentId}', 'GET /payments/outstanding/{tenantId}']
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /payments/outstanding/{tenantId}', 'GET /properties/valuation', 'GET /reviews/{agentId}']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /payments/outstanding/{tenantId}', 'GET /properties/valuation', 'GET /reviews/{agentId}']
+    5.3s
+
+[22/22] (real estate) 'Add a new property listing in Seattle, retrieve its estimated valuatio'
+    solution: ['GET /properties/similar', 'POST /properties/add', 'PUT /properties/update', 'DELETE /properties/remove', 'POST /search-saved', 'GET /properties/valuation']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /properties/similar', 'GET /properties/valuation', 'POST /properties/add', 'PUT /properties/update']
+    with:    recall 0.67  prec 0.80  halluc 0  found ['DELETE /properties/{propertyId}', 'GET /properties/similar', 'GET /properties/valuation', 'POST /properties/add', 'PUT /properties/update']
+    8.1s
+
+==============================================================================
+condition:          data/contexts/socbenchd_1_k5_all_noanchor_k10_n22.json
+baseline cache:     0 hits, 22 generated
+
+queryset                              recall         precision
+                            without     with  without     with
+communication services        0.367    0.367    0.833    0.833
+consumer discretionary        0.417    0.417    1.000    1.000
+consumer staples              0.750    0.750    0.875    0.875
+energy                        0.300    0.300    0.458    0.833
+financials                    0.417    0.417    0.625    0.625
+health care                   0.250    0.250    0.333    0.333
+industrials                   0.393    0.393    0.833    0.833
+information technology        0.417    0.417    0.583    0.583
+materials                     0.548    0.548    0.875    0.875
+real estate                   0.833    0.833    1.000    0.900
+utilities                     0.518    0.518    0.875    0.875
+
+WITHOUT compression    recall 0.473   precision 0.754   f1 0.582   exact 2/22   halluc 0   tokens 19708
+WITH compression       recall 0.473   precision 0.779   f1 0.589   exact 2/22   halluc 0   tokens 7406
+
+Compression ratio:  2.66x
+Recall delta:       +0.000
+Total time:         1.8 min
+==============================================================================
