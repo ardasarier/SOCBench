@@ -19,6 +19,13 @@ SOCBench-D queries span 11 GICS sectors, each with its own five OpenAPI specs.
 Templates are therefore built PER QUERYSET -- a global set would let an
 endpoint from one sector match a generated path from another.
 
+BOTH ARMS' CODE IS SAVED to data/generated/. Scoring only checks WHICH
+endpoints get called, not whether parameters, ordering or data flow are right.
+Identity-only compression discards exactly the parameter definitions and
+response schemas needed to build a call correctly, so equal endpoint scores do
+not mean equal code. Reading the saved code side by side is the only way to see
+that difference.
+
 Run from socbench-d/code/ after prepare_contexts.py:
     python -u src/run_codegen.py 2>&1 | tee data/logs/<name>.txt
 """
@@ -46,6 +53,11 @@ BASELINE_CACHE_PATH = (f"data/baselines/{BENCHMARK_NAME}_k{TOP_K}"
                        f"_{CODEGEN_MODEL_NAME}.json")
 os.makedirs(os.path.dirname(BASELINE_CACHE_PATH), exist_ok=True)
 
+# Named after the condition, so conditions can be diffed against each other.
+CONDITION = os.path.splitext(os.path.basename(INPUT_PATH))[0]
+GENERATED_PATH = f"data/generated/{CONDITION}_{CODEGEN_MODEL_NAME}.json"
+os.makedirs(os.path.dirname(GENERATED_PATH), exist_ok=True)
+
 bench = load_benchmark(BENCHMARK_NAME)
 templates_by_queryset = {qs.name: build_templates(qs.openapis) for qs in bench.queries}
 print(f"benchmark {BENCHMARK_NAME}, k={TOP_K}, "
@@ -55,10 +67,12 @@ if os.path.exists(BASELINE_CACHE_PATH):
     with open(BASELINE_CACHE_PATH) as f:
         baseline_cache = json.load(f)
     print(f"loaded {len(baseline_cache)} cached baseline generations "
-          f"from {BASELINE_CACHE_PATH}\n")
+          f"from {BASELINE_CACHE_PATH}")
 else:
     baseline_cache = {}
-    print(f"no baseline cache yet -- will create {BASELINE_CACHE_PATH}\n")
+    print(f"no baseline cache yet -- will create {BASELINE_CACHE_PATH}")
+
+print(f"saving generated code to {GENERATED_PATH}\n")
 
 
 def cache_key(record: dict) -> str:
@@ -122,6 +136,7 @@ compressed_acc = Accumulator("WITH compression")
 # Per-sector totals, so results are comparable with Pesl's per-domain numbers.
 per_queryset = defaultdict(lambda: (Accumulator("without"), Accumulator("with")))
 
+generated = []
 cache_hits = 0
 cache_misses = 0
 start_all = time.time()
@@ -172,6 +187,22 @@ for i, record in enumerate(records):
     compressed_acc.add(result_compressed, record["compressed_tokens"])
     per_queryset[queryset][1].add(result_compressed, record["compressed_tokens"])
 
+    # Saved for qualitative inspection: endpoint scores cannot show whether
+    # parameters, ordering or data flow survived compression.
+    generated.append({
+        "queryset": queryset,
+        "query": query,
+        "solution": record["solution"],
+        "code_without": code_raw,
+        "code_with": code_compressed,
+        "found_without": sorted(result_raw["found"]),
+        "found_with": sorted(result_compressed["found"]),
+        "recall_without": result_raw["recall"],
+        "recall_with": result_compressed["recall"],
+    })
+    with open(GENERATED_PATH, "w") as f:
+        json.dump(generated, f, indent=2)
+
     print(f"    without: recall {result_raw['recall']:.2f}  "
           f"prec {result_raw['precision']:.2f}  "
           f"halluc {result_raw['hallucinated']}  found {sorted(result_raw['found'])}")
@@ -187,6 +218,7 @@ with open(BASELINE_CACHE_PATH, "w") as f:
 print("\n" + "=" * 78)
 print(f"condition:          {INPUT_PATH}")
 print(f"baseline cache:     {cache_hits} hits, {cache_misses} generated")
+print(f"generated code:     {GENERATED_PATH}")
 
 if len(per_queryset) > 1:
     print()
