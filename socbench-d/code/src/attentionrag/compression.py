@@ -210,7 +210,7 @@ def select_tokens(token_scores: list, k: int = None, threshold_ratio: float = No
 
 def compress_chunk(chunk: str, token_scores: list, k: int = 3,
                    threshold_ratio: float = None, identity_only: bool = False,
-                   random_scores: bool = False):
+                   random_scores: bool = False, keep_identity: bool = True):
     """Returns (compressed_text, selected_entries)."""
     # Ablation: keep ONLY the unconditionally retained identity (path, summary,
     # description) and drop everything else. Tests whether the composition
@@ -239,10 +239,15 @@ def compress_chunk(chunk: str, token_scores: list, k: int = 3,
     selected = select_tokens(token_scores, k=k, threshold_ratio=threshold_ratio)
     selected_starts = [t["char_start"] for t in selected]
 
+    # keep_identity=False removes the unconditional retention entirely, so the
+    # selection alone decides what survives -- including the Endpoint header.
+    # Tests whether attention finds the endpoint's identity unaided, which the
+    # always-keep rule otherwise does for it (and for random selection too).
     kept = [
         segment
         for segment, start, end, always_keep in split_into_segments(chunk)
-        if always_keep or any(start <= token_start < end for token_start in selected_starts)
+        if (keep_identity and always_keep)
+        or any(start <= token_start < end for token_start in selected_starts)
     ]
     return " ".join(kept), selected
 

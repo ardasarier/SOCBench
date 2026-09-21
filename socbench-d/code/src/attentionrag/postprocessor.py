@@ -60,6 +60,9 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
     # control: random scores instead of attention (see compression.py)
     random_scores: bool = False
 
+    # control: disable unconditional identity retention (see compression.py)
+    keep_identity: bool = True
+
     verbose: bool = False
 
     # Algorithm 1 generates the hint once from the query alone (line 5), before
@@ -143,6 +146,7 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
                 k=self.top_k_tokens,
                 threshold_ratio=self.threshold_ratio,
                 random_scores=self.random_scores,
+                keep_identity=self.keep_identity,
             )
 
             if not compressed.strip():

@@ -40,20 +40,24 @@ EMBEDDING_LABEL = "bge_small"   # index directory name
 EMBEDDING_DIMENSIONS = 384
 
 # --- compression ---
-TOP_K_TOKENS = 3                # AttentionRAG's k (TOKENS)
+TOP_K_TOKENS = 5                # AttentionRAG's k (TOKENS)
 THRESHOLD_RATIO = None          # None = fixed top-k; else 0.1 / 0.25 / 0.5
 LAYER_RANGE = None              # None = all 24 (Qwen2.5-0.5B); (0,8) shallow,
 LAYER_LABEL = "all"             #   (8,16) middle, (16,24) deep   # TODO
 USE_ANCHOR = False
 IDENTITY_ONLY = False           # ablation: identity prefix only, no attention
 RANDOM_SCORES = True            # control: random instead of attention scores
+KEEP_IDENTITY = False           # False: no unconditional retention
 
 ANCHOR_LABEL = "anchor" if USE_ANCHOR else "noanchor"
-SELECT_LABEL = "identity" if IDENTITY_ONLY else (
-    "random" if RANDOM_SCORES else (
-        f"k{TOP_K_TOKENS}" if THRESHOLD_RATIO is None else f"t{int(THRESHOLD_RATIO * 100)}"
-    )
-)
+if IDENTITY_ONLY:
+    SELECT_LABEL = "identity"
+else:
+    base = (f"t{int(THRESHOLD_RATIO * 100)}" if THRESHOLD_RATIO is not None
+            else f"k{TOP_K_TOKENS}")
+    SELECT_LABEL = f"random-{base}" if RANDOM_SCORES else base
+    if not KEEP_IDENTITY:
+        SELECT_LABEL += "-noid"
 SCOPE_LABEL = BENCHMARK if BENCHMARK != "restbench" else f"restbench-{API}"
 
 embed_model = HuggingFaceEmbedding(model_name=EMBEDDING_MODEL)
@@ -71,6 +75,7 @@ postprocessor = AttentionRAGPostprocessor(
     top_k_tokens=TOP_K_TOKENS, threshold_ratio=THRESHOLD_RATIO,
     layer_range=LAYER_RANGE, use_anchor=USE_ANCHOR,
     identity_only=IDENTITY_ONLY, random_scores=RANDOM_SCORES,
+    keep_identity=KEEP_IDENTITY,
 )
 
 
