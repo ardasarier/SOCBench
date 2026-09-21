@@ -35,7 +35,9 @@ Pure functions -- no model imports at module level, so importing this is cheap.
 
 Demo: python -m attentionrag.compression   (from src/)
 """
+import random
 import re
+import zlib
 
 # Chunks produced by socrag's OpenApiParser start with this header.
 HEADER_PATTERN = re.compile(r"\A(Endpoint:[^\n]*\n(?:Specification:\n)?)")
@@ -207,7 +209,8 @@ def select_tokens(token_scores: list, k: int = None, threshold_ratio: float = No
 
 
 def compress_chunk(chunk: str, token_scores: list, k: int = 3,
-                   threshold_ratio: float = None, identity_only: bool = False):
+                   threshold_ratio: float = None, identity_only: bool = False,
+                   random_scores: bool = False):
     """Returns (compressed_text, selected_entries)."""
     # Ablation: keep ONLY the unconditionally retained identity (path, summary,
     # description) and drop everything else. Tests whether the composition
@@ -223,6 +226,15 @@ def compress_chunk(chunk: str, token_scores: list, k: int = 3,
         if not kept and segments:
             kept = [segments[0][0]]
         return " ".join(kept), []
+
+    # Control condition: replace attention scores with random ones, keeping
+    # token positions, segmentation and identity retention identical. If this
+    # scores as well as real attention, the attention values carry no usable
+    # signal and the attention-vs-identity comparison would really be
+    # random-vs-identity. Seeded per chunk so reruns are reproducible.
+    if random_scores:
+        rng = random.Random(zlib.crc32(chunk.encode("utf-8")))
+        token_scores = [{**t, "score": rng.random()} for t in token_scores]
 
     selected = select_tokens(token_scores, k=k, threshold_ratio=threshold_ratio)
     selected_starts = [t["char_start"] for t in selected]

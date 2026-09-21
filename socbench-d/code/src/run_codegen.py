@@ -39,7 +39,7 @@ from benchmark_loader import load_benchmark
 from composition import CODEGEN_MODEL_NAME, generate_composition
 from scoring import build_templates, extract_endpoints_from_code, score
 
-INPUT_PATH = "data/contexts/socbenchd_1_k10_all_noanchor_k10_n110.json"
+INPUT_PATH = "data/contexts/socbenchd_1_k10_all_noanchor_random_n110.json"
 
 with open(INPUT_PATH) as f:
     records = json.load(f)

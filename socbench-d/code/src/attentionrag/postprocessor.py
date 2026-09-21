@@ -57,6 +57,9 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
     # ablation -- overrides everything above
     identity_only: bool = False
 
+    # control: random scores instead of attention (see compression.py)
+    random_scores: bool = False
+
     verbose: bool = False
 
     # Algorithm 1 generates the hint once from the query alone (line 5), before
@@ -139,6 +142,7 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
                 chunk, token_scores,
                 k=self.top_k_tokens,
                 threshold_ratio=self.threshold_ratio,
+                random_scores=self.random_scores,
             )
 
             if not compressed.strip():
