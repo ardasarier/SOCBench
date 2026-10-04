@@ -40,14 +40,14 @@ EMBEDDING_LABEL = "bge_small"   # index directory name
 EMBEDDING_DIMENSIONS = 384
 
 # --- compression ---
-TOP_K_TOKENS = 5                # AttentionRAG's k (TOKENS)
+TOP_K_TOKENS = 10               # AttentionRAG's k (TOKENS)
 THRESHOLD_RATIO = None          # None = fixed top-k; else 0.1 / 0.25 / 0.5
 LAYER_RANGE = None              # None = all 24 (Qwen2.5-0.5B); (0,8) shallow,
 LAYER_LABEL = "all"             #   (8,16) middle, (16,24) deep   # TODO
 USE_ANCHOR = False
 IDENTITY_ONLY = False           # ablation: identity prefix only, no attention
-RANDOM_SCORES = True            # control: random instead of attention scores
-KEEP_IDENTITY = False           # False: no unconditional retention
+RANDOM_SCORES = False           # control: random instead of attention scores
+KEEP_IDENTITY = True            # False: no unconditional retention
 
 ANCHOR_LABEL = "anchor" if USE_ANCHOR else "noanchor"
 if IDENTITY_ONLY:
