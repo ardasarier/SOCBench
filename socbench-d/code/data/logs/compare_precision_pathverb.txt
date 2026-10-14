@@ -1,0 +1,16 @@
+
+=== path+verb  vs  identity  (110 gepaarte Queries) ===
+                         path+verb    identity
+mean precision               0.659       0.745
+mean calls                   4.418       3.873
+mean correct                 2.718       2.736
+mean wrong                   1.700       1.136
+precision: path+verb besser 6, identity besser 45, gleich 59, p = 3.81e-07
+
+=== path+verb  vs  baseline  (110 gepaarte Queries) ===
+                         path+verb    baseline
+mean precision               0.659       0.733
+mean calls                   4.418       3.955
+mean correct                 2.718       2.736
+mean wrong                   1.700       1.218
+precision: path+verb besser 8, baseline besser 38, gleich 64, p = 1.66e-05

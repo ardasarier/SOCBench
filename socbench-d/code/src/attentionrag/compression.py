@@ -41,6 +41,7 @@ import zlib
 
 # Chunks produced by socrag's OpenApiParser start with this header.
 HEADER_PATTERN = re.compile(r"\A(Endpoint:[^\n]*\n(?:Specification:\n)?)")
+ENDPOINT_LINE = re.compile(r"\AEndpoint: ([^\n]+)")
 
 MAX_SEGMENT_CHARS = 120         # recurse into anything larger
 MIN_SEGMENT_CHARS = 25          # below this, a split produces scraps not content
@@ -183,7 +184,7 @@ def split_into_segments(text: str):
     return result
 
 
-def select_tokens(token_scores: list, k: int = None, threshold_ratio: float = None):
+def select_tokens(token_scores: list, k: int = None, threshold_ratio: float = None, threshold_abs: float = None):
     """
     Two selection strategies.
 
@@ -202,6 +203,11 @@ def select_tokens(token_scores: list, k: int = None, threshold_ratio: float = No
     """
     if not token_scores:
         return []
+    # Fixed cutoff on the raw score. Unlike the relative threshold, the number
+    # of selected tokens now varies with how strongly a chunk's attention
+    # peaks -- and with sequence length, since raw scores are not normalised.
+    if threshold_abs is not None:
+        return [t for t in token_scores if t["score"] >= threshold_abs]
     if threshold_ratio is not None:
         cutoff = max(t["score"] for t in token_scores) * threshold_ratio
         return [t for t in token_scores if t["score"] >= cutoff]
@@ -210,8 +216,17 @@ def select_tokens(token_scores: list, k: int = None, threshold_ratio: float = No
 
 def compress_chunk(chunk: str, token_scores: list, k: int = 3,
                    threshold_ratio: float = None, identity_only: bool = False,
-                   random_scores: bool = False, keep_identity: bool = True):
+                   random_scores: bool = False, keep_identity: bool = True,
+                   path_verb_only: bool = False, threshold_abs: float = None):
     """Returns (compressed_text, selected_entries)."""
+    # Ablation, stricter than identity_only: keep ONLY "VERB /path", drop
+    # summary and description too. Tests whether the endpoint name alone
+    # determines selection, or whether the description helps distinguish
+    # similar endpoints.
+    if path_verb_only:
+        match = ENDPOINT_LINE.match(chunk)
+        return (f"Endpoint: {match.group(1)}" if match else ""), []
+
     # Ablation: keep ONLY the unconditionally retained identity (path, summary,
     # description) and drop everything else. Tests whether the composition
     # model needs the endpoint's body at all, or whether it reconstructs
@@ -236,7 +251,7 @@ def compress_chunk(chunk: str, token_scores: list, k: int = 3,
         rng = random.Random(zlib.crc32(chunk.encode("utf-8")))
         token_scores = [{**t, "score": rng.random()} for t in token_scores]
 
-    selected = select_tokens(token_scores, k=k, threshold_ratio=threshold_ratio)
+    selected = select_tokens(token_scores, k=k, threshold_ratio=threshold_ratio, threshold_abs=threshold_abs)
     selected_starts = [t["char_start"] for t in selected]
 
     # keep_identity=False removes the unconditional retention entirely, so the

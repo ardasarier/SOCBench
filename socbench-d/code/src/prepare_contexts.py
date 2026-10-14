@@ -42,19 +42,27 @@ EMBEDDING_DIMENSIONS = 384
 # --- compression ---
 TOP_K_TOKENS = 10               # AttentionRAG's k (TOKENS)
 THRESHOLD_RATIO = None          # None = fixed top-k; else 0.1 / 0.25 / 0.5
+THRESHOLD_ABS = None            # fixed cutoff on raw attention score
 LAYER_RANGE = None              # None = all 24 (Qwen2.5-0.5B); (0,8) shallow,
-LAYER_LABEL = "all"             #   (8,16) middle, (16,24) deep   # TODO
+LAYER_LABEL = "all"             #   (8,16) middle, (16,24) deep
 USE_ANCHOR = False
 IDENTITY_ONLY = False           # ablation: identity prefix only, no attention
+PATH_VERB_ONLY = False
 RANDOM_SCORES = False           # control: random instead of attention scores
-KEEP_IDENTITY = True            # False: no unconditional retention
+KEEP_IDENTITY = False           # False: no unconditional retention
 
 ANCHOR_LABEL = "anchor" if USE_ANCHOR else "noanchor"
-if IDENTITY_ONLY:
+if PATH_VERB_ONLY:
+    SELECT_LABEL = "pathverb"
+elif IDENTITY_ONLY:
     SELECT_LABEL = "identity"
 else:
-    base = (f"t{int(THRESHOLD_RATIO * 100)}" if THRESHOLD_RATIO is not None
-            else f"k{TOP_K_TOKENS}")
+    if THRESHOLD_ABS is not None:
+        base = "abs" + f"{THRESHOLD_ABS:g}".replace(".", "p")
+    elif THRESHOLD_RATIO is not None:
+        base = f"t{int(THRESHOLD_RATIO * 100)}"
+    else:
+        base = f"k{TOP_K_TOKENS}"
     SELECT_LABEL = f"random-{base}" if RANDOM_SCORES else base
     if not KEEP_IDENTITY:
         SELECT_LABEL += "-noid"
@@ -75,7 +83,8 @@ postprocessor = AttentionRAGPostprocessor(
     top_k_tokens=TOP_K_TOKENS, threshold_ratio=THRESHOLD_RATIO,
     layer_range=LAYER_RANGE, use_anchor=USE_ANCHOR,
     identity_only=IDENTITY_ONLY, random_scores=RANDOM_SCORES,
-    keep_identity=KEEP_IDENTITY,
+    keep_identity=KEEP_IDENTITY, path_verb_only=PATH_VERB_ONLY,
+    threshold_abs=THRESHOLD_ABS
 )
 
 

@@ -1,0 +1,46 @@
+[models] using device: mps (torch.float32)
+[1/16] energy
+[hint] WARNING: prefix may be truncated for 'Retrieve the status and performance metrics of all monitored'
+[2/16] energy
+[3/16] materials
+[4/16] industrials
+[hint] WARNING: prefix may be truncated for 'Update the emissions thresholds for a facility with ID 567 t'
+[5/16] industrials
+[6/16] consumer discretionary
+[7/16] consumer staples
+[8/16] consumer staples
+[9/16] health care
+[10/16] financials
+[11/16] information technology
+[hint] WARNING: prefix may be truncated for 'Log a new cybersecurity threat with details such as type, se'
+[12/16] information technology
+[13/16] communication services
+[14/16] utilities
+[15/16] utilities
+[16/16] real estate
+
+160 chunks, 24911 token scores
+score distribution:
+   p50    0.0025
+   p90    0.0138
+   p95    0.0226
+   p98    0.0386
+   p99    0.0505
+   p99.5  0.0584
+per-chunk max:  min 0.0136  median 0.0547  max 0.1369
+
+estimated CR without identity rule (target ~3.13x):
+   top-k=10 (reference)    CR  3.26x   empty chunks 0
+   fixed thresholds, from the score percentiles:
+     abs 0.0138 (p90  )   CR  2.57x   empty chunks 2
+     abs 0.0226 (p95  )   CR  4.90x   empty chunks 16
+     abs 0.0309 (p97  )   CR  8.22x   empty chunks 29
+     abs 0.0386 (p98  )   CR 11.10x   empty chunks 44
+     abs 0.0505 (p99  )   CR 20.76x   empty chunks 87
+     abs 0.0584 (p99.5)   CR 54.57x   empty chunks 130
+   relative thresholds:
+     ratio 0.1            CR  1.49x   empty chunks 0
+     ratio 0.25           CR  2.33x   empty chunks 0
+     ratio 0.4            CR  3.99x   empty chunks 2
+     ratio 0.5            CR  5.54x   empty chunks 6
+     ratio 0.7            CR  8.80x   empty chunks 22

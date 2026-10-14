@@ -46,6 +46,7 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
     # selection
     top_k_tokens: int = 10                          # AttentionRAG's k (TOKENS), not SOCBench's k (CHUNKS)
     threshold_ratio: Optional[float] = None         # None = use top_k_tokens
+    threshold_abs: Optional[float] = None           # fixed cutoff; overrides ratio and k
 
     # attention
     layer_range: Optional[Tuple[int, int]] = None   # None = all layers (paper default)
@@ -56,6 +57,9 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
 
     # ablation -- overrides everything above
     identity_only: bool = False
+
+    # ablation: only "VERB /path"
+    path_verb_only: bool = False
 
     # control: random scores instead of attention (see compression.py)
     random_scores: bool = False
@@ -96,11 +100,13 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
         # Ablation: keep only the identity prefix. Skips hint, anchor and the
         # forward pass entirely, and therefore IGNORES top_k_tokens,
         # threshold_ratio, layer_range, use_anchor and skip_on_none.
-        if self.identity_only:
+        if self.identity_only or self.path_verb_only:
             kept = []
             for node_with_score in nodes:
                 compressed, _ = compress_chunk(
-                    node_with_score.node.get_content(), [], identity_only=True
+                    node_with_score.node.get_content(), [],
+                    identity_only=self.identity_only,
+                    path_verb_only=self.path_verb_only,
                 )
                 if not compressed.strip():
                     if self.verbose:
@@ -145,6 +151,7 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
                 chunk, token_scores,
                 k=self.top_k_tokens,
                 threshold_ratio=self.threshold_ratio,
+                threshold_abs=self.threshold_abs,
                 random_scores=self.random_scores,
                 keep_identity=self.keep_identity,
             )

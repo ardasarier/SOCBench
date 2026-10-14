@@ -1,0 +1,27 @@
+8 condition(s) in data/generated
+
+condition                                   arm        recall    prec      f1  old rec  diff
+socbenchd_1_k10_all_noanchor_abs0p016-noid_ without     0.617   0.733   0.670    0.616     1
+socbenchd_1_k10_all_noanchor_abs0p016-noid_ with        0.577   0.685   0.626    0.576     1
+
+socbenchd_1_k10_all_noanchor_identity_n110  without     0.617   0.733   0.670    0.616     1
+socbenchd_1_k10_all_noanchor_identity_n110  with        0.617   0.745   0.675    0.616     1
+
+socbenchd_1_k10_all_noanchor_k10-noid_n110  without     0.617   0.733   0.670    0.616     1
+socbenchd_1_k10_all_noanchor_k10-noid_n110  with        0.612   0.714   0.659    0.611     1
+
+socbenchd_1_k10_all_noanchor_k10_n110       without     0.617   0.733   0.670    0.616     1
+socbenchd_1_k10_all_noanchor_k10_n110       with        0.611   0.717   0.660    0.610     1
+
+socbenchd_1_k10_all_noanchor_pathverb_n110  without     0.617   0.733   0.670    0.616     1
+socbenchd_1_k10_all_noanchor_pathverb_n110  with        0.611   0.659   0.634    0.611     1
+
+socbenchd_1_k10_all_noanchor_random-k5-noid without     0.617   0.733   0.670    0.616     1
+socbenchd_1_k10_all_noanchor_random-k5-noid with        0.327   0.391   0.356    0.323     3
+
+socbenchd_1_k10_all_noanchor_random_n110    without     0.617   0.733   0.670    0.616     1
+socbenchd_1_k10_all_noanchor_random_n110    with        0.615   0.718   0.663    0.614     1
+
+socbenchd_1_k10_all_noanchor_t33-noid_n110  without     0.617   0.733   0.670    0.616     1
+socbenchd_1_k10_all_noanchor_t33-noid_n110  with        0.565   0.677   0.616    0.565     1
+
