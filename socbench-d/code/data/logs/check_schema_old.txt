@@ -1,0 +1,44 @@
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+condition                                           arm       calls  matched  analys.  required set  unknown keys
+socbenchd_1_k10_all_noanchor_abs0p016-noid_n110_gpt without     445    99.8%    99.3%         99.1%         18.6%
+socbenchd_1_k10_all_noanchor_abs0p016-noid_n110_gpt with        423    97.9%    99.3%         34.9%         72.2%
+
+socbenchd_1_k10_all_noanchor_identity_n110_gpt-4o-2 without     445    99.8%    99.3%         99.1%         18.6%
+socbenchd_1_k10_all_noanchor_identity_n110_gpt-4o-2 with        437   100.0%    98.9%         22.5%         78.4%
+
+socbenchd_1_k10_all_noanchor_identity_n110_gpt-6-lu without     349    93.1%    96.0%        100.0%         20.2%
+socbenchd_1_k10_all_noanchor_identity_n110_gpt-6-lu with        331    92.1%    96.1%         27.9%         82.4%
+
+socbenchd_1_k10_all_noanchor_k10-noid_n110_gpt-4o-2 without     445    99.8%    99.3%         99.1%         18.6%
+socbenchd_1_k10_all_noanchor_k10-noid_n110_gpt-4o-2 with        447    98.7%    98.6%         39.7%         65.8%
+
+socbenchd_1_k10_all_noanchor_k10-noid_n110_gpt-6-lu without     349    93.1%    96.0%        100.0%         20.2%
+socbenchd_1_k10_all_noanchor_k10-noid_n110_gpt-6-lu with        354    92.7%    94.8%         48.3%         64.4%
+
+socbenchd_1_k10_all_noanchor_k10_n110_gpt-4o-2024-1 without     445    99.8%    99.3%         99.1%         18.6%
+socbenchd_1_k10_all_noanchor_k10_n110_gpt-4o-2024-1 with        449    99.6%    98.9%         43.1%         63.3%
+
+socbenchd_1_k10_all_noanchor_k10_n110_gpt-6-luna    without     349    93.1%    96.0%        100.0%         20.2%
+socbenchd_1_k10_all_noanchor_k10_n110_gpt-6-luna    with        353    90.7%    95.3%         48.3%         63.8%
+
+socbenchd_1_k10_all_noanchor_pathverb_n110_gpt-4o-2 without     445    99.8%    99.3%         99.1%         18.6%
+socbenchd_1_k10_all_noanchor_pathverb_n110_gpt-4o-2 with        502    99.6%    99.4%         19.2%         84.1%
+
+socbenchd_1_k10_all_noanchor_pathverb_n110_gpt-6-lu without     349    93.1%    96.0%        100.0%         20.2%
+socbenchd_1_k10_all_noanchor_pathverb_n110_gpt-6-lu with        344    90.7%    94.6%         21.1%         88.1%
+
+socbenchd_1_k10_all_noanchor_random-k5-noid_n110_gp without     445    99.8%    99.3%         99.1%         18.6%
+socbenchd_1_k10_all_noanchor_random-k5-noid_n110_gp with        475    59.6%    99.6%         55.1%         70.9%
+
+socbenchd_1_k10_all_noanchor_random-k5-noid_n110_gp without     349    93.1%    96.0%        100.0%         20.2%
+socbenchd_1_k10_all_noanchor_random-k5-noid_n110_gp with        180    78.9%    96.5%         48.8%         74.3%
+
+socbenchd_1_k10_all_noanchor_random_n110_gpt-4o-202 without     445    99.8%    99.3%         99.1%         18.6%
+socbenchd_1_k10_all_noanchor_random_n110_gpt-4o-202 with        454    98.9%    98.7%         53.3%         54.1%
+
+socbenchd_1_k10_all_noanchor_t33-noid_n110_gpt-4o-2 without     445    99.8%    99.3%         99.1%         18.6%
+socbenchd_1_k10_all_noanchor_t33-noid_n110_gpt-4o-2 with        430    99.3%    98.4%         38.6%         66.3%
+

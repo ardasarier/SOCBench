@@ -13,8 +13,10 @@ import time
 
 from openai import OpenAI, RateLimitError, APIConnectionError, APITimeoutError
 
-# Matches the model socbench-d's own evaluate.py uses, so numbers are comparable.
-CODEGEN_MODEL_NAME = "gpt-4o-2024-11-20"
+# gpt-6-luna (released 2026-09-22): reasoning model, roughly 25x cheaper than
+# gpt-4o. The API exposes only the alias -- no dated snapshot, and responses
+# echo the alias -- so run dates must be recorded for reproducibility.
+CODEGEN_MODEL_NAME = "gpt-6-luna"
 
 _client = None
 
@@ -56,7 +58,7 @@ def _get_client() -> OpenAI:
     return _client
 
 
-def generate_composition(chunks: list, query: str, base_url: str, max_new_tokens: int = 1024) -> str:
+def generate_composition(chunks: list, query: str, base_url: str, max_new_tokens: int = 4096) -> str:
     """chunks is a list of plain strings, not LlamaIndex nodes."""
     client = _get_client()
     prompt = COMPOSITION_PROMPT.format(context="\n\n".join(chunks), query=query, base_url=base_url)
@@ -68,19 +70,22 @@ def generate_composition(chunks: list, query: str, base_url: str, max_new_tokens
             response = client.chat.completions.create(
                 model=CODEGEN_MODEL_NAME,
                 messages=[{"role": "user", "content": prompt}],
-                max_tokens=max_new_tokens,
-                temperature=0,
+                # Reasoning models reject max_tokens and accept only the default
+                # temperature (1), so neither is set. Internal reasoning tokens
+                # count against this budget -- hence 4096 instead of the 1024
+                # used for gpt-4o.
+                max_completion_tokens=max_new_tokens,
             )
             choice = response.choices[0]
 
-            # Truncated code fails to parse, so extract_endpoints_from_code
-            # returns an empty set and the query scores 0. Without this warning
-            # that is indistinguishable from the model getting it wrong.
-            # SOCBench-D queries need up to 10 endpoints, so it is a real risk.
+            # Truncated code fails to parse and scores 0, indistinguishable
+            # from a model error. With a reasoning model the budget can also be
+            # spent entirely on reasoning, leaving no code at all.
             if choice.finish_reason == "length":
                 print(f"    [WARNING: output truncated at {max_new_tokens} tokens]")
 
-            return strip_code_fences(choice.message.content).strip()
+            content = choice.message.content or ""
+            return strip_code_fences(content).strip()
 
         except (RateLimitError, APIConnectionError, APITimeoutError) as e:
             wait = 25 * (attempt + 1)

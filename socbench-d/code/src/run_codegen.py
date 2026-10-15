@@ -32,6 +32,7 @@ Run from socbench-d/code/ after prepare_contexts.py:
 import hashlib
 import json
 import os
+import sys
 import time
 from collections import defaultdict
 
@@ -39,7 +40,8 @@ from benchmark_loader import load_benchmark
 from composition import CODEGEN_MODEL_NAME, generate_composition
 from scoring import build_templates, extract_endpoints_from_code, score
 
-INPUT_PATH = "data/contexts/socbenchd_1_k10_all_noanchor_t33-noid_n110.json"
+INPUT_PATH = (sys.argv[1] if len(sys.argv) > 1
+              else "data/contexts/socbenchd_1_k10_all_noanchor_k10_n110.json")
 
 with open(INPUT_PATH) as f:
     records = json.load(f)
@@ -212,8 +214,12 @@ for i, record in enumerate(records):
           f"found {sorted(result_compressed['found'])}")
     print(f"    {time.time() - started:.1f}s")
 
-with open(BASELINE_CACHE_PATH, "w") as f:
-    json.dump(baseline_cache, f, indent=2)
+# Only rewrite the cache if this run added to it. Runs that hit the cache
+# entirely then never touch the file, so several can run in parallel without
+# two processes writing the same file at once.
+if cache_misses:
+    with open(BASELINE_CACHE_PATH, "w") as f:
+        json.dump(baseline_cache, f, indent=2)
 
 print("\n" + "=" * 78)
 print(f"condition:          {INPUT_PATH}")
