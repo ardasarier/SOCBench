@@ -67,6 +67,9 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
     # control: disable unconditional identity retention (see compression.py)
     keep_identity: bool = True
 
+    # rule: keep only these fields
+    keep_fields: Optional[Tuple[str, ...]] = None
+
     verbose: bool = False
 
     # Algorithm 1 generates the hint once from the query alone (line 5), before
@@ -100,13 +103,14 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
         # Ablation: keep only the identity prefix. Skips hint, anchor and the
         # forward pass entirely, and therefore IGNORES top_k_tokens,
         # threshold_ratio, layer_range, use_anchor and skip_on_none.
-        if self.identity_only or self.path_verb_only:
+        if self.identity_only or self.path_verb_only or self.keep_fields:
             kept = []
             for node_with_score in nodes:
                 compressed, _ = compress_chunk(
                     node_with_score.node.get_content(), [],
                     identity_only=self.identity_only,
                     path_verb_only=self.path_verb_only,
+                    keep_fields=self.keep_fields,
                 )
                 if not compressed.strip():
                     if self.verbose:

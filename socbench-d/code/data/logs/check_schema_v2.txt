@@ -1,0 +1,55 @@
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+14 condition(s) in data/generated
+Scope: calls to endpoints in the SOLUTION (correctly selected ones).
+
+condition                                           arm       calls/q  resolv  q-req  b-req unknown
+socbenchd_1_k10_all_noanchor_abs0p016-noid_n110_gpt without      4.09   0.989  0.913  0.985   0.205
+socbenchd_1_k10_all_noanchor_abs0p016-noid_n110_gpt with         3.87   0.993  0.375  0.360   0.701
+
+socbenchd_1_k10_all_noanchor_identity_n110_gpt-4o-2 without      4.09   0.989  0.913  0.985   0.205
+socbenchd_1_k10_all_noanchor_identity_n110_gpt-4o-2 with         3.97   1.000  0.256  0.224   0.770
+
+socbenchd_1_k10_all_noanchor_identity_n110_gpt-6-lu without      3.22   0.898  1.000  1.000   0.198
+socbenchd_1_k10_all_noanchor_identity_n110_gpt-6-lu with         3.04   0.913  0.410  0.221   0.809
+
+socbenchd_1_k10_all_noanchor_k10-noid_n110_gpt-4o-2 without      4.09   0.989  0.913  0.985   0.205
+socbenchd_1_k10_all_noanchor_k10-noid_n110_gpt-4o-2 with         4.10   0.991  0.302  0.420   0.655
+
+socbenchd_1_k10_all_noanchor_k10-noid_n110_gpt-6-lu without      3.22   0.898  1.000  1.000   0.198
+socbenchd_1_k10_all_noanchor_k10-noid_n110_gpt-6-lu with         3.20   0.923  0.595  0.404   0.663
+
+socbenchd_1_k10_all_noanchor_k10_n110_gpt-4o-2024-1 without      4.09   0.989  0.913  0.985   0.205
+socbenchd_1_k10_all_noanchor_k10_n110_gpt-4o-2024-1 with         4.10   0.996  0.409  0.423   0.637
+
+socbenchd_1_k10_all_noanchor_k10_n110_gpt-6-luna    without      3.22   0.898  1.000  1.000   0.198
+socbenchd_1_k10_all_noanchor_k10_n110_gpt-6-luna    with         3.25   0.888  0.683  0.423   0.621
+
+socbenchd_1_k10_all_noanchor_pathverb_n110_gpt-4o-2 without      4.09   0.989  0.913  0.985   0.205
+socbenchd_1_k10_all_noanchor_pathverb_n110_gpt-4o-2 with         4.57   0.998  0.182  0.242   0.826
+
+socbenchd_1_k10_all_noanchor_pathverb_n110_gpt-6-lu without      3.22   0.898  1.000  1.000   0.198
+socbenchd_1_k10_all_noanchor_pathverb_n110_gpt-6-lu with         3.15   0.884  0.241  0.231   0.855
+
+socbenchd_1_k10_all_noanchor_random-k5-noid_n110_gp without      4.09   0.989  0.913  0.985   0.205
+socbenchd_1_k10_all_noanchor_random-k5-noid_n110_gp with         4.34   0.996  0.364  0.491   0.704
+
+socbenchd_1_k10_all_noanchor_random-k5-noid_n110_gp without      3.22   0.898  1.000  1.000   0.198
+socbenchd_1_k10_all_noanchor_random-k5-noid_n110_gp with         1.68   0.914  0.167  0.467   0.746
+
+socbenchd_1_k10_all_noanchor_random_n110_gpt-4o-202 without      4.09   0.989  0.913  0.985   0.205
+socbenchd_1_k10_all_noanchor_random_n110_gpt-4o-202 with         4.15   0.993  0.391  0.539   0.554
+
+socbenchd_1_k10_all_noanchor_reqschema_n110_gpt-6-l without      3.22   0.898  1.000  1.000   0.198
+socbenchd_1_k10_all_noanchor_reqschema_n110_gpt-6-l with         3.15   0.937  1.000  1.000   0.189
+
+socbenchd_1_k10_all_noanchor_t33-noid_n110_gpt-4o-2 without      4.09   0.989  0.913  0.985   0.205
+socbenchd_1_k10_all_noanchor_t33-noid_n110_gpt-4o-2 with         3.92   0.998  0.400  0.378   0.646
+
+calls/q  HTTP calls found per query
+resolv   share whose URL could be resolved statically
+q-req    required query parameters set / required (solution endpoints)
+b-req    required body fields set / required (solution endpoints)
+unknown  sent keys not defined in the spec / all sent keys

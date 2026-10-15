@@ -35,9 +35,14 @@ Pure functions -- no model imports at module level, so importing this is cheap.
 
 Demo: python -m attentionrag.compression   (from src/)
 """
+import json
 import random
 import re
 import zlib
+
+# Top-level fields an operation needs to be SELECTED (identity) and CALLED
+# correctly (request schema). Responses and their examples are neither.
+REQUEST_SCHEMA_FIELDS = ("summary", "description", "operationId", "parameters", "requestBody")
 
 # Chunks produced by socrag's OpenApiParser start with this header.
 HEADER_PATTERN = re.compile(r"\A(Endpoint:[^\n]*\n(?:Specification:\n)?)")
@@ -214,11 +219,35 @@ def select_tokens(token_scores: list, k: int = None, threshold_ratio: float = No
     return sorted(token_scores, key=lambda t: -t["score"])[:k]
 
 
+def keep_top_level_fields(chunk: str, fields: tuple) -> str:
+    """Keeps only the given top-level fields of the operation JSON.
+
+    Works on the parsed JSON rather than on segments, so the output stays
+    valid JSON -- unlike segment-level compression, which concatenates
+    fragments. Chunks without a parseable body (continuation fragments)
+    are returned unchanged.
+    """
+    header = HEADER_PATTERN.match(chunk)
+    if not header:
+        return chunk
+    try:
+        operation = json.loads(chunk[header.end():])
+    except json.JSONDecodeError:
+        return chunk
+    kept = {k: v for k, v in operation.items() if k in fields}
+    return header.group(1) + json.dumps(kept)
+
+
 def compress_chunk(chunk: str, token_scores: list, k: int = 3,
                    threshold_ratio: float = None, identity_only: bool = False,
                    random_scores: bool = False, keep_identity: bool = True,
-                   path_verb_only: bool = False, threshold_abs: float = None):
+                   path_verb_only: bool = False, threshold_abs: float = None,
+                   keep_fields: tuple = None):
     """Returns (compressed_text, selected_entries)."""
+
+    if keep_fields is not None:
+        return keep_top_level_fields(chunk, keep_fields), []
+
     # Ablation, stricter than identity_only: keep ONLY "VERB /path", drop
     # summary and description too. Tests whether the endpoint name alone
     # determines selection, or whether the description helps distinguish

@@ -20,7 +20,7 @@ Scope, stated honestly:
   - header parameters are not checked
 
 Run from socbench-d/code/:
-    python src/check_schemas.py
+    python src/check_schemas_old.py
 """
 import ast
 import glob

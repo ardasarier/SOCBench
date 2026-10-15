@@ -1,0 +1,23 @@
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+A vs B, Wilcoxon signed-rank, paired by query
+
+--- gpt-4o
+baseline vs attention+rule        coverage  n= 63   A 0.967  B 0.427   A>B  46  B>A   1   p = 1.41e-08
+baseline vs attention+rule        unknown   n= 75   A 0.199  B 0.600   A>B   1  B>A  52   p = 5.28e-10
+random+rule vs attention+rule     coverage  n= 63   A 0.495  B 0.443   A>B  19  B>A  14   p = 3.11e-01
+random+rule vs attention+rule     unknown   n= 77   A 0.487  B 0.585   A>B  18  B>A  28   p = 5.19e-02
+attention+rule vs identity        coverage  n= 64   A 0.436  B 0.246   A>B  26  B>A   3   p = 1.32e-04
+attention+rule vs identity        unknown   n= 77   A 0.585  B 0.733   A>B  13  B>A  30   p = 8.82e-04
+identity vs path+verb             coverage  n= 63   A 0.250  B 0.230   A>B  11  B>A   8   p = 4.08e-01
+identity vs path+verb             unknown   n= 77   A 0.737  B 0.827   A>B  12  B>A  23   p = 5.76e-03
+
+--- gpt-6-luna
+baseline vs attention+rule        coverage  n= 53   A 1.000  B 0.542   A>B  33  B>A   0   p = 4.00e-07
+baseline vs attention+rule        unknown   n= 65   A 0.166  B 0.552   A>B   0  B>A  42   p = 1.49e-08
+attention+rule vs identity        coverage  n= 51   A 0.545  B 0.291   A>B  22  B>A   2   p = 7.96e-05
+attention+rule vs identity        unknown   n= 63   A 0.557  B 0.787   A>B   4  B>A  29   p = 6.21e-06
+identity vs path+verb             coverage  n= 46   A 0.264  B 0.254   A>B   9  B>A   4   p = 5.03e-01
+identity vs path+verb             unknown   n= 56   A 0.798  B 0.798   A>B   7  B>A  17   p = 2.47e-01

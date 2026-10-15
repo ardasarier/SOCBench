@@ -22,37 +22,41 @@ from llama_index.core.schema import QueryBundle
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
 import benchmark
+from attentionrag.compression import REQUEST_SCHEMA_FIELDS
 from attentionrag.models import empty_cache
 from attentionrag.postprocessor import AttentionRAGPostprocessor
 from benchmark_loader import load_tasks
 from socrag.index import get_retriever
 
 # --- experiment scope ---
-BENCHMARK = "socbenchd_1"       # "restbench" | "socbenchd_1".."socbenchd_5"
-API = "tmdb"                    # RestBench only: "spotify" or "tmdb"
-MAX_QUERIES_PER_SET = None      # None = all; set e.g. 2 for a pilot run
+BENCHMARK = "socbenchd_1"           # "restbench" | "socbenchd_1".."socbenchd_5"
+API = "tmdb"                        # RestBench only: "spotify" or "tmdb"
+MAX_QUERIES_PER_SET = None          # None = all; set e.g. 2 for a pilot run
 
 # --- retrieval ---
-TOP_K = 10                      # SOCBench's k (CHUNKS)
+TOP_K = 10                          # SOCBench's k (CHUNKS)
 CHUNKING_STRATEGY = "ENDPOINT_SPLIT_1024_0"
 EMBEDDING_MODEL = "BAAI/bge-small-en-v1.5"
-EMBEDDING_LABEL = "bge_small"   # index directory name
+EMBEDDING_LABEL = "bge_small"       # index directory name
 EMBEDDING_DIMENSIONS = 384
 
 # --- compression ---
-TOP_K_TOKENS = 10               # AttentionRAG's k (TOKENS)
-THRESHOLD_RATIO = None          # None = fixed top-k; else 0.1 / 0.25 / 0.5
-THRESHOLD_ABS = None            # fixed cutoff on raw attention score
-LAYER_RANGE = None              # None = all 24 (Qwen2.5-0.5B); (0,8) shallow,
-LAYER_LABEL = "all"             #   (8,16) middle, (16,24) deep
+TOP_K_TOKENS = 10                   # AttentionRAG's k (TOKENS)
+THRESHOLD_RATIO = None              # None = fixed top-k; else 0.1 / 0.25 / 0.5
+THRESHOLD_ABS = None                # fixed cutoff on raw attention score
+LAYER_RANGE = None                  # None = all 24 (Qwen2.5-0.5B); (0,8) shallow,
+LAYER_LABEL = "all"                 #   (8,16) middle, (16,24) deep
 USE_ANCHOR = False
-IDENTITY_ONLY = False           # ablation: identity prefix only, no attention
+IDENTITY_ONLY = False               # ablation: identity prefix only, no attention
 PATH_VERB_ONLY = False
-RANDOM_SCORES = False           # control: random instead of attention scores
-KEEP_IDENTITY = False           # False: no unconditional retention
+RANDOM_SCORES = False               # control: random instead of attention scores
+KEEP_IDENTITY = False               # False: no unconditional retention
+KEEP_FIELDS = None                  # None = off; REQUEST_SCHEMA_FIELDS
 
 ANCHOR_LABEL = "anchor" if USE_ANCHOR else "noanchor"
-if PATH_VERB_ONLY:
+if KEEP_FIELDS:
+    SELECT_LABEL = "reqschema"
+elif PATH_VERB_ONLY:
     SELECT_LABEL = "pathverb"
 elif IDENTITY_ONLY:
     SELECT_LABEL = "identity"
@@ -84,7 +88,7 @@ postprocessor = AttentionRAGPostprocessor(
     layer_range=LAYER_RANGE, use_anchor=USE_ANCHOR,
     identity_only=IDENTITY_ONLY, random_scores=RANDOM_SCORES,
     keep_identity=KEEP_IDENTITY, path_verb_only=PATH_VERB_ONLY,
-    threshold_abs=THRESHOLD_ABS
+    threshold_abs=THRESHOLD_ABS, keep_fields=KEEP_FIELDS,
 )
 
 

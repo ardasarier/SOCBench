@@ -1,0 +1,6 @@
+Share of NON-identity body text, by top-level field
+
+                          request   response      other
+available (raw)             45.8%      54.2%       0.0%
+attention+rule              26.6%      73.4%       0.0%
+random+rule                 39.1%      60.9%       0.0%
