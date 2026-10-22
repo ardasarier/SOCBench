@@ -1,0 +1,16 @@
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+Share of generated programs showing each blind spot
+
+                            n  (a) reused  (b) mutated  (c) ?query
+baseline       gpt-4o     110          1%           0%          4%
+attention+rule gpt-4o     110          0%           0%          3%
+identity       gpt-4o     110          0%           0%          1%
+reqschema      gpt-4o     110          2%           0%          3%
+baseline       luna       110          1%           2%          0%
+identity       luna       110          2%           4%          0%
+reqschema      luna       110          0%           3%          0%
+
+(d) endpoints colliding across the 5 specs of a sector: 13 of 537

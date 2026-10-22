@@ -50,7 +50,7 @@ USE_ANCHOR = False
 IDENTITY_ONLY = False               # ablation: identity prefix only, no attention
 PATH_VERB_ONLY = False
 RANDOM_SCORES = False               # control: random instead of attention scores
-KEEP_IDENTITY = False               # False: no unconditional retention
+KEEP_IDENTITY = True                # False: no unconditional retention
 KEEP_FIELDS = None                  # None = off; REQUEST_SCHEMA_FIELDS
 
 ANCHOR_LABEL = "anchor" if USE_ANCHOR else "noanchor"
