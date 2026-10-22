@@ -10,6 +10,11 @@ Handles both benchmarks. RestBench is one queryset over one API; SOCBench-D is
 11 GICS-sector querysets per instance, each with its own prebuilt FAISS index,
 so the retriever is rebuilt per sector.
 
+Every record also logs what was retrieved -- rank, retrieval score and the
+endpoints of each chunk, its tokens before and after compression -- plus the
+query's retrieval recall and the local Qwen token counts. Together with the
+API usage stage 2 records, this makes each run traceable chunk by chunk.
+
 Run from socbench-d/code/:
     python src/prepare_contexts.py
 """
@@ -22,7 +27,8 @@ from llama_index.core.schema import QueryBundle
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
 import benchmark
-from attentionrag.compression import REQUEST_SCHEMA_FIELDS
+from attentionrag import usage as qwen_usage
+from attentionrag.compression import ENDPOINT_LINE, REQUEST_SCHEMA_FIELDS
 from attentionrag.models import empty_cache
 from attentionrag.postprocessor import AttentionRAGPostprocessor
 from benchmark_loader import load_tasks
@@ -100,6 +106,45 @@ def token_count(texts) -> int:
     return sum(len(encoding.encode(t)) for t in texts)
 
 
+def endpoints_of(node_with_score) -> list:
+    """Endpoints a chunk documents. socrag keeps them in node metadata (a JSON
+    string or a list) -- what SOCBench computes retrieval recall from. Falls
+    back to the chunk's Endpoint: header."""
+    meta = node_with_score.node.metadata.get("endpoints")
+    if isinstance(meta, str):
+        try:
+            meta = json.loads(meta)
+        except json.JSONDecodeError:
+            meta = [meta]
+    if meta:
+        return list(meta)
+    match = ENDPOINT_LINE.match(node_with_score.node.get_content())
+    return [match.group(1)] if match else []
+
+
+def retrieval_log(retrieved, compressed) -> list:
+    """One entry per retrieved chunk, in retrieval order. Compressed nodes are
+    deep copies that keep their node_id, so they are matched by id -- a chunk
+    the compression dropped shows up as kept=False."""
+    compressed_by_id = {n.node.node_id: n.node.get_content() for n in compressed}
+    log = []
+    for rank, node_with_score in enumerate(retrieved):
+        compressed_text = compressed_by_id.get(node_with_score.node.node_id)
+        log.append({
+            "rank": rank,
+            # FAISS IndexFlatL2 (socrag/index.py): an L2 distance, so LOWER
+            # means more similar -- not a similarity score.
+            "distance": (round(node_with_score.score, 6)
+                         if node_with_score.score is not None else None),
+            "endpoints": endpoints_of(node_with_score),
+            "raw_tokens": len(encoding.encode(node_with_score.node.get_content())),
+            "compressed_tokens": (len(encoding.encode(compressed_text))
+                                  if compressed_text is not None else 0),
+            "kept": compressed_text is not None,
+        })
+    return log
+
+
 print(f"benchmark {bench.name}: {len(tasks)} queryset(s), {total_queries} queries")
 print(f"writing to {OUTPUT_PATH}\n")
 
@@ -122,13 +167,21 @@ for task in tasks:
         print(f"[{done}/{total_queries}] ({queryset.name}) {query.query[:70]!r}")
         started = time.time()
 
+        qwen_usage.take()          # discard anything recorded during setup
         retrieved = retriever.retrieve(query.query)
         compressed = postprocessor.postprocess_nodes(
             retrieved, query_bundle=QueryBundle(query.query)
         )
+        qwen_tokens = qwen_usage.take()
 
         raw_texts = texts_of(retrieved)
         compressed_texts = texts_of(compressed)
+
+        chunks_log = retrieval_log(retrieved, compressed)
+        retrieved_endpoints = {e for c in chunks_log for e in c["endpoints"]}
+        solution = set(query.solution)
+        retrieval_recall = (len(solution & retrieved_endpoints) / len(solution)
+                            if solution else 0.0)
 
         # benchmark/queryset/top_k and the URLs travel with the record so stage
         # 2 needs no configuration of its own and cannot drift out of sync.
@@ -144,12 +197,17 @@ for task in tasks:
             "compressed_chunks": compressed_texts,
             "raw_tokens": token_count(raw_texts),
             "compressed_tokens": token_count(compressed_texts),
+            "retrieval_recall": retrieval_recall,
+            "retrieval": chunks_log,
+            "qwen_tokens": qwen_tokens,
+            "seconds": round(time.time() - started, 1),
         })
 
         raw, comp = records[-1]["raw_tokens"], records[-1]["compressed_tokens"]
         cr = raw / comp if comp else float("inf")
         print(f"    {len(raw_texts)} -> {len(compressed_texts)} chunks, "
-              f"{raw} -> {comp} tokens (CR {cr:.2f}x), {time.time() - started:.1f}s")
+              f"{raw} -> {comp} tokens (CR {cr:.2f}x), "
+              f"retrieval recall {retrieval_recall:.2f}, {time.time() - started:.1f}s")
 
         # Persist after every query: a crash at query 400 of 550 would otherwise
         # throw away hours of compression work.
@@ -162,4 +220,10 @@ cr = total_raw / total_compressed if total_compressed else float("inf")
 
 print(f"\nwrote {len(records)} records to {OUTPUT_PATH}")
 print(f"overall CR: {cr:.2f}x")
+print(f"retrieval recall: {sum(r['retrieval_recall'] for r in records) / len(records):.3f}")
+qwen_total = {}
+for r in records:
+    for name, value in r["qwen_tokens"].items():
+        qwen_total[name] = qwen_total.get(name, 0) + value
+print(f"qwen: {qwen_total or 'not used'}")
 print(f"total time: {(time.time() - start_all) / 60:.1f} min")

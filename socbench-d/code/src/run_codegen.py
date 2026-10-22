@@ -37,7 +37,7 @@ import time
 from collections import defaultdict
 
 from benchmark_loader import load_benchmark
-from composition import CODEGEN_MODEL_NAME, generate_composition
+from composition import CODEGEN_LABEL, generate_composition
 from scoring import build_templates, extract_endpoints_from_code, score
 
 INPUT_PATH = (sys.argv[1] if len(sys.argv) > 1
@@ -52,12 +52,12 @@ print(f"loaded {len(records)} prepared contexts from {INPUT_PATH}")
 BENCHMARK_NAME = records[0]["benchmark"]
 TOP_K = records[0]["top_k"]
 BASELINE_CACHE_PATH = (f"data/baselines/{BENCHMARK_NAME}_k{TOP_K}"
-                       f"_{CODEGEN_MODEL_NAME}.json")
+                       f"_{CODEGEN_LABEL}.json")
 os.makedirs(os.path.dirname(BASELINE_CACHE_PATH), exist_ok=True)
 
 # Named after the condition, so conditions can be diffed against each other.
 CONDITION = os.path.splitext(os.path.basename(INPUT_PATH))[0]
-GENERATED_PATH = f"data/generated/{CONDITION}_{CODEGEN_MODEL_NAME}.json"
+GENERATED_PATH = f"data/generated/{CONDITION}_{CODEGEN_LABEL}.json"
 os.makedirs(os.path.dirname(GENERATED_PATH), exist_ok=True)
 
 bench = load_benchmark(BENCHMARK_NAME)
@@ -132,6 +132,37 @@ class Accumulator:
               f"tokens {self.tokens}")
 
 
+class UsageTotals:
+    """API usage summed over one arm. Cached baseline entries from before
+    usage was recorded carry none and are counted as missing."""
+
+    FIELDS = ("prompt_tokens", "completion_tokens", "reasoning_tokens",
+              "cached_tokens", "cost_usd")
+
+    def __init__(self):
+        self.totals = {f: 0 for f in self.FIELDS}
+        self.n = 0
+        self.missing = 0
+
+    def add(self, usage) -> None:
+        if not usage:
+            self.missing += 1
+            return
+        for f in self.FIELDS:
+            self.totals[f] += usage.get(f, 0)
+        self.n += 1
+
+    def report(self, label: str) -> None:
+        t = self.totals
+        note = f"   ({self.missing} without usage)" if self.missing else ""
+        print(f"{label:<22} input {t['prompt_tokens']:>9}   "
+              f"output {t['completion_tokens']:>8} "
+              f"(reasoning {t['reasoning_tokens']})   "
+              f"cost ${t['cost_usd']:.4f}{note}")
+
+
+usage_raw_acc = UsageTotals()
+usage_compressed_acc = UsageTotals()
 raw_acc = Accumulator("WITHOUT compression")
 compressed_acc = Accumulator("WITH compression")
 
@@ -159,14 +190,16 @@ for i, record in enumerate(records):
 
     if cached and cached["fingerprint"] == fingerprint:
         code_raw = cached["code"]
+        usage_raw = cached.get("usage")      # None for entries cached before
         cache_hits += 1
     else:
         if cached:
             print("    [baseline cache stale -- raw chunks changed, regenerating]")
-        code_raw = generate_composition(
+        code_raw, usage_raw = generate_composition(
             record["raw_chunks"], query, record["base_url"]
         )
-        baseline_cache[key] = {"fingerprint": fingerprint, "code": code_raw}
+        baseline_cache[key] = {"fingerprint": fingerprint, "code": code_raw,
+                               "usage": usage_raw}
         cache_misses += 1
         with open(BASELINE_CACHE_PATH, "w") as f:  # persist instantly
             json.dump(baseline_cache, f, indent=2)
@@ -177,11 +210,13 @@ for i, record in enumerate(records):
     )
     raw_acc.add(result_raw, record["raw_tokens"])
     per_queryset[queryset][0].add(result_raw, record["raw_tokens"])
+    usage_raw_acc.add(usage_raw)
 
     # --- compressed arm: always fresh ---
-    code_compressed = generate_composition(
+    code_compressed, usage_compressed = generate_composition(
         record["compressed_chunks"], query, record["base_url"]
     )
+    usage_compressed_acc.add(usage_compressed)
     result_compressed = score(
         extract_endpoints_from_code(code_compressed), record["solution"],
         templates, record["base_path"],
@@ -201,6 +236,8 @@ for i, record in enumerate(records):
         "found_with": sorted(result_compressed["found"]),
         "recall_without": result_raw["recall"],
         "recall_with": result_compressed["recall"],
+        "usage_without": usage_raw,
+        "usage_with": usage_compressed,
     })
     with open(GENERATED_PATH, "w") as f:
         json.dump(generated, f, indent=2)
@@ -242,5 +279,9 @@ print()
 if compressed_acc.tokens:
     print(f"Compression ratio:  {raw_acc.tokens / compressed_acc.tokens:.2f}x")
 print(f"Recall delta:       {compressed_acc.mean_recall - raw_acc.mean_recall:+.3f}")
+print()
+print(f"API usage ({CODEGEN_LABEL}, as reported by the API):")
+usage_raw_acc.report("WITHOUT compression")
+usage_compressed_acc.report("WITH compression")
 print(f"Total time:         {(time.time() - start_all) / 60:.1f} min")
 print("=" * 78)

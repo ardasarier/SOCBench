@@ -10,6 +10,7 @@ Demo: python -m attentionrag.hint_prefix   (from src/)
 import torch
 
 from .models import DEVICE, hint_model as model, hint_tokenizer as tokenizer
+from .usage import record
 
 # Verbatim from Appendix B.1.
 HINT_PREFIX_TEMPLATE = """You are a formatting assistant. Given a question, your task is to generate a corresponding answering format. The format should maintain the same structure as the question but transform it into an incomplete answer template. If it is impossible to generate a format, return "None".
@@ -71,6 +72,9 @@ def generate_answer_hint_prefix(question: str) -> str:
         )
 
     generated_ids = output_ids[0][inputs["input_ids"].shape[1]:]
+    record("hint_calls")
+    record("hint_prompt_tokens", inputs["input_ids"].shape[1])
+    record("hint_generated_tokens", len(generated_ids))
     if len(generated_ids) >= 64:
         print(f"[hint] WARNING: prefix may be truncated for {question[:60]!r}")
     return tokenizer.decode(generated_ids, skip_special_tokens=True).strip()

@@ -15,6 +15,7 @@ import torch
 
 from .anchor_token import ANCHOR_TOKEN_TEMPLATE
 from .models import DEVICE, compress_model as model, compress_tokenizer as tokenizer
+from .usage import record
 
 
 def compute_attention_feature(chunk: str, question: str, prefix_hint: str, anchor_token: str = "", layer_range=None):
@@ -36,6 +37,8 @@ def compute_attention_feature(chunk: str, question: str, prefix_hint: str, ancho
 
     with torch.no_grad():
         outputs = model(**encoding, output_attentions=True)
+    record("attention_passes")
+    record("attention_input_tokens", encoding["input_ids"].shape[1])
 
     chunk_start = prompt_text.find(chunk)
     assert chunk_start >= 0, "chunk not found in prompt -- empty or altered chunk?"

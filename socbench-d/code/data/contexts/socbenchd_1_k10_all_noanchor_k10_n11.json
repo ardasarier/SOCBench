@@ -1,0 +1,1667 @@
+[
+  {
+    "benchmark": "socbenchd_1",
+    "queryset": "energy",
+    "top_k": 10,
+    "query": "Retrieve the status and performance metrics of all monitored energy equipment, access active alerts for any system performance issues, analyze the impact of weather conditions on electricity demand between specific dates, configure new alert thresholds for unusual energy generation patterns in specific sectors, and submit the integration status of renewable energy sources such as solar or wind into the energy grid.",
+    "solution": [
+      "POST /renewable/integration/status",
+      "POST /alert-settings",
+      "GET /weather-impact-analysis",
+      "GET /alerts",
+      "GET /equipment-status"
+    ],
+    "base_url": "https://api.socbench.example",
+    "base_path": "",
+    "raw_chunks": [
+      "Endpoint: GET /resources/status\nSpecification:\n{\"summary\": \"Extract Operational Status of Energy Generation Resources\", \"description\": \"Retrieve the current operational status, including availability, faults, or performance indicators of monitored resources.\", \"responses\": {\"200\": {\"description\": \"Successfully retrieved operational status of energy resources.\", \"content\": {\"application/json\": {\"example\": {\"resource_id\": \"solar-array-1\", \"status\": \"operational\", \"details\": \"No detected issues.\"}}}}}}",
+      "Endpoint: GET /equipment-monitoring\nSpecification:\n{\"summary\": \"Access equipment status and performance\", \"description\": \"Retrieve status and performance data for energy-related equipment.\", \"responses\": {\"200\": {\"description\": \"Successfully retrieved equipment monitoring data.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"equipment\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"equipmentId\": {\"type\": \"string\", \"description\": \"Unique identifier for the equipment.\"}, \"status\": {\"type\": \"string\", \"description\": \"Current status of the equipment (e.g., 'active', 'maintenance').\"}, \"performanceMetrics\": {\"type\": \"object\", \"description\": \"Performance metrics of the equipment.\"}}}, \"description\": \"Array of energy equipment details and statuses.\"}}}}}}}}",
+      "Endpoint: GET /equipment-status\nSpecification:\n{\"summary\": \"Retrieve equipment status\", \"description\": \"Obtain the current status and performance metrics of all monitored equipment.\", \"responses\": {\"200\": {\"description\": \"Successfully retrieved the equipment status and metrics.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"equipmentId\": {\"type\": \"string\", \"description\": \"Identifier of the equipment.\"}, \"status\": {\"type\": \"string\", \"description\": \"Current operational status of the equipment.\"}, \"metrics\": {\"type\": \"object\", \"description\": \"Performance metrics collected from the equipment.\"}}}}}}}, \"500\": {\"description\": \"Server error while retrieving equipment status.\"}}}",
+      "Endpoint: GET /generation/forecast\nSpecification:\n{\"summary\": \"Retrieve Energy Generation Forecast\", \"description\": \"Fetch energy generation forecast data based on current solar and wind data trends.\", \"responses\": {\"200\": {\"description\": \"Successfully retrieved energy generation forecast data.\", \"content\": {\"application/json\": {\"example\": {\"forecast_start\": \"2023-10-10T13:00:00Z\", \"forecast_end\": \"2023-10-10T18:00:00Z\", \"solar_forecast_mw\": 1600.0, \"wind_forecast_mw\": 1250.0}}}}}}",
+      "Endpoint: GET /resources/list\nSpecification:\n{\"summary\": \"Fetch Details of All Monitored Energy Resources\", \"description\": \"Retrieve a list of all energy resources currently being monitored, including their types and current statuses.\", \"responses\": {\"200\": {\"description\": \"Successfully retrieved the resource list.\", \"content\": {\"application/json\": {\"example\": [{\"resource_id\": \"solar-array-1\", \"type\": \"solar\", \"status\": \"operational\"}, {\"resource_id\": \"wind-turbine-5\", \"type\": \"wind\", \"status\": \"under_maintenance\"}]}}}}}",
+      "Endpoint: GET /reports/daily\nSpecification:\n{\"summary\": \"Download Daily Aggregate Reports for Resource Generation\", \"description\": \"Retrieve a daily aggregate report of solar and wind energy generation for operational insights.\", \"responses\": {\"200\": {\"description\": \"Successfully retrieved the daily report.\", \"content\": {\"application/pdf\": {\"example\": \"(Binary file representing a PDF report)\"}}}}}",
+      "Endpoint: GET /generation/wind\nSpecification:\n{\"summary\": \"Fetch Real-Time Wind Energy Generation Data\", \"description\": \"Retrieve real-time data on the current wind energy generation for efficient resource monitoring.\", \"responses\": {\"200\": {\"description\": \"Successfully retrieved wind energy generation data.\", \"content\": {\"application/json\": {\"example\": {\"timestamp\": \"2023-10-10T12:45:00Z\", \"wind_generation_mw\": 1200.75}}}}}}",
+      "Endpoint: GET /weather-impact-analysis\nSpecification:\n{\"summary\": \"Analyze Weather's Impact on Electricity Demand\", \"description\": \"Evaluate the effect of weather conditions on electricity demand trends.\", \"parameters\": [{\"name\": \"start_date\", \"in\": \"query\", \"description\": \"The start date for analysis in YYYY-MM-DD format.\", \"required\": true, \"schema\": {\"type\": \"string\", \"format\": \"date\"}}, {\"name\": \"end_date\", \"in\": \"query\", \"description\": \"The end date for analysis in YYYY-MM-DD format.\", \"required\": true, \"schema\": {\"type\": \"string\", \"format\": \"date\"}}], \"responses\": {\"200\": {\"description\": \"Weather impact analysis data retrieved successfully.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"impact\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"date\": {\"type\": \"string\", \"format\": \"date\"}, \"temperature\": {\"type\": \"number\", \"description\": \"Temperature recorded on the date.\"}, \"impact_on_demand\": {\"type\": \"number\", \"description\": \"Calculated impact of weather on demand.\"}}}}}}}}}}}",
+      "Endpoint: GET /grid/balance/status\nSpecification:\n{\"summary\": \"Retrieve Grid Balance Status\", \"description\": \"Fetch the current status of the grid's balance and stability.\", \"responses\": {\"200\": {\"description\": \"Grid balance status retrieved successfully.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"grid_status\": {\"type\": \"string\", \"enum\": [\"stable\", \"unstable\"]}, \"details\": {\"type\": \"object\", \"properties\": {\"overload\": {\"type\": \"boolean\"}, \"frequency\": {\"type\": \"number\", \"description\": \"Grid frequency in Hz.\"}}}}}}}}}}",
+      "Endpoint: GET /generation/solar\nSpecification:\n{\"summary\": \"Fetch Real-Time Solar Energy Generation Data\", \"description\": \"Retrieve real-time data on the current solar energy generation for efficient resource monitoring.\", \"responses\": {\"200\": {\"description\": \"Successfully retrieved solar energy generation data.\", \"content\": {\"application/json\": {\"example\": {\"timestamp\": \"2023-10-10T12:45:00Z\", \"solar_generation_mw\": 1500.25}}}}}}"
+    ],
+    "compressed_chunks": [
+      "Endpoint: GET /resources/status\nSpecification: \"summary\": \"Extract Operational Status of Energy Generation Resources\" \"description\": \"Retrieve the current operational status, including availability, faults, or performance indicators of monitored resources.\" \"description\": \"Successfully retrieved operational status of energy resources.\" \"example\": {\"resource_id\": \"solar-array-1\", \"status\": \"operational\", \"details\": \"No detected issues.\"}",
+      "Endpoint: GET /equipment-monitoring\nSpecification: \"summary\": \"Access equipment status and performance\" \"description\": \"Retrieve status and performance data for energy-related equipment.\" \"status\": {\"type\": \"string\", \"description\": \"Current status of the equipment (e.g., 'active', 'maintenance').\"} \"performanceMetrics\": {\"type\": \"object\", \"description\": \"Performance metrics of the equipment.\"} \"description\": \"Array of energy equipment details and statuses.\"",
+      "Endpoint: GET /equipment-status\nSpecification: \"summary\": \"Retrieve equipment status\" \"description\": \"Obtain the current status and performance metrics of all monitored equipment.\" \"metrics\": {\"type\": \"object\", \"description\": \"Performance metrics collected from the equipment.\"} \"500\": {\"description\": \"Server error while retrieving equipment status.\"}",
+      "Endpoint: GET /generation/forecast\nSpecification: \"summary\": \"Retrieve Energy Generation Forecast\" \"description\": \"Fetch energy generation forecast data based on current solar and wind data trends.\" \"forecast_end\": \"2023-10-10T18:00:00Z\" \"solar_forecast_mw\": 1600.0",
+      "Endpoint: GET /resources/list\nSpecification: \"summary\": \"Fetch Details of All Monitored Energy Resources\" \"description\": \"Retrieve a list of all energy resources currently being monitored, including their types and current statuses.\" {\"resource_id\": \"solar-array-1\", \"type\": \"solar\", \"status\": \"operational\"}",
+      "Endpoint: GET /reports/daily\nSpecification: \"summary\": \"Download Daily Aggregate Reports for Resource Generation\" \"description\": \"Retrieve a daily aggregate report of solar and wind energy generation for operational insights.\"",
+      "Endpoint: GET /generation/wind\nSpecification: \"summary\": \"Fetch Real-Time Wind Energy Generation Data\" \"description\": \"Retrieve real-time data on the current wind energy generation for efficient resource monitoring.\" \"content\": {\"application/json\": {\"example\": {\"timestamp\": \"2023-10-10T12:45:00Z\", \"wind_generation_mw\": 1200.75}}}",
+      "Endpoint: GET /weather-impact-analysis\nSpecification: \"summary\": \"Analyze Weather's Impact on Electricity Demand\" \"description\": \"Evaluate the effect of weather conditions on electricity demand trends.\" \"temperature\": {\"type\": \"number\", \"description\": \"Temperature recorded on the date.\"} \"impact_on_demand\": {\"type\": \"number\", \"description\": \"Calculated impact of weather on demand.\"}",
+      "Endpoint: GET /grid/balance/status\nSpecification: \"summary\": \"Retrieve Grid Balance Status\" \"description\": \"Fetch the current status of the grid's balance and stability.\" \"overload\": {\"type\": \"boolean\"} \"frequency\": {\"type\": \"number\", \"description\": \"Grid frequency in Hz.\"}",
+      "Endpoint: GET /generation/solar\nSpecification: \"summary\": \"Fetch Real-Time Solar Energy Generation Data\" \"description\": \"Retrieve real-time data on the current solar energy generation for efficient resource monitoring.\" \"content\": {\"application/json\": {\"example\": {\"timestamp\": \"2023-10-10T12:45:00Z\", \"solar_generation_mw\": 1500.25}}}"
+    ],
+    "raw_tokens": 1365,
+    "compressed_tokens": 736,
+    "retrieval_recall": 0.4,
+    "retrieval": [
+      {
+        "rank": 0,
+        "score": 0.4373,
+        "endpoints": [
+          "GET /resources/status"
+        ],
+        "raw_tokens": 99,
+        "compressed_tokens": 84,
+        "kept": true
+      },
+      {
+        "rank": 1,
+        "score": 0.4558,
+        "endpoints": [
+          "GET /equipment-monitoring"
+        ],
+        "raw_tokens": 178,
+        "compressed_tokens": 96,
+        "kept": true
+      },
+      {
+        "rank": 2,
+        "score": 0.4743,
+        "endpoints": [
+          "GET /equipment-status"
+        ],
+        "raw_tokens": 161,
+        "compressed_tokens": 70,
+        "kept": true
+      },
+      {
+        "rank": 3,
+        "score": 0.4866,
+        "endpoints": [
+          "GET /generation/forecast"
+        ],
+        "raw_tokens": 130,
+        "compressed_tokens": 68,
+        "kept": true
+      },
+      {
+        "rank": 4,
+        "score": 0.496,
+        "endpoints": [
+          "GET /resources/list"
+        ],
+        "raw_tokens": 123,
+        "compressed_tokens": 67,
+        "kept": true
+      },
+      {
+        "rank": 5,
+        "score": 0.4979,
+        "endpoints": [
+          "GET /reports/daily"
+        ],
+        "raw_tokens": 78,
+        "compressed_tokens": 41,
+        "kept": true
+      },
+      {
+        "rank": 6,
+        "score": 0.5024,
+        "endpoints": [
+          "GET /generation/wind"
+        ],
+        "raw_tokens": 100,
+        "compressed_tokens": 82,
+        "kept": true
+      },
+      {
+        "rank": 7,
+        "score": 0.5052,
+        "endpoints": [
+          "GET /weather-impact-analysis"
+        ],
+        "raw_tokens": 259,
+        "compressed_tokens": 81,
+        "kept": true
+      },
+      {
+        "rank": 8,
+        "score": 0.5136,
+        "endpoints": [
+          "GET /grid/balance/status"
+        ],
+        "raw_tokens": 137,
+        "compressed_tokens": 65,
+        "kept": true
+      },
+      {
+        "rank": 9,
+        "score": 0.5142,
+        "endpoints": [
+          "GET /generation/solar"
+        ],
+        "raw_tokens": 100,
+        "compressed_tokens": 82,
+        "kept": true
+      }
+    ],
+    "qwen_tokens": {
+      "hint_calls": 1,
+      "hint_prompt_tokens": 371,
+      "hint_generated_tokens": 64,
+      "attention_passes": 10,
+      "attention_input_tokens": 4182
+    },
+    "seconds": 14.4
+  },
+  {
+    "benchmark": "socbenchd_1",
+    "queryset": "materials",
+    "top_k": 10,
+    "query": "Provide the materials used in a specific project identified by its project ID, along with recommendations for improving the recyclability of those materials. Additionally, suggest a new recycler that can process the improved materials, including their name, location, and the materials they accept.",
+    "solution": [
+      "POST /recyclers/suggestions",
+      "GET /projects/{id}/materials",
+      "GET /suggestions/material-improvements"
+    ],
+    "base_url": "https://api.socbench.example",
+    "base_path": "",
+    "raw_chunks": [
+      "Endpoint: GET /suggestions/material-improvements\nSpecification:\n{\"summary\": \"Get material improvement suggestions\", \"description\": \"Receive recommendations for improving the recyclability of specific materials.\", \"parameters\": [{\"name\": \"materialId\", \"in\": \"query\", \"description\": \"The identifier of the material to receive recommendations for.\", \"required\": true, \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Material improvement suggestions.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"recommendations\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}, \"description\": \"List of improvement suggestions.\"}}}}}}}}",
+      "Endpoint: POST /recyclers/suggestions\nSpecification:\n{\"summary\": \"Submit recycler suggestions\", \"description\": \"Submit a recycler's information to enhance the database of recycling options.\", \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"recyclerName\": {\"type\": \"string\", \"description\": \"Name of the recycler.\"}, \"location\": {\"type\": \"string\", \"description\": \"Location of the recycler.\"}, \"materialsAccepted\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}, \"description\": \"List of materials accepted by the recycler.\"}}, \"required\": [\"recyclerName\", \"location\", \"materialsAccepted\"]}}}}, \"responses\": {\"201\": {\"description\": \"Recycler suggestion successfully submitted.\"}}}",
+      "Endpoint: GET /recyclers/compatibility\nSpecification:\n{\"summary\": \"Find compatible recyclers\", \"description\": \"Identify suitable recycling facilities for recyclable material types.\", \"parameters\": [{\"name\": \"materialType\", \"in\": \"query\", \"description\": \"Type of material to filter recyclers.\", \"required\": true, \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"List of compatible recyclers.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"recyclerName\": {\"type\": \"string\", \"description\": \"Name of the recycler.\"}, \"location\": {\"type\": \"string\", \"description\": \"Location of the recycler.\"}}}}}}}}}",
+      "Endpoint: PUT /materials/{id}\nSpecification:\n{\"summary\": \"Update material information\", \"description\": \"Update information for a specific material by providing its identifier.\", \"parameters\": [{\"name\": \"id\", \"in\": \"path\", \"description\": \"Identifier of the material to update.\", \"required\": true, \"schema\": {\"type\": \"string\"}}], \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"materialName\": {\"type\": \"string\", \"description\": \"Updated name of the material.\"}, \"properties\": {\"type\": \"object\", \"description\": \"Updated key-value pairs of material properties.\", \"additionalProperties\": {\"type\": \"string\"}}}}}}}, \"responses\": {\"200\": {\"description\": \"Material successfully updated.\"}, \"404\": {\"description\": \"Material not found.\"}}}",
+      "Endpoint: POST /materials/classify\nSpecification:\n{\"summary\": \"Classify a material\", \"description\": \"Analyze the uploaded material data and determine its recyclability classification.\", \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"materialName\": {\"type\": \"string\", \"description\": \"Name of the material being analyzed.\"}, \"properties\": {\"type\": \"object\", \"description\": \"Key-value pairs of material properties.\", \"additionalProperties\": {\"type\": \"string\"}}}, \"required\": [\"materialName\", \"properties\"]}}}}, \"responses\": {\"200\": {\"description\": \"Material classification results\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"classification\": {\"type\": \"string\", \"description\": \"Recyclability classification of the material.\"}, \"details\": {\"type\": \"string\", \"description\": \"Additional details about the classification.\"}}}}}}, \"400\": {\"description\": \"Invalid input data.\"}}}",
+      "Endpoint: GET /projects/{id}/materials\nSpecification:\n{\"summary\": \"Retrieve materials for a project\", \"description\": \"Fetch a collection of materials associated with a particular construction project by its project ID.\", \"parameters\": [{\"name\": \"id\", \"in\": \"path\", \"required\": true, \"description\": \"The unique identifier of the project\", \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"A list of materials for the project\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"$ref\": \"#/components/schemas/Material\"}}}}}}}",
+      "Endpoint: GET /materials/categories\nSpecification:\n{\"summary\": \"Get material categories\", \"description\": \"Retrieve the list of possible material categories for classification purposes.\", \"responses\": {\"200\": {\"description\": \"List of material categories\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}, \"description\": \"Array of material categories.\"}}}}}}",
+      "Endpoint: POST /streams/process\nSpecification:\n{\"summary\": \"Submit waste stream for classification\", \"description\": \"Submit a batch of materials within a waste stream for analysis and classification.\", \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"streamName\": {\"type\": \"string\", \"description\": \"Name of the waste stream.\"}, \"materials\": {\"type\": \"array\", \"items\": {\"type\": \"object\"}, \"description\": \"List of materials in the waste stream.\"}}, \"required\": [\"streamName\", \"materials\"]}}}}, \"responses\": {\"200\": {\"description\": \"Successfully submitted waste stream for processing.\"}}}",
+      "Endpoint: DELETE /materials/{id}\nSpecification:\n{\"summary\": \"Delete a material\", \"description\": \"Remove a specified material and its data using its unique identifier.\", \"parameters\": [{\"name\": \"id\", \"in\": \"path\", \"description\": \"Identifier of the material to delete.\", \"required\": true, \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Material successfully deleted.\"}, \"404\": {\"description\": \"Material not found.\"}}}",
+      "Endpoint: GET /streams/{id}/results\nSpecification:\n{\"summary\": \"Get waste stream results\", \"description\": \"Access the classification results for a specified waste stream.\", \"parameters\": [{\"name\": \"id\", \"in\": \"path\", \"description\": \"Identifier of the waste stream.\", \"required\": true, \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Classification results for the waste stream.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"streamId\": {\"type\": \"string\", \"description\": \"Unique identifier of the waste stream.\"}, \"resultDetails\": {\"type\": \"string\", \"description\": \"Details of the classification results.\"}}}}}}}}"
+    ],
+    "compressed_chunks": [
+      "Endpoint: GET /suggestions/material-improvements\nSpecification: \"summary\": \"Get material improvement suggestions\" \"description\": \"Receive recommendations for improving the recyclability of specific materials.\" \"recommendations\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}, \"description\": \"List of improvement suggestions.\"}",
+      "Endpoint: POST /recyclers/suggestions\nSpecification: \"summary\": \"Submit recycler suggestions\" \"description\": \"Submit a recycler's information to enhance the database of recycling options.\" \"responses\": {\"201\": {\"description\": \"Recycler suggestion successfully submitted.\"}}",
+      "Endpoint: GET /recyclers/compatibility\nSpecification: \"summary\": \"Find compatible recyclers\" \"description\": \"Identify suitable recycling facilities for recyclable material types.\" \"in\": \"query\"",
+      "Endpoint: PUT /materials/{id}\nSpecification: \"summary\": \"Update material information\" \"description\": \"Update information for a specific material by providing its identifier.\" \"schema\": {\"type\": \"string\"} \"responses\": {\"200\": {\"description\": \"Material successfully updated.\"}, \"404\": {\"description\": \"Material not found.\"}}",
+      "Endpoint: POST /materials/classify\nSpecification: \"summary\": \"Classify a material\" \"description\": \"Analyze the uploaded material data and determine its recyclability classification.\" \"details\": {\"type\": \"string\", \"description\": \"Additional details about the classification.\"} \"400\": {\"description\": \"Invalid input data.\"}",
+      "Endpoint: GET /projects/{id}/materials\nSpecification: \"summary\": \"Retrieve materials for a project\" \"description\": \"Fetch a collection of materials associated with a particular construction project by its project ID.\" \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"$ref\": \"#/components/schemas/Material\"}}}}",
+      "Endpoint: GET /materials/categories\nSpecification: \"summary\": \"Get material categories\" \"description\": \"Retrieve the list of possible material categories for classification purposes.\" \"schema\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}, \"description\": \"Array of material categories.\"}",
+      "Endpoint: POST /streams/process\nSpecification: \"summary\": \"Submit waste stream for classification\" \"description\": \"Submit a batch of materials within a waste stream for analysis and classification.\" \"responses\": {\"200\": {\"description\": \"Successfully submitted waste stream for processing.\"}}",
+      "Endpoint: DELETE /materials/{id}\nSpecification: \"summary\": \"Delete a material\" \"description\": \"Remove a specified material and its data using its unique identifier.\" \"responses\": {\"200\": {\"description\": \"Material successfully deleted.\"}, \"404\": {\"description\": \"Material not found.\"}}",
+      "Endpoint: GET /streams/{id}/results\nSpecification: \"summary\": \"Get waste stream results\" \"description\": \"Access the classification results for a specified waste stream.\" \"resultDetails\": {\"type\": \"string\", \"description\": \"Details of the classification results.\"}"
+    ],
+    "raw_tokens": 1513,
+    "compressed_tokens": 601,
+    "retrieval_recall": 1.0,
+    "retrieval": [
+      {
+        "rank": 0,
+        "score": 0.3881,
+        "endpoints": [
+          "GET /suggestions/material-improvements"
+        ],
+        "raw_tokens": 146,
+        "compressed_tokens": 65,
+        "kept": true
+      },
+      {
+        "rank": 1,
+        "score": 0.4442,
+        "endpoints": [
+          "POST /recyclers/suggestions"
+        ],
+        "raw_tokens": 171,
+        "compressed_tokens": 53,
+        "kept": true
+      },
+      {
+        "rank": 2,
+        "score": 0.4504,
+        "endpoints": [
+          "GET /recyclers/compatibility"
+        ],
+        "raw_tokens": 166,
+        "compressed_tokens": 41,
+        "kept": true
+      },
+      {
+        "rank": 3,
+        "score": 0.4552,
+        "endpoints": [
+          "PUT /materials/{id}"
+        ],
+        "raw_tokens": 185,
+        "compressed_tokens": 69,
+        "kept": true
+      },
+      {
+        "rank": 4,
+        "score": 0.5065,
+        "endpoints": [
+          "POST /materials/classify"
+        ],
+        "raw_tokens": 218,
+        "compressed_tokens": 67,
+        "kept": true
+      },
+      {
+        "rank": 5,
+        "score": 0.5172,
+        "endpoints": [
+          "GET /projects/{id}/materials"
+        ],
+        "raw_tokens": 135,
+        "compressed_tokens": 74,
+        "kept": true
+      },
+      {
+        "rank": 6,
+        "score": 0.5242,
+        "endpoints": [
+          "GET /materials/categories"
+        ],
+        "raw_tokens": 84,
+        "compressed_tokens": 60,
+        "kept": true
+      },
+      {
+        "rank": 7,
+        "score": 0.5353,
+        "endpoints": [
+          "POST /streams/process"
+        ],
+        "raw_tokens": 148,
+        "compressed_tokens": 55,
+        "kept": true
+      },
+      {
+        "rank": 8,
+        "score": 0.5452,
+        "endpoints": [
+          "DELETE /materials/{id}"
+        ],
+        "raw_tokens": 103,
+        "compressed_tokens": 61,
+        "kept": true
+      },
+      {
+        "rank": 9,
+        "score": 0.5557,
+        "endpoints": [
+          "GET /streams/{id}/results"
+        ],
+        "raw_tokens": 157,
+        "compressed_tokens": 56,
+        "kept": true
+      }
+    ],
+    "qwen_tokens": {
+      "hint_calls": 1,
+      "hint_prompt_tokens": 357,
+      "hint_generated_tokens": 36,
+      "attention_passes": 10,
+      "attention_input_tokens": 3531
+    },
+    "seconds": 9.8
+  },
+  {
+    "benchmark": "socbenchd_1",
+    "queryset": "industrials",
+    "top_k": 10,
+    "query": "I need a comprehensive summary of all existing orders along with the real-time operational status of monitored machinery, future project resource and budget forecasts, and the usage analytics for workforce skill completion rates. Additionally, update the configuration settings for a specific machinery with ID 123 and create a new project with detailed parameters. Include information about any available resources utilized across these tasks.",
+    "solution": [
+      "GET /orders",
+      "GET /machinery_health",
+      "GET /forecast",
+      "POST /projects",
+      "GET /analytics/completion-rates",
+      "GET /resources",
+      "PUT /machinery_config/{id}"
+    ],
+    "base_url": "https://api.socbench.example",
+    "base_path": "",
+    "raw_chunks": [
+      "Endpoint: PUT /machinery_config/{id}\nSpecification:\n{\"summary\": \"Update configuration settings for the specified machinery by its ID\", \"description\": \"Enable updates to the operational configuration and thresholds for specific machinery by its unique ID.\", \"parameters\": [{\"name\": \"id\", \"in\": \"path\", \"required\": true, \"description\": \"Unique identifier for the machinery.\", \"schema\": {\"type\": \"string\"}}], \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"settings\": {\"type\": \"object\", \"description\": \"Configuration settings to update for the machinery.\"}}}}}}, \"responses\": {\"200\": {\"description\": \"Machinery configuration updated successfully.\"}}}",
+      "Endpoint: GET /machinery_health\nSpecification:\n{\"summary\": \"Retrieve real-time operational status of all monitored machinery\", \"description\": \"Fetch the current operational health status of all industrial machinery being monitored. This endpoint provides insights into real-time status.\", \"responses\": {\"200\": {\"description\": \"Successful response with real-time machinery status.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"machinery\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"id\": {\"type\": \"string\", \"description\": \"Unique identifier for the machinery.\"}, \"status\": {\"type\": \"string\", \"description\": \"Current operational health status (e.g., Good, Warning, Critical).\"}, \"lastUpdated\": {\"type\": \"string\", \"format\": \"date-time\", \"description\": \"Timestamp of the last status update.\"}}}}}}}}}}}",
+      "Endpoint: GET /maintenance_schedule\nSpecification:\n{\"summary\": \"Retrieve scheduled maintenance details for all monitored machinery\", \"description\": \"Return upcoming maintenance schedules for all monitored machinery.\", \"responses\": {\"200\": {\"description\": \"Maintenance schedules retrieved successfully.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"machineryId\": {\"type\": \"string\", \"description\": \"Unique identifier for the machinery.\"}, \"schedule\": {\"type\": \"string\", \"format\": \"date\", \"description\": \"Date for the scheduled maintenance.\"}}}}}}}}}",
+      "Endpoint: GET /analytics/predictions\nSpecification:\n{\"summary\": \"Access predictive maintenance analytics and insights for machinery\", \"description\": \"Retrieve insights and predictions for the maintenance needs of monitored machinery based on sensor data and analytics.\", \"responses\": {\"200\": {\"description\": \"Predictive analytics data retrieved successfully.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"machineryId\": {\"type\": \"string\", \"description\": \"Unique identifier for the machinery.\"}, \"prediction\": {\"type\": \"string\", \"description\": \"Predicted maintenance requirement or issue.\"}, \"nextMaintenanceDate\": {\"type\": \"string\", \"format\": \"date\", \"description\": \"Recommended next maintenance date.\"}}}}}}}}}",
+      "Endpoint: PUT /orders/{id}\nSpecification:\n{\"summary\": \"Update order details\", \"description\": \"Updates information about a specific order identified by its unique ID.\", \"parameters\": [{\"name\": \"id\", \"in\": \"path\", \"required\": true, \"schema\": {\"type\": \"string\"}, \"description\": \"The unique ID of the order to update.\"}], \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"status\": {\"type\": \"string\", \"description\": \"The updated status of the order.\"}}}}}}, \"responses\": {\"200\": {\"description\": \"Order updated successfully.\"}}}",
+      "Endpoint: PUT /budgets/{projectId}\nSpecification:\n{\"summary\": \"Adjust project budget allocations\", \"description\": \"Updates the budget allocations for a specific project, including category-specific adjustments or fund reallocations.\", \"parameters\": [{\"name\": \"projectId\", \"in\": \"path\", \"required\": true, \"description\": \"The unique ID of the project for which the budget is being updated.\", \"schema\": {\"type\": \"string\"}}], \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"categories\": {\"type\": \"object\", \"additionalProperties\": {\"type\": \"number\", \"format\": \"float\", \"description\": \"New budget allocation for the category.\"}, \"description\": \"A mapping of budget categories to their new allocated amounts.\"}, \"totalBudget\": {\"type\": \"number\", \"format\": \"float\", \"description\": \"The updated total budget for the project.\"}}, \"required\": [\"categories\"]}}}}, \"responses\": {\"200\": {\"description\": \"Budget allocation updated successfully.\"}}}",
+      "Endpoint: POST /alerts\nSpecification:\n{\"summary\": \"Set up alerts for specific machinery condition thresholds\", \"description\": \"Define alerts for specific conditions or thresholds for monitored machinery. Alerts will notify in case of abnormal behavior.\", \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"machineryId\": {\"type\": \"string\", \"description\": \"Unique identifier for the machinery.\"}, \"threshold\": {\"type\": \"string\", \"description\": \"Condition or threshold that triggers the alert, e.g., temperature > 80\\u00b0C.\"}, \"alertType\": {\"type\": \"string\", \"description\": \"Type of alert (e.g., Email, SMS, Push Notification).\"}}, \"required\": [\"machineryId\", \"threshold\", \"alertType\"]}}}}, \"responses\": {\"201\": {\"description\": \"Alert successfully created.\"}}}",
+      "Endpoint: GET /system_report\nSpecification:\n{\"summary\": \"Generate and download a comprehensive system health report\", \"description\": \"Request a detailed system health report summarizing the status and health of all monitored machinery.\", \"responses\": {\"200\": {\"description\": \"System report generated successfully.\", \"content\": {\"application/pdf\": {\"schema\": {\"type\": \"string\", \"format\": \"binary\"}}}}}}",
+      "Endpoint: GET /sensor_data/{id}\nSpecification:\n{\"summary\": \"Retrieve historical sensor data for the specified machinery by its ID\", \"description\": \"Fetch historical sensor data for analysis and trend identification for a specific machinery ID.\", \"parameters\": [{\"name\": \"id\", \"in\": \"path\", \"required\": true, \"description\": \"Unique identifier for the machinery.\", \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Historical sensor data retrieved successfully.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"data\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"timestamp\": {\"type\": \"string\", \"format\": \"date-time\", \"description\": \"Timestamp of the sensor reading.\"}, \"value\": {\"type\": \"number\", \"description\": \"Sensor value recorded at the given timestamp.\"}}}}}}}}}}}",
+      "Endpoint: PUT /items/{id}\nSpecification:\n{\"summary\": \"Update item details\", \"description\": \"Updates the details of a specific inventory item identified by its unique ID.\", \"parameters\": [{\"name\": \"id\", \"in\": \"path\", \"required\": true, \"schema\": {\"type\": \"string\"}, \"description\": \"The unique ID of the item to update.\"}], \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"name\": {\"type\": \"string\", \"description\": \"Updated name of the item.\"}, \"description\": {\"type\": \"string\", \"description\": \"Updated description of the item.\"}, \"quantity\": {\"type\": \"integer\", \"description\": \"Updated quantity of the item.\"}, \"price\": {\"type\": \"number\", \"format\": \"float\", \"description\": \"Updated unit price of the item.\"}}}}}}, \"responses\": {\"200\": {\"description\": \"Item details updated successfully.\"}}}"
+    ],
+    "compressed_chunks": [
+      "Endpoint: PUT /machinery_config/{id}\nSpecification: \"summary\": \"Update configuration settings for the specified machinery by its ID\" \"description\": \"Enable updates to the operational configuration and thresholds for specific machinery by its unique ID.\" \"responses\": {\"200\": {\"description\": \"Machinery configuration updated successfully.\"}}",
+      "Endpoint: GET /machinery_health\nSpecification: \"summary\": \"Retrieve real-time operational status of all monitored machinery\" \"description\": \"Fetch the current operational health status of all industrial machinery being monitored. This endpoint provides insights into real-time status.\"",
+      "Endpoint: GET /maintenance_schedule\nSpecification: \"summary\": \"Retrieve scheduled maintenance details for all monitored machinery\" \"description\": \"Return upcoming maintenance schedules for all monitored machinery.\"",
+      "Endpoint: GET /analytics/predictions\nSpecification: \"summary\": \"Access predictive maintenance analytics and insights for machinery\" \"description\": \"Retrieve insights and predictions for the maintenance needs of monitored machinery based on sensor data and analytics.\" \"nextMaintenanceDate\": {\"type\": \"string\", \"format\": \"date\", \"description\": \"Recommended next maintenance date.\"}",
+      "Endpoint: PUT /orders/{id}\nSpecification: \"summary\": \"Update order details\" \"description\": \"Updates information about a specific order identified by its unique ID.\" \"responses\": {\"200\": {\"description\": \"Order updated successfully.\"}}",
+      "Endpoint: PUT /budgets/{projectId}\nSpecification: \"summary\": \"Adjust project budget allocations\" \"description\": \"Updates the budget allocations for a specific project, including category-specific adjustments or fund reallocations.\" \"description\": \"The unique ID of the project for which the budget is being updated.\" \"responses\": {\"200\": {\"description\": \"Budget allocation updated successfully.\"}}",
+      "Endpoint: POST /alerts\nSpecification: \"summary\": \"Set up alerts for specific machinery condition thresholds\" \"description\": \"Define alerts for specific conditions or thresholds for monitored machinery. Alerts will notify in case of abnormal behavior.\" \"responses\": {\"201\": {\"description\": \"Alert successfully created.\"}}",
+      "Endpoint: GET /system_report\nSpecification: \"summary\": \"Generate and download a comprehensive system health report\" \"description\": \"Request a detailed system health report summarizing the status and health of all monitored machinery.\" \"description\": \"System report generated successfully.\"",
+      "Endpoint: GET /sensor_data/{id}\nSpecification: \"summary\": \"Retrieve historical sensor data for the specified machinery by its ID\" \"description\": \"Fetch historical sensor data for analysis and trend identification for a specific machinery ID.\" \"timestamp\": {\"type\": \"string\", \"format\": \"date-time\", \"description\": \"Timestamp of the sensor reading.\"} \"value\": {\"type\": \"number\", \"description\": \"Sensor value recorded at the given timestamp.\"}",
+      "Endpoint: PUT /items/{id}\nSpecification: \"summary\": \"Update item details\" \"description\": \"Updates the details of a specific inventory item identified by its unique ID.\" \"description\": \"The unique ID of the item to update.\" \"responses\": {\"200\": {\"description\": \"Item details updated successfully.\"}}"
+    ],
+    "raw_tokens": 1698,
+    "compressed_tokens": 620,
+    "retrieval_recall": 0.2857142857142857,
+    "retrieval": [
+      {
+        "rank": 0,
+        "score": 0.4223,
+        "endpoints": [
+          "PUT /machinery_config/{id}"
+        ],
+        "raw_tokens": 157,
+        "compressed_tokens": 64,
+        "kept": true
+      },
+      {
+        "rank": 1,
+        "score": 0.5177,
+        "endpoints": [
+          "GET /machinery_health"
+        ],
+        "raw_tokens": 191,
+        "compressed_tokens": 50,
+        "kept": true
+      },
+      {
+        "rank": 2,
+        "score": 0.5216,
+        "endpoints": [
+          "GET /maintenance_schedule"
+        ],
+        "raw_tokens": 130,
+        "compressed_tokens": 35,
+        "kept": true
+      },
+      {
+        "rank": 3,
+        "score": 0.5276,
+        "endpoints": [
+          "GET /analytics/predictions"
+        ],
+        "raw_tokens": 165,
+        "compressed_tokens": 73,
+        "kept": true
+      },
+      {
+        "rank": 4,
+        "score": 0.545,
+        "endpoints": [
+          "PUT /orders/{id}"
+        ],
+        "raw_tokens": 144,
+        "compressed_tokens": 49,
+        "kept": true
+      },
+      {
+        "rank": 5,
+        "score": 0.5482,
+        "endpoints": [
+          "PUT /budgets/{projectId}"
+        ],
+        "raw_tokens": 227,
+        "compressed_tokens": 77,
+        "kept": true
+      },
+      {
+        "rank": 6,
+        "score": 0.5484,
+        "endpoints": [
+          "POST /alerts"
+        ],
+        "raw_tokens": 193,
+        "compressed_tokens": 60,
+        "kept": true
+      },
+      {
+        "rank": 7,
+        "score": 0.5567,
+        "endpoints": [
+          "GET /system_report"
+        ],
+        "raw_tokens": 82,
+        "compressed_tokens": 52,
+        "kept": true
+      },
+      {
+        "rank": 8,
+        "score": 0.562,
+        "endpoints": [
+          "GET /sensor_data/{id}"
+        ],
+        "raw_tokens": 196,
+        "compressed_tokens": 95,
+        "kept": true
+      },
+      {
+        "rank": 9,
+        "score": 0.5671,
+        "endpoints": [
+          "PUT /items/{id}"
+        ],
+        "raw_tokens": 213,
+        "compressed_tokens": 65,
+        "kept": true
+      }
+    ],
+    "qwen_tokens": {
+      "hint_calls": 1,
+      "hint_prompt_tokens": 378,
+      "hint_generated_tokens": 64,
+      "attention_passes": 10,
+      "attention_input_tokens": 4499
+    },
+    "seconds": 14.9
+  },
+  {
+    "benchmark": "socbenchd_1",
+    "queryset": "consumer discretionary",
+    "top_k": 10,
+    "query": "Update the details of an existing reservation with ID 123 to shift the check-in date to \"2023-11-22\" and the check-out date to \"2023-11-27\". Then, optimize the vehicle inventory by submitting the current stock of models and their quantities, ensuring the inventory aligns with market demand. Analyze the performance metrics of product categories to see which ones are driving the most sales and engagement. Finally, process the payment for the updated reservation using a provided payment method to complete the booking.",
+    "solution": [
+      "PUT /reservations/{id}",
+      "POST /inventory/optimize",
+      "GET /categories/performance",
+      "POST /payment/checkout"
+    ],
+    "base_url": "https://api.socbench.example",
+    "base_path": "",
+    "raw_chunks": [
+      "Endpoint: PUT /reservations/{id}\nSpecification:\n{\"summary\": \"Update an existing reservation\", \"description\": \"Update a reservation's details, such as dates or preferences, using its unique ID.\", \"parameters\": [{\"name\": \"id\", \"in\": \"path\", \"required\": true, \"schema\": {\"type\": \"integer\"}, \"description\": \"The unique ID of the reservation to update.\"}], \"responses\": {\"200\": {\"description\": \"The reservation was successfully updated.\", \"content\": {\"application/json\": {\"example\": {\"id\": 123, \"guestId\": 103, \"roomId\": 303, \"checkIn\": \"2023-11-21\", \"checkOut\": \"2023-11-26\", \"preferences\": {\"smoking\": false, \"bedType\": \"Queen\"}, \"status\": \"Confirmed\"}}}}}}",
+      "Endpoint: POST /inventory/optimize\nSpecification:\n{\"summary\": \"Optimize Vehicle Inventory\", \"description\": \"Upload the current inventory data to receive insights on optimizing the inventory to match market demand.\", \"requestBody\": {\"description\": \"Inventory data for optimization.\", \"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"inventoryItems\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"model\": {\"type\": \"string\"}, \"quantity\": {\"type\": \"number\"}, \"location\": {\"type\": \"string\"}}}}}}}}}, \"responses\": {\"200\": {\"description\": \"Recommendations for inventory optimization.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"recommendations\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"model\": {\"type\": \"string\"}, \"action\": {\"type\": \"string\", \"description\": \"Recommendation for inventory adjustment (e.g., move to region X).\"}}}}}}}}}}}",
+      "Endpoint: POST /inventory/suggestions\nSpecification:\n{\"summary\": \"Submit Inventory for Restocking Suggestions\", \"description\": \"Accepts current inventory data to provide optimized recommendations for restocking based on market trends and consumer demand.\", \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"$ref\": \"#/components/schemas/InventoryData\"}}}}, \"responses\": {\"200\": {\"description\": \"Successfully calculated restocking suggestions.\", \"content\": {\"application/json\": {\"schema\": {\"$ref\": \"#/components/schemas/RestockingSuggestions\"}}}}}}",
+      "Endpoint: POST /reservations\nSpecification:\n{\"summary\": \"Create a new reservation\", \"description\": \"Create a new reservation for a guest based on their preferences and selected room.\", \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"example\": {\"guestId\": 103, \"roomId\": 303, \"checkIn\": \"2023-11-20\", \"checkOut\": \"2023-11-25\", \"preferences\": {\"smoking\": false, \"bedType\": \"Queen\"}}}}}, \"responses\": {\"201\": {\"description\": \"The reservation was successfully created.\", \"content\": {\"application/json\": {\"example\": {\"id\": 123, \"guestId\": 103, \"roomId\": 303, \"checkIn\": \"2023-11-20\", \"checkOut\": \"2023-11-25\", \"preferences\": {\"smoking\": false, \"bedType\": \"Queen\"}, \"status\": \"Confirmed\"}}}}}}",
+      "Endpoint: PUT /rooms/{id}\nSpecification:\n{\"summary\": \"Update a room's details\", \"description\": \"Modify the details of an existing room, such as its price or availability.\", \"parameters\": [{\"name\": \"id\", \"in\": \"path\", \"required\": true, \"schema\": {\"type\": \"integer\"}, \"description\": \"The unique ID of the room to update.\"}], \"responses\": {\"200\": {\"description\": \"The room details were successfully updated.\", \"content\": {\"application/json\": {\"example\": {\"id\": 301, \"type\": \"Deluxe\", \"pricePerNight\": 160, \"status\": \"Available\"}}}}}}",
+      "Endpoint: GET /reservations\nSpecification:\n{\"summary\": \"Retrieve all reservations\", \"description\": \"Fetch a list of all reservations and their details, including guest information, booking dates, and room details.\", \"responses\": {\"200\": {\"description\": \"A list of reservations.\", \"content\": {\"application/json\": {\"example\": [{\"id\": 1, \"guestId\": 101, \"roomId\": 301, \"checkIn\": \"2023-11-01\", \"checkOut\": \"2023-11-05\", \"status\": \"Confirmed\"}, {\"id\": 2, \"guestId\": 102, \"roomId\": 302, \"checkIn\": \"2023-12-01\", \"checkOut\": \"2023-12-10\", \"status\": \"Pending\"}]}}}}}",
+      "Endpoint: GET /vehicle-pricing/trends\nSpecification:\n{\"summary\": \"Analyze Vehicle Pricing Trends\", \"description\": \"Retrieve historical and current pricing trends for various vehicle categories to understand market dynamics.\", \"parameters\": [{\"name\": \"category\", \"in\": \"query\", \"description\": \"Vehicle category (e.g., sedan, SUV).\", \"required\": false, \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Vehicle pricing trends data.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"category\": {\"type\": \"string\"}, \"pricing\": {\"type\": \"array\", \"items\": {\"type\": \"number\"}}, \"timeframe\": {\"type\": \"string\"}}}}}}}}}",
+      "Endpoint: GET /vehicle-data/trends\nSpecification:\n{\"summary\": \"Retrieve Aggregated Vehicle Sales Trends\", \"description\": \"Retrieve aggregated trends of vehicle sales categorized by region, model, and timeframe. This endpoint provides comprehensive insights into sales to help identify patterns over specified periods.\", \"parameters\": [{\"name\": \"region\", \"in\": \"query\", \"description\": \"Filter results by region (e.g., North America, Europe).\", \"required\": false, \"schema\": {\"type\": \"string\"}}, {\"name\": \"model\", \"in\": \"query\", \"description\": \"Specify a vehicle model to focus the trends data.\", \"required\": false, \"schema\": {\"type\": \"string\"}}, {\"name\": \"timeframe\", \"in\": \"query\", \"description\": \"Specify the time range for the trends (e.g., last 6 months, year-to-date).\", \"required\": false, \"schema\": {\"type\": \"string\", \"example\": \"2023-01-01 to 2023-10-31\"}}], \"responses\": {\"200\": {\"description\": \"Successful response with aggregated vehicle sales trends.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"region\": {\"type\": \"string\"}, \"model\": {\"type\": \"string\"}, \"timeframe\": {\"type\": \"string\"}, \"sales\": {\"type\": \"number\", \"description\": \"Number of vehicles sold.\"}}}}}}}}}",
+      "Endpoint: POST /payment/checkout\nSpecification:\n{\"summary\": \"Complete payment\", \"description\": \"Make a payment for booked events or tours by providing payment details and booking references.\", \"requestBody\": {\"description\": \"Details for processing payment.\", \"required\": true, \"content\": {\"application/json\": {\"schema\": {\"$ref\": \"#/components/schemas/PaymentRequest\"}}}}, \"responses\": {\"200\": {\"description\": \"Payment successful\", \"content\": {\"application/json\": {\"schema\": {\"$ref\": \"#/components/schemas/PaymentResponse\"}}}}, \"400\": {\"description\": \"Invalid payment details provided\"}}}",
+      "Endpoint: GET /market-demand/forecasts\nSpecification:\n{\"summary\": \"Access Market Demand Predictive Analytics\", \"description\": \"Retrieve predictive analytics reports on market demands for upcoming periods to aid planning and manufacturing strategies.\", \"parameters\": [{\"name\": \"timePeriod\", \"in\": \"query\", \"description\": \"Specify the forecast period (e.g., next quarter, next year).\", \"required\": false, \"schema\": {\"type\": \"string\", \"example\": \"2024-Q1\"}}], \"responses\": {\"200\": {\"description\": \"Predictive analytics for market demand forecasts.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"region\": {\"type\": \"string\"}, \"predictedDemand\": {\"type\": \"number\", \"description\": \"Expected market demand.\"}}}}}}}}"
+    ],
+    "compressed_chunks": [
+      "Endpoint: PUT /reservations/{id}\nSpecification: \"summary\": \"Update an existing reservation\" \"description\": \"Update a reservation's details, such as dates or preferences, using its unique ID.\" \"schema\": {\"type\": \"integer\"} \"preferences\": {\"smoking\": false, \"bedType\": \"Queen\"}",
+      "Endpoint: POST /inventory/optimize\nSpecification: \"summary\": \"Optimize Vehicle Inventory\" \"description\": \"Upload the current inventory data to receive insights on optimizing the inventory to match market demand.\" \"required\": true \"properties\": {\"model\": {\"type\": \"string\"}, \"quantity\": {\"type\": \"number\"}, \"location\": {\"type\": \"string\"}} \"action\": {\"type\": \"string\", \"description\": \"Recommendation for inventory adjustment (e.g., move to region X).\"}",
+      "Endpoint: POST /inventory/suggestions\nSpecification: \"summary\": \"Submit Inventory for Restocking Suggestions\" \"description\": \"Accepts current inventory data to provide optimized recommendations for restocking based on market trends and consumer demand.\"",
+      "Endpoint: POST /reservations\nSpecification: \"summary\": \"Create a new reservation\" \"description\": \"Create a new reservation for a guest based on their preferences and selected room.\" \"preferences\": {\"smoking\": false, \"bedType\": \"Queen\"} \"status\": \"Confirmed\"",
+      "Endpoint: PUT /rooms/{id}\nSpecification: \"summary\": \"Update a room's details\" \"description\": \"Modify the details of an existing room, such as its price or availability.\" \"schema\": {\"type\": \"integer\"} \"application/json\": {\"example\": {\"id\": 301, \"type\": \"Deluxe\", \"pricePerNight\": 160, \"status\": \"Available\"}}",
+      "Endpoint: GET /reservations\nSpecification: \"summary\": \"Retrieve all reservations\" \"description\": \"Fetch a list of all reservations and their details, including guest information, booking dates, and room details.\" {\"id\": 2, \"guestId\": 102, \"roomId\": 302, \"checkIn\": \"2023-12-01\", \"checkOut\": \"2023-12-10\", \"status\": \"Pending\"}",
+      "Endpoint: GET /vehicle-pricing/trends\nSpecification: \"summary\": \"Analyze Vehicle Pricing Trends\" \"description\": \"Retrieve historical and current pricing trends for various vehicle categories to understand market dynamics.\" \"description\": \"Vehicle category (e.g., sedan, SUV).\" \"required\": false \"schema\": {\"type\": \"string\"}",
+      "Endpoint: GET /vehicle-data/trends\nSpecification: \"summary\": \"Retrieve Aggregated Vehicle Sales Trends\" \"description\": \"Retrieve aggregated trends of vehicle sales categorized by region, model, and timeframe. This endpoint provides comprehensive insights into sales to help identify patterns over specified periods.\" \"schema\": {\"type\": \"string\"} \"schema\": {\"type\": \"string\", \"example\": \"2023-01-01 to 2023-10-31\"}",
+      "Endpoint: POST /payment/checkout\nSpecification: \"summary\": \"Complete payment\" \"description\": \"Make a payment for booked events or tours by providing payment details and booking references.\" \"required\": true \"content\": {\"application/json\": {\"schema\": {\"$ref\": \"#/components/schemas/PaymentRequest\"}}}",
+      "Endpoint: GET /market-demand/forecasts\nSpecification: \"summary\": \"Access Market Demand Predictive Analytics\" \"description\": \"Retrieve predictive analytics reports on market demands for upcoming periods to aid planning and manufacturing strategies.\" \"description\": \"Specify the forecast period (e.g., next quarter, next year).\" \"required\": false \"schema\": {\"type\": \"string\", \"example\": \"2024-Q1\"}"
+    ],
+    "raw_tokens": 1825,
+    "compressed_tokens": 754,
+    "retrieval_recall": 0.75,
+    "retrieval": [
+      {
+        "rank": 0,
+        "score": 0.548,
+        "endpoints": [
+          "PUT /reservations/{id}"
+        ],
+        "raw_tokens": 178,
+        "compressed_tokens": 66,
+        "kept": true
+      },
+      {
+        "rank": 1,
+        "score": 0.6252,
+        "endpoints": [
+          "POST /inventory/optimize"
+        ],
+        "raw_tokens": 227,
+        "compressed_tokens": 101,
+        "kept": true
+      },
+      {
+        "rank": 2,
+        "score": 0.648,
+        "endpoints": [
+          "POST /inventory/suggestions"
+        ],
+        "raw_tokens": 120,
+        "compressed_tokens": 45,
+        "kept": true
+      },
+      {
+        "rank": 3,
+        "score": 0.6653,
+        "endpoints": [
+          "POST /reservations"
+        ],
+        "raw_tokens": 206,
+        "compressed_tokens": 59,
+        "kept": true
+      },
+      {
+        "rank": 4,
+        "score": 0.6677,
+        "endpoints": [
+          "PUT /rooms/{id}"
+        ],
+        "raw_tokens": 138,
+        "compressed_tokens": 82,
+        "kept": true
+      },
+      {
+        "rank": 5,
+        "score": 0.6799,
+        "endpoints": [
+          "GET /reservations"
+        ],
+        "raw_tokens": 171,
+        "compressed_tokens": 92,
+        "kept": true
+      },
+      {
+        "rank": 6,
+        "score": 0.6931,
+        "endpoints": [
+          "GET /vehicle-pricing/trends"
+        ],
+        "raw_tokens": 170,
+        "compressed_tokens": 67,
+        "kept": true
+      },
+      {
+        "rank": 7,
+        "score": 0.6999,
+        "endpoints": [
+          "GET /vehicle-data/trends"
+        ],
+        "raw_tokens": 314,
+        "compressed_tokens": 93,
+        "kept": true
+      },
+      {
+        "rank": 8,
+        "score": 0.7014,
+        "endpoints": [
+          "POST /payment/checkout"
+        ],
+        "raw_tokens": 129,
+        "compressed_tokens": 65,
+        "kept": true
+      },
+      {
+        "rank": 9,
+        "score": 0.7045,
+        "endpoints": [
+          "GET /market-demand/forecasts"
+        ],
+        "raw_tokens": 172,
+        "compressed_tokens": 84,
+        "kept": true
+      }
+    ],
+    "qwen_tokens": {
+      "hint_calls": 1,
+      "hint_prompt_tokens": 420,
+      "hint_generated_tokens": 64,
+      "attention_passes": 10,
+      "attention_input_tokens": 5122
+    },
+    "seconds": 14.0
+  },
+  {
+    "benchmark": "socbenchd_1",
+    "queryset": "consumer staples",
+    "top_k": 10,
+    "query": "Retrieve the list of available product categories to categorize a new sustainable household item under the \"Eco Products\" category. Register the product for monitoring, analyze sales trends within the \"Eco Products\" category to identify market patterns, forecast inventory needs based on predicted demand for the product, add a supplier to provide the product, and retrieve detailed information about the registered product using its ID.",
+    "solution": [
+      "POST /product/register",
+      "GET /analysis/trends",
+      "POST /analytics/forecast",
+      "GET /products/{product_id}",
+      "POST /supplier/add",
+      "GET /categories"
+    ],
+    "base_url": "https://api.socbench.example",
+    "base_path": "",
+    "raw_chunks": [
+      "Endpoint: POST /product/register\nSpecification:\n{\"summary\": \"Register a new product\", \"description\": \"Adds a new product to the monitoring system with its basic information.\", \"requestBody\": {\"description\": \"Details of the product to register\", \"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"name\": {\"type\": \"string\", \"description\": \"Name of the product\"}, \"category\": {\"type\": \"string\", \"description\": \"Category of the product\"}, \"manufacturer\": {\"type\": \"string\", \"description\": \"Manufacturer of the product\"}}, \"required\": [\"name\", \"category\", \"manufacturer\"]}}}}, \"responses\": {\"201\": {\"description\": \"Product successfully registered\"}}}",
+      "Endpoint: GET /product/metrics\nSpecification:\n{\"summary\": \"Retrieve sustainability metrics for a specific product\", \"description\": \"Fetches the detailed sustainability metrics for a specific product based on its ID.\", \"parameters\": [{\"name\": \"productId\", \"in\": \"query\", \"required\": true, \"description\": \"Unique identifier of the product\", \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Successful response with the sustainability metrics of the product\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"metrics\": {\"type\": \"object\", \"description\": \"Sustainability metrics of the product\"}}}}}}, \"404\": {\"description\": \"Product not found\"}}}",
+      "Endpoint: GET /categories\nSpecification:\n{\"summary\": \"Get product categories\", \"description\": \"Retrieve a list of product categories for organizational purposes.\", \"responses\": {\"200\": {\"description\": \"A list of categories was successfully retrieved.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}}}}}}",
+      "Endpoint: POST /supplier/add\nSpecification:\n{\"summary\": \"Register a new supplier\", \"description\": \"Registers a new supplier along with their initial sustainability data.\", \"requestBody\": {\"description\": \"Details of the supplier to add\", \"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"name\": {\"type\": \"string\"}, \"contact\": {\"type\": \"string\"}, \"sustainabilityRating\": {\"type\": \"number\"}}, \"required\": [\"name\", \"contact\", \"sustainabilityRating\"]}}}}, \"responses\": {\"201\": {\"description\": \"Supplier successfully registered\"}}}",
+      "Endpoint: PUT /product/update\nSpecification:\n{\"summary\": \"Update product details\", \"description\": \"Updates the details of an existing product in the monitoring system.\", \"requestBody\": {\"description\": \"Product details to update\", \"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"productId\": {\"type\": \"string\", \"description\": \"Unique identifier of the product\"}, \"name\": {\"type\": \"string\", \"description\": \"Updated name of the product\"}, \"category\": {\"type\": \"string\", \"description\": \"Updated category of the product\"}, \"manufacturer\": {\"type\": \"string\", \"description\": \"Updated manufacturer of the product\"}}, \"required\": [\"productId\"]}}}}, \"responses\": {\"200\": {\"description\": \"Product successfully updated\"}, \"404\": {\"description\": \"Product not found\"}}}",
+      "Endpoint: GET /products/{product_id}\nSpecification:\n{\"summary\": \"Retrieve specific product details\", \"description\": \"Get information about a specific product in detail.\", \"parameters\": [{\"name\": \"product_id\", \"in\": \"path\", \"required\": true, \"description\": \"The unique identifier of the product to retrieve.\", \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Product details retrieved successfully.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"product_id\": {\"type\": \"string\"}, \"name\": {\"type\": \"string\"}, \"category\": {\"type\": \"string\"}, \"description\": {\"type\": \"string\"}}}}}}, \"404\": {\"description\": \"Product not found.\"}}}",
+      "Endpoint: GET /suppliers\nSpecification:\n{\"summary\": \"List suppliers\", \"description\": \"Fetches a list of all registered suppliers associated with the service.\", \"responses\": {\"200\": {\"description\": \"Successful response with a list of suppliers\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"id\": {\"type\": \"string\"}, \"name\": {\"type\": \"string\"}, \"contact\": {\"type\": \"string\"}}}}}}}}}",
+      "Endpoint: GET /analytics/patterns\nSpecification:\n{\"summary\": \"Analyze purchase trends\", \"description\": \"Generate reports on purchasing trends and seasonal patterns to better understand customer behavior and demands.\", \"responses\": {\"200\": {\"description\": \"Successfully retrieved purchasing trends data.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"patterns\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"season\": {\"type\": \"string\", \"description\": \"Season or time period.\"}, \"trends\": {\"type\": \"array\", \"items\": {\"type\": \"string\", \"description\": \"Notable trends observed.\"}}}}}}}}}}}}",
+      "Endpoint: GET /products\nSpecification:\n{\"summary\": \"List all products\", \"description\": \"Fetch a list of all products within the Consumer Staples sector.\", \"responses\": {\"200\": {\"description\": \"List of products retrieved successfully.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"product_id\": {\"type\": \"string\"}, \"name\": {\"type\": \"string\"}, \"category\": {\"type\": \"string\"}}}}}}}}}",
+      "Endpoint: GET /suppliers/list\nSpecification:\n{\"summary\": \"List suppliers\", \"description\": \"Retrieve the list of suppliers and their associated products.\", \"responses\": {\"200\": {\"description\": \"Successfully retrieved the supplier list.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"supplierId\": {\"type\": \"string\", \"description\": \"Identifier of the supplier.\"}, \"name\": {\"type\": \"string\", \"description\": \"Name of the supplier.\"}, \"products\": {\"type\": \"array\", \"items\": {\"type\": \"string\", \"description\": \"List of products supplied.\"}}}}}}}}}}"
+    ],
+    "compressed_chunks": [
+      "Endpoint: POST /product/register\nSpecification: \"summary\": \"Register a new product\" \"description\": \"Adds a new product to the monitoring system with its basic information.\" \"responses\": {\"201\": {\"description\": \"Product successfully registered\"}}",
+      "Endpoint: GET /product/metrics\nSpecification: \"summary\": \"Retrieve sustainability metrics for a specific product\" \"description\": \"Fetches the detailed sustainability metrics for a specific product based on its ID.\"",
+      "Endpoint: GET /categories\nSpecification: \"summary\": \"Get product categories\" \"description\": \"Retrieve a list of product categories for organizational purposes.\" \"description\": \"A list of categories was successfully retrieved.\"",
+      "Endpoint: POST /supplier/add\nSpecification: \"summary\": \"Register a new supplier\" \"description\": \"Registers a new supplier along with their initial sustainability data.\" \"responses\": {\"201\": {\"description\": \"Supplier successfully registered\"}}",
+      "Endpoint: PUT /product/update\nSpecification: \"summary\": \"Update product details\" \"description\": \"Updates the details of an existing product in the monitoring system.\" \"productId\": {\"type\": \"string\", \"description\": \"Unique identifier of the product\"} \"responses\": {\"200\": {\"description\": \"Product successfully updated\"}, \"404\": {\"description\": \"Product not found\"}}",
+      "Endpoint: GET /products/{product_id}\nSpecification: \"summary\": \"Retrieve specific product details\" \"description\": \"Get information about a specific product in detail.\"",
+      "Endpoint: GET /suppliers\nSpecification: \"summary\": \"List suppliers\" \"description\": \"Fetches a list of all registered suppliers associated with the service.\"",
+      "Endpoint: GET /analytics/patterns\nSpecification: \"summary\": \"Analyze purchase trends\" \"description\": \"Generate reports on purchasing trends and seasonal patterns to better understand customer behavior and demands.\"",
+      "Endpoint: GET /products\nSpecification: \"summary\": \"List all products\" \"description\": \"Fetch a list of all products within the Consumer Staples sector.\"",
+      "Endpoint: GET /suppliers/list\nSpecification: \"summary\": \"List suppliers\" \"description\": \"Retrieve the list of suppliers and their associated products.\""
+    ],
+    "raw_tokens": 1383,
+    "compressed_tokens": 425,
+    "retrieval_recall": 0.6666666666666666,
+    "retrieval": [
+      {
+        "rank": 0,
+        "score": 0.5104,
+        "endpoints": [
+          "POST /product/register"
+        ],
+        "raw_tokens": 158,
+        "compressed_tokens": 49,
+        "kept": true
+      },
+      {
+        "rank": 1,
+        "score": 0.564,
+        "endpoints": [
+          "GET /product/metrics"
+        ],
+        "raw_tokens": 156,
+        "compressed_tokens": 41,
+        "kept": true
+      },
+      {
+        "rank": 2,
+        "score": 0.5836,
+        "endpoints": [
+          "GET /categories"
+        ],
+        "raw_tokens": 76,
+        "compressed_tokens": 42,
+        "kept": true
+      },
+      {
+        "rank": 3,
+        "score": 0.5942,
+        "endpoints": [
+          "POST /supplier/add"
+        ],
+        "raw_tokens": 135,
+        "compressed_tokens": 47,
+        "kept": true
+      },
+      {
+        "rank": 4,
+        "score": 0.5996,
+        "endpoints": [
+          "PUT /product/update"
+        ],
+        "raw_tokens": 183,
+        "compressed_tokens": 78,
+        "kept": true
+      },
+      {
+        "rank": 5,
+        "score": 0.6039,
+        "endpoints": [
+          "GET /products/{product_id}"
+        ],
+        "raw_tokens": 163,
+        "compressed_tokens": 33,
+        "kept": true
+      },
+      {
+        "rank": 6,
+        "score": 0.6047,
+        "endpoints": [
+          "GET /suppliers"
+        ],
+        "raw_tokens": 110,
+        "compressed_tokens": 33,
+        "kept": true
+      },
+      {
+        "rank": 7,
+        "score": 0.6052,
+        "endpoints": [
+          "GET /analytics/patterns"
+        ],
+        "raw_tokens": 148,
+        "compressed_tokens": 39,
+        "kept": true
+      },
+      {
+        "rank": 8,
+        "score": 0.6104,
+        "endpoints": [
+          "GET /products"
+        ],
+        "raw_tokens": 108,
+        "compressed_tokens": 32,
+        "kept": true
+      },
+      {
+        "rank": 9,
+        "score": 0.6113,
+        "endpoints": [
+          "GET /suppliers/list"
+        ],
+        "raw_tokens": 146,
+        "compressed_tokens": 31,
+        "kept": true
+      }
+    ],
+    "qwen_tokens": {
+      "hint_calls": 1,
+      "hint_prompt_tokens": 382,
+      "hint_generated_tokens": 8,
+      "attention_passes": 10,
+      "attention_input_tokens": 3084
+    },
+    "seconds": 9.3
+  },
+  {
+    "benchmark": "socbenchd_1",
+    "queryset": "health care",
+    "top_k": 10,
+    "query": "Retrieve the system's current configuration settings to confirm compliance parameters, check the available health insurance policies to ensure coverage details, update the details of a specific patient\u2019s profile, and then modify the details of a submitted insurance claim based on the updated information.",
+    "solution": [
+      "GET /settings",
+      "PUT /claims/{claim_id}",
+      "PUT /patients/{id}",
+      "GET /policies"
+    ],
+    "base_url": "https://api.socbench.example",
+    "base_path": "",
+    "raw_chunks": [
+      "Endpoint: PUT /claims/{claim_id}\nSpecification:\n{\"summary\": \"Update an existing insurance claim\", \"description\": \"Allows modifications to the details of a submitted insurance claim.\", \"parameters\": [{\"name\": \"claim_id\", \"in\": \"path\", \"required\": true, \"description\": \"The unique ID of the claim to be updated\", \"schema\": {\"type\": \"string\"}}], \"requestBody\": {\"description\": \"Updated claim details.\", \"required\": true, \"content\": {\"application/json\": {\"example\": {\"description\": \"Updated consultation details\", \"amount\": 350.0}}}}, \"responses\": {\"200\": {\"description\": \"Acknowledgement of the updated claim.\", \"content\": {\"application/json\": {\"example\": {\"message\": \"Claim updated successfully.\"}}}}}}",
+      "Endpoint: GET /policies/{policy_id}/coverage\nSpecification:\n{\"summary\": \"Retrieve coverage details for a policy\", \"description\": \"Fetches specific coverage details for a given health insurance policy.\", \"parameters\": [{\"name\": \"policy_id\", \"in\": \"path\", \"required\": true, \"description\": \"The unique ID of the policy\", \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Coverage details for the specified policy.\", \"content\": {\"application/json\": {\"example\": {\"policy_id\": \"12345\", \"coverage\": \"Full\", \"services\": [\"Consultations\", \"Prescription Drugs\", \"Hospitalization\"]}}}}}}",
+      "Endpoint: GET /compliance/status\nSpecification:\n{\"summary\": \"Check compliance status\", \"description\": \"Returns the system's compliance status with relevant data protection and privacy regulations.\", \"responses\": {\"200\": {\"description\": \"The current compliance status\", \"content\": {\"application/json\": {\"schema\": {\"$ref\": \"#/components/schemas/ComplianceStatus\"}}}}}}",
+      "Endpoint: GET /policies\nSpecification:\n{\"summary\": \"Retrieve all health insurance policies\", \"description\": \"Returns a list of available health insurance policies that an organization can access.\", \"responses\": {\"200\": {\"description\": \"A list of insurance policies.\", \"content\": {\"application/json\": {\"example\": [{\"policy_id\": \"12345\", \"name\": \"Basic Health Plan\", \"status\": \"Active\"}, {\"policy_id\": \"67890\", \"name\": \"Premium Health Plan\", \"status\": \"Inactive\"}]}}}}}",
+      "Endpoint: GET /claims\nSpecification:\n{\"summary\": \"Retrieve submitted insurance claims\", \"description\": \"Fetches the statuses of all insurance claims submitted by an organization.\", \"responses\": {\"200\": {\"description\": \"A list of claims and their statuses.\", \"content\": {\"application/json\": {\"example\": [{\"claim_id\": \"c001\", \"status\": \"Pending\", \"amount\": 250.0}, {\"claim_id\": \"c002\", \"status\": \"Approved\", \"amount\": 500.0}]}}}}}",
+      "Endpoint: GET /patients/{patient_id}/history\nSpecification:\n{\"summary\": \"Fetch patient claim and coverage history\", \"description\": \"Retrieves the full claim and coverage history for a specific patient based on their unique ID.\", \"parameters\": [{\"name\": \"patient_id\", \"in\": \"path\", \"required\": true, \"description\": \"The unique ID of the patient\", \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Claim and coverage history for the specified patient.\", \"content\": {\"application/json\": {\"example\": {\"patient_id\": \"abcd123\", \"history\": [{\"type\": \"claim\", \"claim_id\": \"c001\", \"status\": \"Approved\", \"amount\": 500.0}, {\"type\": \"policy\", \"policy_id\": \"12345\", \"coverage\": \"Full\"}]}}}}}}",
+      "Endpoint: POST /policies/validate\nSpecification:\n{\"summary\": \"Validate health insurance policy\", \"description\": \"Submits policy details to validate coverage status in real-time, ensuring accurate data for patient eligibility.\", \"requestBody\": {\"description\": \"Details of the policy to validate.\", \"required\": true, \"content\": {\"application/json\": {\"example\": {\"policy_id\": \"12345\", \"patient_id\": \"abcd123\", \"service_date\": \"2023-10-01\"}}}}, \"responses\": {\"200\": {\"description\": \"Validation result for the submitted policy.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"valid\": {\"type\": \"boolean\"}, \"message\": {\"type\": \"string\"}}}, \"example\": {\"valid\": true, \"message\": \"Policy is active and covers the requested service.\"}}}}}}",
+      "Endpoint: PUT /settings/update\nSpecification:\n{\"summary\": \"Update service configuration\", \"description\": \"Update configuration settings for specific functionalities.\", \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"additionalProperties\": true}}}}, \"responses\": {\"200\": {\"description\": \"Confirmation that the configuration settings have been updated.\"}}}",
+      "Endpoint: GET /analytics/claim-statistics\nSpecification:\n{\"summary\": \"Retrieve aggregated claim statistics\", \"description\": \"Returns aggregated statistics for the number of claims submitted, approved, pending, and rejected.\", \"responses\": {\"200\": {\"description\": \"Aggregated statistics for claim submissions.\", \"content\": {\"application/json\": {\"example\": {\"total_claims\": 1000, \"approved_claims\": 700, \"pending_claims\": 200, \"rejected_claims\": 100}}}}}}",
+      "Endpoint: POST /claims/submit\nSpecification:\n{\"summary\": \"Submit a new insurance claim\", \"description\": \"Allows a healthcare provider to submit a claim for services rendered, with all required details.\", \"requestBody\": {\"description\": \"Details of the claim to submit.\", \"required\": true, \"content\": {\"application/json\": {\"example\": {\"patient_id\": \"abcd123\", \"policy_id\": \"12345\", \"description\": \"Consultation and laboratory testing\", \"amount\": 300.0, \"service_date\": \"2023-10-01\"}}}}, \"responses\": {\"201\": {\"description\": \"Acknowledgement of the new claim submission.\", \"content\": {\"application/json\": {\"example\": {\"claim_id\": \"c003\", \"status\": \"Submitted\", \"message\": \"Claim has been successfully submitted.\"}}}}}}"
+    ],
+    "compressed_chunks": [
+      "Endpoint: PUT /claims/{claim_id}\nSpecification: \"summary\": \"Update an existing insurance claim\" \"description\": \"Allows modifications to the details of a submitted insurance claim.\" \"content\": {\"application/json\": {\"example\": {\"description\": \"Updated consultation details\", \"amount\": 350.0}}}",
+      "Endpoint: GET /policies/{policy_id}/coverage\nSpecification: \"summary\": \"Retrieve coverage details for a policy\" \"description\": \"Fetches specific coverage details for a given health insurance policy.\" \"in\": \"path\"",
+      "Endpoint: GET /compliance/status\nSpecification: \"summary\": \"Check compliance status\" \"description\": \"Returns the system's compliance status with relevant data protection and privacy regulations.\" \"content\": {\"application/json\": {\"schema\": {\"$ref\": \"#/components/schemas/ComplianceStatus\"}}}",
+      "Endpoint: GET /policies\nSpecification: \"summary\": \"Retrieve all health insurance policies\" \"description\": \"Returns a list of available health insurance policies that an organization can access.\"",
+      "Endpoint: GET /claims\nSpecification: \"summary\": \"Retrieve submitted insurance claims\" \"description\": \"Fetches the statuses of all insurance claims submitted by an organization.\"",
+      "Endpoint: GET /patients/{patient_id}/history\nSpecification: \"summary\": \"Fetch patient claim and coverage history\" \"description\": \"Retrieves the full claim and coverage history for a specific patient based on their unique ID.\" \"schema\": {\"type\": \"string\"}",
+      "Endpoint: POST /policies/validate\nSpecification: \"summary\": \"Validate health insurance policy\" \"description\": \"Submits policy details to validate coverage status in real-time, ensuring accurate data for patient eligibility.\" \"application/json\": {\"example\": {\"policy_id\": \"12345\", \"patient_id\": \"abcd123\", \"service_date\": \"2023-10-01\"}}",
+      "Endpoint: PUT /settings/update\nSpecification: \"summary\": \"Update service configuration\" \"description\": \"Update configuration settings for specific functionalities.\" \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"additionalProperties\": true}}} \"responses\": {\"200\": {\"description\": \"Confirmation that the configuration settings have been updated.\"}}",
+      "Endpoint: GET /analytics/claim-statistics\nSpecification: \"summary\": \"Retrieve aggregated claim statistics\" \"description\": \"Returns aggregated statistics for the number of claims submitted, approved, pending, and rejected.\"",
+      "Endpoint: POST /claims/submit\nSpecification: \"summary\": \"Submit a new insurance claim\" \"description\": \"Allows a healthcare provider to submit a claim for services rendered, with all required details.\" \"patient_id\": \"abcd123\""
+    ],
+    "raw_tokens": 1321,
+    "compressed_tokens": 536,
+    "retrieval_recall": 0.5,
+    "retrieval": [
+      {
+        "rank": 0,
+        "score": 0.5423,
+        "endpoints": [
+          "PUT /claims/{claim_id}"
+        ],
+        "raw_tokens": 163,
+        "compressed_tokens": 63,
+        "kept": true
+      },
+      {
+        "rank": 1,
+        "score": 0.5532,
+        "endpoints": [
+          "GET /policies/{policy_id}/coverage"
+        ],
+        "raw_tokens": 142,
+        "compressed_tokens": 47,
+        "kept": true
+      },
+      {
+        "rank": 2,
+        "score": 0.5598,
+        "endpoints": [
+          "GET /compliance/status"
+        ],
+        "raw_tokens": 76,
+        "compressed_tokens": 60,
+        "kept": true
+      },
+      {
+        "rank": 3,
+        "score": 0.5642,
+        "endpoints": [
+          "GET /policies"
+        ],
+        "raw_tokens": 111,
+        "compressed_tokens": 37,
+        "kept": true
+      },
+      {
+        "rank": 4,
+        "score": 0.5763,
+        "endpoints": [
+          "GET /claims"
+        ],
+        "raw_tokens": 109,
+        "compressed_tokens": 34,
+        "kept": true
+      },
+      {
+        "rank": 5,
+        "score": 0.5764,
+        "endpoints": [
+          "GET /patients/{patient_id}/history"
+        ],
+        "raw_tokens": 180,
+        "compressed_tokens": 55,
+        "kept": true
+      },
+      {
+        "rank": 6,
+        "score": 0.5907,
+        "endpoints": [
+          "POST /policies/validate"
+        ],
+        "raw_tokens": 181,
+        "compressed_tokens": 78,
+        "kept": true
+      },
+      {
+        "rank": 7,
+        "score": 0.6081,
+        "endpoints": [
+          "PUT /settings/update"
+        ],
+        "raw_tokens": 81,
+        "compressed_tokens": 71,
+        "kept": true
+      },
+      {
+        "rank": 8,
+        "score": 0.6174,
+        "endpoints": [
+          "GET /analytics/claim-statistics"
+        ],
+        "raw_tokens": 105,
+        "compressed_tokens": 42,
+        "kept": true
+      },
+      {
+        "rank": 9,
+        "score": 0.625,
+        "endpoints": [
+          "POST /claims/submit"
+        ],
+        "raw_tokens": 173,
+        "compressed_tokens": 49,
+        "kept": true
+      }
+    ],
+    "qwen_tokens": {
+      "hint_calls": 1,
+      "hint_prompt_tokens": 354,
+      "hint_generated_tokens": 50,
+      "attention_passes": 10,
+      "attention_input_tokens": 3631
+    },
+    "seconds": 8.3
+  },
+  {
+    "benchmark": "socbenchd_1",
+    "queryset": "financials",
+    "top_k": 10,
+    "query": "Please provide insights regarding the currently scheduled financial events, assess the risk profile of my portfolio with ID 98765, and also remove the insurance policy with ID 54321 from my account.",
+    "solution": [
+      "DELETE /policies/{policyId}",
+      "POST /risk/assessment",
+      "GET /financial-calendar"
+    ],
+    "base_url": "https://api.socbench.example",
+    "base_path": "",
+    "raw_chunks": [
+      "Endpoint: DELETE /portfolio/remove\nSpecification:\n{\"summary\": \"Remove Uploaded Portfolio\", \"description\": \"Remove a previously uploaded portfolio dataset from the system.\", \"parameters\": [{\"name\": \"portfolioId\", \"in\": \"query\", \"required\": true, \"description\": \"The unique identifier of the portfolio to remove.\", \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Portfolio removed successfully.\"}, \"404\": {\"description\": \"Portfolio not found.\"}}}",
+      "Endpoint: DELETE /policies/{policyId}\nSpecification:\n{\"summary\": \"Delete an Insurance Policy\", \"description\": \"Request the removal of an insurance policy from the user's active policies.\", \"parameters\": [{\"name\": \"policyId\", \"in\": \"path\", \"required\": true, \"description\": \"Unique identifier of the policy to be deleted\", \"schema\": {\"type\": \"string\"}}], \"responses\": {\"204\": {\"description\": \"The insurance policy has been successfully deleted.\"}}}",
+      "Endpoint: GET /performance/portfolio\nSpecification:\n{\"summary\": \"Retrieve Portfolio Performance Metrics\", \"description\": \"Retrieve detailed performance metrics for a specified portfolio, including returns, volatility, and historical data.\", \"parameters\": [{\"name\": \"portfolioId\", \"in\": \"query\", \"required\": true, \"description\": \"The unique identifier of the portfolio to retrieve performance metrics for.\", \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Successful retrieval of portfolio performance metrics.\", \"content\": {\"application/json\": {\"example\": {\"portfolioId\": \"12345\", \"performanceMetrics\": {\"averageReturn\": 0.06, \"volatility\": 0.02, \"historicalData\": []}}}}}, \"400\": {\"description\": \"Invalid portfolio ID provided.\"}, \"404\": {\"description\": \"Portfolio not found.\"}}}",
+      "Endpoint: GET /diversification/analysis\nSpecification:\n{\"summary\": \"Retrieve Diversification Analysis\", \"description\": \"Obtain an in-depth analysis of the diversification level for a specified portfolio.\", \"parameters\": [{\"name\": \"portfolioId\", \"in\": \"query\", \"required\": true, \"description\": \"The unique identifier of the portfolio to analyze for diversification.\", \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Successful retrieval of diversification analysis.\"}, \"400\": {\"description\": \"Invalid portfolio ID provided.\"}, \"404\": {\"description\": \"Portfolio not found.\"}}}",
+      "Endpoint: POST /portfolio/analyze\nSpecification:\n{\"summary\": \"Analyze portfolio\", \"description\": \"Provide insights and analysis on a portfolio's performance and comparison to market trends.\", \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"portfolio\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"symbol\": {\"type\": \"string\", \"description\": \"Stock symbol in the portfolio.\"}, \"quantity\": {\"type\": \"number\", \"description\": \"Number of shares held.\"}}, \"required\": [\"symbol\", \"quantity\"]}}}, \"required\": [\"portfolio\"]}}}}, \"responses\": {\"200\": {\"description\": \"Portfolio analysis result.\", \"content\": {\"application/json\": {\"example\": {\"performance\": {\"total_value\": 15000.5, \"returns\": 0.12}}}}}}}",
+      "Endpoint: POST /risk/assessment\nSpecification:\n{\"summary\": \"Perform Risk Assessment\", \"description\": \"Submit data for a comprehensive risk assessment on a specified portfolio.\", \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"portfolioId\": {\"type\": \"string\", \"description\": \"The unique ID of the portfolio.\"}, \"parameters\": {\"type\": \"object\", \"description\": \"Risk assessment parameters.\"}}, \"required\": [\"portfolioId\"]}}}}, \"responses\": {\"200\": {\"description\": \"Risk assessment completed successfully.\"}, \"400\": {\"description\": \"Invalid input data.\"}}}",
+      "Endpoint: GET /securities/details\nSpecification:\n{\"summary\": \"Retrieve details of a security\", \"description\": \"Get detailed financial and trading data for a specific security.\", \"parameters\": [{\"name\": \"symbol\", \"in\": \"query\", \"required\": true, \"description\": \"The symbol for the security (e.g., AAPL).\", \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Successful response with security details.\", \"content\": {\"application/json\": {\"example\": {\"symbol\": \"AAPL\", \"company_name\": \"Apple Inc.\", \"price\": 150.25, \"high\": 152.0, \"low\": 147.5}}}}}}",
+      "Endpoint: GET /policies/{policyId}\nSpecification:\n{\"summary\": \"Retrieve Policy Details\", \"description\": \"Fetch specific details about an insurance policy using its unique identifier.\", \"parameters\": [{\"name\": \"policyId\", \"in\": \"path\", \"required\": true, \"description\": \"Unique identifier of the insurance policy\", \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Detailed information about the specified insurance policy.\", \"content\": {\"application/json\": {\"schema\": {\"$ref\": \"#/components/schemas/Policy\"}}}}}}",
+      "Endpoint: GET /claims/{claimId}\nSpecification:\n{\"summary\": \"Retrieve Claim Details\", \"description\": \"Fetch specific details about an insurance claim using its unique Claim ID.\", \"parameters\": [{\"name\": \"claimId\", \"in\": \"path\", \"required\": true, \"description\": \"Unique identifier of the insurance claim\", \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Detailed information about the specified insurance claim.\", \"content\": {\"application/json\": {\"schema\": {\"$ref\": \"#/components/schemas/Claim\"}}}}}}",
+      "Endpoint: GET /financial-calendar\nSpecification:\n{\"summary\": \"Retrieve financial calendar\", \"description\": \"Access important upcoming financial dates and events.\", \"responses\": {\"200\": {\"description\": \"Successful response with financial calendar data.\", \"content\": {\"application/json\": {\"example\": {\"events\": [{\"name\": \"Earnings Report\", \"date\": \"2023-11-15\"}, {\"name\": \"FED Meeting\", \"date\": \"2023-11-20\"}]}}}}}}"
+    ],
+    "compressed_chunks": [
+      "Endpoint: DELETE /portfolio/remove\nSpecification: \"summary\": \"Remove Uploaded Portfolio\" \"description\": \"Remove a previously uploaded portfolio dataset from the system.\" \"name\": \"portfolioId\" \"description\": \"The unique identifier of the portfolio to remove.\" \"200\": {\"description\": \"Portfolio removed successfully.\"} \"404\": {\"description\": \"Portfolio not found.\"}",
+      "Endpoint: DELETE /policies/{policyId}\nSpecification: \"summary\": \"Delete an Insurance Policy\" \"description\": \"Request the removal of an insurance policy from the user's active policies.\" \"in\": \"path\" \"responses\": {\"204\": {\"description\": \"The insurance policy has been successfully deleted.\"}}",
+      "Endpoint: GET /performance/portfolio\nSpecification: \"summary\": \"Retrieve Portfolio Performance Metrics\" \"description\": \"Retrieve detailed performance metrics for a specified portfolio, including returns, volatility, and historical data.\" \"name\": \"portfolioId\" \"performanceMetrics\": {\"averageReturn\": 0.06, \"volatility\": 0.02, \"historicalData\": []} \"400\": {\"description\": \"Invalid portfolio ID provided.\"} \"404\": {\"description\": \"Portfolio not found.\"}",
+      "Endpoint: GET /diversification/analysis\nSpecification: \"summary\": \"Retrieve Diversification Analysis\" \"description\": \"Obtain an in-depth analysis of the diversification level for a specified portfolio.\" \"name\": \"portfolioId\" \"schema\": {\"type\": \"string\"} \"200\": {\"description\": \"Successful retrieval of diversification analysis.\"} \"404\": {\"description\": \"Portfolio not found.\"}",
+      "Endpoint: POST /portfolio/analyze\nSpecification: \"summary\": \"Analyze portfolio\" \"description\": \"Provide insights and analysis on a portfolio's performance and comparison to market trends.\" \"description\": \"Portfolio analysis result.\" \"content\": {\"application/json\": {\"example\": {\"performance\": {\"total_value\": 15000.5, \"returns\": 0.12}}}}",
+      "Endpoint: POST /risk/assessment\nSpecification: \"summary\": \"Perform Risk Assessment\" \"description\": \"Submit data for a comprehensive risk assessment on a specified portfolio.\" \"portfolioId\": {\"type\": \"string\", \"description\": \"The unique ID of the portfolio.\"} \"parameters\": {\"type\": \"object\", \"description\": \"Risk assessment parameters.\"} \"200\": {\"description\": \"Risk assessment completed successfully.\"} \"400\": {\"description\": \"Invalid input data.\"}",
+      "Endpoint: GET /securities/details\nSpecification: \"summary\": \"Retrieve details of a security\" \"description\": \"Get detailed financial and trading data for a specific security.\" \"example\": {\"symbol\": \"AAPL\", \"company_name\": \"Apple Inc.\", \"price\": 150.25, \"high\": 152.0, \"low\": 147.5}",
+      "Endpoint: GET /policies/{policyId}\nSpecification: \"summary\": \"Retrieve Policy Details\" \"description\": \"Fetch specific details about an insurance policy using its unique identifier.\" \"schema\": {\"type\": \"string\"}",
+      "Endpoint: GET /claims/{claimId}\nSpecification: \"summary\": \"Retrieve Claim Details\" \"description\": \"Fetch specific details about an insurance claim using its unique Claim ID.\" \"schema\": {\"type\": \"string\"} \"content\": {\"application/json\": {\"schema\": {\"$ref\": \"#/components/schemas/Claim\"}}}",
+      "Endpoint: GET /financial-calendar\nSpecification: \"summary\": \"Retrieve financial calendar\" \"description\": \"Access important upcoming financial dates and events.\" \"events\": [{\"name\": \"Earnings Report\", \"date\": \"2023-11-15\"}, {\"name\": \"FED Meeting\", \"date\": \"2023-11-20\"}]"
+    ],
+    "raw_tokens": 1334,
+    "compressed_tokens": 757,
+    "retrieval_recall": 1.0,
+    "retrieval": [
+      {
+        "rank": 0,
+        "score": 0.6223,
+        "endpoints": [
+          "DELETE /portfolio/remove"
+        ],
+        "raw_tokens": 103,
+        "compressed_tokens": 75,
+        "kept": true
+      },
+      {
+        "rank": 1,
+        "score": 0.6541,
+        "endpoints": [
+          "DELETE /policies/{policyId}"
+        ],
+        "raw_tokens": 102,
+        "compressed_tokens": 63,
+        "kept": true
+      },
+      {
+        "rank": 2,
+        "score": 0.6642,
+        "endpoints": [
+          "GET /performance/portfolio"
+        ],
+        "raw_tokens": 180,
+        "compressed_tokens": 102,
+        "kept": true
+      },
+      {
+        "rank": 3,
+        "score": 0.6797,
+        "endpoints": [
+          "GET /diversification/analysis"
+        ],
+        "raw_tokens": 129,
+        "compressed_tokens": 82,
+        "kept": true
+      },
+      {
+        "rank": 4,
+        "score": 0.6914,
+        "endpoints": [
+          "POST /portfolio/analyze"
+        ],
+        "raw_tokens": 191,
+        "compressed_tokens": 76,
+        "kept": true
+      },
+      {
+        "rank": 5,
+        "score": 0.699,
+        "endpoints": [
+          "POST /risk/assessment"
+        ],
+        "raw_tokens": 140,
+        "compressed_tokens": 99,
+        "kept": true
+      },
+      {
+        "rank": 6,
+        "score": 0.7118,
+        "endpoints": [
+          "GET /securities/details"
+        ],
+        "raw_tokens": 149,
+        "compressed_tokens": 77,
+        "kept": true
+      },
+      {
+        "rank": 7,
+        "score": 0.7167,
+        "endpoints": [
+          "GET /policies/{policyId}"
+        ],
+        "raw_tokens": 120,
+        "compressed_tokens": 45,
+        "kept": true
+      },
+      {
+        "rank": 8,
+        "score": 0.728,
+        "endpoints": [
+          "GET /claims/{claimId}"
+        ],
+        "raw_tokens": 120,
+        "compressed_tokens": 68,
+        "kept": true
+      },
+      {
+        "rank": 9,
+        "score": 0.7315,
+        "endpoints": [
+          "GET /financial-calendar"
+        ],
+        "raw_tokens": 100,
+        "compressed_tokens": 70,
+        "kept": true
+      }
+    ],
+    "qwen_tokens": {
+      "hint_calls": 1,
+      "hint_prompt_tokens": 349,
+      "hint_generated_tokens": 25,
+      "attention_passes": 10,
+      "attention_input_tokens": 3066
+    },
+    "seconds": 5.0
+  },
+  {
+    "benchmark": "socbenchd_1",
+    "queryset": "information technology",
+    "top_k": 10,
+    "query": "Log a new cybersecurity threat with details such as type, severity, and description. Then, retrieve the updated list of all logged threats. Use compliance reports to evaluate whether newly logged or existing threats are tied to non-compliant IT assets. Finally, fetch real-time tracking data of assets to identify any potential association with logged threats.",
+    "solution": [
+      "GET /threats",
+      "POST /threats",
+      "GET /compliance/reports",
+      "GET /tracking/assets"
+    ],
+    "base_url": "https://api.socbench.example",
+    "base_path": "",
+    "raw_chunks": [
+      "Endpoint: GET /threats\nSpecification:\n{\"summary\": \"Get logged cybersecurity threats\", \"description\": \"Retrieve a list of all cybersecurity threats logged in the system.\", \"responses\": {\"200\": {\"description\": \"A list of logged cybersecurity threats.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"id\": {\"type\": \"string\"}, \"type\": {\"type\": \"string\"}, \"severity\": {\"type\": \"string\"}, \"description\": {\"type\": \"string\"}}}}}}}}}",
+      "Endpoint: POST /threats\nSpecification:\n{\"summary\": \"Log a cybersecurity threat\", \"description\": \"Add details of a detected cybersecurity threat for tracking and analysis.\", \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"type\": {\"type\": \"string\", \"description\": \"Type of the detected threat, e.g., malware, phishing.\"}, \"severity\": {\"type\": \"string\", \"enum\": [\"low\", \"medium\", \"high\", \"critical\"]}, \"description\": {\"type\": \"string\"}}, \"required\": [\"type\", \"severity\"]}}}}, \"responses\": {\"201\": {\"description\": \"Threat logged successfully.\"}}}",
+      "Endpoint: POST /reports/generate\nSpecification:\n{\"summary\": \"Generate a comprehensive report\", \"description\": \"Generate a report summarizing monitoring activities and incidents.\", \"requestBody\": {\"required\": false, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"start_date\": {\"type\": \"string\", \"format\": \"date\", \"description\": \"Optional start date for the report.\"}, \"end_date\": {\"type\": \"string\", \"format\": \"date\", \"description\": \"Optional end date for the report.\"}}}}}}, \"responses\": {\"200\": {\"description\": \"Report generated successfully.\"}}}",
+      "Endpoint: GET /systems\nSpecification:\n{\"summary\": \"Get details of monitored systems\", \"description\": \"Retrieve a list of all monitored systems, including their current status.\", \"responses\": {\"200\": {\"description\": \"A list of monitored systems.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"id\": {\"type\": \"string\"}, \"name\": {\"type\": \"string\"}, \"status\": {\"type\": \"string\"}}}}}}}}}",
+      "Endpoint: POST /alerts\nSpecification:\n{\"summary\": \"Create a new alert rule\", \"description\": \"Add a new alert rule for monitoring specific network activities, such as unusual traffic patterns or unauthorized access attempts.\", \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"name\": {\"type\": \"string\", \"description\": \"The name of the alert rule.\"}, \"conditions\": {\"type\": \"array\", \"description\": \"Conditions that must be met to trigger the alert.\", \"items\": {\"type\": \"string\"}}, \"severity\": {\"type\": \"string\", \"enum\": [\"low\", \"medium\", \"high\", \"critical\"], \"description\": \"The severity level of the alert.\"}, \"enabled\": {\"type\": \"boolean\", \"description\": \"Whether the alert is enabled.\"}}, \"required\": [\"name\", \"conditions\", \"severity\"]}}}}, \"responses\": {\"201\": {\"description\": \"Alert rule created successfully.\"}, \"400\": {\"description\": \"Invalid input data.\"}}}",
+      "Endpoint: GET /compliance/reports\nSpecification:\n{\"summary\": \"Generate compliance reports\", \"description\": \"Generates regulatory compliance reports based on current inventory data.\", \"responses\": {\"200\": {\"description\": \"Compliance reports retrieved successfully.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"reports\": {\"type\": \"array\", \"items\": {\"$ref\": \"#/components/schemas/ComplianceReport\"}}}}}}}}}",
+      "Endpoint: GET /config/settings\nSpecification:\n{\"summary\": \"Fetch current system settings\", \"description\": \"Retrieve the current configuration settings of the monitoring system.\", \"responses\": {\"200\": {\"description\": \"System configuration settings.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"setting_name\": {\"type\": \"string\"}, \"value\": {\"type\": \"string\"}}}}}}}}",
+      "Endpoint: GET /alerts\nSpecification:\n{\"summary\": \"Retrieve all alert rules\", \"description\": \"Fetch a list of all existing alert rules in the system, including their conditions and status.\", \"responses\": {\"200\": {\"description\": \"A list of alert rules.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"id\": {\"type\": \"string\", \"description\": \"The unique identifier for the alert rule.\"}, \"name\": {\"type\": \"string\", \"description\": \"The name of the alert rule.\"}, \"conditions\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}, \"severity\": {\"type\": \"string\"}, \"enabled\": {\"type\": \"boolean\"}}}}}}}}}",
+      "Endpoint: GET /tracking/assets\nSpecification:\n{\"summary\": \"Retrieve real-time asset tracking\", \"description\": \"Provides real-time tracking data for assets in the inventory.\", \"responses\": {\"200\": {\"description\": \"Real-time asset tracking data retrieved successfully.\", \"content\": {\"application/json\": {\"schema\": {\"$ref\": \"#/components/schemas/AssetTrackingData\"}}}}}}",
+      "Endpoint: PUT /alerts/{alert_id}\nSpecification:\n{\"summary\": \"Update a specific alert rule\", \"description\": \"Modify the details of an existing alert rule by its ID.\", \"parameters\": [{\"name\": \"alert_id\", \"in\": \"path\", \"required\": true, \"description\": \"The unique identifier for the alert rule.\", \"schema\": {\"type\": \"string\"}}], \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"name\": {\"type\": \"string\"}, \"conditions\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}, \"severity\": {\"type\": \"string\"}, \"enabled\": {\"type\": \"boolean\"}}}}}}, \"responses\": {\"200\": {\"description\": \"Alert rule updated successfully.\"}, \"404\": {\"description\": \"Alert rule not found.\"}}}"
+    ],
+    "compressed_chunks": [
+      "Endpoint: GET /threats\nSpecification: \"summary\": \"Get logged cybersecurity threats\" \"description\": \"Retrieve a list of all cybersecurity threats logged in the system.\" \"type\": \"object\" \"severity\": {\"type\": \"string\"}",
+      "Endpoint: POST /threats\nSpecification: \"summary\": \"Log a cybersecurity threat\" \"description\": \"Add details of a detected cybersecurity threat for tracking and analysis.\" \"type\": {\"type\": \"string\", \"description\": \"Type of the detected threat, e.g., malware, phishing.\"}",
+      "Endpoint: POST /reports/generate\nSpecification: \"summary\": \"Generate a comprehensive report\" \"description\": \"Generate a report summarizing monitoring activities and incidents.\" \"start_date\": {\"type\": \"string\", \"format\": \"date\", \"description\": \"Optional start date for the report.\"} \"end_date\": {\"type\": \"string\", \"format\": \"date\", \"description\": \"Optional end date for the report.\"} \"responses\": {\"200\": {\"description\": \"Report generated successfully.\"}}",
+      "Endpoint: GET /systems\nSpecification: \"summary\": \"Get details of monitored systems\" \"description\": \"Retrieve a list of all monitored systems, including their current status.\" \"type\": \"array\"",
+      "Endpoint: POST /alerts\nSpecification: \"summary\": \"Create a new alert rule\" \"description\": \"Add a new alert rule for monitoring specific network activities, such as unusual traffic patterns or unauthorized access attempts.\" \"description\": \"Conditions that must be met to trigger the alert.\" \"enabled\": {\"type\": \"boolean\", \"description\": \"Whether the alert is enabled.\"} \"201\": {\"description\": \"Alert rule created successfully.\"}",
+      "Endpoint: GET /compliance/reports\nSpecification: \"summary\": \"Generate compliance reports\" \"description\": \"Generates regulatory compliance reports based on current inventory data.\" \"description\": \"Compliance reports retrieved successfully.\" \"type\": \"object\"",
+      "Endpoint: GET /config/settings\nSpecification: \"summary\": \"Fetch current system settings\" \"description\": \"Retrieve the current configuration settings of the monitoring system.\"",
+      "Endpoint: GET /alerts\nSpecification: \"summary\": \"Retrieve all alert rules\" \"description\": \"Fetch a list of all existing alert rules in the system, including their conditions and status.\" \"name\": {\"type\": \"string\", \"description\": \"The name of the alert rule.\"} \"conditions\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}} \"severity\": {\"type\": \"string\"}",
+      "Endpoint: GET /tracking/assets\nSpecification: \"summary\": \"Retrieve real-time asset tracking\" \"description\": \"Provides real-time tracking data for assets in the inventory.\" \"description\": \"Real-time asset tracking data retrieved successfully.\"",
+      "Endpoint: PUT /alerts/{alert_id}\nSpecification: \"summary\": \"Update a specific alert rule\" \"description\": \"Modify the details of an existing alert rule by its ID.\" \"conditions\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}} \"200\": {\"description\": \"Alert rule updated successfully.\"} \"404\": {\"description\": \"Alert rule not found.\"}"
+    ],
+    "raw_tokens": 1356,
+    "compressed_tokens": 642,
+    "retrieval_recall": 1.0,
+    "retrieval": [
+      {
+        "rank": 0,
+        "score": 0.4459,
+        "endpoints": [
+          "GET /threats"
+        ],
+        "raw_tokens": 120,
+        "compressed_tokens": 50,
+        "kept": true
+      },
+      {
+        "rank": 1,
+        "score": 0.4635,
+        "endpoints": [
+          "POST /threats"
+        ],
+        "raw_tokens": 152,
+        "compressed_tokens": 62,
+        "kept": true
+      },
+      {
+        "rank": 2,
+        "score": 0.5779,
+        "endpoints": [
+          "POST /reports/generate"
+        ],
+        "raw_tokens": 135,
+        "compressed_tokens": 104,
+        "kept": true
+      },
+      {
+        "rank": 3,
+        "score": 0.5824,
+        "endpoints": [
+          "GET /systems"
+        ],
+        "raw_tokens": 110,
+        "compressed_tokens": 41,
+        "kept": true
+      },
+      {
+        "rank": 4,
+        "score": 0.5929,
+        "endpoints": [
+          "POST /alerts"
+        ],
+        "raw_tokens": 224,
+        "compressed_tokens": 90,
+        "kept": true
+      },
+      {
+        "rank": 5,
+        "score": 0.5998,
+        "endpoints": [
+          "GET /compliance/reports"
+        ],
+        "raw_tokens": 97,
+        "compressed_tokens": 49,
+        "kept": true
+      },
+      {
+        "rank": 6,
+        "score": 0.6016,
+        "endpoints": [
+          "GET /config/settings"
+        ],
+        "raw_tokens": 87,
+        "compressed_tokens": 32,
+        "kept": true
+      },
+      {
+        "rank": 7,
+        "score": 0.606,
+        "endpoints": [
+          "GET /alerts"
+        ],
+        "raw_tokens": 167,
+        "compressed_tokens": 87,
+        "kept": true
+      },
+      {
+        "rank": 8,
+        "score": 0.6177,
+        "endpoints": [
+          "GET /tracking/assets"
+        ],
+        "raw_tokens": 78,
+        "compressed_tokens": 46,
+        "kept": true
+      },
+      {
+        "rank": 9,
+        "score": 0.661,
+        "endpoints": [
+          "PUT /alerts/{alert_id}"
+        ],
+        "raw_tokens": 186,
+        "compressed_tokens": 81,
+        "kept": true
+      }
+    ],
+    "qwen_tokens": {
+      "hint_calls": 1,
+      "hint_prompt_tokens": 370,
+      "hint_generated_tokens": 64,
+      "attention_passes": 10,
+      "attention_input_tokens": 4081
+    },
+    "seconds": 7.9
+  },
+  {
+    "benchmark": "socbenchd_1",
+    "queryset": "communication services",
+    "top_k": 10,
+    "query": "Update an existing customer feedback entry by modifying its content and metadata, customize the feedback analysis process by focusing on specific criteria, upload a new video with its title and description, submit a manual recommendation for testing a specific scenario, and verify the platform's health status to ensure all processes are functioning correctly.",
+    "solution": [
+      "PUT /feedbacks/{feedbackId}",
+      "GET /platform/health",
+      "POST /manual/recommendation",
+      "POST /video/upload",
+      "POST /analysis/customize"
+    ],
+    "base_url": "https://api.socbench.example",
+    "base_path": "",
+    "raw_chunks": [
+      "Endpoint: PUT /feedbacks/{feedbackId}\nSpecification:\n{\"summary\": \"Update feedback entry\", \"description\": \"Update an existing feedback entry identified by its unique identifier.\", \"parameters\": [{\"name\": \"feedbackId\", \"in\": \"path\", \"required\": true, \"schema\": {\"type\": \"string\"}, \"description\": \"The unique identifier of the feedback to update.\"}], \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"message\": {\"type\": \"string\", \"description\": \"Updated content of the customer feedback.\"}, \"metadata\": {\"type\": \"object\", \"description\": \"Updated metadata about the feedback.\", \"properties\": {\"date\": {\"type\": \"string\", \"format\": \"date-time\", \"description\": \"Updated date and time of the feedback.\"}, \"source\": {\"type\": \"string\", \"description\": \"Updated source or channel of feedback.\"}}}}}}}}, \"responses\": {\"200\": {\"description\": \"Feedback successfully updated.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"feedbackId\": {\"type\": \"string\", \"description\": \"Unique identifier for the updated feedback.\"}, \"message\": {\"type\": \"string\", \"description\": \"Confirmation message.\"}}}}}}}}",
+      "Endpoint: POST /analysis/customize\nSpecification:\n{\"summary\": \"Customize analysis process\", \"description\": \"Submit parameters to modify how analysis is conducted on feedback data.\", \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"criteria\": {\"type\": \"string\", \"description\": \"Criteria or parameters to adjust the feedback analysis process.\"}}, \"required\": [\"criteria\"]}}}}, \"responses\": {\"200\": {\"description\": \"Analysis parameters successfully updated.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"status\": {\"type\": \"string\", \"description\": \"Resulting status of the customization request.\"}}}}}}}}",
+      "Endpoint: GET /feedbacks/{feedbackId}\nSpecification:\n{\"summary\": \"Retrieve specific feedback details\", \"description\": \"Retrieve the details of a specific customer feedback entry using its unique identifier.\", \"parameters\": [{\"name\": \"feedbackId\", \"in\": \"path\", \"required\": true, \"schema\": {\"type\": \"string\"}, \"description\": \"The unique identifier for the feedback entry.\"}], \"responses\": {\"200\": {\"description\": \"Details of the feedback entry.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"feedbackId\": {\"type\": \"string\", \"description\": \"Unique identifier for the feedback.\"}, \"message\": {\"type\": \"string\", \"description\": \"The feedback message provided by the customer.\"}, \"customerId\": {\"type\": \"string\", \"description\": \"Unique identifier for the customer who submitted the feedback.\"}, \"metadata\": {\"type\": \"object\", \"description\": \"Details about the feedback, including date and source.\", \"properties\": {\"date\": {\"type\": \"string\", \"format\": \"date-time\", \"description\": \"Date and time the feedback was collected.\"}, \"source\": {\"type\": \"string\", \"description\": \"Source of the feedback.\"}}}}}}}}}}",
+      "Endpoint: POST /feedbacks\nSpecification:\n{\"summary\": \"Submit customer feedback\", \"description\": \"Submit a new piece of customer feedback for analysis. Feedback should typically include a message, associated metadata, and customer information.\", \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"message\": {\"type\": \"string\", \"description\": \"The content of the customer feedback.\"}, \"customerId\": {\"type\": \"string\", \"description\": \"Unique identifier for the customer providing the feedback.\"}, \"metadata\": {\"type\": \"object\", \"description\": \"Additional details about the feedback, such as feedback date and source.\", \"properties\": {\"date\": {\"type\": \"string\", \"format\": \"date-time\", \"description\": \"Date and time the feedback was collected.\"}, \"source\": {\"type\": \"string\", \"description\": \"Source or channel through which the feedback was collected.\"}}}}, \"required\": [\"message\", \"customerId\"]}}}}, \"responses\": {\"201\": {\"description\": \"Feedback successfully submitted.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"feedbackId\": {\"type\": \"string\", \"description\": \"Unique identifier for the newly submitted feedback.\"}, \"message\": {\"type\": \"string\", \"description\": \"Confirmation message.\"}}}}}}}}",
+      "Endpoint: GET /feedbacks/search\nSpecification:\n{\"summary\": \"Search feedback entries\", \"description\": \"Search through customer feedback based on query parameters such as date range, sentiment, or specific keywords.\", \"parameters\": [{\"name\": \"startDate\", \"in\": \"query\", \"schema\": {\"type\": \"string\", \"format\": \"date-time\"}, \"description\": \"Start date for feedback search range.\"}, {\"name\": \"endDate\", \"in\": \"query\", \"schema\": {\"type\": \"string\", \"format\": \"date-time\"}, \"description\": \"End date for feedback search range.\"}, {\"name\": \"sentiment\", \"in\": \"query\", \"schema\": {\"type\": \"string\", \"enum\": [\"positive\", \"negative\", \"neutral\"]}, \"description\": \"Filter feedback by sentiment type.\"}, {\"name\": \"keywords\", \"in\": \"query\", \"schema\": {\"type\": \"string\"}, \"description\": \"Keywords to search for in feedback messages.\"}], \"responses\": {\"200\": {\"description\": \"Search results for matching feedback entries.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"feedbackId\": {\"type\": \"string\", \"description\": \"Unique identifier for the feedback entry.\"}, \"message\": {\"type\": \"string\", \"description\": \"Feedback message content.\"}, \"sentiment\": {\"type\": \"string\", \"description\": \"Sentiment analysis result for the feedback.\", \"enum\": [\"positive\", \"negative\", \"neutral\"]}, \"metadata\": {\"type\": \"object\", \"properties\": {\"date\": {\"type\": \"string\", \"format\": \"date-time\", \"description\": \"Date and time of submission.\"}, \"source\": {\"type\": \"string\", \"description\": \"Source of the feedback.\"}}}}}}}}}}}",
+      "Endpoint: GET /analysis/summary\nSpecification:\n{\"summary\": \"Fetch customer sentiment summary\", \"description\": \"Retrieve an aggregated report summarizing customer sentiments across analyzed feedback data.\", \"responses\": {\"200\": {\"description\": \"Summary of analyzed sentiment data.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"positive\": {\"type\": \"integer\", \"description\": \"Number of positive feedback entries.\"}, \"negative\": {\"type\": \"integer\", \"description\": \"Number of negative feedback entries.\"}, \"neutral\": {\"type\": \"integer\", \"description\": \"Number of neutral feedback entries.\"}, \"total\": {\"type\": \"integer\", \"description\": \"Total number of analyzed feedback entries.\"}}}}}}}}",
+      "Endpoint: POST /content/feedback\nSpecification:\n{\"summary\": \"Submit feedback on recommended content\", \"description\": \"Allows users to provide feedback on recommended content, helping to refine the personalization model.\", \"requestBody\": {\"description\": \"User feedback data\", \"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"userId\": {\"type\": \"string\", \"description\": \"The unique identifier of the user submitting feedback\"}, \"contentId\": {\"type\": \"string\", \"description\": \"The unique identifier of the content being reviewed\"}, \"feedback\": {\"type\": \"string\", \"description\": \"The feedback from the user regarding the content (e.g., liked, disliked, etc.)\"}}, \"required\": [\"userId\", \"contentId\", \"feedback\"]}}}}, \"responses\": {\"200\": {\"description\": \"Feedback successfully submitted\"}}}",
+      "Endpoint: GET /insights/concerns\nSpecification:\n{\"summary\": \"Retrieve key customer concerns\", \"description\": \"Fetch a list of common customer concerns derived from aggregated feedback data.\", \"responses\": {\"200\": {\"description\": \"Key concerns based on customer feedback.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"string\", \"description\": \"A specific customer concern.\"}}}}}}}",
+      "Endpoint: DELETE /feedbacks/{feedbackId}\nSpecification:\n{\"summary\": \"Delete feedback\", \"description\": \"Remove an existing feedback entry using its unique identifier.\", \"parameters\": [{\"name\": \"feedbackId\", \"in\": \"path\", \"required\": true, \"schema\": {\"type\": \"string\"}, \"description\": \"The unique identifier of the feedback to delete.\"}], \"responses\": {\"204\": {\"description\": \"Feedback successfully deleted.\"}}}",
+      "Endpoint: GET /insights/trends\nSpecification:\n{\"summary\": \"Access feedback trends\", \"description\": \"Retrieve insights into trends and patterns that emerge from customer feedback data over time.\", \"responses\": {\"200\": {\"description\": \"Trends and patterns detected.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"trend\": {\"type\": \"string\", \"description\": \"A specific trend identified from feedback.\"}, \"frequency\": {\"type\": \"integer\", \"description\": \"The occurrence frequency of this trend.\"}}}}}}}}}"
+    ],
+    "compressed_chunks": [
+      "Endpoint: PUT /feedbacks/{feedbackId}\nSpecification: \"summary\": \"Update feedback entry\" \"description\": \"Update an existing feedback entry identified by its unique identifier.\" \"description\": \"The unique identifier of the feedback to update.\" \"message\": {\"type\": \"string\", \"description\": \"Updated content of the customer feedback.\"} \"description\": \"Feedback successfully updated.\" \"feedbackId\": {\"type\": \"string\", \"description\": \"Unique identifier for the updated feedback.\"} \"message\": {\"type\": \"string\", \"description\": \"Confirmation message.\"}",
+      "Endpoint: POST /analysis/customize\nSpecification: \"summary\": \"Customize analysis process\" \"description\": \"Submit parameters to modify how analysis is conducted on feedback data.\" \"description\": \"Analysis parameters successfully updated.\" \"properties\": {\"status\": {\"type\": \"string\", \"description\": \"Resulting status of the customization request.\"}}",
+      "Endpoint: GET /feedbacks/{feedbackId}\nSpecification: \"summary\": \"Retrieve specific feedback details\" \"description\": \"Retrieve the details of a specific customer feedback entry using its unique identifier.\" \"customerId\": {\"type\": \"string\", \"description\": \"Unique identifier for the customer who submitted the feedback.\"} \"description\": \"Details about the feedback, including date and source.\" \"date\": {\"type\": \"string\", \"format\": \"date-time\", \"description\": \"Date and time the feedback was collected.\"}",
+      "Endpoint: POST /feedbacks\nSpecification: \"summary\": \"Submit customer feedback\" \"description\": \"Submit a new piece of customer feedback for analysis. Feedback should typically include a message, associated metadata, and customer information.\" \"description\": \"Additional details about the feedback, such as feedback date and source.\" \"source\": {\"type\": \"string\", \"description\": \"Source or channel through which the feedback was collected.\"} \"description\": \"Feedback successfully submitted.\" \"feedbackId\": {\"type\": \"string\", \"description\": \"Unique identifier for the newly submitted feedback.\"} \"message\": {\"type\": \"string\", \"description\": \"Confirmation message.\"}",
+      "Endpoint: GET /feedbacks/search\nSpecification: \"summary\": \"Search feedback entries\" \"description\": \"Search through customer feedback based on query parameters such as date range, sentiment, or specific keywords.\" \"description\": \"Keywords to search for in feedback messages.\" \"description\": \"Sentiment analysis result for the feedback.\" \"date\": {\"type\": \"string\", \"format\": \"date-time\", \"description\": \"Date and time of submission.\"}",
+      "Endpoint: GET /analysis/summary\nSpecification: \"summary\": \"Fetch customer sentiment summary\" \"description\": \"Retrieve an aggregated report summarizing customer sentiments across analyzed feedback data.\" \"positive\": {\"type\": \"integer\", \"description\": \"Number of positive feedback entries.\"} \"neutral\": {\"type\": \"integer\", \"description\": \"Number of neutral feedback entries.\"}",
+      "Endpoint: POST /content/feedback\nSpecification: \"summary\": \"Submit feedback on recommended content\" \"description\": \"Allows users to provide feedback on recommended content, helping to refine the personalization model.\" \"contentId\": {\"type\": \"string\", \"description\": \"The unique identifier of the content being reviewed\"} \"description\": \"The feedback from the user regarding the content (e.g., liked, disliked, etc.)\" \"responses\": {\"200\": {\"description\": \"Feedback successfully submitted\"}}",
+      "Endpoint: GET /insights/concerns\nSpecification: \"summary\": \"Retrieve key customer concerns\" \"description\": \"Fetch a list of common customer concerns derived from aggregated feedback data.\" \"description\": \"Key concerns based on customer feedback.\"",
+      "Endpoint: DELETE /feedbacks/{feedbackId}\nSpecification: \"summary\": \"Delete feedback\" \"description\": \"Remove an existing feedback entry using its unique identifier.\" \"required\": true \"description\": \"The unique identifier of the feedback to delete.\" \"responses\": {\"204\": {\"description\": \"Feedback successfully deleted.\"}}",
+      "Endpoint: GET /insights/trends\nSpecification: \"summary\": \"Access feedback trends\" \"description\": \"Retrieve insights into trends and patterns that emerge from customer feedback data over time.\" \"trend\": {\"type\": \"string\", \"description\": \"A specific trend identified from feedback.\"}"
+    ],
+    "raw_tokens": 2027,
+    "compressed_tokens": 866,
+    "retrieval_recall": 0.4,
+    "retrieval": [
+      {
+        "rank": 0,
+        "score": 0.5086,
+        "endpoints": [
+          "PUT /feedbacks/{feedbackId}"
+        ],
+        "raw_tokens": 278,
+        "compressed_tokens": 116,
+        "kept": true
+      },
+      {
+        "rank": 1,
+        "score": 0.535,
+        "endpoints": [
+          "POST /analysis/customize"
+        ],
+        "raw_tokens": 153,
+        "compressed_tokens": 68,
+        "kept": true
+      },
+      {
+        "rank": 2,
+        "score": 0.539,
+        "endpoints": [
+          "GET /feedbacks/{feedbackId}"
+        ],
+        "raw_tokens": 263,
+        "compressed_tokens": 107,
+        "kept": true
+      },
+      {
+        "rank": 3,
+        "score": 0.5581,
+        "endpoints": [
+          "POST /feedbacks"
+        ],
+        "raw_tokens": 289,
+        "compressed_tokens": 134,
+        "kept": true
+      },
+      {
+        "rank": 4,
+        "score": 0.5607,
+        "endpoints": [
+          "GET /feedbacks/search"
+        ],
+        "raw_tokens": 389,
+        "compressed_tokens": 92,
+        "kept": true
+      },
+      {
+        "rank": 5,
+        "score": 0.6174,
+        "endpoints": [
+          "GET /analysis/summary"
+        ],
+        "raw_tokens": 155,
+        "compressed_tokens": 76,
+        "kept": true
+      },
+      {
+        "rank": 6,
+        "score": 0.6314,
+        "endpoints": [
+          "POST /content/feedback"
+        ],
+        "raw_tokens": 186,
+        "compressed_tokens": 100,
+        "kept": true
+      },
+      {
+        "rank": 7,
+        "score": 0.6338,
+        "endpoints": [
+          "GET /insights/concerns"
+        ],
+        "raw_tokens": 93,
+        "compressed_tokens": 49,
+        "kept": true
+      },
+      {
+        "rank": 8,
+        "score": 0.6424,
+        "endpoints": [
+          "DELETE /feedbacks/{feedbackId}"
+        ],
+        "raw_tokens": 93,
+        "compressed_tokens": 65,
+        "kept": true
+      },
+      {
+        "rank": 9,
+        "score": 0.6489,
+        "endpoints": [
+          "GET /insights/trends"
+        ],
+        "raw_tokens": 128,
+        "compressed_tokens": 59,
+        "kept": true
+      }
+    ],
+    "qwen_tokens": {
+      "hint_calls": 1,
+      "hint_prompt_tokens": 364,
+      "hint_generated_tokens": 64,
+      "attention_passes": 10,
+      "attention_input_tokens": 4683
+    },
+    "seconds": 9.5
+  },
+  {
+    "benchmark": "socbenchd_1",
+    "queryset": "utilities",
+    "top_k": 10,
+    "query": "Analyze raw sensor data for a specified time range alongside efficiency metrics, evaluate regional configuration settings, and generate custom gas consumption forecasts for the given period.",
+    "solution": [
+      "GET /sensor-data",
+      "POST /forecast",
+      "GET /regions/config",
+      "GET /efficiency/metrics"
+    ],
+    "base_url": "https://api.socbench.example",
+    "base_path": "",
+    "raw_chunks": [
+      "Endpoint: GET /efficiency/metrics\nSpecification:\n{\"summary\": \"Retrieve Efficiency Analysis Metrics\", \"description\": \"Retrieve pre-calculated efficiency metrics for gas distribution and supply systems.\", \"responses\": {\"200\": {\"description\": \"Successfully retrieved efficiency metrics.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"metrics\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"metric_name\": {\"type\": \"string\"}, \"value\": {\"type\": \"number\", \"format\": \"float\"}}}}}}}}}}}",
+      "Endpoint: GET /regions/config\nSpecification:\n{\"summary\": \"Retrieve Region Configuration Details\", \"description\": \"Fetch the configuration settings for all monitored regions.\", \"responses\": {\"200\": {\"description\": \"Successfully retrieved configuration details for monitored regions.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"region\": {\"type\": \"string\"}, \"config_params\": {\"type\": \"object\", \"additionalProperties\": true}}}}}}}}}",
+      "Endpoint: POST /efficiency/metrics\nSpecification:\n{\"summary\": \"Submit Parameters for Detailed Efficiency Analysis\", \"description\": \"Provide specific parameters to request a detailed analysis of the system's efficiency.\", \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"region\": {\"type\": \"string\", \"description\": \"The region for which the efficiency analysis is being requested.\"}, \"analysis_parameters\": {\"type\": \"object\", \"description\": \"Specific parameters for the analysis, such as time intervals or operational criteria.\", \"additionalProperties\": true}}, \"required\": [\"region\", \"analysis_parameters\"]}}}}, \"responses\": {\"200\": {\"description\": \"Efficiency analysis request processed successfully.\"}, \"400\": {\"description\": \"Invalid input parameters.\"}}}",
+      "Endpoint: GET /forecast\nSpecification:\n{\"summary\": \"Retrieve Gas Consumption Forecast\", \"description\": \"Fetch the predicted gas consumption patterns for specified time intervals. This endpoint allows gas utility companies to plan supply and distribution based on forecasted demand.\", \"parameters\": [{\"name\": \"start_date\", \"in\": \"query\", \"description\": \"Start date for the consumption forecast (format: YYYY-MM-DD)\", \"required\": true, \"schema\": {\"type\": \"string\", \"format\": \"date\"}}, {\"name\": \"end_date\", \"in\": \"query\", \"description\": \"End date for the consumption forecast (format: YYYY-MM-DD)\", \"required\": true, \"schema\": {\"type\": \"string\", \"format\": \"date\"}}, {\"name\": \"region\", \"in\": \"query\", \"description\": \"The region ID for which the forecast is required.\", \"required\": false, \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Successful retrieval of consumption forecast.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"forecast\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"date\": {\"type\": \"string\", \"format\": \"date\"}, \"expected_consumption\": {\"type\": \"number\", \"format\": \"float\"}}}}}}}}}, \"400\": {\"description\": \"Invalid input parameters.\"}}}",
+      "Endpoint: GET /sensor-data\nSpecification:\n{\"summary\": \"Retrieve raw sensor data\", \"description\": \"Obtain the raw data collected by all active sensors in the network for a specified time range.\", \"parameters\": [{\"name\": \"start_time\", \"in\": \"query\", \"required\": true, \"schema\": {\"type\": \"string\", \"format\": \"date-time\"}, \"description\": \"Start time for retrieving raw sensor data.\"}, {\"name\": \"end_time\", \"in\": \"query\", \"required\": true, \"schema\": {\"type\": \"string\", \"format\": \"date-time\"}, \"description\": \"End time for retrieving raw sensor data.\"}], \"responses\": {\"200\": {\"description\": \"Successfully retrieved raw sensor data.\"}}}",
+      "Endpoint: GET /forecast-patterns\nSpecification:\n{\"summary\": \"Access electricity usage forecast models.\", \"description\": \"Retrieve the latest forecast models for electricity demand patterns across various regions for future planning.\", \"responses\": {\"200\": {\"description\": \"Successfully retrieved forecast patterns.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"region\": {\"type\": \"string\", \"description\": \"The name of the region.\"}, \"forecast\": {\"type\": \"object\", \"properties\": {\"time_frame\": {\"type\": \"string\", \"description\": \"The time frame of the forecast.\"}, \"predicted_demand\": {\"type\": \"number\", \"description\": \"The predicted electricity demand (in MW).\"}}}}}}}}}}}",
+      "Endpoint: POST /forecast\nSpecification:\n{\"summary\": \"Submit Parameters for Custom Forecast\", \"description\": \"Submit parameters to generate a custom consumption forecast tailored to specific needs.\", \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"start_date\": {\"type\": \"string\", \"format\": \"date\", \"description\": \"The start date for the forecast.\"}, \"end_date\": {\"type\": \"string\", \"format\": \"date\", \"description\": \"The end date for the forecast.\"}, \"region\": {\"type\": \"string\", \"description\": \"Region ID for custom forecasting.\"}, \"parameters\": {\"type\": \"object\", \"description\": \"Custom parameters for forecasting, such as weather conditions or historical anomalies.\", \"additionalProperties\": true}}, \"required\": [\"start_date\", \"end_date\"]}}}}, \"responses\": {\"201\": {\"description\": \"Forecast parameters submitted successfully.\"}, \"400\": {\"description\": \"Invalid input parameters.\"}}}",
+      "Endpoint: PUT /regions/config\nSpecification:\n{\"summary\": \"Update Region Configuration Settings\", \"description\": \"Modify the configuration settings for a specific region in the monitored network.\", \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"region\": {\"type\": \"string\", \"description\": \"The region ID for which the configuration settings are being updated.\"}, \"new_config_params\": {\"type\": \"object\", \"description\": \"New configuration parameters for the region.\", \"additionalProperties\": true}}, \"required\": [\"region\", \"new_config_params\"]}}}}, \"responses\": {\"200\": {\"description\": \"Region configuration updated successfully.\"}, \"400\": {\"description\": \"Invalid input parameters.\"}}}",
+      "Endpoint: GET /energy-output/history\nSpecification:\n{\"summary\": \"Access Historical Energy Output Records\", \"description\": \"Retrieve historical energy output data for all devices or a specific device, segmented by date or time period.\", \"parameters\": [{\"name\": \"device_id\", \"in\": \"query\", \"description\": \"Optional. Specify the device ID to filter historical data.\", \"required\": false, \"schema\": {\"type\": \"string\"}}, {\"name\": \"start_date\", \"in\": \"query\", \"description\": \"The start date for historical records in ISO 8601 format (e.g., 2023-01-01).\", \"required\": true, \"schema\": {\"type\": \"string\", \"format\": \"date\"}}, {\"name\": \"end_date\", \"in\": \"query\", \"description\": \"The end date for historical records in ISO 8601 format (e.g., 2023-01-31).\", \"required\": true, \"schema\": {\"type\": \"string\", \"format\": \"date\"}}], \"responses\": {\"200\": {\"description\": \"Energy output data retrieved successfully.\", \"content\": {\"application/json\": {\"example\": {\"data\": [{\"date\": \"2023-01-01\", \"output_kw\": 120.5}]}}}}}}",
+      "Endpoint: GET /analysis/overview\nSpecification:\n{\"summary\": \"Energy Usage Overview\", \"description\": \"Retrieve a summary snapshot of energy usage patterns across all clients.\", \"responses\": {\"200\": {\"description\": \"Overview successfully retrieved.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"total_clients\": {\"type\": \"integer\", \"description\": \"Total number of clients being analyzed.\"}, \"average_consumption\": {\"type\": \"number\", \"format\": \"float\", \"description\": \"Average energy consumption across all clients in kWh.\"}, \"peak_consumption_times\": {\"type\": \"array\", \"items\": {\"type\": \"string\", \"format\": \"date-time\", \"description\": \"Time periods of peak energy consumption.\"}, \"description\": \"Array of peak energy consumption times.\"}}}}}}}}"
+    ],
+    "compressed_chunks": [
+      "Endpoint: GET /efficiency/metrics\nSpecification: \"summary\": \"Retrieve Efficiency Analysis Metrics\" \"description\": \"Retrieve pre-calculated efficiency metrics for gas distribution and supply systems.\"",
+      "Endpoint: GET /regions/config\nSpecification: \"summary\": \"Retrieve Region Configuration Details\" \"description\": \"Fetch the configuration settings for all monitored regions.\" \"description\": \"Successfully retrieved configuration details for monitored regions.\"",
+      "Endpoint: POST /efficiency/metrics\nSpecification: \"summary\": \"Submit Parameters for Detailed Efficiency Analysis\" \"description\": \"Provide specific parameters to request a detailed analysis of the system's efficiency.\" \"description\": \"Specific parameters for the analysis, such as time intervals or operational criteria.\" \"200\": {\"description\": \"Efficiency analysis request processed successfully.\"} \"400\": {\"description\": \"Invalid input parameters.\"}",
+      "Endpoint: GET /forecast\nSpecification: \"summary\": \"Retrieve Gas Consumption Forecast\" \"description\": \"Fetch the predicted gas consumption patterns for specified time intervals. This endpoint allows gas utility companies to plan supply and distribution based on forecasted demand.\" \"description\": \"Start date for the consumption forecast (format: YYYY-MM-DD)\"",
+      "Endpoint: GET /sensor-data\nSpecification: \"summary\": \"Retrieve raw sensor data\" \"description\": \"Obtain the raw data collected by all active sensors in the network for a specified time range.\" \"responses\": {\"200\": {\"description\": \"Successfully retrieved raw sensor data.\"}}",
+      "Endpoint: GET /forecast-patterns\nSpecification: \"summary\": \"Access electricity usage forecast models.\" \"description\": \"Retrieve the latest forecast models for electricity demand patterns across various regions for future planning.\"",
+      "Endpoint: POST /forecast\nSpecification: \"summary\": \"Submit Parameters for Custom Forecast\" \"description\": \"Submit parameters to generate a custom consumption forecast tailored to specific needs.\" \"region\": {\"type\": \"string\", \"description\": \"Region ID for custom forecasting.\"} \"description\": \"Custom parameters for forecasting, such as weather conditions or historical anomalies.\" \"201\": {\"description\": \"Forecast parameters submitted successfully.\"}",
+      "Endpoint: PUT /regions/config\nSpecification: \"summary\": \"Update Region Configuration Settings\" \"description\": \"Modify the configuration settings for a specific region in the monitored network.\" \"region\": {\"type\": \"string\", \"description\": \"The region ID for which the configuration settings are being updated.\"} \"200\": {\"description\": \"Region configuration updated successfully.\"} \"400\": {\"description\": \"Invalid input parameters.\"}",
+      "Endpoint: GET /energy-output/history\nSpecification: \"summary\": \"Access Historical Energy Output Records\" \"description\": \"Retrieve historical energy output data for all devices or a specific device, segmented by date or time period.\" \"description\": \"Optional. Specify the device ID to filter historical data.\" \"description\": \"Energy output data retrieved successfully.\"",
+      "Endpoint: GET /analysis/overview\nSpecification: \"summary\": \"Energy Usage Overview\" \"description\": \"Retrieve a summary snapshot of energy usage patterns across all clients.\" \"description\": \"Overview successfully retrieved.\" \"total_clients\": {\"type\": \"integer\", \"description\": \"Total number of clients being analyzed.\"}"
+    ],
+    "raw_tokens": 1836,
+    "compressed_tokens": 632,
+    "retrieval_recall": 1.0,
+    "retrieval": [
+      {
+        "rank": 0,
+        "score": 0.5612,
+        "endpoints": [
+          "GET /efficiency/metrics"
+        ],
+        "raw_tokens": 122,
+        "compressed_tokens": 37,
+        "kept": true
+      },
+      {
+        "rank": 1,
+        "score": 0.5694,
+        "endpoints": [
+          "GET /regions/config"
+        ],
+        "raw_tokens": 106,
+        "compressed_tokens": 43,
+        "kept": true
+      },
+      {
+        "rank": 2,
+        "score": 0.5748,
+        "endpoints": [
+          "POST /efficiency/metrics"
+        ],
+        "raw_tokens": 169,
+        "compressed_tokens": 84,
+        "kept": true
+      },
+      {
+        "rank": 3,
+        "score": 0.5755,
+        "endpoints": [
+          "GET /forecast"
+        ],
+        "raw_tokens": 300,
+        "compressed_tokens": 66,
+        "kept": true
+      },
+      {
+        "rank": 4,
+        "score": 0.6091,
+        "endpoints": [
+          "GET /sensor-data"
+        ],
+        "raw_tokens": 156,
+        "compressed_tokens": 58,
+        "kept": true
+      },
+      {
+        "rank": 5,
+        "score": 0.6245,
+        "endpoints": [
+          "GET /forecast-patterns"
+        ],
+        "raw_tokens": 167,
+        "compressed_tokens": 40,
+        "kept": true
+      },
+      {
+        "rank": 6,
+        "score": 0.6258,
+        "endpoints": [
+          "POST /forecast"
+        ],
+        "raw_tokens": 213,
+        "compressed_tokens": 85,
+        "kept": true
+      },
+      {
+        "rank": 7,
+        "score": 0.636,
+        "endpoints": [
+          "PUT /regions/config"
+        ],
+        "raw_tokens": 159,
+        "compressed_tokens": 86,
+        "kept": true
+      },
+      {
+        "rank": 8,
+        "score": 0.6408,
+        "endpoints": [
+          "GET /energy-output/history"
+        ],
+        "raw_tokens": 268,
+        "compressed_tokens": 69,
+        "kept": true
+      },
+      {
+        "rank": 9,
+        "score": 0.6439,
+        "endpoints": [
+          "GET /analysis/overview"
+        ],
+        "raw_tokens": 176,
+        "compressed_tokens": 64,
+        "kept": true
+      }
+    ],
+    "qwen_tokens": {
+      "hint_calls": 1,
+      "hint_prompt_tokens": 335,
+      "hint_generated_tokens": 26,
+      "attention_passes": 10,
+      "attention_input_tokens": 3450
+    },
+    "seconds": 6.9
+  },
+  {
+    "benchmark": "socbenchd_1",
+    "queryset": "real estate",
+    "top_k": 10,
+    "query": "Find the estimated valuation of a property located in San Francisco with three bedrooms and two bathrooms, retrieve all reviews for an agent with ID \"agent123\", and check the outstanding payments of a tenant with ID \"tenant456\".",
+    "solution": [
+      "GET /properties/valuation",
+      "GET /reviews/{agentId}",
+      "GET /payments/outstanding/{tenantId}"
+    ],
+    "base_url": "https://api.socbench.example",
+    "base_path": "",
+    "raw_chunks": [
+      "Endpoint: GET /properties/valuation\nSpecification:\n{\"summary\": \"Retrieve the estimated value of a property\", \"description\": \"This endpoint allows users to obtain an estimated market value for a property by providing its location and key features (e.g., size, number of bedrooms, etc.). The estimation leverages historical data, market trends, and comparable properties.\", \"parameters\": [{\"name\": \"location\", \"in\": \"query\", \"required\": true, \"description\": \"The location of the property (e.g., city, state, or specific address).\", \"schema\": {\"type\": \"string\"}}, {\"name\": \"bedrooms\", \"in\": \"query\", \"required\": false, \"description\": \"The number of bedrooms in the property.\", \"schema\": {\"type\": \"integer\", \"example\": 3}}, {\"name\": \"bathrooms\", \"in\": \"query\", \"required\": false, \"description\": \"The number of bathrooms in the property.\", \"schema\": {\"type\": \"integer\", \"example\": 2}}, {\"name\": \"square_feet\", \"in\": \"query\", \"required\": false, \"description\": \"The total area of the property in square feet.\", \"schema\": {\"type\": \"integer\", \"example\": 1500}}], \"responses\": {\"200\": {\"description\": \"Successful response with the estimated value of the property.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"estimated_value\": {\"type\": \"number\", \"description\": \"The estimated market value of the property in USD.\"}, \"confidence_score\": {\"type\": \"number\", \"format\": \"float\", \"description\": \"A confidence score (0-100) indicating the reliability of the valuation.\"}}}}}}}}",
+      "Endpoint: GET /payments/outstanding/{tenantId}\nSpecification:\n{\"summary\": \"Check outstanding payments\", \"description\": \"Retrieve the list of outstanding payments for a specific tenant ID.\", \"parameters\": [{\"name\": \"tenantId\", \"in\": \"path\", \"required\": true, \"schema\": {\"type\": \"string\"}, \"description\": \"Unique identifier for the tenant.\"}], \"responses\": {\"200\": {\"description\": \"Outstanding payments retrieved successfully.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"invoiceId\": {\"type\": \"string\", \"description\": \"Unique identifier for the payment invoice.\"}, \"amount\": {\"type\": \"number\", \"description\": \"Outstanding payment amount.\"}, \"dueDate\": {\"type\": \"string\", \"format\": \"date\", \"description\": \"Due date for the payment.\"}}}}}}}, \"404\": {\"description\": \"Tenant not found.\"}}}",
+      "Endpoint: GET /property-value-estimate\nSpecification:\n{\"summary\": \"Fetch Property Value Estimate\", \"description\": \"Fetch an estimated value of a property based on its location and other provided details.\", \"parameters\": [{\"name\": \"location\", \"in\": \"query\", \"required\": true, \"description\": \"The location of the property (e.g., address, city, state).\", \"schema\": {\"type\": \"string\"}}, {\"name\": \"propertyDetails\", \"in\": \"query\", \"required\": false, \"description\": \"Additional details about the property (e.g., size, type).\", \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Property value estimate retrieved successfully.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"estimatedValue\": {\"type\": \"number\", \"description\": \"The estimated value of the property in USD.\"}}}}}}}}",
+      "Endpoint: GET /reviews/{agentId}\nSpecification:\n{\"summary\": \"Retrieve Reviews for an Agent\", \"description\": \"Retrieve all reviews and ratings for a specific real estate agent.\", \"parameters\": [{\"name\": \"agentId\", \"in\": \"path\", \"description\": \"The ID of the agent whose reviews are requested.\", \"required\": true, \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"List of reviews for the specified agent.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"$ref\": \"#/components/schemas/Review\"}}}}}}}",
+      "Endpoint: GET /properties\nSpecification:\n{\"summary\": \"Retrieve properties matching filters\", \"description\": \"Fetch a list of properties available for sale or rent. The results can be filtered based on location, price range, amenities, and other optional parameters.\", \"parameters\": [{\"name\": \"location\", \"in\": \"query\", \"description\": \"Filter properties by location (e.g., city, neighborhood, or address).\", \"required\": false, \"schema\": {\"type\": \"string\"}}, {\"name\": \"min_price\", \"in\": \"query\", \"description\": \"Filter properties by minimum price range.\", \"required\": false, \"schema\": {\"type\": \"number\"}}, {\"name\": \"max_price\", \"in\": \"query\", \"description\": \"Filter properties by maximum price range.\", \"required\": false, \"schema\": {\"type\": \"number\"}}, {\"name\": \"amenities\", \"in\": \"query\", \"description\": \"Filter properties by required amenities (e.g., parking, pool, garden).\", \"required\": false, \"schema\": {\"type\": \"string\"}}, {\"name\": \"property_type\", \"in\": \"query\", \"description\": \"Filter properties by type (e.g., apartment, house, commercial).\", \"required\": false, \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"A list of properties matching the specified filters.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"$ref\": \"#/components/schemas/Property\"}}}}}}}",
+      "Endpoint: GET /properties/comparison\nSpecification:\n{\"summary\": \"Compare properties\", \"description\": \"Provide a detailed comparison of two or more properties based on their attributes.\", \"parameters\": [{\"name\": \"property_ids\", \"in\": \"query\", \"required\": true, \"description\": \"A comma-separated list of property IDs to compare.\", \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Successfully retrieved property comparison results.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"property_id\": {\"type\": \"string\"}, \"details\": {\"type\": \"object\", \"properties\": {\"bedrooms\": {\"type\": \"integer\"}, \"bathrooms\": {\"type\": \"integer\"}, \"square_feet\": {\"type\": \"integer\"}}}}}}}}}}}",
+      "Endpoint: GET /recommendations\nSpecification:\n{\"summary\": \"Get Recommended Agents\", \"description\": \"Retrieve recommended agents for a specific property based on user preferences and performance metrics.\", \"parameters\": [{\"name\": \"propertyId\", \"in\": \"query\", \"description\": \"ID of the property for which recommendations are requested.\", \"required\": true, \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"List of recommended agents.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"$ref\": \"#/components/schemas/Agent\"}}}}}}}",
+      "Endpoint: POST /properties/add\nSpecification:\n{\"summary\": \"Submit property details for storage and analysis\", \"description\": \"This endpoint allows users to add detailed information about a property to the service's database for future analysis and retrieval.\", \"requestBody\": {\"description\": \"The property information to be submitted.\", \"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"required\": [\"location\", \"features\"], \"properties\": {\"location\": {\"type\": \"string\", \"description\": \"The property's location (e.g., city, state, or address).\"}, \"features\": {\"type\": \"object\", \"description\": \"Details about the features of the property (e.g., number of bedrooms, area, etc.).\", \"properties\": {\"bedrooms\": {\"type\": \"integer\"}, \"bathrooms\": {\"type\": \"integer\"}, \"square_feet\": {\"type\": \"integer\"}}}}}}}}, \"responses\": {\"201\": {\"description\": \"The property was successfully added.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"message\": {\"type\": \"string\"}}}}}}}}",
+      "Endpoint: GET /properties/similar\nSpecification:\n{\"summary\": \"Retrieve similar properties\", \"description\": \"Fetch a list of properties similar to a given property based on its features and location.\", \"parameters\": [{\"name\": \"property_id\", \"in\": \"query\", \"required\": true, \"description\": \"The unique identifier of the property to find similar properties for.\", \"schema\": {\"type\": \"string\"}}], \"responses\": {\"200\": {\"description\": \"Successfully retrieved similar properties.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"properties\": {\"property_id\": {\"type\": \"string\"}, \"location\": {\"type\": \"string\"}, \"features\": {\"type\": \"object\", \"properties\": {\"bedrooms\": {\"type\": \"integer\"}, \"bathrooms\": {\"type\": \"integer\"}, \"square_feet\": {\"type\": \"integer\"}}}}}}}}}}}",
+      "Endpoint: POST /evaluate-affordability\nSpecification:\n{\"summary\": \"Evaluate Affordability\", \"description\": \"Analyze user's financial data to assess their property affordability.\", \"requestBody\": {\"required\": true, \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"income\": {\"type\": \"number\", \"description\": \"User's annual income in USD.\"}, \"expenses\": {\"type\": \"number\", \"description\": \"User's monthly expenses in USD.\"}, \"downPayment\": {\"type\": \"number\", \"description\": \"Proposed down payment amount in USD.\"}}, \"required\": [\"income\", \"expenses\", \"downPayment\"]}}}}, \"responses\": {\"200\": {\"description\": \"Affordability analysis completed successfully.\", \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"affordablePrice\": {\"type\": \"number\", \"description\": \"The maximum affordable property price based on provided data.\"}}}}}}}}"
+    ],
+    "compressed_chunks": [
+      "Endpoint: GET /properties/valuation\nSpecification: \"summary\": \"Retrieve the estimated value of a property\" \"description\": \"This endpoint allows users to obtain an estimated market value for a property by providing its location and key features (e.g., size, number of bedrooms, etc.). The estimation leverages historical data, market trends, and comparable properties.\" \"description\": \"The total area of the property in square feet.\" \"schema\": {\"type\": \"integer\", \"example\": 1500} \"estimated_value\": {\"type\": \"number\", \"description\": \"The estimated market value of the property in USD.\"} \"description\": \"A confidence score (0-100) indicating the reliability of the valuation.\"",
+      "Endpoint: GET /payments/outstanding/{tenantId}\nSpecification: \"summary\": \"Check outstanding payments\" \"description\": \"Retrieve the list of outstanding payments for a specific tenant ID.\" \"invoiceId\": {\"type\": \"string\", \"description\": \"Unique identifier for the payment invoice.\"} \"amount\": {\"type\": \"number\", \"description\": \"Outstanding payment amount.\"} \"dueDate\": {\"type\": \"string\", \"format\": \"date\", \"description\": \"Due date for the payment.\"} \"404\": {\"description\": \"Tenant not found.\"}",
+      "Endpoint: GET /property-value-estimate\nSpecification: \"summary\": \"Fetch Property Value Estimate\" \"description\": \"Fetch an estimated value of a property based on its location and other provided details.\" \"description\": \"The location of the property (e.g., address, city, state).\" \"schema\": {\"type\": \"string\"} \"properties\": {\"estimatedValue\": {\"type\": \"number\", \"description\": \"The estimated value of the property in USD.\"}}",
+      "Endpoint: GET /reviews/{agentId}\nSpecification: \"summary\": \"Retrieve Reviews for an Agent\" \"description\": \"Retrieve all reviews and ratings for a specific real estate agent.\" \"description\": \"List of reviews for the specified agent.\" \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"$ref\": \"#/components/schemas/Review\"}}}}",
+      "Endpoint: GET /properties\nSpecification: \"summary\": \"Retrieve properties matching filters\" \"description\": \"Fetch a list of properties available for sale or rent. The results can be filtered based on location, price range, amenities, and other optional parameters.\" \"description\": \"Filter properties by location (e.g., city, neighborhood, or address).\" \"description\": \"Filter properties by required amenities (e.g., parking, pool, garden).\" \"schema\": {\"type\": \"string\"} \"description\": \"A list of properties matching the specified filters.\" \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"$ref\": \"#/components/schemas/Property\"}}}}",
+      "Endpoint: GET /properties/comparison\nSpecification: \"summary\": \"Compare properties\" \"description\": \"Provide a detailed comparison of two or more properties based on their attributes.\" \"description\": \"A comma-separated list of property IDs to compare.\" \"properties\": {\"bedrooms\": {\"type\": \"integer\"}, \"bathrooms\": {\"type\": \"integer\"}, \"square_feet\": {\"type\": \"integer\"}}",
+      "Endpoint: GET /recommendations\nSpecification: \"summary\": \"Get Recommended Agents\" \"description\": \"Retrieve recommended agents for a specific property based on user preferences and performance metrics.\" \"description\": \"List of recommended agents.\" \"content\": {\"application/json\": {\"schema\": {\"type\": \"array\", \"items\": {\"$ref\": \"#/components/schemas/Agent\"}}}}",
+      "Endpoint: POST /properties/add\nSpecification: \"summary\": \"Submit property details for storage and analysis\" \"description\": \"This endpoint allows users to add detailed information about a property to the service's database for future analysis and retrieval.\" \"location\": {\"type\": \"string\", \"description\": \"The property's location (e.g., city, state, or address).\"} \"description\": \"Details about the features of the property (e.g., number of bedrooms, area, etc.).\" \"description\": \"The property was successfully added.\" \"content\": {\"application/json\": {\"schema\": {\"type\": \"object\", \"properties\": {\"message\": {\"type\": \"string\"}}}}}",
+      "Endpoint: GET /properties/similar\nSpecification: \"summary\": \"Retrieve similar properties\" \"description\": \"Fetch a list of properties similar to a given property based on its features and location.\" \"description\": \"The unique identifier of the property to find similar properties for.\" \"properties\": {\"bedrooms\": {\"type\": \"integer\"}, \"bathrooms\": {\"type\": \"integer\"}, \"square_feet\": {\"type\": \"integer\"}}",
+      "Endpoint: POST /evaluate-affordability\nSpecification: \"summary\": \"Evaluate Affordability\" \"description\": \"Analyze user's financial data to assess their property affordability.\" \"income\": {\"type\": \"number\", \"description\": \"User's annual income in USD.\"} \"expenses\": {\"type\": \"number\", \"description\": \"User's monthly expenses in USD.\"} \"affordablePrice\": {\"type\": \"number\", \"description\": \"The maximum affordable property price based on provided data.\"}"
+    ],
+    "raw_tokens": 2186,
+    "compressed_tokens": 1072,
+    "retrieval_recall": 1.0,
+    "retrieval": [
+      {
+        "rank": 0,
+        "score": 0.5229,
+        "endpoints": [
+          "GET /properties/valuation"
+        ],
+        "raw_tokens": 367,
+        "compressed_tokens": 146,
+        "kept": true
+      },
+      {
+        "rank": 1,
+        "score": 0.5497,
+        "endpoints": [
+          "GET /payments/outstanding/{tenantId}"
+        ],
+        "raw_tokens": 204,
+        "compressed_tokens": 116,
+        "kept": true
+      },
+      {
+        "rank": 2,
+        "score": 0.5634,
+        "endpoints": [
+          "GET /property-value-estimate"
+        ],
+        "raw_tokens": 198,
+        "compressed_tokens": 95,
+        "kept": true
+      },
+      {
+        "rank": 3,
+        "score": 0.5906,
+        "endpoints": [
+          "GET /reviews/{agentId}"
+        ],
+        "raw_tokens": 134,
+        "compressed_tokens": 81,
+        "kept": true
+      },
+      {
+        "rank": 4,
+        "score": 0.6064,
+        "endpoints": [
+          "GET /properties"
+        ],
+        "raw_tokens": 327,
+        "compressed_tokens": 143,
+        "kept": true
+      },
+      {
+        "rank": 5,
+        "score": 0.6065,
+        "endpoints": [
+          "GET /properties/comparison"
+        ],
+        "raw_tokens": 182,
+        "compressed_tokens": 83,
+        "kept": true
+      },
+      {
+        "rank": 6,
+        "score": 0.6141,
+        "endpoints": [
+          "GET /recommendations"
+        ],
+        "raw_tokens": 130,
+        "compressed_tokens": 77,
+        "kept": true
+      },
+      {
+        "rank": 7,
+        "score": 0.6196,
+        "endpoints": [
+          "POST /properties/add"
+        ],
+        "raw_tokens": 240,
+        "compressed_tokens": 139,
+        "kept": true
+      },
+      {
+        "rank": 8,
+        "score": 0.6282,
+        "endpoints": [
+          "GET /properties/similar"
+        ],
+        "raw_tokens": 197,
+        "compressed_tokens": 90,
+        "kept": true
+      },
+      {
+        "rank": 9,
+        "score": 0.6335,
+        "endpoints": [
+          "POST /evaluate-affordability"
+        ],
+        "raw_tokens": 207,
+        "compressed_tokens": 102,
+        "kept": true
+      }
+    ],
+    "qwen_tokens": {
+      "hint_calls": 1,
+      "hint_prompt_tokens": 353,
+      "hint_generated_tokens": 28,
+      "attention_passes": 10,
+      "attention_input_tokens": 4010
+    },
+    "seconds": 5.9
+  }
+]
