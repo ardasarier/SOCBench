@@ -1,0 +1,20 @@
+Bedingung     Läufe                         Mittel    ± SD
+Regel         [0.707, 0.697, 0.698]          0.700   0.006
+AttentionRAG  [0.73, 0.757, 0.78]            0.756   0.025
+Identity      [0.767, 0.787, 0.763]          0.772   0.013
+roh k=20      [0.694, 0.703, 0.731]          0.709   0.020
+roh k=10      (gecacht, 1 Lauf)              0.567
+
+Vergleich (Mittel je Query)       besser  schlechter          p   p (Holm)
+Regel vs roh k=10                     58           8   9.32e-08   7.46e-07  *
+AttentionRAG vs roh k=10              68          10   2.75e-10   2.75e-09  *
+Identity vs roh k=10                  70          19   1.54e-07   1.08e-06  *
+roh k=20 vs roh k=10                  61           9   4.38e-09   3.94e-08  *
+AttentionRAG vs Regel                 41          14   1.63e-03   9.78e-03  *
+Identity vs Regel                     46          24   6.50e-03   3.25e-02  *
+Identity vs AttentionRAG              37          26   4.41e-01   4.41e-01
+Regel vs roh k=20                     17          27   1.65e-01   3.30e-01
+AttentionRAG vs roh k=20              37          18   3.93e-02   1.57e-01
+Identity vs roh k=20                  49          25   4.83e-02   1.57e-01
+
+* signifikant nach Holm-Korrektur (alpha = 0.05)

@@ -40,7 +40,7 @@ API = "tmdb"                        # RestBench only: "spotify" or "tmdb"
 MAX_QUERIES_PER_SET = None          # None = all; set e.g. 2 for a pilot run
 
 # --- retrieval ---
-TOP_K = 10                          # SOCBench's k (CHUNKS)
+TOP_K = 40                          # SOCBench's k (CHUNKS)
 CHUNKING_STRATEGY = "ENDPOINT_SPLIT_1024_0"
 EMBEDDING_MODEL = "BAAI/bge-small-en-v1.5"
 EMBEDDING_LABEL = "bge_small"       # index directory name
