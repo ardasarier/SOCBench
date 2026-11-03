@@ -70,6 +70,14 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
     # rule: keep only these fields
     keep_fields: Optional[Tuple[str, ...]] = None
 
+    # Fixed hint prefix instead of a generated one. AttentionRAG falls back to
+    # a fixed prefix for queries without a natural one (Sec. 3.1, Appendix B.2).
+    # SOCBench-D queries are multi-step instructions, and the hint model mostly
+    # paraphrases them (median hint/query length 0.86 on socbenchd_1), so the
+    # focal position ends a restated task instead of preceding an answer token.
+    # None = generate as in Algorithm 1.
+    fixed_hint: Optional[str] = None
+
     verbose: bool = False
 
     # Algorithm 1 generates the hint once from the query alone (line 5), before
@@ -121,9 +129,12 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
 
         query = query_bundle.query_str
 
-        if query not in self._hint_cache:
-            self._hint_cache[query] = generate_answer_hint_prefix(query)
-        hint = self._hint_cache[query]
+        if self.fixed_hint is not None:
+            hint = self.fixed_hint
+        else:
+            if query not in self._hint_cache:
+                self._hint_cache[query] = generate_answer_hint_prefix(query)
+            hint = self._hint_cache[query]
 
         # No focal token means nothing to guide attention with, so pass through
         # rather than compress badly.

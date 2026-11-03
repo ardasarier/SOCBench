@@ -25,6 +25,7 @@ C = "data/contexts/socbenchd_1_k10_all_noanchor_"
 CONDITIONS = {
     "attention+rule": C + "k10_n110.json",
     "random+rule": C + "random_n110.json",
+    "attention+rule, fixed hint": C + "k10-fixhint_n110.json",
 }
 REGION = {
     "summary": "identity", "description": "identity", "operationId": "identity",
@@ -91,11 +92,12 @@ def shares(counter: Counter) -> str:
 
 
 print("Share of NON-identity body text, by top-level field\n")
-print(f"{'':<22}{'request':>11}{'response':>11}{'other':>11}")
+print(f"{'':<28}{'request':>11}{'response':>11}{'other':>11}{'kept':>11}")
 reference = None
 for name, path in CONDITIONS.items():
     raw, kept = measure(path)
     if reference is None:
         reference = raw
-        print(f"{'available (raw)':<22}{shares(raw)}")
-    print(f"{name:<22}{shares(kept)}")
+        print(f"{'available (raw)':<28}{shares(raw)}")
+    retained = 100 * sum(kept.values()) / (sum(raw.values()) or 1)
+    print(f"{name:<28}{shares(kept)}{retained:>10.1f}%")

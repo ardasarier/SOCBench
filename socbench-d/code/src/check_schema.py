@@ -15,6 +15,13 @@ separately, so the share of analysable calls is reported, not hidden.
 Scope: query parameters and JSON bodies. Path and header parameters are not
 checked.
 
+Bodies whose schema is only a $ref into components/schemas are excluded from
+both body measures and counted separately. The endpoint split does not carry
+components, so the referenced fields are in no chunk -- not even uncompressed.
+Counting them would measure a limit of chunking, not of pruning, and every key
+sent to such a body would count as unknown (16 % of solution endpoints with a
+body on socbenchd_1).
+
 Run from socbench-d/code/:
     python src/check_schema.py
 """
@@ -80,6 +87,7 @@ def requirements(op: dict) -> dict:
         "body_known": set(schema.get("properties", {})),
         "body_required": set(schema.get("required", [])),
         "body_mandatory": bool(body.get("required")),
+        "body_ref": "$ref" in schema,
     }
 
 
@@ -219,7 +227,10 @@ def check(code: str, solution: list, index: dict, stats: dict) -> None:
             s["keys_sent"] += len(keys)
             s["keys_unknown"] += len(keys - req["query_known"])
 
-        # body
+        # body -- a schema that is only a $ref has no visible fields; see docstring
+        if req["body_ref"]:
+            s["body_ref_calls"] += 1
+            continue
         body_node = next((kw[k] for k in BODY_KWARGS if k in kw), None)
         if body_node is not None:
             keys = resolver.keys(body_node)
@@ -253,7 +264,7 @@ if __name__ == "__main__":
     print(f"{len(files)} condition(s) in {GENERATED_DIR}")
     print("Scope: calls to endpoints in the SOLUTION (correctly selected ones).\n")
     print(f"{'condition':<52}{'arm':<9}{'calls/q':>8}{'resolv':>8}"
-          f"{'q-req':>7}{'b-req':>7}{'unknown':>8}")
+          f"{'q-req':>7}{'b-req':>7}{'unknown':>8}{'$ref':>6}")
 
     for path in files:
         name = os.path.basename(path)[:-5]
@@ -277,7 +288,8 @@ if __name__ == "__main__":
                   f"{ratio(resolved, stats['calls']):>8}"
                   f"{ratio(s['query_required_set'], s['query_required']):>7}"
                   f"{ratio(s['body_required_set'], s['body_required']):>7}"
-                  f"{ratio(s['keys_unknown'], s['keys_sent']):>8}")
+                  f"{ratio(s['keys_unknown'], s['keys_sent']):>8}"
+                  f"{s['body_ref_calls']:>6}")
         print()
 
     print("calls/q  HTTP calls found per query")
@@ -285,3 +297,4 @@ if __name__ == "__main__":
     print("q-req    required query parameters set / required (solution endpoints)")
     print("b-req    required body fields set / required (solution endpoints)")
     print("unknown  sent keys not defined in the spec / all sent keys")
+    print("$ref     solution calls whose body schema is only a $ref (excluded from b-req and unknown)")

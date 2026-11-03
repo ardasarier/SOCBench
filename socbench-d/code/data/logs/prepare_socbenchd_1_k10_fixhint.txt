@@ -1,0 +1,257 @@
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+[models] using device: mps (torch.float32)
+benchmark socbenchd_1: 11 queryset(s), 110 queries
+fixed hint prefix: 'The API endpoint required for this task is'
+writing to data/contexts/socbenchd_1_k10_all_noanchor_k10-fixhint_n110.json
+
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/energy/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/energy/vector_store/index_store.json.
+[1/110] (energy) 'Retrieve the status and performance metrics of all monitored energy eq'
+    10 -> 10 chunks, 1365 -> 431 tokens (CR 3.17x), retrieval recall 0.40, 3.2s
+[2/110] (energy) 'Submit data from smart meters installed in the facility to monitor ene'
+    10 -> 10 chunks, 1699 -> 427 tokens (CR 3.98x), retrieval recall 0.60, 2.9s
+[3/110] (energy) 'Assess the energy efficiency of specific industrial equipment by retri'
+    10 -> 10 chunks, 1825 -> 469 tokens (CR 3.89x), retrieval recall 0.62, 3.0s
+[4/110] (energy) 'Evaluate and plan a maintenance schedule for all facilities, analyze t'
+    10 -> 10 chunks, 1839 -> 416 tokens (CR 4.42x), retrieval recall 0.67, 2.9s
+[5/110] (energy) 'Analyze the financial incentives available for a specific industry, do'
+    10 -> 10 chunks, 1563 -> 404 tokens (CR 3.87x), retrieval recall 0.80, 2.8s
+[6/110] (energy) 'Optimize energy usage in a manufacturing facility by submitting histor'
+    10 -> 10 chunks, 2020 -> 430 tokens (CR 4.70x), retrieval recall 0.75, 3.7s
+[7/110] (energy) 'Monitor the performance and operational status of all energy equipment'
+    10 -> 10 chunks, 1364 -> 450 tokens (CR 3.03x), retrieval recall 1.00, 2.4s
+[8/110] (energy) 'Ensure compliance with energy usage policies by deleting outdated aler'
+    10 -> 10 chunks, 1869 -> 416 tokens (CR 4.49x), retrieval recall 1.00, 2.9s
+[9/110] (energy) "Optimize the facility's energy consumption by analyzing past electrici"
+    10 -> 10 chunks, 1488 -> 470 tokens (CR 3.17x), retrieval recall 0.50, 2.9s
+[10/110] (energy) 'Create a comprehensive analysis combining future energy generation for'
+    10 -> 10 chunks, 1303 -> 470 tokens (CR 2.77x), retrieval recall 1.00, 2.5s
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/materials/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/materials/vector_store/index_store.json.
+[11/110] (materials) 'Provide the materials used in a specific project identified by its pro'
+    10 -> 10 chunks, 1513 -> 444 tokens (CR 3.41x), retrieval recall 1.00, 2.8s
+[12/110] (materials) 'Add a new mining site, schedule maintenance for its operational equipm'
+    10 -> 10 chunks, 1307 -> 490 tokens (CR 2.67x), retrieval recall 0.43, 2.5s
+[13/110] (materials) 'Analyze the recyclability of all available materials and suggest impro'
+    10 -> 10 chunks, 1544 -> 476 tokens (CR 3.24x), retrieval recall 0.50, 2.6s
+[14/110] (materials) 'Retrieve the various resource types available at different sites and a'
+    10 -> 10 chunks, 1737 -> 436 tokens (CR 3.98x), retrieval recall 0.50, 2.9s
+[15/110] (materials) 'Analyze the market trends for specific product categories and retrieve'
+    10 -> 10 chunks, 1756 -> 455 tokens (CR 3.86x), retrieval recall 0.60, 2.9s
+[16/110] (materials) 'Configure notification settings to receive daily updates about improve'
+    10 -> 10 chunks, 1609 -> 478 tokens (CR 3.37x), retrieval recall 1.00, 2.6s
+[17/110] (materials) 'Create a shipment tracking strategy for a project. First, retrieve the'
+    10 -> 10 chunks, 1722 -> 543 tokens (CR 3.17x), retrieval recall 0.50, 2.9s
+[18/110] (materials) 'Analyze the compliance of specific materials against defined standards'
+    10 -> 10 chunks, 1274 -> 456 tokens (CR 2.79x), retrieval recall 0.67, 2.6s
+[19/110] (materials) 'Retrieve a list of all available materials and classify each material '
+    10 -> 10 chunks, 1677 -> 424 tokens (CR 3.96x), retrieval recall 0.29, 3.8s
+[20/110] (materials) 'Generate a detailed historical report containing data logs for equipme'
+    10 -> 10 chunks, 1653 -> 467 tokens (CR 3.54x), retrieval recall 0.50, 2.9s
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/industrials/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/industrials/vector_store/index_store.json.
+[21/110] (industrials) 'I need a comprehensive summary of all existing orders along with the r'
+    10 -> 10 chunks, 1698 -> 531 tokens (CR 3.20x), retrieval recall 0.29, 3.0s
+[22/110] (industrials) 'Update the emissions thresholds for a facility with ID 567 to ensure c'
+    10 -> 10 chunks, 1679 -> 608 tokens (CR 2.76x), retrieval recall 0.75, 3.0s
+[23/110] (industrials) 'Generate predictions for future maintenance requirements of monitored '
+    10 -> 10 chunks, 1452 -> 500 tokens (CR 2.90x), retrieval recall 0.40, 2.6s
+[24/110] (industrials) 'Retrieve the detailed information for a specific construction project '
+    10 -> 10 chunks, 1652 -> 474 tokens (CR 3.49x), retrieval recall 1.00, 2.7s
+[25/110] (industrials) 'Mark a specific skill assessment as complete and retrieve available re'
+    10 -> 10 chunks, 1675 -> 497 tokens (CR 3.37x), retrieval recall 0.60, 2.8s
+[26/110] (industrials) 'Submit feedback with suggestions for service improvement, mark a speci'
+    10 -> 10 chunks, 1725 -> 524 tokens (CR 3.29x), retrieval recall 0.40, 2.8s
+[27/110] (industrials) 'Submit a support ticket to report an issue related to uploading sensor'
+    10 -> 10 chunks, 2089 -> 541 tokens (CR 3.86x), retrieval recall 1.00, 3.4s
+[28/110] (industrials) 'Create multiple new orders for industrial goods and retrieve a summary'
+    10 -> 10 chunks, 1639 -> 447 tokens (CR 3.67x), retrieval recall 0.80, 2.8s
+[29/110] (industrials) 'I need to adjust the budget allocations for a specific project by rear'
+    10 -> 10 chunks, 1626 -> 538 tokens (CR 3.02x), retrieval recall 0.60, 2.9s
+[30/110] (industrials) 'Update the status and details of an existing order to refine the deliv'
+    10 -> 10 chunks, 1679 -> 666 tokens (CR 2.52x), retrieval recall 0.60, 2.9s
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/consumer discretionary/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/consumer discretionary/vector_store/index_store.json.
+[31/110] (consumer discretionary) 'Update the details of an existing reservation with ID 123 to shift the'
+    10 -> 10 chunks, 1825 -> 567 tokens (CR 3.22x), retrieval recall 0.75, 3.4s
+[32/110] (consumer discretionary) 'Retrieve a detailed sales report for the dealership with ID "567" for '
+    10 -> 10 chunks, 1936 -> 534 tokens (CR 3.63x), retrieval recall 0.33, 3.3s
+[33/110] (consumer discretionary) 'Create a comprehensive marketing campaign by analyzing the effectivene'
+    10 -> 10 chunks, 1337 -> 485 tokens (CR 2.76x), retrieval recall 0.50, 2.7s
+[34/110] (consumer discretionary) 'Develop a targeted marketing plan by analyzing regional sales comparis'
+    10 -> 10 chunks, 1247 -> 457 tokens (CR 2.73x), retrieval recall 0.67, 2.6s
+[35/110] (consumer discretionary) 'To prepare for an upcoming promotional campaign, analyze the sales per'
+    10 -> 10 chunks, 1359 -> 449 tokens (CR 3.03x), retrieval recall 0.67, 2.6s
+[36/110] (consumer discretionary) 'Remove an ingredient with ID "xyz123" that is no longer available for '
+    10 -> 10 chunks, 1114 -> 402 tokens (CR 2.77x), retrieval recall 1.00, 2.4s
+[37/110] (consumer discretionary) 'Create a preview of a new campaign showcasing the highlighted destinat'
+    10 -> 10 chunks, 1389 -> 509 tokens (CR 2.73x), retrieval recall 1.00, 2.8s
+[38/110] (consumer discretionary) 'Create a new room listing with its details, such as type and price, to'
+    10 -> 10 chunks, 1284 -> 487 tokens (CR 2.64x), retrieval recall 0.33, 3.2s
+[39/110] (consumer discretionary) 'Set sales goals for a manufacturer with the ID "manu123" to achieve a '
+    10 -> 10 chunks, 1830 -> 513 tokens (CR 3.57x), retrieval recall 0.75, 3.7s
+[40/110] (consumer discretionary) 'Create a new marketing strategy by submitting tasks designed to drive '
+    10 -> 10 chunks, 1393 -> 429 tokens (CR 3.25x), retrieval recall 0.67, 2.6s
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/consumer staples/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/consumer staples/vector_store/index_store.json.
+[41/110] (consumer staples) 'Retrieve the list of available product categories to categorize a new '
+    10 -> 10 chunks, 1383 -> 463 tokens (CR 2.99x), retrieval recall 0.67, 2.7s
+[42/110] (consumer staples) 'Identify possible allergens in the current food supply chain overview '
+    10 -> 10 chunks, 1409 -> 471 tokens (CR 2.99x), retrieval recall 1.00, 2.4s
+[43/110] (consumer staples) 'Identify inefficiencies or risks in the current supply chain by analyz'
+    10 -> 10 chunks, 1432 -> 391 tokens (CR 3.66x), retrieval recall 0.75, 2.5s
+[44/110] (consumer staples) 'Analyze the current inventory levels across all locations to identify '
+    10 -> 10 chunks, 1962 -> 415 tokens (CR 4.73x), retrieval recall 0.80, 3.1s
+[45/110] (consumer staples) "Analyze the system's overall performance metrics to evaluate the effec"
+    10 -> 10 chunks, 1453 -> 429 tokens (CR 3.39x), retrieval recall 0.50, 2.7s
+[46/110] (consumer staples) 'Update user dietary preferences to reflect a lactose-free and low-carb'
+    10 -> 10 chunks, 1657 -> 527 tokens (CR 3.14x), retrieval recall 0.43, 3.2s
+[47/110] (consumer staples) 'Submit feedback for a new food product regarding its nutritional value'
+    10 -> 10 chunks, 1672 -> 461 tokens (CR 3.63x), retrieval recall 0.50, 2.8s
+[48/110] (consumer staples) 'Categorize a new eco-friendly household staple under an appropriate ca'
+    10 -> 10 chunks, 1317 -> 438 tokens (CR 3.01x), retrieval recall 0.00, 2.5s
+[49/110] (consumer staples) 'Evaluate the impact of removing a specific non-performing product from'
+    10 -> 10 chunks, 1750 -> 461 tokens (CR 3.80x), retrieval recall 0.57, 3.0s
+[50/110] (consumer staples) 'Identify recommended products based on sales data trends, retrieve a l'
+    10 -> 10 chunks, 1419 -> 357 tokens (CR 3.97x), retrieval recall 1.00, 2.7s
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/health care/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/health care/vector_store/index_store.json.
+[51/110] (health care) "Retrieve the system's current configuration settings to confirm compli"
+    10 -> 10 chunks, 1321 -> 404 tokens (CR 3.27x), retrieval recall 0.50, 2.4s
+[52/110] (health care) 'Retrieve active health alerts to identify patients requiring attention'
+    10 -> 10 chunks, 1795 -> 412 tokens (CR 4.36x), retrieval recall 0.14, 3.0s
+[53/110] (health care) 'Update the details of a specific patient to correct an address error, '
+    10 -> 10 chunks, 1756 -> 371 tokens (CR 4.73x), retrieval recall 0.40, 2.9s
+[54/110] (health care) 'Retrieve a list of active alerts to identify potential issues, fetch t'
+    10 -> 10 chunks, 1867 -> 424 tokens (CR 4.40x), retrieval recall 1.00, 3.0s
+[55/110] (health care) 'Register a new patient in the system with their full details, retrieve'
+    10 -> 10 chunks, 1535 -> 461 tokens (CR 3.33x), retrieval recall 0.50, 3.0s
+[56/110] (health care) 'Organize a virtual consultation for a patient by first retrieving thei'
+    10 -> 10 chunks, 1967 -> 472 tokens (CR 4.17x), retrieval recall 0.29, 3.2s
+[57/110] (health care) 'Analyze the specialized healthcare services offered by a specific prov'
+    10 -> 10 chunks, 1367 -> 438 tokens (CR 3.12x), retrieval recall 1.00, 2.6s
+[58/110] (health care) 'Fetch all registered providers to analyze available services, securely'
+    10 -> 10 chunks, 1660 -> 459 tokens (CR 3.62x), retrieval recall 0.50, 2.9s
+[59/110] (health care) 'Analyze healthcare performance by identifying utilization trends to as'
+    10 -> 10 chunks, 1458 -> 429 tokens (CR 3.40x), retrieval recall 0.50, 2.7s
+[60/110] (health care) 'Retrieve the list of all registered patients to identify individuals r'
+    10 -> 10 chunks, 1673 -> 412 tokens (CR 4.06x), retrieval recall 1.00, 2.9s
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/financials/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/financials/vector_store/index_store.json.
+[61/110] (financials) 'Please provide insights regarding the currently scheduled financial ev'
+    10 -> 10 chunks, 1334 -> 375 tokens (CR 3.56x), retrieval recall 1.00, 2.5s
+[62/110] (financials) 'Submit my mortgage application with ID 12345 for review, analyze the s'
+    10 -> 10 chunks, 1595 -> 373 tokens (CR 4.28x), retrieval recall 0.67, 2.9s
+[63/110] (financials) 'Provide the latest foreign exchange rates alongside any upcoming impor'
+    10 -> 10 chunks, 1574 -> 345 tokens (CR 4.56x), retrieval recall 1.00, 2.6s
+[64/110] (financials) 'I want to assess the risks related to my portfolio, provide feedback r'
+    10 -> 10 chunks, 1395 -> 404 tokens (CR 3.45x), retrieval recall 0.60, 2.5s
+[65/110] (financials) 'I want to subscribe to stock price alerts for a specific threshold inc'
+    10 -> 10 chunks, 1741 -> 369 tokens (CR 4.72x), retrieval recall 0.50, 2.9s
+[66/110] (financials) 'I recently deposited funds into my savings account and would like to s'
+    10 -> 10 chunks, 1534 -> 530 tokens (CR 2.89x), retrieval recall 0.50, 2.8s
+[67/110] (financials) 'Please provide a detailed summary of my current insurance coverage, an'
+    10 -> 10 chunks, 1560 -> 406 tokens (CR 3.84x), retrieval recall 1.00, 2.8s
+[68/110] (financials) 'Compare my portfolio with multiple benchmarks to evaluate its relative'
+    10 -> 10 chunks, 1260 -> 410 tokens (CR 3.07x), retrieval recall 0.60, 2.5s
+[69/110] (financials) 'I would like to upload the necessary documents for my loan application'
+    10 -> 10 chunks, 1415 -> 506 tokens (CR 2.80x), retrieval recall 0.14, 2.7s
+[70/110] (financials) 'Compare my portfolio performance with multiple benchmarks for a detail'
+    10 -> 10 chunks, 1415 -> 420 tokens (CR 3.37x), retrieval recall 1.00, 2.5s
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/information technology/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/information technology/vector_store/index_store.json.
+[71/110] (information technology) 'Log a new cybersecurity threat with details such as type, severity, an'
+    10 -> 10 chunks, 1356 -> 407 tokens (CR 3.33x), retrieval recall 1.00, 2.7s
+[72/110] (information technology) 'Enable a hook to trigger automatic alerts for cybersecurity threats. R'
+    10 -> 10 chunks, 1480 -> 460 tokens (CR 3.22x), retrieval recall 0.67, 2.7s
+[73/110] (information technology) 'Retrieve the optimization strategies available for scaling operations '
+    10 -> 10 chunks, 1161 -> 458 tokens (CR 2.53x), retrieval recall 0.50, 2.4s
+[74/110] (information technology) 'Update an existing alert rule to align with the latest security requir'
+    10 -> 10 chunks, 1423 -> 487 tokens (CR 2.92x), retrieval recall 0.50, 2.6s
+[75/110] (information technology) 'Update the details of a specific IT equipment to include its latest op'
+    10 -> 10 chunks, 1264 -> 404 tokens (CR 3.13x), retrieval recall 0.57, 2.7s
+[76/110] (information technology) 'Find optimization strategies for scaling cloud resources effectively, '
+    10 -> 10 chunks, 1137 -> 425 tokens (CR 2.68x), retrieval recall 0.67, 2.2s
+[77/110] (information technology) 'Identify all IT equipment in the inventory that might be susceptible t'
+    10 -> 10 chunks, 1177 -> 381 tokens (CR 3.09x), retrieval recall 0.43, 2.9s
+[78/110] (information technology) 'Retrieve the details of a specific IT equipment by its ID, then add ne'
+    10 -> 10 chunks, 1047 -> 366 tokens (CR 2.86x), retrieval recall 0.67, 2.1s
+[79/110] (information technology) 'Validate the configuration details of an upcoming backup to ensure int'
+    10 -> 10 chunks, 1075 -> 524 tokens (CR 2.05x), retrieval recall 0.40, 2.3s
+[80/110] (information technology) 'Update the integration settings of a system to improve its compatibili'
+    10 -> 10 chunks, 1496 -> 432 tokens (CR 3.46x), retrieval recall 0.60, 2.7s
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/communication services/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/communication services/vector_store/index_store.json.
+[81/110] (communication services) 'Update an existing customer feedback entry by modifying its content an'
+    10 -> 10 chunks, 2027 -> 429 tokens (CR 4.72x), retrieval recall 0.40, 3.1s
+[82/110] (communication services) "Retrieve the history of all recent calls, update the user's alert sett"
+    10 -> 10 chunks, 1958 -> 452 tokens (CR 4.33x), retrieval recall 0.50, 3.6s
+[83/110] (communication services) 'Retrieve the streaming URL for a specific video by providing its ID, s'
+    10 -> 10 chunks, 1747 -> 454 tokens (CR 3.85x), retrieval recall 0.43, 3.1s
+[84/110] (communication services) 'Start a live video session to showcase a product launch, upload a prom'
+    10 -> 10 chunks, 1668 -> 435 tokens (CR 3.83x), retrieval recall 0.38, 3.0s
+[85/110] (communication services) 'Initiate a secure call with a customer to discuss billing queries, che'
+    10 -> 10 chunks, 1383 -> 390 tokens (CR 3.55x), retrieval recall 0.75, 2.6s
+[86/110] (communication services) 'Generate a detailed report containing metadata of all available videos'
+    10 -> 10 chunks, 1514 -> 466 tokens (CR 3.25x), retrieval recall 0.50, 3.0s
+[87/110] (communication services) 'Retrieve the list of encrypted messages received by the user, check th'
+    10 -> 10 chunks, 2068 -> 448 tokens (CR 4.62x), retrieval recall 0.43, 3.4s
+[88/110] (communication services) "Initiate a payment for an outstanding invoice, retrieve the user's cur"
+    10 -> 10 chunks, 1134 -> 416 tokens (CR 2.73x), retrieval recall 0.40, 2.3s
+[89/110] (communication services) 'Update the alert settings to enable notifications for billing changes,'
+    10 -> 10 chunks, 1245 -> 373 tokens (CR 3.34x), retrieval recall 0.75, 2.5s
+[90/110] (communication services) 'Submit a new video along with its title and description, initiate a pa'
+    10 -> 10 chunks, 1474 -> 428 tokens (CR 3.44x), retrieval recall 1.00, 2.5s
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/utilities/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/utilities/vector_store/index_store.json.
+[91/110] (utilities) 'Analyze raw sensor data for a specified time range alongside efficienc'
+    10 -> 10 chunks, 1836 -> 431 tokens (CR 4.26x), retrieval recall 1.00, 3.0s
+[92/110] (utilities) 'Gather real-time electricity demand data, analyze and adjust the power'
+    10 -> 10 chunks, 1714 -> 463 tokens (CR 3.70x), retrieval recall 0.29, 2.9s
+[93/110] (utilities) 'Report a grid incident in a specified region with detailed incident da'
+    10 -> 10 chunks, 1822 -> 436 tokens (CR 4.18x), retrieval recall 1.00, 2.9s
+[94/110] (utilities) 'Retrieve energy-saving recommendations already available for a specifi'
+    10 -> 10 chunks, 1788 -> 444 tokens (CR 4.03x), retrieval recall 0.50, 3.1s
+[95/110] (utilities) 'Create a new billing template to streamline invoicing, configure alert'
+    10 -> 10 chunks, 1810 -> 430 tokens (CR 4.21x), retrieval recall 0.50, 3.0s
+[96/110] (utilities) 'Adjust the supply allocation for a specific region to optimize resourc'
+    10 -> 10 chunks, 1712 -> 460 tokens (CR 3.72x), retrieval recall 0.50, 3.0s
+[97/110] (utilities) 'Optimize the energy usage in high-demand zones by dynamically allocati'
+    10 -> 10 chunks, 1595 -> 495 tokens (CR 3.22x), retrieval recall 0.50, 2.8s
+[98/110] (utilities) 'Analyze recent leak detection data to identify potential patterns, opt'
+    10 -> 10 chunks, 1669 -> 511 tokens (CR 3.27x), retrieval recall 0.40, 2.8s
+[99/110] (utilities) 'Evaluate the efficiency metrics of the energy distribution system, ana'
+    10 -> 10 chunks, 1463 -> 556 tokens (CR 2.63x), retrieval recall 0.38, 2.8s
+[100/110] (utilities) 'Notify the repair crew about critical renewable energy zones requiring'
+    10 -> 10 chunks, 1392 -> 457 tokens (CR 3.05x), retrieval recall 0.50, 2.6s
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/real estate/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_1/bge_small/endpoint_split_1024_0/real estate/vector_store/index_store.json.
+[101/110] (real estate) 'Find the estimated valuation of a property located in San Francisco wi'
+    10 -> 10 chunks, 2186 -> 496 tokens (CR 4.41x), retrieval recall 1.00, 3.2s
+[102/110] (real estate) 'Add a new property listing in Seattle, retrieve its estimated valuatio'
+    10 -> 10 chunks, 2110 -> 504 tokens (CR 4.19x), retrieval recall 0.83, 3.2s
+[103/110] (real estate) 'Update the information of a real estate agent with ID "agent789", calc'
+    10 -> 10 chunks, 2496 -> 393 tokens (CR 6.35x), retrieval recall 0.67, 3.6s
+[104/110] (real estate) 'Develop a loan repayment plan tailored to a $300,000 loan, analyze the'
+    10 -> 10 chunks, 2680 -> 485 tokens (CR 5.53x), retrieval recall 0.60, 4.1s
+[105/110] (real estate) 'Compare the attributes and features of three properties located in Mia'
+    10 -> 10 chunks, 1823 -> 430 tokens (CR 4.24x), retrieval recall 0.83, 3.0s
+[106/110] (real estate) 'Analyze the most common property features in New York City and generat'
+    10 -> 10 chunks, 2680 -> 483 tokens (CR 5.55x), retrieval recall 0.50, 3.7s
+[107/110] (real estate) 'Calculate the minimum and recommended down payment for purchasing a pr'
+    10 -> 10 chunks, 2019 -> 436 tokens (CR 4.63x), retrieval recall 1.00, 3.0s
+[108/110] (real estate) 'Evaluate whether a user with an annual income of $120,000 and monthly '
+    10 -> 10 chunks, 2538 -> 456 tokens (CR 5.57x), retrieval recall 0.40, 3.7s
+[109/110] (real estate) 'Find the most suitable agents recommended for a newly added property i'
+    10 -> 10 chunks, 2063 -> 435 tokens (CR 4.74x), retrieval recall 0.50, 3.4s
+[110/110] (real estate) 'Create a new property listing for a luxury condominium in Manhattan, c'
+    10 -> 10 chunks, 2200 -> 513 tokens (CR 4.29x), retrieval recall 0.60, 3.5s
+
+wrote 110 records to data/contexts/socbenchd_1_k10_all_noanchor_k10-fixhint_n110.json
+overall CR: 3.58x
+retrieval recall: 0.632
+qwen: {'attention_passes': 1100, 'attention_input_tokens': 354746}
+total time: 5.3 min

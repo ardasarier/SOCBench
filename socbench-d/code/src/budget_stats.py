@@ -28,12 +28,15 @@ CONDITIONS = {
     "AttentionRAG": ["attention40", "attention40_r2", "attention40_r3"],
     "Identity":     ["identity", "identity_r2", "identity_r3"],
     "roh k=20":     ["raw20", "raw20_r2", "raw20_r3"],
+    "Attn. fester": ["attention40-fixhint", "attention40-fixhint_r2", "attention40-fixhint_r3"],
 }
 COMPARISONS = [
     ("Regel", "roh k=10"), ("AttentionRAG", "roh k=10"),
     ("Identity", "roh k=10"), ("roh k=20", "roh k=10"),
     ("AttentionRAG", "Regel"), ("Identity", "Regel"), ("Identity", "AttentionRAG"),
     ("Regel", "roh k=20"), ("AttentionRAG", "roh k=20"), ("Identity", "roh k=20"),
+    ("Attn. fester", "roh k=10"), ("Attn. fester", "Regel"),
+    ("Attn. fester", "AttentionRAG"), ("Attn. fester", "Identity"),
 ]
 
 

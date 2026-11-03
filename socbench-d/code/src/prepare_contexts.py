@@ -58,6 +58,9 @@ PATH_VERB_ONLY = False
 RANDOM_SCORES = False               # control: random instead of attention scores
 KEEP_IDENTITY = True                # False: no unconditional retention
 KEEP_FIELDS = None                  # None = off; REQUEST_SCHEMA_FIELDS
+# Fixed hint prefix instead of generating one per query (see postprocessor.py).
+# None = generated hint, as in all runs so far.
+FIXED_HINT = "The API endpoint required for this task is"                   # e.g. "The API endpoint required for this task is"
 
 ANCHOR_LABEL = "anchor" if USE_ANCHOR else "noanchor"
 if KEEP_FIELDS:
@@ -76,6 +79,9 @@ else:
     SELECT_LABEL = f"random-{base}" if RANDOM_SCORES else base
     if not KEEP_IDENTITY:
         SELECT_LABEL += "-noid"
+# The hint only matters where attention is computed, not for the rules.
+if FIXED_HINT is not None and not (KEEP_FIELDS or PATH_VERB_ONLY or IDENTITY_ONLY):
+    SELECT_LABEL += "-fixhint"
 SCOPE_LABEL = BENCHMARK if BENCHMARK != "restbench" else f"restbench-{API}"
 
 embed_model = HuggingFaceEmbedding(model_name=EMBEDDING_MODEL)
@@ -95,6 +101,7 @@ postprocessor = AttentionRAGPostprocessor(
     identity_only=IDENTITY_ONLY, random_scores=RANDOM_SCORES,
     keep_identity=KEEP_IDENTITY, path_verb_only=PATH_VERB_ONLY,
     threshold_abs=THRESHOLD_ABS, keep_fields=KEEP_FIELDS,
+    fixed_hint=FIXED_HINT,
 )
 
 
@@ -146,6 +153,8 @@ def retrieval_log(retrieved, compressed) -> list:
 
 
 print(f"benchmark {bench.name}: {len(tasks)} queryset(s), {total_queries} queries")
+if FIXED_HINT is not None:
+    print(f"fixed hint prefix: {FIXED_HINT!r}")
 print(f"writing to {OUTPUT_PATH}\n")
 
 records = []
