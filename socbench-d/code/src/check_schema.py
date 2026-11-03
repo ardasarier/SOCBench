@@ -12,8 +12,17 @@ data/generated/. Calls it cannot resolve -- URLs built inside helper
 functions, bodies passed through untraceable variables -- are counted
 separately, so the share of analysable calls is reported, not hidden.
 
-Scope: query parameters and JSON bodies. Path and header parameters are not
-checked.
+Scope: query parameters and JSON bodies on the INPUT side. Path and header
+parameters are not checked.
+
+OUTPUT side: which keys the code READS from a response -- data["id"],
+data.get("id"), r.json()["id"], and element reads data[0]["id"] or
+`for item in data: item["id"]` -- and whether the response schema of the
+first 2xx response defines them. A read the schema does not define is a
+field the code expects but will not get. Reads are attributed to a call by
+following simple assignments in line order; control flow is not followed.
+Responses without a usable schema (none, no properties, or a $ref) are
+counted separately.
 
 Bodies whose schema is only a $ref into components/schemas are excluded from
 both body measures and counted separately. The endpoint split does not carry
@@ -29,7 +38,9 @@ import ast
 import glob
 import json
 import os
+import random
 import re
+import sys
 from collections import defaultdict
 
 from benchmark_loader import load_benchmark
@@ -89,6 +100,30 @@ def requirements(op: dict) -> dict:
         "body_mandatory": bool(body.get("required")),
         "body_ref": "$ref" in schema,
     }
+
+
+def response_schema(op: dict):
+    """(kind, properties) of the first 2xx JSON response, kind "object" or
+    "array" (properties of its items); or (status, None) with status "none"
+    (no schema or no declared properties) or "ref" (schema only a $ref)."""
+    for code in sorted(op.get("responses", {}), key=str):
+        if not str(code).startswith("2"):
+            continue
+        resp = op["responses"][code] or {}
+        schema = resp.get("content", {}).get("application/json", {}).get("schema")
+        if not schema:
+            return "none", None
+        if "$ref" in schema:
+            return "ref", None
+        if schema.get("type") == "array" or "items" in schema:
+            items = schema.get("items", {})
+            if "$ref" in items:
+                return "ref", None
+            props = set(items.get("properties", {}))
+            return ("array", props) if props else ("none", None)
+        props = set(schema.get("properties", {}))
+        return ("object", props) if props else ("none", None)
+    return "none", None
 
 
 # --- code side --------------------------------------------------------------
@@ -152,8 +187,91 @@ class Resolver:
         return None
 
 
-def http_calls(code: str):
-    """Yields (method, url_or_None, kwargs) per HTTP call. None if unparseable."""
+class ResponseFlow:
+    """Which keys the code reads from the response of a given call.
+
+    Follows simple assignments (one Name target) in line order: the value a
+    name refers to at line L is its latest assignment before L. Control flow
+    is not followed, matching the shallow Resolver."""
+
+    def __init__(self, tree: ast.AST):
+        self.assigns = defaultdict(list)            # name -> [(line, value)]
+        self.loops = []                             # (var, iterable name, first, last line)
+        self.reads = []                             # (line, base node, key)
+        for node in ast.walk(tree):
+            if (isinstance(node, ast.Assign) and len(node.targets) == 1
+                    and isinstance(node.targets[0], ast.Name)):
+                self.assigns[node.targets[0].id].append((node.lineno, node.value))
+            elif (isinstance(node, ast.For) and isinstance(node.target, ast.Name)
+                    and isinstance(node.iter, ast.Name)):
+                self.loops.append((node.target.id, node.iter.id, node.lineno,
+                                   getattr(node, "end_lineno", node.lineno)))
+            elif (isinstance(node, ast.Subscript) and isinstance(node.slice, ast.Constant)
+                    and isinstance(node.slice.value, str)):
+                self.reads.append((node.lineno, node.value, node.slice.value))
+            elif (isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+                    and node.func.attr == "get" and node.args
+                    and isinstance(node.args[0], ast.Constant)
+                    and isinstance(node.args[0].value, str)):
+                self.reads.append((node.lineno, node.func.value, node.args[0].value))
+        for entries in self.assigns.values():
+            entries.sort(key=lambda e: e[0])
+
+    def _owner(self, name: str, line: int):
+        """(line, value) of the latest assignment to name before line."""
+        found = None
+        for assign_line, value in self.assigns.get(name, []):
+            if assign_line < line:
+                found = (assign_line, value)
+        return found
+
+    @staticmethod
+    def _json_of(node):
+        if (isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+                and node.func.attr == "json"):
+            return node.func.value
+        return None
+
+    def _is_response(self, node, line, call) -> bool:
+        if node is call:
+            return True
+        if isinstance(node, ast.Name):
+            owner = self._owner(node.id, line)
+            return owner is not None and owner[1] is call
+        return False
+
+    def _is_data(self, node, line, call) -> bool:
+        inner = self._json_of(node)
+        if inner is not None:
+            return self._is_response(inner, line, call)
+        if isinstance(node, ast.Name):
+            owner = self._owner(node.id, line)
+            if owner is not None:
+                inner = self._json_of(owner[1])
+                return inner is not None and self._is_response(inner, owner[0], call)
+        return False
+
+    def keys_read(self, call):
+        """(keys read on the response body, keys read on its elements)"""
+        top, element = [], []
+        for line, base, key in self.reads:
+            if self._is_data(base, line, call):
+                top.append((line, key))
+            elif (isinstance(base, ast.Subscript) and isinstance(base.slice, ast.Constant)
+                    and isinstance(base.slice.value, int)
+                    and self._is_data(base.value, line, call)):
+                element.append((line, key))
+            elif isinstance(base, ast.Name):
+                for var, iterable, first, last in self.loops:
+                    if (var == base.id and first <= line <= last
+                            and self._is_data(ast.Name(id=iterable), first, call)):
+                        element.append((line, key))
+                        break
+        return top, element
+
+
+def _http_calls(code: str):
+    """(tree, [(call node, method, url_or_None, kwargs, resolver)]), or None."""
     try:
         tree = ast.parse(code)
     except SyntaxError:
@@ -179,8 +297,17 @@ def http_calls(code: str):
                 continue
         else:
             continue
-        calls.append((method, resolver.string(url_node), kw, resolver))
-    return calls
+        calls.append((node, method, resolver.string(url_node), kw, resolver))
+    return tree, calls
+
+
+def http_calls(code: str):
+    """Yields (method, url_or_None, kwargs, resolver) per HTTP call. None if
+    unparseable. Kept for audit_checker.py; check() uses _http_calls."""
+    parsed = _http_calls(code)
+    if parsed is None:
+        return None
+    return [(m, u, kw, r) for _, m, u, kw, r in parsed[1]]
 
 
 def to_path(url: str):
@@ -190,12 +317,18 @@ def to_path(url: str):
 
 # --- scoring ----------------------------------------------------------------
 
-def check(code: str, solution: list, index: dict, stats: dict) -> None:
-    calls = http_calls(code)
-    if calls is None:
+SAMPLES = []                    # filled when run with --sample
+
+
+def check(code: str, solution: list, index: dict, stats: dict, label: str = "") -> None:
+    parsed = _http_calls(code)
+    if parsed is None:
         stats["unparseable"] += 1
         return
-    for method, url, kw, resolver in calls:
+    tree, calls = parsed
+    flow = ResponseFlow(tree)
+    lines = code.splitlines()
+    for node, method, url, kw, resolver in calls:
         stats["calls"] += 1
         path = to_path(url) if url else None
         if path is None:
@@ -212,6 +345,26 @@ def check(code: str, solution: list, index: dict, stats: dict) -> None:
         s = stats[scope]
         s["calls"] += 1
         req = requirements(index[key])
+
+        # output side: keys read from this call's response
+        kind, props = response_schema(index[key])
+        if kind in ("none", "ref"):
+            s[f"resp_{kind}"] += 1
+        else:
+            top, element = flow.keys_read(node)
+            # reads on the body of an array response, or on elements of an
+            # object response, address a structure the schema does not have
+            checked = ([(l, k, k in props) for l, k in top] if kind == "object"
+                       else [(l, k, k in props) for l, k in element] + [(l, k, False) for l, k in top])
+            if kind == "object":
+                checked += [(l, k, False) for l, k in element]
+            s["resp_calls"] += 1
+            s["reads"] += len(checked)
+            s["reads_unknown"] += sum(1 for _, _, known in checked if not known)
+            if scope == "solution":
+                for line, k, known in checked:
+                    SAMPLES.append((label, key, k, known, sorted(props),
+                                    lines[line - 1].strip() if 0 < line <= len(lines) else ""))
 
         # query parameters
         if "params" in kw:
@@ -264,7 +417,8 @@ if __name__ == "__main__":
     print(f"{len(files)} condition(s) in {GENERATED_DIR}")
     print("Scope: calls to endpoints in the SOLUTION (correctly selected ones).\n")
     print(f"{'condition':<52}{'arm':<9}{'calls/q':>8}{'resolv':>8}"
-          f"{'q-req':>7}{'b-req':>7}{'unknown':>8}{'$ref':>6}")
+          f"{'q-req':>7}{'b-req':>7}{'unknown':>8}{'$ref':>6}"
+          f"{'reads':>7}{'r-unk':>7}{'no-sch':>7}")
 
     for path in files:
         name = os.path.basename(path)[:-5]
@@ -280,7 +434,8 @@ if __name__ == "__main__":
         for arm in ("code_without", "code_with"):
             stats = new_stats()
             for rec in records:
-                check(rec[arm], rec["solution"], indices[bench_name][rec["queryset"]], stats)
+                check(rec[arm], rec["solution"], indices[bench_name][rec["queryset"]], stats,
+                      label=f"{name} {arm[5:]}")
             s = stats["solution"]
             resolved = stats["calls"] - stats["unresolved"]
             print(f"{name[:51]:<52}{arm[5:]:<9}"
@@ -289,7 +444,10 @@ if __name__ == "__main__":
                   f"{ratio(s['query_required_set'], s['query_required']):>7}"
                   f"{ratio(s['body_required_set'], s['body_required']):>7}"
                   f"{ratio(s['keys_unknown'], s['keys_sent']):>8}"
-                  f"{s['body_ref_calls']:>6}")
+                  f"{s['body_ref_calls']:>6}"
+                  f"{s['reads']:>7}"
+                  f"{ratio(s['reads_unknown'], s['reads']):>7}"
+                  f"{s['resp_none'] + s['resp_ref']:>7}")
         print()
 
     print("calls/q  HTTP calls found per query")
@@ -298,3 +456,14 @@ if __name__ == "__main__":
     print("b-req    required body fields set / required (solution endpoints)")
     print("unknown  sent keys not defined in the spec / all sent keys")
     print("$ref     solution calls whose body schema is only a $ref (excluded from b-req and unknown)")
+    print("reads    keys read from responses of solution calls that have a response schema")
+    print("r-unk    reads the response schema does not define / reads (output side)")
+    print("no-sch   solution calls whose response has no usable schema (none or $ref)")
+
+    if "--sample" in sys.argv:
+        n = int(sys.argv[sys.argv.index("--sample") + 1]) if len(sys.argv) > sys.argv.index("--sample") + 1 else 20
+        random.seed(0)
+        print(f"\n--- {n} random response reads (solution endpoints), for checking by hand ---")
+        for label, key, k, known, props, line in random.sample(SAMPLES, min(n, len(SAMPLES))):
+            print(f"\n[{label}] {key}\n  read:   {k!r}  -> {'defined' if known else 'NOT IN SCHEMA'}"
+                  f"\n  schema: {props}\n  code:   {line}")
