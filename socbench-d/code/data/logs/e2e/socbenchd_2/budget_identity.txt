@@ -1,0 +1,9 @@
+
+### -u src/make_budget_contexts.py --reference data/contexts/socbenchd_2_k10_all_noanchor_reqschema_n11.json --source data/contexts/socbenchd_2_k50_all_noanchor_identity_n11.json --label identity
+queries:                  11
+mean depth (chunks):      42.8
+tokens used / raw k=10:   0.987
+retrieval recall:         1.000   (raw k=10: 0.734)
+queries over budget:      0
+
+wrote data/contexts/socbenchd_2_k10_budget-identity_n11.json

@@ -1,0 +1,453 @@
+[
+  {
+    "queryset": "energy",
+    "query": "How can I monitor the real-time energy production of solar and wind sources, retrieve emission factors for supported energy sources, perform a discharge operation on a specific energy storage system, update the configuration settings of my energy storage system, and analyze potential emissions for hypothetical scenarios involving different renewable energy sources?",
+    "solution": [
+      "PUT /storagesystems/{id}/settings",
+      "POST /emissions/scenarios",
+      "POST /storagesystems/{id}/actions/discharge",
+      "GET /emissions/sources",
+      "GET /production/real-time"
+    ],
+    "code_without": "import requests\n\nBASE_URL = \"https://api.socbench.example\"\n\n# Monitor real-time production for solar and wind.\nfor source_type in (\"solar\", \"wind\"):\n    response = requests.get(\n        f\"{BASE_URL}/production/real-time\",\n        params={\"sourceType\": source_type},\n        timeout=30,\n    )\n    response.raise_for_status()\n    print(f\"{source_type} production:\", response.json())\n\n# Retrieve emission factors for supported energy sources.\nresponse = requests.get(f\"{BASE_URL}/emissions/sources\", timeout=30)\nresponse.raise_for_status()\nprint(\"Supported energy sources and emission factors:\", response.json())\n\n# Analyze hypothetical scenarios involving renewable energy sources.\nscenarios = {\n    \"scenarios\": [\n        {\n            \"energySource\": \"solar\",\n            \"estimatedConsumption\": 1000,\n            \"unit\": \"kWh\",\n        },\n        {\n            \"energySource\": \"wind\",\n            \"estimatedConsumption\": 1500,\n            \"unit\": \"kWh\",\n        },\n    ]\n}\nresponse = requests.post(\n    f\"{BASE_URL}/emissions/scenarios\",\n    json=scenarios,\n    timeout=30,\n)\nresponse.raise_for_status()\nprint(\"Scenario analysis:\", response.json())\n\n# The documented API does not provide endpoints for performing a discharge\n# operation or updating energy storage system configuration.",
+    "code_with": "import requests\n\nBASE_URL = \"https://api.socbench.example\"\n\n# Monitor real-time production from renewable sources such as solar and wind.\nproduction_response = requests.get(f\"{BASE_URL}/production/real-time\")\nproduction_response.raise_for_status()\nproduction_metrics = production_response.json()\n\n# Retrieve supported energy sources and their emission factors.\nsources_response = requests.get(f\"{BASE_URL}/emissions/sources\")\nsources_response.raise_for_status()\nemission_sources = sources_response.json()\n\n# Perform a discharge operation on a specific storage system.\nstorage_system_id = \"YOUR_STORAGE_SYSTEM_ID\"\ndischarge_response = requests.post(\n    f\"{BASE_URL}/storagesystems/{storage_system_id}/actions/discharge\"\n)\ndischarge_response.raise_for_status()\n\n# Update the storage system configuration.\nsettings_response = requests.put(\n    f\"{BASE_URL}/storagesystems/{storage_system_id}/settings\",\n    json={\n        \"name\": \"Updated Battery System\",\n        \"capacity_kwh\": 15000,\n        \"status\": \"Active\",\n    },\n)\nsettings_response.raise_for_status()\n\n# Analyze hypothetical emissions scenarios for different renewable sources.\nscenarios = [\n    {\"energySource\": \"solar\", \"estimatedConsumption\": 1000},\n    {\"energySource\": \"wind\", \"estimatedConsumption\": 1000},\n]\n\nscenario_results = []\nfor scenario in scenarios:\n    response = requests.post(\n        f\"{BASE_URL}/emissions/scenarios\",\n        json=scenario,\n    )\n    response.raise_for_status()\n    scenario_results.append(response.json())",
+    "found_without": [
+      "GET /emissions/sources",
+      "GET /production/real-time",
+      "POST /emissions/scenarios"
+    ],
+    "found_with": [
+      "GET /emissions/sources",
+      "GET /production/real-time",
+      "POST /emissions/scenarios",
+      "POST /storagesystems/{id}/actions/discharge",
+      "PUT /storagesystems/{id}/settings"
+    ],
+    "recall_without": 0.6,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 1764,
+      "completion_tokens": 275,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0003139
+    },
+    "usage_with": {
+      "prompt_tokens": 1754,
+      "completion_tokens": 313,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0003319
+    }
+  },
+  {
+    "queryset": "materials",
+    "query": "Retrieve analytics for a specific report ID, apply updated configurations to a specified machine, and adjust the inventory levels for the material associated with the configuration changes.",
+    "solution": [
+      "GET /analytics/{reportId}",
+      "POST /machines/{id}/configurations",
+      "PUT /inventory/{itemID}"
+    ],
+    "code_without": "import requests\n\nBASE_URL = \"https://api.socbench.example\"\n\nreport_id = \"REPORT_ID\"\nmachine_id = \"MACHINE_ID\"\nitem_id = \"ITEM_ID\"\n\nreport_response = requests.get(\n    f\"{BASE_URL}/analytics/{report_id}\"\n)\nreport_response.raise_for_status()\nreport = report_response.json()\n\nconfiguration = {\n    \"configuration\": {\n        \"reportId\": report_id,\n        \"data\": str(report.get(\"data\", {})),\n    }\n}\n\nconfig_response = requests.post(\n    f\"{BASE_URL}/machines/{machine_id}/configurations\",\n    json=configuration,\n)\nconfig_response.raise_for_status()\n\ninventory_response = requests.get(f\"{BASE_URL}/resources/inventory\")\ninventory_response.raise_for_status()\ninventory = inventory_response.json()\n\nitem = next((entry for entry in inventory if entry.get(\"itemId\") == item_id), None)\nif item is None:\n    raise ValueError(f\"Inventory item {item_id!r} was not found\")\n\nupdated_quantity = item[\"quantity\"] - 1\n\nupdate_response = requests.put(\n    f\"{BASE_URL}/resources/inventory/{item_id}\",\n    json={\"quantity\": updated_quantity},\n)\nupdate_response.raise_for_status()",
+    "code_with": "import requests\n\nBASE_URL = \"https://api.socbench.example\"\nREPORT_ID = \"your_report_id\"\nMACHINE_ID = \"your_machine_id\"\nITEM_ID = \"your_item_id\"\n\nsession = requests.Session()\n\nreport_response = session.get(\n    f\"{BASE_URL}/analytics/{REPORT_ID}\",\n    timeout=30,\n)\nreport_response.raise_for_status()\nreport = report_response.json()\n\nconfiguration = {\n    \"configuration\": {\n        \"report\": report,\n        \"changes\": {},\n    }\n}\n\nconfiguration_response = session.post(\n    f\"{BASE_URL}/machines/{MACHINE_ID}/configurations\",\n    json=configuration,\n    timeout=30,\n)\nconfiguration_response.raise_for_status()\n\ninventory_update = {\n    \"quantity\": 0,\n    \"reason\": \"Adjustment associated with machine configuration changes\",\n}\n\ninventory_response = session.put(\n    f\"{BASE_URL}/resources/inventory/{ITEM_ID}\",\n    json=inventory_update,\n    timeout=30,\n)\ninventory_response.raise_for_status()",
+    "found_without": [
+      "GET /analytics/{reportId}",
+      "GET /resources/inventory",
+      "POST /machines/{id}/configurations",
+      "PUT /resources/inventory/{item_id}"
+    ],
+    "found_with": [
+      "GET /analytics/{reportId}",
+      "POST /machines/{id}/configurations",
+      "PUT /resources/inventory/{item_id}"
+    ],
+    "recall_without": 0.6666666666666666,
+    "recall_with": 0.6666666666666666,
+    "usage_without": {
+      "prompt_tokens": 1420,
+      "completion_tokens": 249,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0002665
+    },
+    "usage_with": {
+      "prompt_tokens": 1411,
+      "completion_tokens": 204,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0002431
+    }
+  },
+  {
+    "queryset": "industrials",
+    "query": "Generate a Gantt chart visualization for a specific construction project and analyze the performance of the fleet's delivery operations, including metrics such as total deliveries, average delivery time, and fuel consumption.",
+    "solution": [
+      "GET /projects/{projectId}/gantt",
+      "GET /analytics/performance"
+    ],
+    "code_without": "import requests\n\nBASE_URL = \"https://api.socbench.example\"\nproject_id = \"YOUR_PROJECT_ID\"\n\ngantt_response = requests.get(\n    f\"{BASE_URL}/projects/{project_id}/gantt\",\n    timeout=30,\n)\ngantt_response.raise_for_status()\ngantt_chart = gantt_response.json().get(\"chartData\")\n\nperformance_response = requests.get(\n    f\"{BASE_URL}/analytics/performance\",\n    timeout=30,\n)\nperformance_response.raise_for_status()\nperformance = performance_response.json()\n\nprint(\"Gantt chart data:\", gantt_chart)\nprint(\"Fleet delivery performance:\")\nprint(\"Total deliveries:\", performance.get(\"totalDeliveries\"))\nprint(\"Average delivery time:\", performance.get(\"averageDeliveryTime\"))\nprint(\"Fuel consumption:\", performance.get(\"fuelConsumption\"))",
+    "code_with": "import requests\n\nBASE_URL = \"https://api.socbench.example\"\n\nproject_id = \"YOUR_PROJECT_ID\"\n\ngantt_response = requests.get(\n    f\"{BASE_URL}/projects/{project_id}/gantt\",\n    timeout=30,\n)\ngantt_response.raise_for_status()\ngantt_chart = gantt_response.json()\n\nperformance_response = requests.get(\n    f\"{BASE_URL}/analytics/performance\",\n    timeout=30,\n)\nperformance_response.raise_for_status()\nfleet_performance = performance_response.json()\n\nprint(\"Project Gantt chart:\")\nprint(gantt_chart)\n\nprint(\"\\nFleet delivery performance analytics:\")\nprint(fleet_performance)",
+    "found_without": [
+      "GET /analytics/performance",
+      "GET /projects/{projectId}/gantt"
+    ],
+    "found_with": [
+      "GET /analytics/performance",
+      "GET /projects/{projectId}/gantt"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 2027,
+      "completion_tokens": 161,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.00028320000000000005
+    },
+    "usage_with": {
+      "prompt_tokens": 1838,
+      "completion_tokens": 131,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0002493
+    }
+  },
+  {
+    "queryset": "consumer discretionary",
+    "query": "I want to plan a trip with a rented device for a recreational activity. First, fetch detailed information about the activity by its ID to understand the schedule and pricing. Then, place an order for meals at a restaurant to enjoy during the trip. After the activity, return the rented device by providing its rental ID. Submit reviews for both the rented device and the activity. Check the amenities available at the activity location. Retrieve tickets for all booked activities. Additionally, check reviews for a nearby hotel for potential accommodation. Finally, update an existing restaurant order if there are any required changes.",
+    "solution": [
+      "POST /returns/{rentalId}",
+      "PUT /orders/{orderId}",
+      "POST /orders",
+      "GET /amenities",
+      "GET /activities/{id}",
+      "POST /reviews",
+      "POST /orders",
+      "GET /reviews/{hotelId}",
+      "GET /tickets"
+    ],
+    "code_without": "import requests\n\nBASE_URL = \"https://api.socbench.example\"\n\nactivity_id = \"ACTIVITY_ID\"\nrental_id = \"RENTAL_ID\"\n\n# Fetch detailed activity information, including schedule and pricing.\nactivity_response = requests.get(\n    f\"{BASE_URL}/activities/{activity_id}\"\n)\nactivity_response.raise_for_status()\nactivity_details = activity_response.json()\n\n# The provided API documentation does not include endpoints for restaurant\n# orders, reviews, activity-location amenities, or hotel reviews.\n\n# Coordinate the return of the rented device after the activity.\nreturn_response = requests.post(\n    f\"{BASE_URL}/returns/{rental_id}\"\n)\nreturn_response.raise_for_status()\nreturn_status = return_response.json()\n\n# Retrieve tickets for all booked activities.\ntickets_response = requests.get(f\"{BASE_URL}/tickets\")\ntickets_response.raise_for_status()\ntickets = tickets_response.json()",
+    "code_with": "import requests\n\nBASE_URL = \"https://api.socbench.example\"\n\nactivity_id = input(\"Activity ID: \").strip()\nrental_id = input(\"Rental ID: \").strip()\nnearby_hotel_id = input(\"Nearby hotel ID: \").strip()\n\n# Fetch activity details, including its schedule and pricing.\nactivity_response = requests.get(\n    f\"{BASE_URL}/activities/{activity_id}\",\n    timeout=30,\n)\nactivity_response.raise_for_status()\nactivity = activity_response.json()\nprint(\"Activity details:\", activity)\n\n# The documented API does not provide endpoints for restaurant meal orders\n# or activity reviews.\n\n# Return the rented device.\nreturn_response = requests.post(\n    f\"{BASE_URL}/returns/{rental_id}\",\n    timeout=30,\n)\nreturn_response.raise_for_status()\n\n# Submit a review for the rented device.\ndevice_review = {\n    \"rentalId\": rental_id,\n    \"rating\": float(input(\"Device rating: \")),\n    \"feedback\": input(\"Device review: \"),\n}\ndevice_review_response = requests.post(\n    f\"{BASE_URL}/reviews\",\n    json=device_review,\n    timeout=30,\n)\ndevice_review_response.raise_for_status()\n\n# Check amenities at the activity location.\namenities_response = requests.get(\n    f\"{BASE_URL}/amenities\",\n    params={\"location\": activity.get(\"location\")},\n    timeout=30,\n)\namenities_response.raise_for_status()\nprint(\"Amenities:\", amenities_response.json())\n\n# Retrieve tickets for booked activities.\ntickets_response = requests.get(f\"{BASE_URL}/tickets\", timeout=30)\ntickets_response.raise_for_status()\nprint(\"Tickets:\", tickets_response.json())\n\n# Check reviews for a nearby hotel.\nhotel_reviews_response = requests.get(\n    f\"{BASE_URL}/reviews/{nearby_hotel_id}\",\n    timeout=30,\n)\nhotel_reviews_response.raise_for_status()\nprint(\"Hotel reviews:\", hotel_reviews_response.json())\n\n# The documented API does not provide endpoints for updating restaurant orders.",
+    "found_without": [
+      "GET /activities/{id}",
+      "GET /tickets",
+      "POST /returns/{rentalId}"
+    ],
+    "found_with": [
+      "GET /activities/{id}",
+      "GET /amenities",
+      "GET /reviews/{hotelId}",
+      "GET /tickets",
+      "POST /returns/{rentalId}",
+      "POST /reviews"
+    ],
+    "recall_without": 0.375,
+    "recall_with": 0.75,
+    "usage_without": {
+      "prompt_tokens": 1618,
+      "completion_tokens": 179,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.00025130000000000004
+    },
+    "usage_with": {
+      "prompt_tokens": 1571,
+      "completion_tokens": 398,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.00035610000000000004
+    }
+  },
+  {
+    "queryset": "consumer staples",
+    "query": "Submit the details of a newly designed product for regulatory compliance validation and environmental sustainability assessment, then retrieve a comprehensive compliance report for all managed products to verify its status, and finally cancel an associated order if the product is found non-compliant.",
+    "solution": [
+      "DELETE /orders/{orderId}",
+      "GET /reports/compliance",
+      "POST /regulation-check",
+      "POST /sustainability-assessment"
+    ],
+    "code_without": "import requests\n\nBASE_URL = \"https://api.socbench.example\"\n\nproduct_details = {\n    \"name\": \"Newly Designed Personal Care Product\",\n    \"category\": \"lotion\",\n    \"ingredients\": [\"ingredient_a\", \"ingredient_b\"],\n}\n\ncompliance_response = requests.post(\n    f\"{BASE_URL}/regulation-check\",\n    json={\"product_details\": product_details},\n)\ncompliance_response.raise_for_status()\ncompliance_result = compliance_response.json()\n\nsustainability_response = requests.post(\n    f\"{BASE_URL}/sustainability-assessment\",\n    json={\"product_details\": product_details},\n)\nsustainability_response.raise_for_status()\nsustainability_result = sustainability_response.json()\n\nreport_response = requests.get(f\"{BASE_URL}/reports/compliance\")\nreport_response.raise_for_status()\ncompliance_report = report_response.json()\n\nstatus = str(compliance_result.get(\"compliance_status\", \"\")).strip().lower()\nif status not in {\"compliant\", \"complies\", \"passed\", \"pass\"}:\n    raise RuntimeError(\n        \"The product is not confirmed compliant. \"\n        \"No order-cancellation endpoint is documented, so the associated order cannot be cancelled.\"\n    )",
+    "code_with": "import requests\n\nBASE_URL = \"https://api.socbench.example\"\nproduct = {\n    \"name\": \"Newly Designed Product\",\n    \"category\": \"personal care\",\n    \"ingredients\": [],\n    \"order_id\": \"associated-order-id\",\n}\n\nvalidation_response = requests.post(\n    f\"{BASE_URL}/regulation-check\",\n    json=product,\n)\nvalidation_response.raise_for_status()\nvalidation = validation_response.json()\n\nsustainability_response = requests.post(\n    f\"{BASE_URL}/sustainability-assessment\",\n    json=product,\n)\nsustainability_response.raise_for_status()\nsustainability = sustainability_response.json()\n\nreport_response = requests.get(f\"{BASE_URL}/reports/compliance\")\nreport_response.raise_for_status()\nreport = report_response.json()\n\ndef is_non_compliant(data):\n    if isinstance(data, dict):\n        for key, value in data.items():\n            if key.lower() in {\"compliant\", \"is_compliant\", \"compliance_status\", \"status\"}:\n                if value is False or (\n                    isinstance(value, str)\n                    and value.lower() in {\"non-compliant\", \"noncompliant\", \"failed\"}\n                ):\n                    return True\n            if is_non_compliant(value):\n                return True\n    elif isinstance(data, list):\n        return any(is_non_compliant(item) for item in data)\n    return False\n\nif is_non_compliant(validation) or is_non_compliant(report):\n    order_id = product.get(\"order_id\")\n    if order_id:\n        cancel_response = requests.delete(f\"{BASE_URL}/orders/{order_id}\")\n        cancel_response.raise_for_status()",
+    "found_without": [
+      "GET /reports/compliance",
+      "POST /regulation-check",
+      "POST /sustainability-assessment"
+    ],
+    "found_with": [
+      "DELETE /orders/{orderId}",
+      "GET /reports/compliance",
+      "POST /regulation-check",
+      "POST /sustainability-assessment"
+    ],
+    "recall_without": 0.75,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 1650,
+      "completion_tokens": 244,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.000287
+    },
+    "usage_with": {
+      "prompt_tokens": 1621,
+      "completion_tokens": 331,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.00032760000000000005
+    }
+  },
+  {
+    "queryset": "health care",
+    "query": "I want to update the contact information of the inventory manager to ensure accurate communication and then submit responses to a questionnaire for evaluating the efficiency of the inventory system. After that, I need to check for low-stock medications and create a new order to replenish them while ensuring to delete any medications marked for removal from the inventory. Can you guide me on how to proceed with all these steps effectively?",
+    "solution": [
+      "PATCH /update_contact_info",
+      "POST /responses",
+      "GET /inventory/low-stock",
+      "POST /orders/new",
+      "DELETE /inventory/remove/{medicationId}"
+    ],
+    "code_without": "import requests\n\nBASE_URL = \"https://api.socbench.example\"\n\n# The documented API does not provide endpoints for updating manager contact\n# information or submitting questionnaire responses.\n# Retrieve low-stock medications, then create an order for those with known IDs.\nlow_stock_response = requests.get(f\"{BASE_URL}/inventory/low-stock\")\nlow_stock_response.raise_for_status()\nlow_stock_medications = low_stock_response.json()\n\nmedications_to_order = [\n    {\"medicationId\": medication[\"medicationId\"], \"quantity\": medication[\"stockLevel\"]}\n    for medication in low_stock_medications\n    if medication.get(\"medicationId\") and medication.get(\"stockLevel\", 0) >= 0\n]\n\nif medications_to_order:\n    order_response = requests.post(\n        f\"{BASE_URL}/orders/new\",\n        json={\"medications\": medications_to_order},\n    )\n    order_response.raise_for_status()\n    created_order = order_response.json()\nelse:\n    created_order = None\n\n# Supply IDs for medications explicitly marked for removal.\nmedication_ids_to_remove = []\n\nfor medication_id in medication_ids_to_remove:\n    response = requests.delete(\n        f\"{BASE_URL}/inventory/remove/{medication_id}\"\n    )\n    response.raise_for_status()",
+    "code_with": "import os\nimport requests\n\nBASE_URL = os.getenv(\"API_BASE_URL\", \"https://api.socbench.example\").rstrip(\"/\")\nsession = requests.Session()\nsession.headers.update({\"Accept\": \"application/json\"})\n\n# Supply the inventory manager's updated contact details.\ncontact_info = {\n    \"name\": os.getenv(\"INVENTORY_MANAGER_NAME\", \"\"),\n    \"email\": os.getenv(\"INVENTORY_MANAGER_EMAIL\", \"\"),\n    \"phone\": os.getenv(\"INVENTORY_MANAGER_PHONE\", \"\"),\n}\ncontact_response = session.patch(\n    f\"{BASE_URL}/update_contact_info\",\n    json=contact_info,\n)\ncontact_response.raise_for_status()\n\n# Supply the questionnaire identifier and the responses to submit.\nquestionnaire_responses = {\n    \"questionnaireId\": os.getenv(\"QUESTIONNAIRE_ID\", \"\"),\n    \"responses\": [],\n}\nresponses_response = session.post(\n    f\"{BASE_URL}/responses\",\n    json=questionnaire_responses,\n)\nresponses_response.raise_for_status()\n\n# Retrieve low-stock medications and create a replenishment order for them.\nlow_stock_response = session.get(f\"{BASE_URL}/inventory/low-stock\")\nlow_stock_response.raise_for_status()\nlow_stock_data = low_stock_response.json()\n\nmedications = (\n    low_stock_data\n    if isinstance(low_stock_data, list)\n    else low_stock_data.get(\"medications\", [])\n)\n\norder_items = [\n    {\n        \"medicationId\": medication[\"medicationId\"],\n        \"quantity\": medication.get(\"reorderQuantity\", medication.get(\"quantity\", 0)),\n    }\n    for medication in medications\n    if medication.get(\"medicationId\")\n]\n\nif order_items:\n    order_response = session.post(\n        f\"{BASE_URL}/orders/new\",\n        json={\"medications\": order_items},\n    )\n    order_response.raise_for_status()\n\n# Remove medications explicitly marked for removal.\nmedication_ids_to_remove = [\n    medication_id\n    for medication_id in os.getenv(\"MEDICATION_IDS_TO_REMOVE\", \"\").split(\",\")\n    if medication_id.strip()\n]\n\nfor medication_id in medication_ids_to_remove:\n    remove_response = session.delete(\n        f\"{BASE_URL}/inventory/remove/{medication_id.strip()}\"\n    )\n    remove_response.raise_for_status()",
+    "found_without": [
+      "DELETE /inventory/remove/{medicationId}",
+      "GET /inventory/low-stock",
+      "POST /orders/new"
+    ],
+    "found_with": [],
+    "recall_without": 0.6,
+    "recall_with": 0.0,
+    "usage_without": {
+      "prompt_tokens": 1834,
+      "completion_tokens": 255,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.00031089999999999997
+    },
+    "usage_with": {
+      "prompt_tokens": 1826,
+      "completion_tokens": 452,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0004086
+    }
+  },
+  {
+    "queryset": "financials",
+    "query": "As an organization managing a transaction monitoring system, I need to review overall monitoring statistics, such as total anomalies detected and transactions processed, and update my monitoring preferences to set stricter thresholds for anomaly detection. Additionally, I require an evaluation of loan eligibility based on the organization's updated financial data, including income, debts, and loan parameters, to plan for infrastructure upgrades to enhance monitoring capabilities.",
+    "solution": [
+      "PATCH /profile/settings",
+      "POST /loan/eligibility",
+      "GET /statistics"
+    ],
+    "code_without": "import requests\n\nBASE_URL = \"https://api.socbench.example\"\n\n# Review overall monitoring statistics.\nstatistics_response = requests.get(f\"{BASE_URL}/statistics\")\nstatistics_response.raise_for_status()\nstatistics = statistics_response.json()\n\ntotal_transactions = statistics.get(\"total_transactions\")\ntotal_anomalies = statistics.get(\"total_anomalies\")\n\n# Set stricter anomaly-detection preferences.\npreferences_response = requests.patch(\n    f\"{BASE_URL}/profile/settings\",\n    json={\n        \"preference_name\": \"anomaly_detection_threshold\",\n        \"preference_value\": \"stricter\",\n    },\n)\npreferences_response.raise_for_status()\n\n# Retrieve the available financial summary for loan planning.\nfinancial_summary_response = requests.get(\n    f\"{BASE_URL}/user/financial-summary\"\n)\nfinancial_summary_response.raise_for_status()\nfinancial_summary = financial_summary_response.json()",
+    "code_with": "import requests\n\nBASE_URL = \"https://api.socbench.example\"\n\n# Review overall transaction monitoring statistics.\nstatistics_response = requests.get(f\"{BASE_URL}/statistics\")\nstatistics_response.raise_for_status()\nstatistics = statistics_response.json()\nprint(\"Monitoring statistics:\", statistics)\n\n# Set stricter anomaly-detection preferences.\npreferences = {\n    \"anomaly_threshold\": \"strict\",\n    \"threshold_level\": \"stricter\",\n}\npreferences_response = requests.patch(\n    f\"{BASE_URL}/profile/settings\",\n    json=preferences,\n)\npreferences_response.raise_for_status()\nprint(\"Monitoring preferences updated:\", preferences_response.json())\n\n# Evaluate loan eligibility using updated organizational financial data and loan parameters.\nloan_data = {\n    \"income\": 0,\n    \"debts\": 0,\n    \"loan_amount\": 0,\n    \"loan_term\": 0,\n    \"interest_rate\": 0,\n}\neligibility_response = requests.post(\n    f\"{BASE_URL}/loan/eligibility\",\n    json=loan_data,\n)\neligibility_response.raise_for_status()\nprint(\"Loan eligibility:\", eligibility_response.json())",
+    "found_without": [
+      "GET /statistics",
+      "GET /user/financial-summary",
+      "PATCH /profile/settings"
+    ],
+    "found_with": [
+      "GET /statistics",
+      "PATCH /profile/settings",
+      "POST /loan/eligibility"
+    ],
+    "recall_without": 0.6666666666666666,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 1893,
+      "completion_tokens": 173,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.00027580000000000004
+    },
+    "usage_with": {
+      "prompt_tokens": 1831,
+      "completion_tokens": 223,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0002946
+    }
+  },
+  {
+    "queryset": "information technology",
+    "query": "Create a new software license for a financial application, set its license type as perpetual, and trigger an alert notifying the team about the configuration. Validate its configuration by running a transformation action to ensure compliance with organizational rules, and upon success, test the integration of the alert notification system to confirm real-time monitoring capabilities for software usage incidents. Delete an outdated transformation rule no longer required for license validation, retrieve the current automated workflows available for handling software-related alerts, and fetch a list of existing transformation and analytical rules for review.",
+    "solution": [
+      "GET /settings/workflows",
+      "POST /data/transform",
+      "POST /integration/test",
+      "POST /alert",
+      "POST /software/licenses",
+      "DELETE /config/rules/{ruleID}"
+    ],
+    "code_without": "import requests\n\nBASE_URL = \"https://api.socbench.example\"\n\nlicense_data = {\n    \"name\": \"Financial Application\",\n    \"licenseType\": \"perpetual\",\n}\nlicense_response = requests.post(\n    f\"{BASE_URL}/software/licenses\",\n    json=license_data,\n)\nlicense_response.raise_for_status()\n\nalert_response = requests.post(\n    f\"{BASE_URL}/alert\",\n    json={\n        \"title\": \"Financial application license configured\",\n        \"description\": \"The perpetual license configuration is ready for compliance validation.\",\n        \"severity\": \"medium\",\n        \"source\": \"software-license-management\",\n    },\n)\nalert_response.raise_for_status()\nalert_id = alert_response.json().get(\"alertId\")\n\n# Configure an alert for software usage incidents.\nrequests.post(\n    f\"{BASE_URL}/alerts\",\n    json={\n        \"event\": \"software_usage_incident\",\n        \"notificationMethod\": \"email\",\n        \"recipients\": [\"team@example.com\"],\n    },\n).raise_for_status()\n\n# Retrieve available rules to review current transformation and analytical rules.\nrules_response = requests.get(f\"{BASE_URL}/config/rules\")\nrules_response.raise_for_status()\nrules = rules_response.json()\n\n# The documented API provides rule creation and update, but no transformation execution,\n# workflow listing, or rule deletion endpoint. Use an existing rule to update its\n# definition for license validation where possible.\nlicense_rule = next(\n    (\n        rule for rule in rules\n        if \"license\" in rule.get(\"ruleName\", \"\").lower()\n        and rule.get(\"ruleID\")\n    ),\n    None,\n)\nif license_rule:\n    requests.put(\n        f\"{BASE_URL}/config/rules/{license_rule['ruleID']}\",\n        json={\n            \"ruleName\": license_rule[\"ruleName\"],\n            \"ruleDefinition\": {\n                \"purpose\": \"Validate perpetual financial application license configuration\",\n                \"complianceCheck\": True,\n            },\n        },\n    ).raise_for_status()\n\n# Confirm the created alert can be retrieved.\nif alert_id:\n    requests.get(f\"{BASE_URL}/alert/{alert_id}\").raise_for_status()\n\n# Refresh the rules list for review.\nrequests.get(f\"{BASE_URL}/config/rules\").raise_for_status()",
+    "code_with": "import requests\n\nBASE_URL = \"https://api.socbench.example\"\nsession = requests.Session()\nsession.headers.update({\"Content-Type\": \"application/json\", \"Accept\": \"application/json\"})\n\nlicense_response = session.post(\n    f\"{BASE_URL}/software/licenses\",\n    json={\n        \"application\": \"financial application\",\n        \"licenseType\": \"perpetual\",\n    },\n)\nlicense_response.raise_for_status()\n\nalert_response = session.post(\n    f\"{BASE_URL}/alert\",\n    json={\n        \"message\": \"A perpetual software license has been configured for the financial application.\",\n        \"event\": \"software_license_configuration\",\n    },\n)\nalert_response.raise_for_status()\n\ntransformation_response = session.post(\n    f\"{BASE_URL}/data/transform\",\n    json={\n        \"application\": \"financial application\",\n        \"licenseType\": \"perpetual\",\n        \"validation\": \"organizational_rules_compliance\",\n    },\n)\ntransformation_response.raise_for_status()\n\nintegration_response = session.post(\n    f\"{BASE_URL}/integration/test\",\n    json={\n        \"purpose\": \"real-time monitoring of software usage incidents\",\n        \"alertId\": alert_response.json().get(\"alertId\"),\n    },\n)\nintegration_response.raise_for_status()\n\noutdated_rule_id = \"outdated-license-validation-rule\"\ndelete_rule_response = session.delete(\n    f\"{BASE_URL}/config/rules/{outdated_rule_id}\"\n)\ndelete_rule_response.raise_for_status()\n\nworkflows_response = session.get(f\"{BASE_URL}/settings/workflows\")\nworkflows_response.raise_for_status()\nworkflows = workflows_response.json()\n\nrules_response = session.get(f\"{BASE_URL}/config/rules\")\nrules_response.raise_for_status()\nrules = rules_response.json()",
+    "found_without": [
+      "GET /alert/{alertId}",
+      "GET /config/rules",
+      "POST /alert",
+      "POST /alerts",
+      "POST /software/licenses",
+      "PUT /config/rules/{ruleID}"
+    ],
+    "found_with": [
+      "DELETE /config/rules/{ruleID}",
+      "GET /config/rules",
+      "GET /settings/workflows",
+      "POST /alert",
+      "POST /data/transform",
+      "POST /integration/test",
+      "POST /software/licenses"
+    ],
+    "recall_without": 0.3333333333333333,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 2147,
+      "completion_tokens": 456,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0004427
+    },
+    "usage_with": {
+      "prompt_tokens": 2113,
+      "completion_tokens": 349,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0003858
+    }
+  },
+  {
+    "queryset": "communication services",
+    "query": "Fetch the engagement analytics for the content with ID 123, update its details with new information, and delete the message associated with this content from the system.",
+    "solution": [
+      "DELETE /messages/{messageID}",
+      "GET /analytics/content/{id}",
+      "PUT /content/{id}"
+    ],
+    "code_without": "import requests\n\nbase_url = \"https://api.socbench.example\"\ncontent_id = \"123\"\n\nanalytics_response = requests.get(\n    f\"{base_url}/analytics/content/{content_id}\"\n)\nanalytics_response.raise_for_status()\nanalytics = analytics_response.json()\n\nupdate_response = requests.put(\n    f\"{base_url}/content/{content_id}\",\n    json={\n        \"title\": \"Updated content title\",\n        \"description\": \"Updated content description\",\n    },\n)\nupdate_response.raise_for_status()\n\nmessage_id = analytics.get(\"message_id\")\nif message_id:\n    delete_response = requests.delete(f\"{base_url}/messages/{message_id}\")\n    delete_response.raise_for_status()",
+    "code_with": "import requests\n\nBASE_URL = \"https://api.socbench.example\"\n\ncontent_id = \"123\"\n\nanalytics_response = requests.get(\n    f\"{BASE_URL}/analytics/content/{content_id}\"\n)\nanalytics_response.raise_for_status()\nanalytics = analytics_response.json()\n\ncontent_response = requests.get(f\"{BASE_URL}/content/{content_id}\")\ncontent_response.raise_for_status()\ncontent = content_response.json()\n\nmessage_id = content.get(\"message_id\")\nif not message_id:\n    raise ValueError(\"The content response does not include an associated message ID.\")\n\nupdate_response = requests.put(\n    f\"{BASE_URL}/content/{content_id}\",\n    json={\"details\": \"Updated content information\"},\n)\nupdate_response.raise_for_status()\n\ndelete_response = requests.delete(f\"{BASE_URL}/messages/{message_id}\")\ndelete_response.raise_for_status()",
+    "found_without": [
+      "DELETE /messages/{messageID}",
+      "GET /analytics/content/{id}",
+      "PUT /content/{id}"
+    ],
+    "found_with": [
+      "DELETE /messages/{messageID}",
+      "GET /analytics/content/{id}",
+      "GET /content/{id}",
+      "PUT /content/{id}"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 1932,
+      "completion_tokens": 138,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.00026220000000000003
+    },
+    "usage_with": {
+      "prompt_tokens": 1757,
+      "completion_tokens": 167,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.00025920000000000007
+    }
+  },
+  {
+    "queryset": "utilities",
+    "query": "Detect any potential leaks in the system, retrieve details of all connected distributed energy resources for further analysis, process a payment for an overdue utility bill, and configure an alert for monitoring usage thresholds.",
+    "solution": [
+      "GET /analytics/leak-detection",
+      "GET /distributed-resources",
+      "POST /bills/pay",
+      "POST /alert/settings"
+    ],
+    "code_without": "import requests\n\nBASE_URL = \"https://api.socbench.example\"\n\nleak_response = requests.get(f\"{BASE_URL}/analytics/leak-detection\")\nleak_response.raise_for_status()\nleak_analysis = leak_response.json()\n\nresources_response = requests.get(f\"{BASE_URL}/distributed-resources\")\nresources_response.raise_for_status()\ndistributed_resources = resources_response.json()\n\npayment_response = requests.post(\n    f\"{BASE_URL}/bills/pay\",\n    json={\n        \"billId\": \"98765\",\n        \"paymentAmount\": 75.5,\n        \"paymentMethod\": \"credit_card\",\n    },\n)\npayment_response.raise_for_status()\n\nalert_response = requests.post(\n    f\"{BASE_URL}/alerts/setup\",\n    json={\n        \"type\": \"threshold\",\n        \"threshold\": 100,\n        \"frequency\": \"hourly\",\n    },\n)\nalert_response.raise_for_status()",
+    "code_with": "import requests\n\nBASE_URL = \"https://api.socbench.example\"\n\nleaks_response = requests.get(f\"{BASE_URL}/analytics/leak-detection\")\nleaks_response.raise_for_status()\npotential_leaks = leaks_response.json()\n\nresources_response = requests.get(f\"{BASE_URL}/distributed-resources\")\nresources_response.raise_for_status()\ndistributed_resources = resources_response.json()\n\npayment_response = requests.post(\n    f\"{BASE_URL}/bills/pay\",\n    json={\n        \"bill_id\": \"overdue_bill_id\",\n        \"payment_details\": {\n            \"payment_method\": \"card\",\n            \"payment_token\": \"your_payment_token\",\n        },\n    },\n)\npayment_response.raise_for_status()\npayment_result = payment_response.json()\n\nalert_response = requests.post(\n    f\"{BASE_URL}/alerts/setup\",\n    json={\n        \"type\": \"usage_threshold\",\n        \"threshold\": 0,\n        \"notification_enabled\": True,\n    },\n)\nalert_response.raise_for_status()\nalert_result = alert_response.json()",
+    "found_without": [
+      "GET /analytics/leak-detection",
+      "GET /distributed-resources",
+      "POST /alerts/setup",
+      "POST /bills/pay"
+    ],
+    "found_with": [
+      "GET /analytics/leak-detection",
+      "GET /distributed-resources",
+      "POST /alerts/setup",
+      "POST /bills/pay"
+    ],
+    "recall_without": 0.75,
+    "recall_with": 0.75,
+    "usage_without": {
+      "prompt_tokens": 1583,
+      "completion_tokens": 182,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0002493
+    },
+    "usage_with": {
+      "prompt_tokens": 1574,
+      "completion_tokens": 205,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0002599
+    }
+  },
+  {
+    "queryset": "real estate",
+    "query": "Upload high-resolution photos for a specific property and later verify the status of a tenant's identity verification process to ensure tenant eligibility for renting that property.",
+    "solution": [
+      "POST /properties/{property_id}/photos",
+      "GET /tenant/identity-verification/status/{tenantId}"
+    ],
+    "code_without": "import os\nimport requests\n\nBASE_URL = \"https://api.socbench.example\"\n\nproperty_id = \"PROPERTY_ID\"\ntenant_id = \"TENANT_ID\"\nphoto_path = \"path/to/high_resolution_photo.jpg\"\n\nwith open(photo_path, \"rb\") as photo_file:\n    upload_response = requests.post(\n        f\"{BASE_URL}/properties/{property_id}/photos\",\n        files={\"photo\": (os.path.basename(photo_path), photo_file)},\n    )\n    upload_response.raise_for_status()\n\nstatus_response = requests.get(\n    f\"{BASE_URL}/tenant/identity-verification/status/{tenant_id}\"\n)\nstatus_response.raise_for_status()\nverification_status = status_response.json()\n\nprint(verification_status)",
+    "code_with": "import requests\n\nBASE_URL = \"https://api.socbench.example\"\n\nproperty_id = \"PROPERTY_ID\"\ntenant_id = \"TENANT_ID\"\n\nwith open(\"property_photo.jpg\", \"rb\") as photo:\n    upload_response = requests.post(\n        f\"{BASE_URL}/properties/{property_id}/photos\",\n        files={\"file\": (\"property_photo.jpg\", photo, \"image/jpeg\")},\n)\nupload_response.raise_for_status()\n\nstatus_response = requests.get(\n    f\"{BASE_URL}/tenant/identity-verification/status/{tenant_id}\"\n)\nstatus_response.raise_for_status()\n\nidentity_status = status_response.json()\nprint(identity_status)",
+    "found_without": [
+      "GET /tenant/identity-verification/status/{tenantId}",
+      "POST /properties/{property_id}/photos"
+    ],
+    "found_with": [
+      "GET /tenant/identity-verification/status/{tenantId}",
+      "POST /properties/{property_id}/photos"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 1929,
+      "completion_tokens": 144,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0002649
+    },
+    "usage_with": {
+      "prompt_tokens": 1821,
+      "completion_tokens": 129,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.00024660000000000003
+    }
+  }
+]

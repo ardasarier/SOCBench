@@ -1,0 +1,38 @@
+
+=== socbenchd_2: contexts
+  $ -u src/prepare_contexts.py --benchmark socbenchd_2 --skip-existing --max-queries 1 --top-k 10 --keep-fields reqschema
+    exit 0, 0.5 min  (data/logs/e2e/socbenchd_2/prepare_k10_reqschema.txt)
+  $ -u src/prepare_contexts.py --benchmark socbenchd_2 --skip-existing --max-queries 1 --top-k 50 --keep-fields reqschema
+    exit 0, 0.4 min  (data/logs/e2e/socbenchd_2/prepare_k50_reqschema.txt)
+  $ -u src/prepare_contexts.py --benchmark socbenchd_2 --skip-existing --max-queries 1 --top-k 50 --identity-only
+    exit 0, 0.5 min  (data/logs/e2e/socbenchd_2/prepare_k50_identity.txt)
+  $ -u src/prepare_contexts.py --benchmark socbenchd_2 --skip-existing --max-queries 1 --top-k 40
+    exit 0, 4.5 min  (data/logs/e2e/socbenchd_2/prepare_k40_attention.txt)
+  $ -u src/prepare_contexts.py --benchmark socbenchd_2 --skip-existing --max-queries 1 --top-k 40 --fixed-hint 'The API endpoint required for this task is'
+    exit 0, 2.4 min  (data/logs/e2e/socbenchd_2/prepare_k40_fixhint.txt)
+
+=== socbenchd_2: equal-budget contexts
+  $ -u src/make_budget_contexts.py --reference data/contexts/socbenchd_2_k10_all_noanchor_reqschema_n11.json --source data/contexts/socbenchd_2_k50_all_noanchor_reqschema_n11.json --label reqschema
+    exit 0, 0.0 min  (data/logs/e2e/socbenchd_2/budget_reqschema.txt)
+  $ -u src/make_budget_contexts.py --reference data/contexts/socbenchd_2_k10_all_noanchor_reqschema_n11.json --source data/contexts/socbenchd_2_k50_all_noanchor_reqschema_n11.json --label raw20 --raw-k 20
+    exit 0, 0.0 min  (data/logs/e2e/socbenchd_2/budget_raw20.txt)
+  $ -u src/make_budget_contexts.py --reference data/contexts/socbenchd_2_k10_all_noanchor_reqschema_n11.json --source data/contexts/socbenchd_2_k50_all_noanchor_identity_n11.json --label identity
+    exit 0, 0.0 min  (data/logs/e2e/socbenchd_2/budget_identity.txt)
+  $ -u src/make_budget_contexts.py --reference data/contexts/socbenchd_2_k10_all_noanchor_reqschema_n11.json --source data/contexts/socbenchd_2_k40_all_noanchor_k10_n11.json --label attention40
+    exit 0, 0.0 min  (data/logs/e2e/socbenchd_2/budget_attention40.txt)
+  $ -u src/make_budget_contexts.py --reference data/contexts/socbenchd_2_k10_all_noanchor_reqschema_n11.json --source data/contexts/socbenchd_2_k40_all_noanchor_k10-fixhint_n11.json --label attention40-fixhint
+    exit 0, 0.0 min  (data/logs/e2e/socbenchd_2/budget_attention40-fixhint.txt)
+
+=== socbenchd_2: codegen, 1 run(s) per condition
+  $ -u src/run_codegen.py data/contexts/socbenchd_2_k10_budget-reqschema_n11.json --run 1
+    exit 0, 1.2 min  (data/logs/e2e/socbenchd_2/codegen_reqschema_r1.txt)
+  $ -u src/run_codegen.py data/contexts/socbenchd_2_k10_budget-raw20_n11.json --run 1
+    exit 0, 0.6 min  (data/logs/e2e/socbenchd_2/codegen_raw20_r1.txt)
+  $ -u src/run_codegen.py data/contexts/socbenchd_2_k10_budget-identity_n11.json --run 1
+    exit 0, 0.7 min  (data/logs/e2e/socbenchd_2/codegen_identity_r1.txt)
+  $ -u src/run_codegen.py data/contexts/socbenchd_2_k10_budget-attention40_n11.json --run 1
+    exit 0, 0.6 min  (data/logs/e2e/socbenchd_2/codegen_attention40_r1.txt)
+  $ -u src/run_codegen.py data/contexts/socbenchd_2_k10_budget-attention40-fixhint_n11.json --run 1
+    exit 0, 0.6 min  (data/logs/e2e/socbenchd_2/codegen_attention40-fixhint_r1.txt)
+
+=== done in 0.2 h, all benchmarks complete

@@ -1,0 +1,142 @@
+
+### -u src/run_codegen.py data/contexts/socbenchd_2_k10_budget-attention40-fixhint_n11.json --run 1
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+loaded 11 prepared contexts from data/contexts/socbenchd_2_k10_budget-attention40-fixhint_n11.json
+benchmark socbenchd_2, k=10, 11 queryset(s)
+loaded 11 cached baseline generations from data/baselines/socbenchd_2_k10_gpt-6-luna-none.json
+saving generated code to data/generated/socbenchd_2_k10_budget-attention40-fixhint_n11_gpt-6-luna-none_r1.json
+
+
+[1/11] (energy) 'How can I monitor the real-time energy production of solar and wind so'
+    solution: ['PUT /storagesystems/{id}/settings', 'POST /emissions/scenarios', 'POST /storagesystems/{id}/actions/discharge', 'GET /emissions/sources', 'GET /production/real-time']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.60  prec 1.00  halluc 0  found ['GET /emissions/sources', 'GET /production/real-time', 'POST /emissions/scenarios']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /emissions/sources', 'GET /production/real-time', 'POST /emissions/scenarios', 'POST /storagesystems/{id}/actions/discharge', 'PUT /storagesystems/{id}/settings']
+    3.2s
+
+[2/11] (materials) 'Retrieve analytics for a specific report ID, apply updated configurati'
+    solution: ['GET /analytics/{reportId}', 'POST /machines/{id}/configurations', 'PUT /inventory/{itemID}']
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported binary operator Sub
+    without: recall 0.67  prec 0.50  halluc 0  found ['GET /analytics/{reportId}', 'GET /resources/inventory', 'POST /machines/{id}/configurations', 'PUT /resources/inventory/{item_id}']
+    with:    recall 0.67  prec 0.67  halluc 0  found ['GET /analytics/{reportId}', 'POST /machines/{id}/configurations', 'PUT /resources/inventory/{item_id}']
+    2.4s
+
+[3/11] (industrials) 'Generate a Gantt chart visualization for a specific construction proje'
+    solution: ['GET /projects/{projectId}/gantt', 'GET /analytics/performance']
+WARNING:root:Attribute calls are not supported yet
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /analytics/performance', 'GET /projects/{projectId}/gantt']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /analytics/performance', 'GET /projects/{projectId}/gantt']
+    3.2s
+
+[4/11] (consumer discretionary) 'I want to plan a trip with a rented device for a recreational activity'
+    solution: ['POST /returns/{rentalId}', 'PUT /orders/{orderId}', 'POST /orders', 'GET /amenities', 'GET /activities/{id}', 'POST /reviews', 'POST /orders', 'GET /reviews/{hotelId}', 'GET /tickets']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.38  prec 1.00  halluc 0  found ['GET /activities/{id}', 'GET /tickets', 'POST /returns/{rentalId}']
+    with:    recall 0.75  prec 1.00  halluc 0  found ['GET /activities/{id}', 'GET /amenities', 'GET /reviews/{hotelId}', 'GET /tickets', 'POST /returns/{rentalId}', 'POST /reviews']
+    4.8s
+
+[5/11] (consumer staples) 'Submit the details of a newly designed product for regulatory complian'
+    solution: ['DELETE /orders/{orderId}', 'GET /reports/compliance', 'POST /regulation-check', 'POST /sustainability-assessment']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.75  prec 1.00  halluc 0  found ['GET /reports/compliance', 'POST /regulation-check', 'POST /sustainability-assessment']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['DELETE /orders/{orderId}', 'GET /reports/compliance', 'POST /regulation-check', 'POST /sustainability-assessment']
+    4.4s
+
+[6/11] (health care) 'I want to update the contact information of the inventory manager to e'
+    solution: ['PATCH /update_contact_info', 'POST /responses', 'GET /inventory/low-stock', 'POST /orders/new', 'DELETE /inventory/remove/{medicationId}']
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type ListComp
+    without: recall 0.60  prec 1.00  halluc 0  found ['DELETE /inventory/remove/{medicationId}', 'GET /inventory/low-stock', 'POST /orders/new']
+    with:    recall 0.00  prec 0.00  halluc 0  found []
+    3.5s
+
+[7/11] (financials) 'As an organization managing a transaction monitoring system, I need to'
+    solution: ['PATCH /profile/settings', 'POST /loan/eligibility', 'GET /statistics']
+    without: recall 0.67  prec 0.67  halluc 0  found ['GET /statistics', 'GET /user/financial-summary', 'PATCH /profile/settings']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /statistics', 'PATCH /profile/settings', 'POST /loan/eligibility']
+    3.3s
+
+[8/11] (information technology) 'Create a new software license for a financial application, set its lic'
+    solution: ['GET /settings/workflows', 'POST /data/transform', 'POST /integration/test', 'POST /alert', 'POST /software/licenses', 'DELETE /config/rules/{ruleID}']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.33  prec 0.33  halluc 0  found ['GET /alert/{alertId}', 'GET /config/rules', 'POST /alert', 'POST /alerts', 'POST /software/licenses', 'PUT /config/rules/{ruleID}']
+    with:    recall 1.00  prec 0.86  halluc 0  found ['DELETE /config/rules/{ruleID}', 'GET /config/rules', 'GET /settings/workflows', 'POST /alert', 'POST /data/transform', 'POST /integration/test', 'POST /software/licenses']
+    4.3s
+
+[9/11] (communication services) 'Fetch the engagement analytics for the content with ID 123, update its'
+    solution: ['DELETE /messages/{messageID}', 'GET /analytics/content/{id}', 'PUT /content/{id}']
+    without: recall 1.00  prec 1.00  halluc 0  found ['DELETE /messages/{messageID}', 'GET /analytics/content/{id}', 'PUT /content/{id}']
+    with:    recall 1.00  prec 0.75  halluc 0  found ['DELETE /messages/{messageID}', 'GET /analytics/content/{id}', 'GET /content/{id}', 'PUT /content/{id}']
+    2.4s
+
+[10/11] (utilities) 'Detect any potential leaks in the system, retrieve details of all conn'
+    solution: ['GET /analytics/leak-detection', 'GET /distributed-resources', 'POST /bills/pay', 'POST /alert/settings']
+    without: recall 0.75  prec 0.75  halluc 0  found ['GET /analytics/leak-detection', 'GET /distributed-resources', 'POST /alerts/setup', 'POST /bills/pay']
+    with:    recall 0.75  prec 0.75  halluc 0  found ['GET /analytics/leak-detection', 'GET /distributed-resources', 'POST /alerts/setup', 'POST /bills/pay']
+    3.2s
+
+[11/11] (real estate) 'Upload high-resolution photos for a specific property and later verify'
+    solution: ['POST /properties/{property_id}/photos', 'GET /tenant/identity-verification/status/{tenantId}']
+WARNING:root:With statements are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:With statements are not supported yet
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /tenant/identity-verification/status/{tenantId}', 'POST /properties/{property_id}/photos']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /tenant/identity-verification/status/{tenantId}', 'POST /properties/{property_id}/photos']
+    1.8s
+
+==============================================================================
+condition:          data/contexts/socbenchd_2_k10_budget-attention40-fixhint_n11.json
+baseline cache:     11 hits, 0 generated
+run:                1 (0 resumed, 11 generated)
+generated code:     data/generated/socbenchd_2_k10_budget-attention40-fixhint_n11_gpt-6-luna-none_r1.json
+
+queryset                              recall         precision
+                            without     with  without     with
+communication services        1.000    1.000    1.000    0.750
+consumer discretionary        0.375    0.750    1.000    1.000
+consumer staples              0.750    1.000    1.000    1.000
+energy                        0.600    1.000    1.000    1.000
+financials                    0.667    1.000    0.667    1.000
+health care                   0.600    0.000    1.000    0.000
+industrials                   1.000    1.000    1.000    1.000
+information technology        0.333    1.000    0.333    0.857
+materials                     0.667    0.667    0.500    0.667
+real estate                   1.000    1.000    1.000    1.000
+utilities                     0.750    0.750    0.750    0.750
+
+WITHOUT compression    recall 0.704   precision 0.841   f1 0.766   exact 3/11   halluc 0   tokens 18056
+WITH compression       recall 0.833   precision 0.820   f1 0.827   exact 5/11   halluc 0   tokens 17352
+
+Compression ratio:  1.04x
+Recall delta:       +0.130
+
+API usage (gpt-6-luna-none, as reported by the API):
+WITHOUT compression    input     19797   output     2456 (reasoning 0)   cost $0.0032
+WITH compression       input     19117   output     2902 (reasoning 0)   cost $0.0034
+Total time:         0.6 min
+==============================================================================

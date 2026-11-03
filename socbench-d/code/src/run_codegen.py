@@ -26,9 +26,18 @@ response schemas needed to build a call correctly, so equal endpoint scores do
 not mean equal code. Reading the saved code side by side is the only way to see
 that difference.
 
+REPEATED RUNS. The composition model is not deterministic even at
+temperature 0, so conditions are run several times. --run N writes to
+..._rN.json instead of overwriting the previous run, so schema metrics can be
+averaged over runs too. With --run, an existing file of that run is RESUMED:
+queries already generated are reused and only the rest is generated, so a run
+interrupted at query 80 continues from there. Without --run, every call
+generates fresh and overwrites, as before.
+
 Run from socbench-d/code/ after prepare_contexts.py:
-    python -u src/run_codegen.py 2>&1 | tee data/logs/<name>.txt
+    python -u src/run_codegen.py <contexts.json> [--run N] 2>&1 | tee data/logs/<name>.txt
 """
+import argparse
 import hashlib
 import json
 import os
@@ -40,8 +49,13 @@ from benchmark_loader import load_benchmark
 from composition import CODEGEN_LABEL, generate_composition
 from scoring import build_templates, extract_endpoints_from_code, score
 
-INPUT_PATH = (sys.argv[1] if len(sys.argv) > 1
-              else "data/contexts/socbenchd_1_k10_all_noanchor_k10_n110.json")
+parser = argparse.ArgumentParser(description="Generate and score composition code.")
+parser.add_argument("input", nargs="?",
+                    default="data/contexts/socbenchd_1_k10_all_noanchor_k10_n110.json")
+parser.add_argument("--run", type=int, default=None,
+                    help="repetition number: writes ..._rN.json and resumes it if present")
+args = parser.parse_args()
+INPUT_PATH = args.input
 
 with open(INPUT_PATH) as f:
     records = json.load(f)
@@ -57,8 +71,17 @@ os.makedirs(os.path.dirname(BASELINE_CACHE_PATH), exist_ok=True)
 
 # Named after the condition, so conditions can be diffed against each other.
 CONDITION = os.path.splitext(os.path.basename(INPUT_PATH))[0]
-GENERATED_PATH = f"data/generated/{CONDITION}_{CODEGEN_LABEL}.json"
+RUN_SUFFIX = f"_r{args.run}" if args.run else ""
+GENERATED_PATH = f"data/generated/{CONDITION}_{CODEGEN_LABEL}{RUN_SUFFIX}.json"
 os.makedirs(os.path.dirname(GENERATED_PATH), exist_ok=True)
+
+# Resume only numbered runs: an unnumbered call keeps its old meaning,
+# "generate fresh", so rerunning a condition never silently reuses old code.
+previous = {}
+if args.run and os.path.exists(GENERATED_PATH):
+    with open(GENERATED_PATH) as f:
+        for entry in json.load(f):
+            previous[f"{entry['queryset']}||{entry['query']}"] = entry
 
 bench = load_benchmark(BENCHMARK_NAME)
 templates_by_queryset = {qs.name: build_templates(qs.openapis) for qs in bench.queries}
@@ -74,7 +97,10 @@ else:
     baseline_cache = {}
     print(f"no baseline cache yet -- will create {BASELINE_CACHE_PATH}")
 
-print(f"saving generated code to {GENERATED_PATH}\n")
+print(f"saving generated code to {GENERATED_PATH}")
+if previous:
+    print(f"resuming: {len(previous)} of {len(records)} queries already generated")
+print()
 
 
 def cache_key(record: dict) -> str:
@@ -172,6 +198,7 @@ per_queryset = defaultdict(lambda: (Accumulator("without"), Accumulator("with"))
 generated = []
 cache_hits = 0
 cache_misses = 0
+resumed = 0
 start_all = time.time()
 
 for i, record in enumerate(records):
@@ -187,8 +214,11 @@ for i, record in enumerate(records):
     key = cache_key(record)
     cached = baseline_cache.get(key)
     fingerprint = chunks_fingerprint(record["raw_chunks"])
+    done = previous.get(key)
 
-    if cached and cached["fingerprint"] == fingerprint:
+    if done is not None:
+        code_raw, usage_raw = done["code_without"], done.get("usage_without")
+    elif cached and cached["fingerprint"] == fingerprint:
         code_raw = cached["code"]
         usage_raw = cached.get("usage")      # None for entries cached before
         cache_hits += 1
@@ -212,10 +242,14 @@ for i, record in enumerate(records):
     per_queryset[queryset][0].add(result_raw, record["raw_tokens"])
     usage_raw_acc.add(usage_raw)
 
-    # --- compressed arm: always fresh ---
-    code_compressed, usage_compressed = generate_composition(
-        record["compressed_chunks"], query, record["base_url"]
-    )
+    # --- compressed arm: fresh, unless this numbered run already has it ---
+    if done is not None:
+        code_compressed, usage_compressed = done["code_with"], done.get("usage_with")
+        resumed += 1
+    else:
+        code_compressed, usage_compressed = generate_composition(
+            record["compressed_chunks"], query, record["base_url"]
+        )
     usage_compressed_acc.add(usage_compressed)
     result_compressed = score(
         extract_endpoints_from_code(code_compressed), record["solution"],
@@ -261,6 +295,8 @@ if cache_misses:
 print("\n" + "=" * 78)
 print(f"condition:          {INPUT_PATH}")
 print(f"baseline cache:     {cache_hits} hits, {cache_misses} generated")
+if args.run:
+    print(f"run:                {args.run} ({resumed} resumed, {len(records) - resumed} generated)")
 print(f"generated code:     {GENERATED_PATH}")
 
 if len(per_queryset) > 1:

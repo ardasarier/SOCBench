@@ -15,9 +15,14 @@ endpoints of each chunk, its tokens before and after compression -- plus the
 query's retrieval recall and the local Qwen token counts. Together with the
 API usage stage 2 records, this makes each run traceable chunk by chunk.
 
+Every setting below can be overridden on the command line, so runs need no
+edits to this file (python src/prepare_contexts.py --help). Without
+arguments, the constants apply as before.
+
 Run from socbench-d/code/:
-    python src/prepare_contexts.py
+    python src/prepare_contexts.py [--benchmark socbenchd_2 --top-k 40 ...]
 """
+import argparse
 import json
 import os
 import time
@@ -40,7 +45,7 @@ API = "tmdb"                        # RestBench only: "spotify" or "tmdb"
 MAX_QUERIES_PER_SET = None          # None = all; set e.g. 2 for a pilot run
 
 # --- retrieval ---
-TOP_K = 40                          # SOCBench's k (CHUNKS)
+TOP_K = 10                          # SOCBench's k (CHUNKS)
 CHUNKING_STRATEGY = "ENDPOINT_SPLIT_1024_0"
 EMBEDDING_MODEL = "BAAI/bge-small-en-v1.5"
 EMBEDDING_LABEL = "bge_small"       # index directory name
@@ -60,7 +65,43 @@ KEEP_IDENTITY = True                # False: no unconditional retention
 KEEP_FIELDS = None                  # None = off; REQUEST_SCHEMA_FIELDS
 # Fixed hint prefix instead of generating one per query (see postprocessor.py).
 # None = generated hint, as in all runs so far.
-FIXED_HINT = "The API endpoint required for this task is"                   # e.g. "The API endpoint required for this task is"
+FIXED_HINT = None                   # e.g. "The API endpoint required for this task is"
+
+# --- command line: overrides the constants above ---
+_parser = argparse.ArgumentParser(description="Retrieval + pruning, writes contexts.")
+_parser.add_argument("--benchmark", default=BENCHMARK)
+_parser.add_argument("--api", default=API, help="RestBench only: spotify | tmdb")
+_parser.add_argument("--max-queries", type=int, default=MAX_QUERIES_PER_SET)
+_parser.add_argument("--top-k", type=int, default=TOP_K, help="retrieved chunks")
+_parser.add_argument("--top-k-tokens", type=int, default=TOP_K_TOKENS)
+_parser.add_argument("--threshold-ratio", type=float, default=THRESHOLD_RATIO)
+_parser.add_argument("--threshold-abs", type=float, default=THRESHOLD_ABS)
+_parser.add_argument("--use-anchor", action="store_true")
+_parser.add_argument("--identity-only", action="store_true")
+_parser.add_argument("--path-verb-only", action="store_true")
+_parser.add_argument("--random-scores", action="store_true")
+_parser.add_argument("--no-keep-identity", action="store_true")
+_parser.add_argument("--keep-fields", choices=["reqschema"], default=None)
+_parser.add_argument("--fixed-hint", default=FIXED_HINT)
+_parser.add_argument("--skip-existing", action="store_true",
+                     help="exit early if the output file is already complete")
+_args = _parser.parse_args()
+
+BENCHMARK = _args.benchmark
+API = _args.api
+MAX_QUERIES_PER_SET = _args.max_queries
+TOP_K = _args.top_k
+TOP_K_TOKENS = _args.top_k_tokens
+THRESHOLD_RATIO = _args.threshold_ratio
+THRESHOLD_ABS = _args.threshold_abs
+USE_ANCHOR = USE_ANCHOR or _args.use_anchor
+IDENTITY_ONLY = IDENTITY_ONLY or _args.identity_only
+PATH_VERB_ONLY = PATH_VERB_ONLY or _args.path_verb_only
+RANDOM_SCORES = RANDOM_SCORES or _args.random_scores
+KEEP_IDENTITY = KEEP_IDENTITY and not _args.no_keep_identity
+if _args.keep_fields == "reqschema":
+    KEEP_FIELDS = REQUEST_SCHEMA_FIELDS
+FIXED_HINT = _args.fixed_hint
 
 ANCHOR_LABEL = "anchor" if USE_ANCHOR else "noanchor"
 if KEEP_FIELDS:
@@ -94,6 +135,12 @@ total_queries = sum(len(t["queries"]) for t in tasks)
 OUTPUT_PATH = (f"data/contexts/{SCOPE_LABEL}_k{TOP_K}_{LAYER_LABEL}_{ANCHOR_LABEL}"
                f"_{SELECT_LABEL}_n{total_queries}.json")
 os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
+
+if _args.skip_existing and os.path.exists(OUTPUT_PATH):
+    with open(OUTPUT_PATH) as f:
+        if len(json.load(f)) == total_queries:
+            print(f"already complete: {OUTPUT_PATH}")
+            raise SystemExit(0)
 
 postprocessor = AttentionRAGPostprocessor(
     top_k_tokens=TOP_K_TOKENS, threshold_ratio=THRESHOLD_RATIO,
