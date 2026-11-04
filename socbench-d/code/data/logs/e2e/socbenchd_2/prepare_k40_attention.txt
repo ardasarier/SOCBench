@@ -60,3 +60,294 @@ overall CR: 2.62x
 retrieval recall: 1.000
 qwen: {'hint_calls': 11, 'hint_prompt_tokens': 3999, 'hint_generated_tokens': 487, 'attention_passes': 440, 'attention_input_tokens': 170023}
 total time: 4.1 min
+
+### -u src/prepare_contexts.py --benchmark socbenchd_2 --skip-existing --top-k 40
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+[models] using device: mps (torch.float32)
+benchmark socbenchd_2: 11 queryset(s), 110 queries
+writing to data/contexts/socbenchd_2_k40_all_noanchor_k10_n110.json
+
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/energy/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/energy/vector_store/index_store.json.
+[1/110] (energy) 'How can I monitor the real-time energy production of solar and wind so'
+    40 -> 40 chunks, 5971 -> 2255 tokens (CR 2.65x), retrieval recall 1.00, 29.6s
+[2/110] (energy) 'I want to set up a new energy storage system for storing excess renewa'
+[hint] WARNING: prefix may be truncated for 'I want to set up a new energy storage system for storing exc'
+    40 -> 40 chunks, 5820 -> 2632 tokens (CR 2.21x), retrieval recall 0.75, 24.4s
+[3/110] (energy) 'Provide a comprehensive summary of recently detected grid anomalies, i'
+    40 -> 40 chunks, 6001 -> 2171 tokens (CR 2.76x), retrieval recall 1.00, 25.5s
+[4/110] (energy) 'I want to create a new smart device profile with details such as name,'
+    40 -> 40 chunks, 5717 -> 2064 tokens (CR 2.77x), retrieval recall 1.00, 24.0s
+[5/110] (energy) 'Analyze the historical trends in energy consumption and carbon emissio'
+[hint] WARNING: prefix may be truncated for 'Analyze the historical trends in energy consumption and carb'
+    40 -> 40 chunks, 5748 -> 2416 tokens (CR 2.38x), retrieval recall 1.00, 25.9s
+[6/110] (energy) 'I want to upload external data related to renewable energy production '
+    40 -> 40 chunks, 5849 -> 2078 tokens (CR 2.81x), retrieval recall 1.00, 22.8s
+[7/110] (energy) 'Retrieve real-time production metrics for renewable energy sources, co'
+[hint] WARNING: prefix may be truncated for 'Retrieve real-time production metrics for renewable energy s'
+    40 -> 40 chunks, 5803 -> 2763 tokens (CR 2.10x), retrieval recall 0.71, 20.6s
+[8/110] (energy) 'Retrieve a detailed report summarizing the key insights and performanc'
+[hint] WARNING: prefix may be truncated for 'Retrieve a detailed report summarizing the key insights and '
+    40 -> 40 chunks, 5720 -> 2809 tokens (CR 2.04x), retrieval recall 1.00, 21.4s
+[9/110] (energy) 'Identify and report any detected anomalies in the grid infrastructure,'
+    40 -> 40 chunks, 5983 -> 2963 tokens (CR 2.02x), retrieval recall 1.00, 18.4s
+[10/110] (energy) 'Initiate a charging operation for a specific energy storage system to '
+    40 -> 40 chunks, 5796 -> 2792 tokens (CR 2.08x), retrieval recall 1.00, 18.2s
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/materials/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/materials/vector_store/index_store.json.
+[11/110] (materials) 'Retrieve analytics for a specific report ID, apply updated configurati'
+    40 -> 40 chunks, 6523 -> 2641 tokens (CR 2.47x), retrieval recall 1.00, 22.6s
+[12/110] (materials) 'Update the inventory quantity for a specific chemical item by providin'
+    40 -> 40 chunks, 6468 -> 2629 tokens (CR 2.46x), retrieval recall 1.00, 17.0s
+[13/110] (materials) 'Analyze the hazard information for a given chemical using its itemID a'
+    40 -> 40 chunks, 6535 -> 2153 tokens (CR 3.04x), retrieval recall 1.00, 19.2s
+[14/110] (materials) 'Identify and verify the compliance rules applicable to a specific loca'
+    40 -> 40 chunks, 6208 -> 2621 tokens (CR 2.37x), retrieval recall 1.00, 20.0s
+[15/110] (materials) 'Retrieve the details of a specific location using its ID, fetch the en'
+    40 -> 40 chunks, 6249 -> 2900 tokens (CR 2.15x), retrieval recall 1.00, 21.2s
+[16/110] (materials) 'Submit machine configuration details for a specified machine using its'
+    40 -> 40 chunks, 6521 -> 2350 tokens (CR 2.77x), retrieval recall 1.00, 16.2s
+[17/110] (materials) 'Determine whether any delays have been detected in the supply chain an'
+    40 -> 40 chunks, 6706 -> 2482 tokens (CR 2.70x), retrieval recall 1.00, 16.4s
+[18/110] (materials) 'Identify the tree species supported for yield analysis, update the inv'
+    40 -> 40 chunks, 6381 -> 2251 tokens (CR 2.83x), retrieval recall 1.00, 22.1s
+[19/110] (materials) 'Initiate a reorder process for chemicals that have reached their minim'
+[hint] WARNING: prefix may be truncated for 'Initiate a reorder process for chemicals that have reached t'
+    40 -> 40 chunks, 6462 -> 2645 tokens (CR 2.44x), retrieval recall 1.00, 22.9s
+[20/110] (materials) 'Retrieve the current status of a specific production order and track a'
+[hint] WARNING: prefix may be truncated for 'Retrieve the current status of a specific production order a'
+    40 -> 40 chunks, 6732 -> 2878 tokens (CR 2.34x), retrieval recall 1.00, 23.3s
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/industrials/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/industrials/vector_store/index_store.json.
+[21/110] (industrials) 'Generate a Gantt chart visualization for a specific construction proje'
+    40 -> 40 chunks, 7388 -> 2631 tokens (CR 2.81x), retrieval recall 1.00, 19.7s
+[22/110] (industrials) 'Identify all active environmental regulations to ensure compliance, ve'
+    40 -> 40 chunks, 6644 -> 2239 tokens (CR 2.97x), retrieval recall 1.00, 20.6s
+[23/110] (industrials) 'Generate a detailed report on the current operational status of all eq'
+    40 -> 40 chunks, 7309 -> 2345 tokens (CR 3.12x), retrieval recall 1.00, 17.4s
+[24/110] (industrials) 'Retrieve a list of all construction projects and their statuses, fetch'
+    40 -> 40 chunks, 6782 -> 2119 tokens (CR 3.20x), retrieval recall 1.00, 16.6s
+[25/110] (industrials) 'Register a new piece of construction equipment, assign a new task to a'
+    40 -> 40 chunks, 7034 -> 2216 tokens (CR 3.17x), retrieval recall 1.00, 17.0s
+[26/110] (industrials) 'Retrieve the workforce directory to get an overview of members and the'
+    40 -> 40 chunks, 6951 -> 2590 tokens (CR 2.68x), retrieval recall 1.00, 20.1s
+[27/110] (industrials) 'Optimize the routes for a fleet of vehicles to minimize fuel consumpti'
+    40 -> 40 chunks, 6852 -> 2032 tokens (CR 3.37x), retrieval recall 1.00, 23.6s
+[28/110] (industrials) 'Assign job-specific training modules to new employees, retrieve the li'
+    40 -> 40 chunks, 7087 -> 2027 tokens (CR 3.50x), retrieval recall 1.00, 19.3s
+[29/110] (industrials) 'Track the onboarding status of employees across various departments, r'
+    40 -> 40 chunks, 6851 -> 2168 tokens (CR 3.16x), retrieval recall 1.00, 22.7s
+[30/110] (industrials) 'Identify and remove an outdated vehicle from the system, update the op'
+    40 -> 40 chunks, 6647 -> 2225 tokens (CR 2.99x), retrieval recall 1.00, 22.4s
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/consumer discretionary/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/consumer discretionary/vector_store/index_store.json.
+[31/110] (consumer discretionary) 'I want to plan a trip with a rented device for a recreational activity'
+[hint] WARNING: prefix may be truncated for 'I want to plan a trip with a rented device for a recreationa'
+    40 -> 40 chunks, 5580 -> 2200 tokens (CR 2.54x), retrieval recall 1.00, 21.2s
+[32/110] (consumer discretionary) 'I have rented a household electronic device for a project, but I mispl'
+    40 -> 40 chunks, 5588 -> 2335 tokens (CR 2.39x), retrieval recall 1.00, 18.1s
+[33/110] (consumer discretionary) 'I am responsible for managing the supply chain operations for my busin'
+[hint] WARNING: prefix may be truncated for 'I am responsible for managing the supply chain operations fo'
+    40 -> 40 chunks, 5368 -> 2668 tokens (CR 2.01x), retrieval recall 1.00, 24.2s
+[34/110] (consumer discretionary) 'I want to organize a recreational day for my team, starting with booki'
+[hint] WARNING: prefix may be truncated for 'I want to organize a recreational day for my team, starting '
+    40 -> 40 chunks, 4824 -> 2193 tokens (CR 2.20x), retrieval recall 1.00, 23.9s
+[35/110] (consumer discretionary) 'Coordinate the return process for a previously rented device using its'
+[hint] WARNING: prefix may be truncated for 'Coordinate the return process for a previously rented device'
+    40 -> 40 chunks, 5348 -> 2694 tokens (CR 1.99x), retrieval recall 1.00, 21.4s
+[36/110] (consumer discretionary) 'I am planning a staycation and want to manage my preferences for a sea'
+[hint] WARNING: prefix may be truncated for 'I am planning a staycation and want to manage my preferences'
+    40 -> 40 chunks, 5505 -> 2362 tokens (CR 2.33x), retrieval recall 1.00, 26.4s
+[37/110] (consumer discretionary) 'I recently rented an electronic device for a project but underestimate'
+[hint] WARNING: prefix may be truncated for 'I recently rented an electronic device for a project but und'
+    40 -> 40 chunks, 5267 -> 2780 tokens (CR 1.89x), retrieval recall 1.00, 22.4s
+[38/110] (consumer discretionary) 'Retrieve a list of current reservations to check seating availability '
+    40 -> 40 chunks, 5309 -> 1825 tokens (CR 2.91x), retrieval recall 1.00, 14.6s
+[39/110] (consumer discretionary) 'I want to plan an eco-friendly leisure trip. First, retrieve the renta'
+[hint] WARNING: prefix may be truncated for 'I want to plan an eco-friendly leisure trip. First, retrieve'
+    40 -> 40 chunks, 5594 -> 3163 tokens (CR 1.77x), retrieval recall 1.00, 21.2s
+[40/110] (consumer discretionary) 'I am planning a charity event that involves sustainable practices. Fir'
+[hint] WARNING: prefix may be truncated for 'I am planning a charity event that involves sustainable prac'
+    40 -> 40 chunks, 5646 -> 2443 tokens (CR 2.31x), retrieval recall 1.00, 25.0s
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/consumer staples/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/consumer staples/vector_store/index_store.json.
+[41/110] (consumer staples) 'Submit the details of a newly designed product for regulatory complian'
+    40 -> 40 chunks, 5490 -> 2367 tokens (CR 2.32x), retrieval recall 1.00, 21.4s
+[42/110] (consumer staples) 'Explore the latest health and wellness trends affecting consumer behav'
+[hint] WARNING: prefix may be truncated for 'Explore the latest health and wellness trends affecting cons'
+    40 -> 40 chunks, 5401 -> 2817 tokens (CR 1.92x), retrieval recall 1.00, 23.6s
+[43/110] (consumer staples) 'Retrieve the list of all available products to identify relevant items'
+    40 -> 40 chunks, 5372 -> 2302 tokens (CR 2.33x), retrieval recall 0.91, 15.7s
+[44/110] (consumer staples) 'Generate a detailed custom report analyzing the popularity metrics of '
+    40 -> 40 chunks, 5361 -> 2284 tokens (CR 2.35x), retrieval recall 1.00, 20.1s
+[45/110] (consumer staples) 'Optimize the distribution routes by defining new routes for a specific'
+    40 -> 40 chunks, 5504 -> 2775 tokens (CR 1.98x), retrieval recall 1.00, 18.9s
+[46/110] (consumer staples) 'Submit customer feedback for multiple products, initiate and evaluate '
+[hint] WARNING: prefix may be truncated for 'Submit customer feedback for multiple products, initiate and'
+    40 -> 40 chunks, 5496 -> 2627 tokens (CR 2.09x), retrieval recall 1.00, 19.3s
+[47/110] (consumer staples) 'Submit user feedback regarding a recent order, retrieve satisfaction r'
+    40 -> 40 chunks, 5449 -> 2495 tokens (CR 2.18x), retrieval recall 1.00, 16.3s
+[48/110] (consumer staples) 'Evaluate the current inventory status to identify low-stock items, rev'
+    40 -> 40 chunks, 5576 -> 2534 tokens (CR 2.20x), retrieval recall 1.00, 18.1s
+[49/110] (consumer staples) 'Subscribe to receive alerts for any regulatory changes related to spec'
+    40 -> 40 chunks, 5453 -> 2269 tokens (CR 2.40x), retrieval recall 1.00, 15.6s
+[50/110] (consumer staples) 'Analyze the current inventory to identify items with low stock levels,'
+    40 -> 40 chunks, 5453 -> 2361 tokens (CR 2.31x), retrieval recall 1.00, 17.8s
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/health care/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/health care/vector_store/index_store.json.
+[51/110] (health care) 'I want to update the contact information of the inventory manager to e'
+    40 -> 40 chunks, 6210 -> 2362 tokens (CR 2.63x), retrieval recall 1.00, 24.5s
+[52/110] (health care) 'I need to evaluate the condition of all medical devices in the system,'
+[hint] WARNING: prefix may be truncated for 'I need to evaluate the condition of all medical devices in t'
+    40 -> 40 chunks, 5960 -> 2848 tokens (CR 2.09x), retrieval recall 1.00, 23.2s
+[53/110] (health care) 'I need to update the maintenance schedule for all monitored devices an'
+[hint] WARNING: prefix may be truncated for 'I need to update the maintenance schedule for all monitored '
+    40 -> 40 chunks, 6262 -> 2742 tokens (CR 2.28x), retrieval recall 1.00, 23.4s
+[54/110] (health care) 'I want to submit an anonymized patient profile for clinical trial matc'
+    40 -> 40 chunks, 6211 -> 2374 tokens (CR 2.62x), retrieval recall 1.00, 19.4s
+[55/110] (health care) 'I want to review the audit trail for actions within the system to iden'
+    40 -> 40 chunks, 6237 -> 3138 tokens (CR 1.99x), retrieval recall 1.00, 20.0s
+[56/110] (health care) 'I want to securely delete a malfunctioning medical device from the sys'
+    40 -> 40 chunks, 5455 -> 2134 tokens (CR 2.56x), retrieval recall 1.00, 20.4s
+[57/110] (health care) 'Analyze the current inventory to determine the availability of medicat'
+    40 -> 40 chunks, 6363 -> 2179 tokens (CR 2.92x), retrieval recall 1.00, 19.1s
+[58/110] (health care) 'I want to modify the contact information of a clinical trial coordinat'
+    40 -> 40 chunks, 6445 -> 2654 tokens (CR 2.43x), retrieval recall 1.00, 19.2s
+[59/110] (health care) 'I want to securely share a patient’s medical record with authorized en'
+[hint] WARNING: prefix may be truncated for 'I want to securely share a patient’s medical record with aut'
+    40 -> 40 chunks, 6323 -> 3129 tokens (CR 2.02x), retrieval recall 1.00, 23.5s
+[60/110] (health care) 'I want to generate analytical reports to gather insights into the perf'
+    40 -> 40 chunks, 6319 -> 2639 tokens (CR 2.39x), retrieval recall 1.00, 20.8s
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/financials/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/financials/vector_store/index_store.json.
+[61/110] (financials) 'As an organization managing a transaction monitoring system, I need to'
+    40 -> 40 chunks, 7503 -> 1853 tokens (CR 4.05x), retrieval recall 1.00, 20.8s
+[62/110] (financials) 'As an organization planning to expand our financial assistance offerin'
+[hint] WARNING: prefix may be truncated for 'As an organization planning to expand our financial assistan'
+    40 -> 40 chunks, 7309 -> 2810 tokens (CR 2.60x), retrieval recall 1.00, 25.6s
+[63/110] (financials) 'Our financial organization is working on creating an advanced investme'
+[hint] WARNING: prefix may be truncated for 'Our financial organization is working on creating an advance'
+    40 -> 40 chunks, 7588 -> 2499 tokens (CR 3.04x), retrieval recall 0.75, 25.3s
+[64/110] (financials) 'To enhance our investment strategies, we need to retrieve external fin'
+    40 -> 40 chunks, 7442 -> 1821 tokens (CR 4.09x), retrieval recall 1.00, 23.2s
+[65/110] (financials) 'Evaluate the creditworthiness of a borrower by submitting their financ'
+    40 -> 40 chunks, 7877 -> 2216 tokens (CR 3.55x), retrieval recall 1.00, 22.1s
+[66/110] (financials) 'Create a new set of detection rules to flag anomalies for stock tradin'
+    40 -> 40 chunks, 7571 -> 1959 tokens (CR 3.86x), retrieval recall 1.00, 21.8s
+[67/110] (financials) 'Create a new set of detection rules to identify anomalies in transacti'
+[hint] WARNING: prefix may be truncated for 'Create a new set of detection rules to identify anomalies in'
+    40 -> 40 chunks, 7341 -> 2316 tokens (CR 3.17x), retrieval recall 0.86, 23.4s
+[68/110] (financials) 'As a financial institution, we need to update the details of an existi'
+    40 -> 40 chunks, 7424 -> 1799 tokens (CR 4.13x), retrieval recall 0.86, 22.3s
+[69/110] (financials) 'Evaluate potential investment opportunities by obtaining loan product '
+    40 -> 40 chunks, 7829 -> 2864 tokens (CR 2.73x), retrieval recall 1.00, 23.3s
+[70/110] (financials) 'Retrieve the historical performance data for a specific stock symbol o'
+    40 -> 40 chunks, 7349 -> 1910 tokens (CR 3.85x), retrieval recall 1.00, 22.8s
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/information technology/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/information technology/vector_store/index_store.json.
+[71/110] (information technology) 'Create a new software license for a financial application, set its lic'
+[hint] WARNING: prefix may be truncated for 'Create a new software license for a financial application, s'
+    40 -> 40 chunks, 7161 -> 2944 tokens (CR 2.43x), retrieval recall 1.00, 25.8s
+[72/110] (information technology) 'Retrieve a list of supported cloud vendor platforms, and then delete a'
+    40 -> 40 chunks, 6517 -> 2496 tokens (CR 2.61x), retrieval recall 1.00, 18.7s
+[73/110] (information technology) 'Configure multi-factor authentication (MFA) for a specific user using '
+[hint] WARNING: prefix may be truncated for 'Configure multi-factor authentication (MFA) for a specific u'
+    40 -> 40 chunks, 6604 -> 2440 tokens (CR 2.71x), retrieval recall 1.00, 24.6s
+[74/110] (information technology) 'Assess the current resource usage metrics to evaluate system performan'
+[hint] WARNING: prefix may be truncated for 'Assess the current resource usage metrics to evaluate system'
+    40 -> 40 chunks, 7219 -> 2823 tokens (CR 2.56x), retrieval recall 1.00, 26.0s
+[75/110] (information technology) 'Assign a new role to a department manager with relevant permissions, c'
+[hint] WARNING: prefix may be truncated for 'Assign a new role to a department manager with relevant perm'
+    40 -> 40 chunks, 6785 -> 2832 tokens (CR 2.40x), retrieval recall 1.00, 26.8s
+[76/110] (information technology) 'Retrieve detailed information about a specific cloud resource using it'
+    40 -> 40 chunks, 7269 -> 2242 tokens (CR 3.24x), retrieval recall 1.00, 29.9s
+[77/110] (information technology) 'Analyze the performance metrics of configured resources to identify an'
+    40 -> 40 chunks, 7171 -> 2397 tokens (CR 2.99x), retrieval recall 1.00, 21.3s
+[78/110] (information technology) 'Perform a system health check to ensure all services are operational. '
+[hint] WARNING: prefix may be truncated for 'Perform a system health check to ensure all services are ope'
+    40 -> 40 chunks, 6921 -> 2487 tokens (CR 2.78x), retrieval recall 0.91, 26.3s
+[79/110] (information technology) 'Delete an outdated cloud resource identified by its unique ID to free '
+    40 -> 40 chunks, 6986 -> 2714 tokens (CR 2.57x), retrieval recall 1.00, 21.4s
+[80/110] (information technology) "Retrieve the details of a specific user's account by their ID to ensur"
+    40 -> 40 chunks, 7029 -> 2948 tokens (CR 2.38x), retrieval recall 1.00, 20.8s
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/communication services/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/communication services/vector_store/index_store.json.
+[81/110] (communication services) 'Fetch the engagement analytics for the content with ID 123, update its'
+    40 -> 40 chunks, 6787 -> 1928 tokens (CR 3.52x), retrieval recall 1.00, 20.1s
+[82/110] (communication services) 'Modify the details of existing content with updated information, creat'
+    40 -> 40 chunks, 6766 -> 2355 tokens (CR 2.87x), retrieval recall 1.00, 19.4s
+[83/110] (communication services) 'Generate a report of the most popular content on the platform, retriev'
+    40 -> 40 chunks, 6933 -> 1699 tokens (CR 4.08x), retrieval recall 1.00, 23.9s
+[84/110] (communication services) 'Retrieve the details of a specific piece of content to ensure it align'
+[hint] WARNING: prefix may be truncated for 'Retrieve the details of a specific piece of content to ensur'
+    40 -> 40 chunks, 6666 -> 2744 tokens (CR 2.43x), retrieval recall 0.75, 22.9s
+[85/110] (communication services) 'Retrieve an overview of all current network alerts to identify critica'
+[hint] WARNING: prefix may be truncated for 'Retrieve an overview of all current network alerts to identi'
+    40 -> 40 chunks, 6864 -> 2499 tokens (CR 2.75x), retrieval recall 0.89, 26.9s
+[86/110] (communication services) 'Send a personalized notification to users about updating their subscri'
+    40 -> 40 chunks, 7078 -> 2970 tokens (CR 2.38x), retrieval recall 1.00, 17.4s
+[87/110] (communication services) 'Generate predictive network performance trends for the next 7 days to '
+    40 -> 40 chunks, 7032 -> 2355 tokens (CR 2.99x), retrieval recall 1.00, 16.2s
+[88/110] (communication services) 'Retrieve the list of videos available on the platform and analyze thei'
+[hint] WARNING: prefix may be truncated for 'Retrieve the list of videos available on the platform and an'
+    40 -> 40 chunks, 6916 -> 2886 tokens (CR 2.40x), retrieval recall 0.83, 20.1s
+[89/110] (communication services) 'Enable real-time notification tracking for a campaign by updating the '
+    40 -> 40 chunks, 7112 -> 2312 tokens (CR 3.08x), retrieval recall 1.00, 22.3s
+[90/110] (communication services) 'Generate a detailed analytics report on user engagement trends, upload'
+    40 -> 40 chunks, 7143 -> 2483 tokens (CR 2.88x), retrieval recall 1.00, 21.7s
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/utilities/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/utilities/vector_store/index_store.json.
+[91/110] (utilities) 'Detect any potential leaks in the system, retrieve details of all conn'
+    40 -> 40 chunks, 6051 -> 3041 tokens (CR 1.99x), retrieval recall 1.00, 14.2s
+[92/110] (utilities) 'Analyze the historical data of a specific meter to understand consumpt'
+    40 -> 40 chunks, 6113 -> 2892 tokens (CR 2.11x), retrieval recall 1.00, 16.2s
+[93/110] (utilities) 'Fetch the latest announcements from the utility provider, update notif'
+    40 -> 40 chunks, 5703 -> 2505 tokens (CR 2.28x), retrieval recall 1.00, 18.9s
+[94/110] (utilities) 'Analyze the current energy storage status to assess available capacity'
+    40 -> 40 chunks, 6011 -> 2044 tokens (CR 2.94x), retrieval recall 1.00, 15.7s
+[95/110] (utilities) 'Evaluate the impact of recent weather trends in a specific location on'
+    40 -> 40 chunks, 6128 -> 2874 tokens (CR 2.13x), retrieval recall 1.00, 15.8s
+[96/110] (utilities) 'Update the configuration settings of a specific distributed energy res'
+[hint] WARNING: prefix may be truncated for 'Update the configuration settings of a specific distributed '
+    40 -> 40 chunks, 5628 -> 2550 tokens (CR 2.21x), retrieval recall 1.00, 22.2s
+[97/110] (utilities) 'Set up an alert to monitor anomalies or significant deviations in ener'
+    40 -> 40 chunks, 6355 -> 2697 tokens (CR 2.36x), retrieval recall 1.00, 15.8s
+[98/110] (utilities) 'Calibrate the energy load balancing system for optimal performance, re'
+[hint] WARNING: prefix may be truncated for 'Calibrate the energy load balancing system for optimal perfo'
+    40 -> 40 chunks, 6067 -> 2465 tokens (CR 2.46x), retrieval recall 1.00, 19.4s
+[99/110] (utilities) 'Analyze the operational status of all monitored infrastructure compone'
+    40 -> 40 chunks, 6173 -> 2426 tokens (CR 2.54x), retrieval recall 1.00, 23.7s
+[100/110] (utilities) 'Analyze potential leaks in the system by examining the aggregated data'
+    40 -> 40 chunks, 6484 -> 2595 tokens (CR 2.50x), retrieval recall 1.00, 20.4s
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/real estate/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/socbenchd_2/bge_small/endpoint_split_1024_0/real estate/vector_store/index_store.json.
+[101/110] (real estate) 'Upload high-resolution photos for a specific property and later verify'
+    40 -> 40 chunks, 6126 -> 2833 tokens (CR 2.16x), retrieval recall 1.00, 17.3s
+[102/110] (real estate) 'Analyze the property price trends in a specific location to identify t'
+    40 -> 40 chunks, 5852 -> 2167 tokens (CR 2.70x), retrieval recall 1.00, 11.6s
+[103/110] (real estate) 'Check the credit check status of a tenant and validate their identity '
+    40 -> 40 chunks, 6036 -> 2400 tokens (CR 2.52x), retrieval recall 1.00, 13.9s
+[104/110] (real estate) 'Compare multiple neighborhoods based on growth and demand metrics to i'
+    40 -> 40 chunks, 5927 -> 2175 tokens (CR 2.73x), retrieval recall 1.00, 19.2s
+[105/110] (real estate) 'Create a new real estate property listing in the system, verify the id'
+    40 -> 40 chunks, 6089 -> 2125 tokens (CR 2.87x), retrieval recall 1.00, 21.9s
+[106/110] (real estate) 'Update an existing document with new content, configure notification p'
+    40 -> 40 chunks, 6058 -> 2851 tokens (CR 2.12x), retrieval recall 1.00, 16.3s
+[107/110] (real estate) 'Create a new real estate contract template for rental agreements, dele'
+    40 -> 40 chunks, 5928 -> 2166 tokens (CR 2.74x), retrieval recall 1.00, 22.1s
+[108/110] (real estate) 'Assign a maintenance task to a service provider for a specific propert'
+[hint] WARNING: prefix may be truncated for 'Assign a maintenance task to a service provider for a specif'
+    40 -> 40 chunks, 5810 -> 2438 tokens (CR 2.38x), retrieval recall 1.00, 24.4s
+[109/110] (real estate) 'Check the maintenance status of a specific task for a managed property'
+    40 -> 40 chunks, 5738 -> 2451 tokens (CR 2.34x), retrieval recall 1.00, 17.4s
+[110/110] (real estate) 'Remove a completed maintenance task from the system, retrieve the list'
+    40 -> 40 chunks, 5717 -> 2344 tokens (CR 2.44x), retrieval recall 1.00, 17.2s
+
+wrote 110 records to data/contexts/socbenchd_2_k40_all_noanchor_k10_n110.json
+overall CR: 2.57x
+retrieval recall: 0.984
+qwen: {'hint_calls': 110, 'hint_prompt_tokens': 40458, 'hint_generated_tokens': 5123, 'attention_passes': 4400, 'attention_input_tokens': 1729369}
+total time: 38.6 min

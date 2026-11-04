@@ -1,0 +1,1192 @@
+
+### -u src/run_codegen.py data/contexts/socbenchd_5_k10_budget-attention40-fixhint_n110.json --run 1
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+loaded 110 prepared contexts from data/contexts/socbenchd_5_k10_budget-attention40-fixhint_n110.json
+benchmark socbenchd_5, k=10, 11 queryset(s)
+loaded 110 cached baseline generations from data/baselines/socbenchd_5_k10_gpt-6-luna-none.json
+saving generated code to data/generated/socbenchd_5_k10_budget-attention40-fixhint_n110_gpt-6-luna-none_r1.json
+
+
+[1/110] (energy) 'Analyze my daily and monthly energy consumption patterns for the last '
+    solution: ['GET /consumption/monthly', 'POST /alerts/configure', 'POST /supply-chain-data', 'GET /consumption/daily']
+WARNING:root:Unsupported binary operator Sub
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported argument type Compare
+WARNING:root:Unsupported binary operator Sub
+    without: recall 0.50  prec 0.50  halluc 0  found ['GET /consumption/daily', 'GET /consumption/monthly', 'GET /reports/energy-usage', 'POST /alerts/notifications']
+    with:    recall 0.75  prec 0.75  halluc 0  found ['GET /consumption/daily', 'GET /consumption/monthly', 'POST /alerts/notifications', 'POST /supply-chain-data']
+    3.0s
+
+[2/110] (energy) 'Evaluate the monthly energy consumption trends for the previous year, '
+    solution: ['GET /audit-reports', 'GET /consumption/monthly', 'PUT /equipment/{id}/maintenance-status', 'PATCH /sensors/settings', 'GET /distribution/status']
+    without: recall 0.60  prec 0.60  halluc 0  found ['GET /consumption/monthly', 'GET /devices/status', 'GET /reports/energy-usage', 'PATCH /sensors/settings', 'PUT /equipment/{id}/maintenance-status']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /audit-reports', 'GET /consumption/monthly', 'GET /distribution/status', 'PATCH /sensors/settings', 'PUT /equipment/{id}/maintenance-status']
+    2.6s
+
+[3/110] (energy) 'Recommend strategies to optimize the integration of renewable energy s'
+    solution: ['GET /environmental-guidelines', 'GET /recommendations/optimization', 'GET /forecasts/energy-output', 'GET /emission-factors']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /emission-factors', 'GET /environmental-guidelines', 'GET /forecasts/energy-output', 'GET /recommendations/optimization']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /emission-factors', 'GET /environmental-guidelines', 'GET /forecasts/energy-output', 'GET /recommendations/optimization']
+    1.9s
+
+[4/110] (energy) 'Reconfigure the operational production parameters to optimize energy e'
+    solution: ['GET /carbon-emissions', 'PATCH /sensors/settings', 'PUT /production/parameters', 'POST /emission-factors', 'POST /alerts/notifications', 'POST /feedback/analysis', 'POST /alerts/create']
+    without: recall 0.43  prec 0.60  halluc 0  found ['GET /alerts/thresholds', 'GET /carbon-emissions', 'GET /sensors/configuration', 'POST /alerts/notifications', 'PUT /production/parameters']
+    with:    recall 0.71  prec 0.62  halluc 0  found ['GET /carbon-emissions', 'GET /emission-factors', 'PATCH /sensors/settings', 'POST /alerts/create', 'POST /alerts/notifications', 'POST /evaluations/resource-availability', 'POST /recommendations/improvements', 'PUT /production/parameters']
+    4.5s
+
+[5/110] (energy) 'Update the maintenance schedule for specific equipment using its ID to'
+    solution: ['PUT /maintenance/update/{id}', 'POST /optimization/run', 'POST /supply-chain-data']
+    without: recall 0.67  prec 1.00  halluc 0  found ['POST /optimization/run', 'PUT /maintenance/update/{id}']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['POST /optimization/run', 'POST /supply-chain-data', 'PUT /maintenance/update/{id}']
+    2.3s
+
+[6/110] (energy) 'Generate a comprehensive carbon emissions report for a specific produc'
+    solution: ['GET /carbon-emissions']
+WARNING:root:Unsupported binary operator Sub
+WARNING:root:Unsupported binary operator Sub
+    without: recall 1.00  prec 0.50  halluc 0  found ['GET /carbon-emissions', 'GET /consumption/daily']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /carbon-emissions']
+    1.8s
+
+[7/110] (energy) 'Provide a detailed report on renewable energy generation statistics, s'
+    solution: ['GET /reports/generation', 'GET /maintenance/schedule', 'POST /carbon-emissions', 'DELETE /reports/history']
+    without: recall 0.75  prec 1.00  halluc 0  found ['DELETE /reports/history', 'GET /reports/generation', 'POST /carbon-emissions']
+    with:    recall 0.75  prec 0.75  halluc 0  found ['DELETE /reports/history', 'GET /reports/generation', 'POST /carbon-emissions', 'POST /maintenance/create']
+    3.1s
+
+[8/110] (energy) 'Retrieve the operational status and availability of all energy product'
+    solution: ['POST /emission-factors', 'POST /feedback/analysis', 'GET /forecasts/energy-output', 'PUT /maintenance/update/{id}', 'GET /maintenance/schedule', 'GET /consumption/daily', 'GET /production/sources']
+    without: recall 0.57  prec 0.80  halluc 0  found ['GET /consumption/daily', 'GET /forecasts/energy-output', 'GET /maintenance/schedule', 'GET /production/sources', 'POST /evaluations/resource-availability']
+    with:    recall 0.86  prec 0.86  halluc 0  found ['GET /consumption/daily', 'GET /forecasts/energy-output', 'GET /maintenance/schedule', 'GET /production/sources', 'POST /emission-factors', 'POST /evaluations/resource-availability', 'PUT /maintenance/update/{id}']
+    3.8s
+
+[9/110] (energy) 'Retrieve the generation statistics for renewable energy sources, acces'
+    solution: ['GET /reports/generation', 'GET /environmental-guidelines', 'GET /devices/status', 'GET /alerts', 'GET /alerts/system']
+    without: recall 0.60  prec 1.00  halluc 0  found ['GET /devices/status', 'GET /environmental-guidelines', 'GET /reports/generation']
+    with:    recall 0.00  prec 0.00  halluc 0  found []
+    1.7s
+
+[10/110] (energy) 'I want to modify the configurations of my energy monitoring sensors to'
+    solution: ['DELETE /data/history', 'PATCH /sensors/settings', 'POST /alerts/notifications']
+    without: recall 0.67  prec 1.00  halluc 0  found ['PATCH /sensors/settings', 'POST /alerts/notifications']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['DELETE /data/history', 'PATCH /sensors/settings', 'POST /alerts/notifications']
+    1.8s
+
+[11/110] (materials) 'Retrieve the current inventory details of materials for all mining sit'
+    solution: ['GET /inventory/materials', 'POST /sustainability/audit', 'POST /alerts/create', 'POST /personnel/allocate', 'POST /inventory/materials/update', 'DELETE /report/{id}']
+    without: recall 0.50  prec 0.75  halluc 0  found ['GET /inventory/compliance', 'GET /inventory/materials', 'POST /inventory/materials/update', 'POST /personnel/allocate']
+    with:    recall 0.67  prec 1.00  halluc 0  found ['GET /inventory/materials', 'POST /inventory/materials/update', 'POST /personnel/allocate', 'POST /sustainability/audit']
+    2.8s
+
+[12/110] (materials) 'Remove a specific chemical from the inventory based on its unique iden'
+    solution: ['DELETE /chemicals/{id}', 'POST /machinery/allocate']
+    without: recall 0.50  prec 1.00  halluc 0  found ['DELETE /chemicals/{id}']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['DELETE /chemicals/{id}', 'POST /machinery/allocate']
+    2.6s
+
+[13/110] (materials) 'Optimize the allocation of machinery at various sites by analyzing the'
+    solution: ['GET /machinery/allocate', 'GET /energy-consumption/overview', 'GET /analytics/production']
+WARNING:root:Unsupported argument type IfExp
+    without: recall 1.00  prec 0.75  halluc 0  found ['GET /analytics/production', 'GET /energy-consumption/overview', 'GET /machinery/allocate', 'POST /operations/optimize']
+    with:    recall 1.00  prec 0.75  halluc 0  found ['GET /analytics/production', 'GET /energy-consumption/overview', 'GET /machinery/allocate', 'POST /operations/optimize']
+    2.6s
+
+[14/110] (materials) 'Submit the current details of newly added construction materials to th'
+    solution: ['POST /standards', 'GET /system-health/status', 'POST /materials', 'GET /operations/status', 'POST /inventory/materials/update']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type IfExp
+    without: recall 0.60  prec 1.00  halluc 0  found ['POST /inventory/materials/update', 'POST /materials', 'POST /standards']
+    with:    recall 0.80  prec 1.00  halluc 0  found ['GET /operations/status', 'POST /inventory/materials/update', 'POST /materials', 'POST /standards']
+    4.3s
+
+[15/110] (materials) 'Identify potential compliant materials for the construction of a new m'
+    solution: ['GET /materials/search', 'PUT /product/{id}/status', 'GET /system-health/status', 'GET /machinery/allocate', 'POST /sustainability/audit']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.40  prec 0.50  halluc 0  found ['GET /inventory/compliance', 'GET /inventory/materials', 'GET /materials/search', 'POST /sustainability/audit']
+    with:    recall 0.00  prec 0.00  halluc 0  found []
+    4.4s
+
+[16/110] (materials) 'Retrieve a list of all materials currently available to ensure updated'
+    solution: ['GET /materials', 'POST /inventory/materials/update', 'DELETE /chemicals/{id}', 'GET /system-health/status', 'PATCH /product/{id}/delivery', 'GET /recommended-actions/latest', 'GET /sites/details', 'DELETE /alerts/{id}', 'PUT /settings/storage']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.22  prec 0.67  halluc 0  found ['GET /inventory/materials', 'POST /inventory/materials/update', 'PUT /settings/storage']
+    with:    recall 0.56  prec 1.00  halluc 0  found ['DELETE /chemicals/{id}', 'GET /materials', 'PATCH /product/{id}/delivery', 'POST /inventory/materials/update', 'PUT /settings/storage']
+    2.4s
+
+[17/110] (materials) 'Analyze the operational health of the system to ensure continuous moni'
+    solution: ['GET /system-health/status', 'GET /inventory/materials', 'POST /machinery/allocate', 'GET /energy-consumption/overview', 'GET /chemicals/{id}', 'GET /materials/{id}']
+    without: recall 0.33  prec 0.67  halluc 0  found ['GET /chemicals', 'GET /inventory/materials', 'GET /system-health/status']
+    with:    recall 0.50  prec 0.60  halluc 0  found ['GET /chemicals/{id}', 'GET /inventory/materials', 'GET /materials-usage/report', 'GET /materials/{id}/compliance', 'GET /system-health/status']
+    3.0s
+
+[18/110] (materials) 'Verify the current status of all forest product batches in the system,'
+    solution: ['GET /forest-products/status', 'GET /chemicals/{id}', 'PUT /chemicals/{id}']
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /chemicals/{id}', 'GET /forest-products/status', 'PUT /chemicals/{id}']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /chemicals/{id}', 'GET /forest-products/status', 'PUT /chemicals/{id}']
+    1.5s
+
+[19/110] (materials) 'Remove a discontinued chemical from the inventory by its unique identi'
+    solution: ['DELETE /chemicals/{id}']
+    without: recall 1.00  prec 1.00  halluc 0  found ['DELETE /chemicals/{id}']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['DELETE /chemicals/{id}']
+    1.1s
+
+[20/110] (materials) 'Submit feedback for a newly added construction material regarding its '
+    solution: ['POST /materials/{id}/feedback', 'GET /materials/{id}', 'POST /materials', 'PUT /settings/storage']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /materials/{id}', 'POST /materials', 'POST /materials/{id}/feedback', 'PUT /settings/storage']
+    with:    recall 0.00  prec 0.00  halluc 0  found []
+    4.1s
+
+[21/110] (industrials) 'Update the shift schedule for an employee by adjusting the shift timin'
+    solution: ['PUT /shifts/{id}', 'GET /projects', 'POST /optimize_route']
+    without: recall 0.67  prec 1.00  halluc 0  found ['POST /optimize_route', 'PUT /shifts/{id}']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /projects', 'POST /optimize_route', 'PUT /shifts/{id}']
+    2.7s
+
+[22/110] (industrials) 'Create a new maintenance task for a facility by specifying the task de'
+    solution: ['GET /projects/{id}/progress', 'POST /breakdown/report', 'GET /shifts', 'POST /maintenance/tasks']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.50  prec 1.00  halluc 0  found ['POST /breakdown/report', 'POST /maintenance/tasks']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /projects/{id}/progress', 'GET /shifts', 'POST /breakdown/report', 'POST /maintenance/tasks']
+    3.1s
+
+[23/110] (industrials) 'Add a new vehicle to the fleet to support project transportation needs'
+    solution: ['POST /add_vehicle', 'PUT /projects/{id}', 'POST /analytics']
+WARNING:root:Unsupported argument type BoolOp
+    without: recall 0.67  prec 0.67  halluc 0  found ['GET /delivery_statistics', 'POST /add_vehicle', 'PUT /projects/{id}']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['POST /add_vehicle', 'POST /analytics', 'PUT /projects/{id}']
+    3.0s
+
+[24/110] (industrials) "Generate a comprehensive analysis of a factory's environmental complia"
+    solution: ['GET /vehicle_status', 'POST /analytics', 'GET /delivery_statistics', 'GET /route_history', 'PUT /shifts/{id}', 'GET /factories/{factory_id}/analytics', 'GET /reports']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unknown kwarg
+WARNING:root:Unknown kwarg
+WARNING:root:Unknown kwarg
+WARNING:root:Unknown kwarg
+WARNING:root:Unknown kwarg
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type IfExp
+    without: recall 0.00  prec 0.00  halluc 0  found []
+    with:    recall 0.00  prec 0.00  halluc 0  found []
+    3.6s
+
+[25/110] (industrials) 'Optimize the route for transporting fragile and refrigerated goods to '
+    solution: ['POST /optimize_route', 'DELETE /remove_vehicle', 'POST /recommendations', 'POST /sensors/{sensor_id}/calibration']
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type GeneratorExp
+    without: recall 0.50  prec 0.50  halluc 0  found ['DELETE /remove_vehicle', 'GET /vehicle_status', 'POST /maintenance_schedule', 'POST /optimize_route']
+    with:    recall 0.75  prec 0.60  halluc 0  found ['DELETE /remove_vehicle', 'GET /vehicle_status', 'POST /maintenance_schedule', 'POST /optimize_route', 'POST /recommendations']
+    3.8s
+
+[26/110] (industrials) 'Retrieve a detailed list of all registered factories, access the infor'
+    solution: ['POST /factories/{factory_id}/pollutants', 'GET /factories', 'GET /facilities/{facility_id}/details']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /facilities/{facility_id}/details', 'GET /factories', 'POST /factories/{factory_id}/pollutants']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /facilities/{facility_id}/details', 'GET /factories', 'POST /factories/{factory_id}/pollutants']
+    2.3s
+
+[27/110] (industrials) 'Retrieve the calibration status and upcoming due dates for a sensor id'
+    solution: ['GET /sensors/{sensor_id}/calibration', 'GET /employees']
+WARNING:root:Unsupported argument type ListComp
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /employees', 'GET /sensors/{sensor_id}/calibration']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /employees', 'GET /sensors/{sensor_id}/calibration']
+    1.7s
+
+[28/110] (industrials) 'Log a breakdown issue for an asset by specifying its details and facil'
+    solution: ['GET /route_history', 'POST /breakdown/report', 'GET /reports', 'POST /resources/{id}/assign']
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /reports', 'POST /breakdown/report']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /reports', 'GET /route_history', 'POST /breakdown/report', 'POST /resources/{id}/assign']
+    3.0s
+
+[29/110] (industrials) 'Retrieve the progress of a specific project to understand its completi'
+    solution: ['GET /maintenance/tasks', 'GET /route_history', 'GET /projects/{id}/progress', 'POST /projects', 'POST /maintenance/tasks']
+    without: recall 0.80  prec 1.00  halluc 0  found ['GET /maintenance/tasks', 'GET /projects/{id}/progress', 'POST /maintenance/tasks', 'POST /projects']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /maintenance/tasks', 'GET /projects/{id}/progress', 'GET /route_history', 'POST /maintenance/tasks', 'POST /projects']
+    3.2s
+
+[30/110] (industrials) 'Analyze the spare parts inventory for a facility to ensure sufficient '
+    solution: ['GET /inventory/spare-parts', 'POST /breakdown/report', 'POST /recommendations', 'GET /projects', 'GET /vehicle_status', 'GET /reports', 'GET /shifts']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.43  prec 1.00  halluc 0  found ['GET /inventory/spare-parts', 'POST /breakdown/report', 'POST /recommendations']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /inventory/spare-parts', 'GET /projects', 'GET /reports', 'GET /shifts', 'GET /vehicle_status', 'POST /breakdown/report', 'POST /recommendations']
+    4.5s
+
+[31/110] (consumer discretionary) 'Retrieve all my active notifications, update the menu template for my '
+    solution: ['GET /notifications', 'PUT /menu/template/{id}', 'GET /vehicles', 'GET /rooms', 'POST /feedback']
+WARNING:root:Unsupported argument type ListComp
+    without: recall 0.60  prec 1.00  halluc 0  found ['GET /notifications', 'GET /rooms', 'PUT /menu/template/{id}']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /notifications', 'GET /rooms', 'GET /vehicles', 'POST /feedback', 'PUT /menu/template/{id}']
+    2.2s
+
+[32/110] (consumer discretionary) 'Increase the popularity score of the dish with ID 12345 to reflect its'
+    solution: ['PUT /dishes/{id}/popularity', 'GET /menu/template/{id}']
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /menu/template/{id}', 'PUT /dishes/{id}/popularity']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /menu/template/{id}', 'PUT /dishes/{id}/popularity']
+    1.3s
+
+[33/110] (consumer discretionary) 'Retrieve all my past activity history for vehicle maintenance and inte'
+    solution: ['GET /history', 'POST /bookings', 'GET /bookings/{id}', 'POST /compare-prices', 'GET /threshold-violations', 'DELETE /restock-alerts/{id}', 'GET /availability']
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported argument type BoolOp
+    without: recall 0.71  prec 0.83  halluc 0  found ['DELETE /restock-alerts/{id}', 'GET /availability', 'GET /bookings', 'GET /history', 'GET /threshold-violations', 'POST /compare-prices']
+    with:    recall 0.86  prec 0.86  halluc 0  found ['DELETE /restock-alerts/{id}', 'GET /alerts-log', 'GET /availability', 'GET /bookings/{id}', 'GET /history', 'POST /bookings', 'POST /compare-prices']
+    3.2s
+
+[34/110] (consumer discretionary) 'Create a detailed allergens analysis for a custom dish by checking its'
+    solution: ['PUT /preferences', 'POST /allergens/check', 'GET /vehicles', 'GET /product-catalog']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type IfExp
+    without: recall 0.25  prec 1.00  halluc 0  found ['POST /allergens/check']
+    with:    recall 1.00  prec 0.67  halluc 0  found ['GET /dishes/preferences', 'GET /product-catalog', 'GET /vehicles', 'POST /allergens/check', 'POST /dishes/customize', 'PUT /preferences']
+    2.8s
+
+[35/110] (consumer discretionary) 'I am planning an event and need to identify suitable venues by retriev'
+    solution: ['GET /venues', 'GET /restaurants/{id}/menu', 'POST /bookings', 'PUT /maintenancecenter/{id}/details', 'PUT /preferences', 'DELETE /notification/{id}', 'GET /notifications', 'POST /menu/template', 'POST /order-restock']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.56  prec 0.83  halluc 0  found ['GET /notifications', 'GET /restaurants/{id}/menu', 'GET /venues', 'POST /bookings', 'POST /restock-alerts', 'PUT /preferences']
+    with:    recall 0.89  prec 1.00  halluc 1  found ['GET /notifications', 'GET /restaurants/{id}/menu', 'GET /venues', 'POST /bookings', 'POST /menu/template', 'POST /order-restock', 'PUT /maintenancecenter/{id}/details', 'PUT /preferences']
+    6.6s
+
+[36/110] (consumer discretionary) 'I am organizing a promotional campaign and want to explore all current'
+    solution: ['GET /promotions', 'DELETE /notification/{id}', 'PUT /dishes/{id}/popularity', 'GET /recommendations', 'GET /threshold-violations', 'POST /feedback']
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /promotions', 'GET /threshold-violations', 'POST /feedback', 'PUT /dishes/{id}/popularity']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['DELETE /notification/{id}', 'GET /promotions', 'GET /recommendations', 'GET /threshold-violations', 'POST /feedback', 'PUT /dishes/{id}/popularity']
+    3.2s
+
+[37/110] (consumer discretionary) 'I am planning to book a venue for a conference and need to retrieve th'
+    solution: ['POST /bookings', 'GET /venues/{id}', 'GET /vehicles', 'GET /vehicle/{id}/maintenancerecords', 'POST /feedback', 'GET /availability/{date}']
+    without: recall 0.50  prec 0.75  halluc 0  found ['GET /availability', 'GET /vehicle/{id}/maintenancerecords', 'GET /venues/{id}', 'POST /bookings']
+    with:    recall 0.67  prec 0.80  halluc 0  found ['GET /availability', 'GET /vehicle/{id}/maintenancerecords', 'GET /vehicles', 'GET /venues/{id}', 'POST /bookings']
+    2.9s
+
+[38/110] (consumer discretionary) 'I am managing stock levels for my retail store and need to check the c'
+    solution: ['GET /stock-levels', 'GET /vehicles', 'POST /feedback/menu', 'GET /inventory-schedules']
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /inventory-schedules', 'GET /stock-levels']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /inventory-schedules', 'GET /stock-levels', 'GET /vehicles', 'POST /feedback/menu']
+    3.0s
+
+[39/110] (consumer discretionary) 'I want to create a booking for a hotel stay by specifying the customer'
+    solution: ['POST /bookings', 'PUT /menu/template/{id}', 'GET /stock-levels']
+    without: recall 0.67  prec 0.67  halluc 0  found ['GET /bookings/{id}', 'POST /bookings', 'PUT /menu/template/{id}']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /stock-levels', 'POST /bookings', 'PUT /menu/template/{id}']
+    2.9s
+
+[40/110] (consumer discretionary) 'I am managing a restaurant and want to optimize my operations. First, '
+    solution: ['GET /distribution-centers', 'GET /menu/template/{id}', 'DELETE /bookings/{id}', 'GET /vehicle/{id}/recommendations']
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /distribution-centers', 'GET /menu/template/{id}']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['DELETE /bookings/{id}', 'GET /distribution-centers', 'GET /menu/template/{id}', 'GET /vehicle/{id}/recommendations']
+    1.9s
+
+[41/110] (consumer staples) 'Compare multiple products based on their prices across various retaile'
+    solution: ['GET /products/compare', 'GET /locations', 'GET /products/{product_id}/prices', 'GET /inventory-levels', 'GET /historical-data/trends']
+    without: recall 0.60  prec 0.60  halluc 0  found ['GET /inventory-levels', 'GET /locations', 'GET /products/{product_id}', 'GET /products/{product_id}/prices', 'POST /compare']
+    with:    recall 0.80  prec 0.80  halluc 0  found ['GET /historical-data/trends', 'GET /inventory-levels', 'GET /locations', 'GET /products/{product_id}/prices', 'POST /compare']
+    2.8s
+
+[42/110] (consumer staples) 'Retrieve the API version for compatibility purposes, fetch all availab'
+    solution: ['POST /feedback/consumer', 'GET /version', 'GET /retailers/{retailerId}/products', 'GET /locations', 'GET /inventory-levels', 'GET /products/{productId}/rating', 'GET /restock-status', 'POST /market-analysis/region', 'GET /products/{upc}', 'GET /retailers/{retailer_id}/products', 'GET /products/{product_id}/prices']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported subscript assignment
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported subscript assignment
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type BoolOp
+WARNING:root:Unsupported argument type BoolOp
+    without: recall 0.45  prec 0.56  halluc 0  found ['GET /inventory-levels', 'GET /locations', 'GET /products/compare', 'GET /products/{product_id}', 'GET /products/{product_id}/prices', 'GET /products/{upc}/compare/{otherUpc}', 'GET /restock-status', 'GET /retailers', 'GET /retailers/{retailerId}/products']
+    with:    recall 0.73  prec 0.73  halluc 0  found ['GET /inventory-levels', 'GET /locations', 'GET /products/{productId}/rating', 'GET /products/{product_id}', 'GET /restock-status', 'GET /retailers', 'GET /retailers/{retailerId}/products', 'GET /version', 'POST /compare', 'POST /feedback/consumer', 'POST /market-analysis/region']
+    7.1s
+
+[43/110] (consumer staples) 'Analyze the market performance of a specific region over the last quar'
+    solution: ['POST /market-analysis/region', 'POST /forecast-demand']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 1.00  prec 1.00  halluc 0  found ['POST /forecast-demand', 'POST /market-analysis/region']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['POST /forecast-demand', 'POST /market-analysis/region']
+    2.5s
+
+[44/110] (consumer staples) 'Analyze the current consumer behavior trends segmented by region and p'
+    solution: ['GET /consumer-trends/overview', 'PATCH /products/{productId}', 'GET /inventory/demand-forecast', 'GET /version', 'GET /products/{upc}/ingredients', 'GET /demographics/preferences']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported subscript assignment
+WARNING:root:Unsupported subscript assignment
+WARNING:root:Unknown kwarg
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unknown kwarg
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unknown kwarg
+WARNING:root:Unknown kwarg
+WARNING:root:Unknown kwarg
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type BoolOp
+WARNING:root:Unsupported argument type BoolOp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unknown kwarg
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unknown kwarg
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unknown kwarg
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unknown kwarg
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unknown kwarg
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unknown kwarg
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unknown kwarg
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unknown kwarg
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unknown kwarg
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unknown kwarg
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unknown kwarg
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unknown kwarg
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unknown kwarg
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported argument type IfExp
+    without: recall 0.33  prec 1.00  halluc 0  found ['GET /consumer-trends/overview', 'GET /demographics/preferences']
+    with:    recall 0.00  prec 0.00  halluc 0  found []
+    4.0s
+
+[45/110] (consumer staples) 'Retrieve a comprehensive list of all product categories, including the'
+    solution: ['GET /categories']
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /categories']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /categories']
+    1.3s
+
+[46/110] (consumer staples) 'Identify the most sustainable and top-rated products available across '
+    solution: ['GET /products/{product_id}', 'POST /request_update', 'POST /seasonal-trends/predictions', 'GET /products/top-rated']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported binary operator Div
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported binary operator Div
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.25  prec 0.20  halluc 0  found ['GET /consumer-trends/overview', 'GET /inventory/demand-forecast', 'GET /products/search', 'GET /products/top-rated', 'GET /products/{product_id}/prices']
+    with:    recall 1.00  prec 0.80  halluc 0  found ['GET /products/top-rated', 'GET /products/{product_id}', 'GET /products/{product_id}/prices', 'POST /request_update', 'POST /seasonal-trends/predictions']
+    5.2s
+
+[47/110] (consumer staples) 'Monitor the inventory tracking status of shipments for multiple produc'
+    solution: ['GET /restock-status', 'GET /products', 'GET /categories', 'POST /request_update', 'GET /inventory-tracking']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type ListComp
+    without: recall 0.60  prec 0.75  halluc 0  found ['GET /inventory-tracking', 'GET /restock-status', 'GET /retailers/{retailerId}/products', 'POST /request_update']
+    with:    recall 0.60  prec 0.75  halluc 0  found ['GET /inventory-levels', 'GET /inventory-tracking', 'GET /restock-status', 'POST /request_update']
+    3.3s
+
+[48/110] (consumer staples) 'Retrieve the top product categories currently in demand and their deta'
+    solution: ['POST /feedback', 'GET /product-categories/top', 'GET /inventory-levels', 'GET /retailers/{retailer_id}/products', 'GET /locations']
+WARNING:root:Unsupported argument type SetComp
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type SetComp
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type SetComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type SetComp
+WARNING:root:Unsupported argument type SetComp
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Input arguments do not match the function signature
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type DictComp
+    without: recall 0.40  prec 0.50  halluc 0  found ['GET /inventory-levels', 'GET /product-categories/top', 'GET /retailers', 'GET /retailers/{retailerId}/products']
+    with:    recall 0.60  prec 0.60  halluc 1  found ['GET /inventory-levels', 'GET /locations', 'GET /product-categories/top', 'GET /retailers', 'GET /retailers/{retailerId}/products']
+    7.4s
+
+[49/110] (consumer staples) 'Retrieve all products within a specific category using its unique cate'
+    solution: ['GET /products/{upc}/labels', 'GET /categories/{categoryId}/products']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /categories/{categoryId}/products', 'GET /products/{upc}/labels']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /categories/{categoryId}/products', 'GET /products/{upc}/labels']
+    1.8s
+
+[50/110] (consumer staples) 'Evaluate competitor performance and gain insights into their strengths'
+    solution: ['DELETE /remove-location', 'GET /categories/{categoryId}/products', 'GET /products/compare', 'GET /inventory-tracking', 'GET /insights/competitor-comparison']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.00  prec 0.00  halluc 0  found []
+    with:    recall 1.00  prec 0.71  halluc 0  found ['DELETE /remove-location', 'GET /categories', 'GET /categories/{categoryId}/products', 'GET /insights/competitor-comparison', 'GET /inventory-tracking', 'GET /products/compare', 'POST /compare']
+    4.2s
+
+[51/110] (health care) 'Add the medication "Xanax" to the inventory and send a notification to'
+    solution: ['POST /notifications', 'POST /inventory']
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.50  prec 1.00  halluc 0  found ['POST /inventory']
+    with:    recall 1.00  prec 0.67  halluc 0  found ['GET /patients/search', 'POST /inventory', 'POST /notifications']
+    1.5s
+
+[52/110] (health care) 'Schedule a new appointment for a patient with the appropriate healthca'
+    solution: ['PUT /appointments/{id}', 'POST /appointments', 'POST /medication-interaction-check', 'GET /inventory', 'POST /interaction-guidelines', 'GET /alert/{alert_id}', 'GET /updates', 'GET /analytics']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 0.67  halluc 0  found ['GET /alert/{alert_id}', 'GET /medications', 'GET /pharmacy/{pharmacy_id}/inventory', 'POST /interaction-guidelines', 'POST /medication-interaction-check', 'PUT /appointments/{id}']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /alert/{alert_id}', 'GET /analytics', 'GET /inventory', 'GET /updates', 'POST /appointments', 'POST /interaction-guidelines', 'POST /medication-interaction-check', 'PUT /appointments/{id}']
+    3.8s
+
+[53/110] (health care) 'Display the inventory details of a specific pharmacy and fetch the com'
+    solution: ['GET /pharmacy/{pharmacy_id}/inventory', 'GET /records/{record_id}/history']
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /pharmacy/{pharmacy_id}/inventory', 'GET /records/{record_id}/history']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /pharmacy/{pharmacy_id}/inventory', 'GET /records/{record_id}/history']
+    1.6s
+
+[54/110] (health care) 'Update the inventory details of a medication item with new quantity an'
+    solution: ['PUT /alerts/{alert_id}', 'GET /updates', 'GET /records/{record_id}/history', 'GET /lifestyle-tips', 'PUT /inventory/{item_id}', 'GET /interaction-guidelines']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.33  prec 1.00  halluc 0  found ['GET /lifestyle-tips', 'PUT /inventory/{item_id}']
+    with:    recall 0.00  prec 0.00  halluc 0  found []
+    2.8s
+
+[55/110] (health care) 'Retrieve detailed information about a specific patient using their uni'
+    solution: ['GET /patients/{id}', 'GET /medications', 'GET /history']
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /history', 'GET /medications', 'GET /patients/{id}']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /history', 'GET /medications', 'GET /patients/{id}']
+    1.8s
+
+[56/110] (health care) 'Analyze the aggregated statistical data of health risk assessments, in'
+    solution: ['GET /analytics', 'GET /patient/{patient_id}/interactions', 'GET /evaluation']
+WARNING:root:Attribute calls are not supported yet
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /analytics', 'GET /evaluation', 'GET /patient/{patient_id}/interactions']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /analytics', 'GET /evaluation', 'GET /patient/{patient_id}/interactions']
+    2.3s
+
+[57/110] (health care) "Submit feedback on a patient's experience with recommendations provide"
+    solution: ['POST /feedback', 'DELETE /alert/{alert_id}', 'POST /appointments', 'GET /analytics']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.25  prec 1.00  halluc 0  found ['POST /feedback']
+    with:    recall 0.00  prec 0.00  halluc 0  found []
+    3.4s
+
+[58/110] (health care) 'Annotate a medical record to capture critical updates relevant to a pa'
+    solution: ['GET /conditions', 'POST /notifications', 'POST /records/{record_id}/annotate', 'GET /lifestyle-tips', 'POST /notifications', 'GET /reports/summary', 'GET /alert/{alert_id}']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /reports/summary', 'POST /notifications', 'POST /records/{record_id}/annotate']
+    with:    recall 0.33  prec 1.00  halluc 0  found ['POST /notifications', 'POST /records/{record_id}/annotate']
+    3.7s
+
+[59/110] (health care) 'Notify all patients about the addition of a new inventory item, specif'
+    solution: ['GET /conditions', 'POST /notifications', 'DELETE /alert/{alert_id}', 'POST /inventory']
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.25  prec 0.33  halluc 0  found ['GET /alerts', 'POST /inventory', 'PUT /alerts/{alert_id}']
+    with:    recall 0.75  prec 0.60  halluc 0  found ['DELETE /alert/{alert_id}', 'GET /alerts', 'GET /updates', 'POST /inventory', 'POST /notifications']
+    3.1s
+
+[60/110] (health care) 'Notify healthcare professionals about the removal of a critical invent'
+    solution: ['GET /inventory', 'DELETE /records/{record_id}', 'POST /notifications']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.67  prec 0.40  halluc 0  found ['DELETE /inventory/{item_id}', 'DELETE /records/{record_id}', 'GET /alerts/critical-records', 'GET /inventory', 'POST /alerts']
+    with:    recall 1.00  prec 0.60  halluc 0  found ['DELETE /inventory/{item_id}', 'DELETE /records/{record_id}', 'GET /alerts/critical-records', 'GET /inventory', 'POST /notifications']
+    4.0s
+
+[61/110] (financials) 'I am looking to retrieve all notifications related to the financial ev'
+    solution: ['GET /financial-reports/{id}', 'GET /notifications']
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /financial-reports/{id}', 'GET /notifications']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /financial-reports/{id}', 'GET /notifications']
+    2.1s
+
+[62/110] (financials) 'I want to update my budget with the latest financial performance data '
+    solution: ['PUT /budgets/{budget_id}', 'GET /credit-checks/{id}', 'GET /insurance-policies/claims/history', 'GET /credit-scores/history', 'GET /financial-summary', 'DELETE /transactions/{transaction_id}', 'POST /insurance-policies/enroll']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.43  prec 0.60  halluc 0  found ['GET /budgets/summary', 'GET /credit-checks/{id}', 'GET /credit-scores/history', 'POST /financial-reports', 'PUT /budgets/{budget_id}']
+    with:    recall 1.00  prec 0.88  halluc 0  found ['DELETE /transactions/{transaction_id}', 'GET /budgets/summary', 'GET /credit-checks/{id}', 'GET /credit-scores/history', 'GET /financial-summary', 'GET /insurance-policies/claims/history', 'POST /insurance-policies/enroll', 'PUT /budgets/{budget_id}']
+    4.1s
+
+[63/110] (financials) 'Analyze the volatility of a specific asset to determine its risk facto'
+    solution: ['GET /insights', 'PUT /insurance-policies/{policy_id}/modify', 'GET /analytics/volatility-calculator']
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.67  prec 0.50  halluc 0  found ['GET /analytics/volatility-calculator', 'GET /assets/historical', 'GET /trends/moving-averages', 'PUT /insurance-policies/{policy_id}/modify']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /analytics/volatility-calculator', 'GET /insights', 'PUT /insurance-policies/{policy_id}/modify']
+    2.5s
+
+[64/110] (financials) 'Calculate the estimated premium for an insurance policy by providing n'
+    solution: ['POST /insurance-policies/estimate-premium', 'GET /dividends/announcement', 'POST /accounts']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /dividends/announcement', 'POST /insurance-policies/estimate-premium']
+    with:    recall 0.67  prec 1.00  halluc 0  found ['GET /dividends/announcement', 'POST /insurance-policies/estimate-premium']
+    3.1s
+
+[65/110] (financials) 'I want to explore the performance of different market sectors to ident'
+    solution: ['GET /sectors/market-insights', 'DELETE /transactions/{transaction_id}', 'GET /credit-checks', 'GET /dividends/announcement', 'POST /insurance-policies/enroll']
+    without: recall 0.60  prec 1.00  halluc 0  found ['GET /credit-checks', 'GET /dividends/announcement', 'GET /sectors/market-insights']
+    with:    recall 0.80  prec 1.00  halluc 0  found ['GET /credit-checks', 'GET /dividends/announcement', 'GET /sectors/market-insights', 'POST /insurance-policies/enroll']
+    2.8s
+
+[66/110] (financials) 'I want to set a new financial savings goal for upcoming expenses and u'
+    solution: ['POST /goals', 'PATCH /accounts/{account_id}', 'GET /insurance-policies', 'GET /financial-reports/{id}']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 0.67  halluc 0  found ['GET /accounts', 'PATCH /accounts/{account_id}', 'POST /goals']
+    with:    recall 1.00  prec 0.80  halluc 0  found ['GET /accounts', 'GET /financial-reports/{id}', 'GET /insurance-policies', 'PATCH /accounts/{account_id}', 'POST /goals']
+    2.5s
+
+[67/110] (financials) 'Analyze the latest stock data for a set of specified symbols to identi'
+    solution: ['GET /stocks/latest-data', 'POST /portfolio/asses', 'DELETE /transactions/{transaction_id}', 'GET /currency-rates']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type IfExp
+    without: recall 0.50  prec 0.67  halluc 0  found ['GET /currencies/exchange-rates', 'GET /stocks/latest-data', 'POST /portfolio/asses']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['DELETE /transactions/{transaction_id}', 'GET /currency-rates', 'GET /stocks/latest-data', 'POST /portfolio/asses']
+    3.2s
+
+[68/110] (financials) 'I need to update the details of one of my linked financial accounts, r'
+    solution: ['PATCH /accounts/{account_id}', 'GET /dividends/announcement', 'GET /insurance-policies/{policy_id}/providers']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /dividends/announcement', 'GET /insurance-policies/{policy_id}/providers', 'PATCH /accounts/{account_id}']
+    with:    recall 1.00  prec 0.75  halluc 0  found ['GET /accounts', 'GET /dividends/announcement', 'GET /insurance-policies/{policy_id}/providers', 'PATCH /accounts/{account_id}']
+    3.2s
+
+[69/110] (financials) 'I want to create a custom financial watchlist to monitor specific stoc'
+    solution: ['GET /insurance-policies', 'POST /watchlist/create', 'POST /goals', 'GET /sectors/market-insights', 'GET /accounts', 'GET /notifications']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.83  prec 0.83  halluc 0  found ['GET /accounts', 'GET /insights', 'GET /notifications', 'GET /sectors/market-insights', 'POST /goals', 'POST /watchlist/create']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /accounts', 'GET /insurance-policies', 'GET /notifications', 'GET /sectors/market-insights', 'POST /goals', 'POST /watchlist/create']
+    2.8s
+
+[70/110] (financials) 'I want to retrieve detailed notifications regarding financial events, '
+    solution: ['POST /credit-checks', 'GET /transactions/{transaction_id}', 'GET /news/recent', 'GET /notifications', 'GET /insurance-policies/covered-items/{policy_id}', 'GET /currency-rates', 'GET /insurance-policies/{policy_id}/providers']
+    without: recall 0.29  prec 0.50  halluc 0  found ['GET /currencies/exchange-rates', 'GET /insurance-policies/{policy_id}/details', 'GET /news/recent', 'GET /notifications']
+    with:    recall 0.86  prec 0.86  halluc 0  found ['GET /currency-rates', 'GET /insurance-policies/covered-items/{policy_id}', 'GET /insurance-policies/{policy_id}/providers', 'GET /news/recent', 'GET /notifications', 'GET /transactions', 'POST /credit-checks']
+    2.8s
+
+[71/110] (information technology) 'Create a new permission labeled "view_metrics" and retrieve the curren'
+    solution: ['POST /permissions', 'GET /reliability/metrics']
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /reliability/metrics', 'POST /permissions']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /reliability/metrics', 'POST /permissions']
+    1.6s
+
+[72/110] (information technology) 'Assign the role of "Resource Manager" to multiple users, update the co'
+    solution: ['GET /devices', 'PUT /resources/{id}', 'POST /roles']
+WARNING:root:Unsupported argument type GeneratorExp
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /devices', 'PUT /resources/{id}']
+    with:    recall 0.67  prec 0.67  halluc 1  found ['GET /devices', 'POST /users/{userId}/roles', 'PUT /resources/{id}']
+    2.7s
+
+[73/110] (information technology) 'Identify the available regions for deploying cloud resources and updat'
+    solution: ['GET /regions', 'PUT /resources/{id}']
+WARNING:root:Unsupported argument type BoolOp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Subscript deletion on non-dict variable. Skip
+WARNING:root:Subscript assignment on non-dict variable. Skip
+WARNING:root:Subscript deletion on non-dict variable. Skip
+WARNING:root:Subscript assignment on non-dict variable. Skip
+WARNING:root:Unsupported argument type IfExp
+    without: recall 1.00  prec 0.67  halluc 0  found ['GET /regions', 'GET /resources/{id}', 'PUT /resources/{id}']
+    with:    recall 1.00  prec 0.67  halluc 0  found ['GET /regions', 'GET /resources/{id}', 'PUT /resources/{id}']
+    2.1s
+
+[74/110] (information technology) 'Create a new IT device labeled "LogAnalyzer" in the system, assign the'
+    solution: ['POST /permissions', 'POST /dashboard/configure', 'GET /system/health', 'POST /system/optimization', 'POST /devices', 'GET /diagnostics/logs']
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type IfExp
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /diagnostics/logs', 'GET /system/health', 'POST /dashboard/configure', 'POST /system/optimization']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /diagnostics/logs', 'GET /system/health', 'POST /dashboard/configure', 'POST /devices', 'POST /permissions', 'POST /system/optimization']
+    2.9s
+
+[75/110] (information technology) 'Acknowledge an active alert with ID "alert123", retrieve system-wide p'
+    solution: ['PUT /alerts/{id}/acknowledge', 'GET /metrics', 'POST /permissions', 'PUT /resources/{id}', 'DELETE /resources/{id}', 'GET /system/health', 'DELETE /notifications/subscription/{id}']
+WARNING:root:Unsupported argument type GeneratorExp
+    without: recall 0.57  prec 0.67  halluc 0  found ['DELETE /notifications/subscription/{id}', 'DELETE /resources/{id}', 'GET /alerts', 'GET /metrics/{id}', 'PUT /alerts/{id}/acknowledge', 'PUT /resources/{id}']
+    with:    recall 0.86  prec 1.00  halluc 0  found ['DELETE /notifications/subscription/{id}', 'DELETE /resources/{id}', 'GET /metrics', 'GET /system/health', 'PUT /alerts/{id}/acknowledge', 'PUT /resources/{id}']
+    2.9s
+
+[76/110] (information technology) 'Initiate a comprehensive inventory audit to detect discrepancies in as'
+    solution: ['POST /inventory/audit', 'POST /tokens/verify', 'POST /alerts/set']
+    without: recall 1.00  prec 1.00  halluc 0  found ['POST /alerts/set', 'POST /inventory/audit', 'POST /tokens/verify']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['POST /alerts/set', 'POST /inventory/audit', 'POST /tokens/verify']
+    1.7s
+
+[77/110] (information technology) 'Initiate the analysis process on a dataset with the ID "dataset12345" '
+    solution: ['POST /analysis/start']
+    without: recall 1.00  prec 1.00  halluc 0  found ['POST /analysis/start']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['POST /analysis/start']
+    1.1s
+
+[78/110] (information technology) 'Check the list of roles assigned to a user with a specified ID to ensu'
+    solution: ['GET /users/{userId}/roles', 'GET /resources/{id}', 'GET /system/health', 'GET /regions', 'POST /alerts/set']
+WARNING:root:Unsupported argument type IfExp
+    without: recall 0.40  prec 1.00  halluc 0  found ['GET /resources/{id}', 'GET /users/{userId}/roles']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /regions', 'GET /resources/{id}', 'GET /system/health', 'GET /users/{userId}/roles', 'POST /alerts/set']
+    2.7s
+
+[79/110] (information technology) 'Provide a detailed analysis of diagnostic issues by initiating a syste'
+    solution: ['POST /system/optimization', 'POST /diagnostics/analysis', 'PUT /devices/{deviceId}', 'GET /visualizations', 'POST /devices']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type IfExp
+    without: recall 0.00  prec 0.00  halluc 0  found []
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /visualizations', 'POST /devices', 'POST /diagnostics/analysis', 'POST /system/optimization', 'PUT /devices/{deviceId}']
+    2.6s
+
+[80/110] (information technology) 'Update the details of an existing IT device with ID "deviceID12345" to'
+    solution: ['PUT /devices/{deviceId}', 'POST /users/authenticate']
+WARNING:root:Unknown target type Attribute
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.50  prec 1.00  halluc 0  found ['PUT /devices/{deviceId}']
+    with:    recall 1.00  prec 0.67  halluc 0  found ['GET /devices/{deviceId}', 'POST /users/authenticate', 'PUT /devices/{deviceId}']
+    2.0s
+
+[81/110] (communication services) 'I want to retrieve the popular content on the platform and also check '
+    solution: ['GET /content/popular', 'GET /player/stats', 'POST /multiplayer/matchmaking', 'PUT /settings/customization']
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /content/popular', 'GET /player/stats', 'POST /multiplayer/matchmaking', 'PUT /settings/customization']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /content/popular', 'GET /player/stats', 'POST /multiplayer/matchmaking', 'PUT /settings/customization']
+    3.1s
+
+[82/110] (communication services) 'I need to delete a broadcasting channel that is no longer active, retr'
+    solution: ['DELETE /channels/{channelId}', 'GET /media', 'GET /conversations', 'GET /faults/reports', 'PATCH /media/{mediaId}', 'POST /achievements/record', 'PATCH /networks/configurations', 'GET /help/documentation']
+    without: recall 0.38  prec 1.00  halluc 0  found ['DELETE /channels/{channelId}', 'GET /media', 'PATCH /media/{mediaId}']
+    with:    recall 0.75  prec 1.00  halluc 0  found ['DELETE /channels/{channelId}', 'GET /faults/reports', 'GET /media', 'PATCH /media/{mediaId}', 'PATCH /networks/configurations', 'POST /achievements/record']
+    2.8s
+
+[83/110] (communication services) 'I need to initiate a secure call with a user, while starting the train'
+    solution: ['DELETE /player/data/{playerId}', 'POST /files/share', 'PUT /notifications/settings', 'POST /calls/start', 'POST /predictive/models']
+WARNING:root:With statements are not supported yet
+WARNING:root:With statements are not supported yet
+    without: recall 0.80  prec 1.00  halluc 0  found ['POST /calls/start', 'POST /files/share', 'POST /predictive/models', 'PUT /notifications/settings']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['DELETE /player/data/{playerId}', 'POST /calls/start', 'POST /files/share', 'POST /predictive/models', 'PUT /notifications/settings']
+    2.6s
+
+[84/110] (communication services) 'I need to update my notification preferences to enable alerts for cont'
+    solution: ['GET /recommendations', 'PATCH /channels/{channelId}', 'PUT /notifications/settings']
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /recommendations', 'PATCH /channels/{channelId}', 'PUT /notifications/settings']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /recommendations', 'PATCH /channels/{channelId}', 'PUT /notifications/settings']
+    1.8s
+
+[85/110] (communication services) 'I want to analyze the detailed information of a specific message using'
+    solution: ['POST /admin/training', 'GET /messages/{message_id}', 'GET /media', 'POST /transactions/process', 'GET /devices/connectivity']
+    without: recall 0.40  prec 0.67  halluc 0  found ['GET /messages/{message_id}', 'POST /predictive/models', 'POST /transactions/process']
+    with:    recall 0.80  prec 0.80  halluc 0  found ['GET /devices/connectivity', 'GET /media', 'GET /messages/{message_id}', 'POST /predictive/models', 'POST /transactions/process']
+    2.3s
+
+[86/110] (communication services) 'I want to fetch personalized content recommendations for a user, creat'
+    solution: ['GET /recommendations', 'POST /game-session/create', 'PUT /settings/customization', 'GET /files/{file_id}/download']
+WARNING:root:With statements are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+    without: recall 0.75  prec 1.00  halluc 0  found ['GET /recommendations', 'POST /game-session/create', 'PUT /settings/customization']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /files/{file_id}/download', 'GET /recommendations', 'POST /game-session/create', 'PUT /settings/customization']
+    2.9s
+
+[87/110] (communication services) 'I want to submit user feedback on network performance issues, delete a'
+    solution: ['POST /user/behavior', 'GET /maintenance/schedule', 'DELETE /media/{mediaId}', 'POST /users/feedback', 'POST /calls/start']
+    without: recall 0.60  prec 1.00  halluc 0  found ['GET /maintenance/schedule', 'POST /user/behavior', 'POST /users/feedback']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['DELETE /media/{mediaId}', 'GET /maintenance/schedule', 'POST /calls/start', 'POST /user/behavior', 'POST /users/feedback']
+    4.6s
+
+[88/110] (communication services) 'I want to analyze the reported network faults for any recurring issues'
+    solution: ['GET /faults/reports', 'PUT /settings/customization', 'GET /game-details/{gameId}']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type DictComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /faults/reports', 'GET /game-details/{gameId}', 'PUT /settings/customization']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /faults/reports', 'GET /game-details/{gameId}', 'PUT /settings/customization']
+    2.7s
+
+[89/110] (communication services) 'I need to check the connectivity status of a specific device within th'
+    solution: ['GET /devices/connectivity', 'GET /content/popular', 'GET /faults/reports']
+    without: recall 0.67  prec 0.67  halluc 0  found ['GET /analytics/usage', 'GET /devices/connectivity', 'GET /faults/reports']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /content/popular', 'GET /devices/connectivity', 'GET /faults/reports']
+    1.5s
+
+[90/110] (communication services) "I want to delete a player's data due to privacy concerns, update the c"
+    solution: ['PUT /settings/customization', 'DELETE /player/data/{playerId}', 'GET /media', 'POST /multiplayer/matchmaking', 'POST /messages/send']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.60  prec 1.00  halluc 0  found ['DELETE /player/data/{playerId}', 'POST /multiplayer/matchmaking', 'PUT /settings/customization']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['DELETE /player/data/{playerId}', 'GET /media', 'POST /messages/send', 'POST /multiplayer/matchmaking', 'PUT /settings/customization']
+    2.8s
+
+[91/110] (utilities) 'Retrieve the energy consumption performance of all registered consumer'
+    solution: ['DELETE /networks/{id}', 'GET /analytics/distribution', 'GET /alerts', 'GET /grid/efficiency', 'GET /consumers', 'GET /performance-reports']
+    without: recall 0.50  prec 0.50  halluc 0  found ['GET /analytics/trend', 'GET /consumers', 'GET /energy/load-distribution', 'GET /grid/efficiency', 'GET /performance-reports', 'GET /report/custom']
+    with:    recall 0.83  prec 1.00  halluc 0  found ['GET /alerts', 'GET /analytics/distribution', 'GET /consumers', 'GET /grid/efficiency', 'GET /performance-reports']
+    2.1s
+
+[92/110] (utilities) 'Analyze my household energy consumption over the past month using deta'
+    solution: ['PUT /trade/{trade_id}', 'GET /consumers', 'POST /generate-energy-scenarios', 'GET /energy/load-distribution', 'GET /household/consumption', 'PATCH /user/preferences']
+WARNING:root:Unsupported binary operator Sub
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported binary operator Sub
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type IfExp
+    without: recall 0.33  prec 0.50  halluc 0  found ['GET /energy/load-distribution', 'GET /household/consumption', 'GET /report/custom', 'POST /optimize/household']
+    with:    recall 1.00  prec 0.86  halluc 0  found ['GET /consumers', 'GET /energy/load-distribution', 'GET /household/consumption', 'PATCH /user/preferences', 'POST /analytics/custom', 'POST /generate-energy-scenarios', 'PUT /trade/{trade_id}']
+    3.7s
+
+[93/110] (utilities) 'Analyze the historical data collected by a specific sensor over the pa'
+    solution: ['GET /sensors/{id}/data', 'POST /predictive-analysis']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported binary operator Sub
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported binary operator Div
+WARNING:root:Unsupported binary operator Div
+WARNING:root:Unsupported binary operator Pow
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported binary operator Sub
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /sensors/{id}/data', 'POST /predictive-analysis']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /sensors/{id}/data', 'POST /predictive-analysis']
+    2.4s
+
+[94/110] (utilities) 'Generate a comprehensive energy usage report detailing distribution an'
+    solution: ['GET /reports', 'POST /alerts', 'POST /analytics/custom', 'POST /generate-energy-scenarios']
+    without: recall 0.50  prec 0.22  halluc 0  found ['GET /analytics/trend', 'GET /energy/load-distribution', 'GET /grid/efficiency', 'GET /household/consumption', 'GET /industrial/consumption', 'GET /renewable/usage-stats', 'GET /report/custom', 'POST /analytics/custom', 'POST /generate-energy-scenarios']
+    with:    recall 0.50  prec 0.22  halluc 0  found ['GET /alerts', 'GET /analytics/distribution', 'GET /analytics/trend', 'GET /energy/load-distribution', 'GET /household/consumption', 'GET /industrial/consumption', 'GET /report/custom', 'POST /analytics/custom', 'POST /generate-energy-scenarios']
+    5.6s
+
+[95/110] (utilities) 'Identify historical energy market trends to understand shifts in suppl'
+    solution: ['GET /marketpatterns', 'POST /predictive-analysis']
+WARNING:root:Unsupported argument type IfExp
+    without: recall 0.50  prec 0.33  halluc 0  found ['GET /analytics/trend', 'GET /marketpatterns', 'POST /analytics/custom']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /marketpatterns', 'POST /predictive-analysis']
+    2.9s
+
+[96/110] (utilities) 'Retrieve active alerts to address critical issues, monitor ongoing mai'
+    solution: ['GET /alerts', 'GET /maintenance-schedule', 'GET /reports', 'POST /predictive-analysis', 'POST /sensor-calibrations', 'GET /grid/efficiency', 'GET /energy/load-distribution']
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type IfExp
+    without: recall 0.57  prec 0.67  halluc 0  found ['GET /analytics/distribution', 'GET /analytics/trend', 'GET /energy/load-distribution', 'GET /grid/efficiency', 'POST /predictive-analysis', 'POST /sensor-calibrations']
+    with:    recall 0.86  prec 0.86  halluc 0  found ['GET /alerts', 'GET /analytics/distribution', 'GET /energy/load-distribution', 'GET /grid/efficiency', 'GET /maintenance-schedule', 'POST /predictive-analysis', 'POST /sensor-calibrations']
+    2.7s
+
+[97/110] (utilities) 'Analyze historical energy market trends to identify shifts in pricing '
+    solution: ['GET /marketpatterns', 'POST /alerts', 'POST /predictive-analysis', 'GET /alerts', 'DELETE /trade/{trade_id}', 'DELETE /networks/{id}', 'GET /analytics/trend', 'GET /analytics/distribution', 'GET /energy/load-distribution']
+    without: recall 0.44  prec 0.67  halluc 0  found ['GET /analytics/distribution', 'GET /analytics/trend', 'GET /energy/load-distribution', 'GET /grid/efficiency', 'GET /industrial/consumption', 'GET /marketpatterns']
+    with:    recall 0.78  prec 0.78  halluc 0  found ['DELETE /trade/{trade_id}', 'GET /alerts', 'GET /analytics/distribution', 'GET /analytics/trend', 'GET /energy/load-distribution', 'GET /marketpatterns', 'GET /networks/{id}/analytics', 'POST /analytics/custom', 'POST /predictive-analysis']
+    4.9s
+
+[98/110] (utilities) 'Analyze the current usage statistics of renewable energy sources acros'
+    solution: ['GET /renewable/usage-stats', 'GET /alerts']
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /alerts', 'GET /renewable/usage-stats']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /alerts', 'GET /renewable/usage-stats']
+    1.7s
+
+[99/110] (utilities) 'Optimize the operational efficiency of the energy grid by analyzing hi'
+    solution: ['GET /marketpatterns', 'GET /maintenance-schedule', 'POST /sensor-calibrations', 'PUT /networks/{id}']
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.25  prec 0.20  halluc 0  found ['GET /analytics/distribution', 'GET /analytics/trend', 'GET /energy/load-distribution', 'GET /grid/efficiency', 'POST /sensor-calibrations']
+    with:    recall 0.75  prec 0.50  halluc 0  found ['GET /marketpatterns', 'GET /networks', 'GET /resource-allocation', 'POST /sensor-calibrations', 'PUT /maintenance/{id}', 'PUT /networks/{id}']
+    3.2s
+
+[100/110] (utilities) 'Submit energy optimization parameters for a household to reduce consum'
+    solution: ['POST /optimize/household', 'PUT /settings', 'GET /sensors/{id}/data', 'PUT /trade/{trade_id}']
+WARNING:root:Unsupported binary operator Sub
+WARNING:root:Unsupported binary operator Sub
+    without: recall 0.25  prec 0.50  halluc 0  found ['GET /household/consumption', 'POST /optimize/household']
+    with:    recall 0.75  prec 0.75  halluc 0  found ['GET /household/consumption', 'POST /optimize/household', 'PUT /settings', 'PUT /trade/{trade_id}']
+    3.0s
+
+[101/110] (real estate) 'Add a new property listing with features such as "Swimming Pool" and "'
+    solution: ['POST /listings', 'POST /features']
+    without: recall 1.00  prec 1.00  halluc 0  found ['POST /features', 'POST /listings']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['POST /features', 'POST /listings']
+    1.3s
+
+[102/110] (real estate) 'Update the status of a specific property to "Sold", log the respective'
+    solution: ['DELETE /properties/{propertyId}', 'POST /transaction-history', 'DELETE /verifications/{verification_id}', 'PUT /properties/{propertyId}', 'GET /regions/statistics']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type IfExp
+    without: recall 0.80  prec 1.00  halluc 0  found ['DELETE /properties/{propertyId}', 'GET /regions/statistics', 'POST /transaction-history', 'PUT /properties/{propertyId}']
+    with:    recall 1.00  prec 0.83  halluc 0  found ['DELETE /properties/{propertyId}', 'DELETE /verifications/{verification_id}', 'GET /properties/{propertyId}', 'GET /regions/statistics', 'POST /transaction-history', 'PUT /properties/{propertyId}']
+    3.7s
+
+[103/110] (real estate) 'Retrieve a list of available locations to help an applicant select a p'
+    solution: ['POST /inquiries', 'GET /market-insights', 'POST /feedback', 'GET /locations', 'PUT /applicants/{applicant_id}', 'PUT /investment-portfolio/{portfolioId}', 'PUT /listings/{id}', 'GET /real-estate-trends', 'DELETE /properties/{propertyId}']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type List
+    without: recall 0.33  prec 0.75  halluc 0  found ['GET /market-insights', 'GET /market-trends', 'GET /real-estate-trends', 'PUT /investment-portfolio/{portfolioId}']
+    with:    recall 0.78  prec 0.88  halluc 0  found ['GET /locations', 'GET /market-trends', 'GET /real-estate-trends', 'POST /feedback', 'POST /inquiries', 'PUT /applicants/{applicant_id}', 'PUT /investment-portfolio/{portfolioId}', 'PUT /listings/{id}']
+    5.1s
+
+[104/110] (real estate) 'Submit a new rental applicant with their details, retrieve a list of a'
+    solution: ['POST /applicants', 'GET /locations', 'GET /history/{applicant_id}']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type BoolOp
+    without: recall 0.67  prec 0.67  halluc 0  found ['GET /history/{applicant_id}', 'GET /properties', 'POST /applicants']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /history/{applicant_id}', 'GET /locations', 'POST /applicants']
+    2.5s
+
+[105/110] (real estate) 'Log a new transaction tied to an investment portfolio for tracking its'
+    solution: ['POST /transaction-history', 'GET /status/{verification_id}', 'GET /help', 'GET /investment-portfolio']
+    without: recall 0.50  prec 1.00  halluc 0  found ['GET /investment-portfolio', 'POST /transaction-history']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /help', 'GET /investment-portfolio', 'GET /status/{verification_id}', 'POST /transaction-history']
+    2.3s
+
+[106/110] (real estate) 'Register a new agent to manage property listings, retrieve a list of a'
+    solution: ['POST /agents', 'GET /inquiries', 'DELETE /listings/{id}', 'PUT /properties/{propertyId}']
+    without: recall 1.00  prec 1.00  halluc 0  found ['DELETE /listings/{id}', 'GET /inquiries', 'POST /agents', 'PUT /properties/{propertyId}']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['DELETE /listings/{id}', 'GET /inquiries', 'POST /agents', 'PUT /properties/{propertyId}']
+    1.8s
+
+[107/110] (real estate) 'Generate a detailed performance report for a specific investment portf'
+    solution: ['GET /performance-reports/{portfolioId}', 'GET /investment-portfolio/{portfolioId}', 'GET /properties/{propertyId}', 'GET /properties', 'GET /listings/search', 'POST /real-estate-analyzer', 'PUT /listings/{id}']
+WARNING:root:With statements are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type IfExp
+    without: recall 0.43  prec 0.43  halluc 0  found ['GET /investment-portfolio', 'GET /investment-portfolio/{portfolioId}', 'GET /performance-reports/{portfolioId}', 'GET /properties/price-insights', 'GET /properties/search', 'POST /real-estate-analyzer', 'PUT /investment-portfolio/{portfolioId}']
+    with:    recall 0.00  prec 0.00  halluc 0  found []
+    4.6s
+
+[108/110] (real estate) 'Retrieve the verification status of a process using its unique ID, pro'
+    solution: ['GET /status/{verification_id}', 'POST /feedback', 'GET /stakeholders', 'GET /help', 'GET /properties/price-insights', 'GET /market-insights']
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /help', 'GET /market-insights', 'GET /properties/price-insights', 'GET /status/{verification_id}']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /help', 'GET /market-insights', 'GET /properties/price-insights', 'GET /stakeholders', 'GET /status/{verification_id}', 'POST /feedback']
+    2.6s
+
+[109/110] (real estate) 'Provide feedback about the clarity and usefulness of the help document'
+    solution: ['GET /status/{verification_id}', 'POST /listings', 'GET /help']
+WARNING:root:Unsupported argument type IfExp
+    without: recall 0.67  prec 0.67  halluc 0  found ['GET /help', 'GET /status/{verification_id}', 'POST /feedback']
+    with:    recall 0.67  prec 0.50  halluc 0  found ['GET /help', 'GET /status/{verification_id}', 'POST /feedback', 'POST /properties']
+    3.2s
+
+[110/110] (real estate) 'Identify and list all stakeholders currently associated with the prope'
+    solution: ['GET /market-trends', 'POST /stakeholders', 'GET /properties', 'GET /stakeholders']
+WARNING:root:Unsupported argument type IfExp
+    without: recall 0.50  prec 0.40  halluc 0  found ['GET /investment-portfolio', 'GET /market-insights', 'GET /real-estate-trends', 'GET /stakeholders', 'POST /stakeholders']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /market-trends', 'GET /properties', 'GET /stakeholders', 'POST /stakeholders']
+    1.8s
+
+==============================================================================
+condition:          data/contexts/socbenchd_5_k10_budget-attention40-fixhint_n110.json
+baseline cache:     110 hits, 0 generated
+run:                1 (0 resumed, 110 generated)
+generated code:     data/generated/socbenchd_5_k10_budget-attention40-fixhint_n110_gpt-6-luna-none_r1.json
+
+queryset                              recall         precision
+                            without     with  without     with
+communication services        0.719    0.955    0.933    0.980
+consumer discretionary        0.595    0.941    0.908    0.932
+consumer staples              0.564    0.773    0.661    0.739
+energy                        0.678    0.807    0.800    0.798
+financials                    0.648    0.932    0.777    0.928
+health care                   0.600    0.708    0.840    0.687
+industrials                   0.606    0.875    0.817    0.860
+information technology        0.680    0.952    0.833    0.900
+materials                     0.656    0.652    0.833    0.735
+real estate                   0.656    0.844    0.791    0.821
+utilities                     0.535    0.847    0.559    0.796
+
+WITHOUT compression    recall 0.631   precision 0.796   f1 0.704   exact 25/110   halluc 0   tokens 172112
+WITH compression       recall 0.844   precision 0.834   f1 0.839   exact 56/110   halluc 3   tokens 165035
+
+Compression ratio:  1.04x
+Recall delta:       +0.214
+
+API usage (gpt-6-luna-none, as reported by the API):
+WITHOUT compression    input    189764   output    28089 (reasoning 0)   cost $0.0330
+WITH compression       input    182864   output    30891 (reasoning 0)   cost $0.0337
+Total time:         5.4 min
+==============================================================================

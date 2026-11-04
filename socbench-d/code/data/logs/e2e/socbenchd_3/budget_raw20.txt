@@ -1,0 +1,9 @@
+
+### -u src/make_budget_contexts.py --reference data/contexts/socbenchd_3_k10_all_noanchor_reqschema_n110.json --source data/contexts/socbenchd_3_k50_all_noanchor_reqschema_n110.json --label raw20 --raw-k 20
+queries:                  110
+mean depth (chunks):      20.0
+tokens used / raw k=10:   1.975
+retrieval recall:         0.844   (raw k=10: 0.641)
+queries over budget:      0
+
+wrote data/contexts/socbenchd_3_k10_budget-raw20_n110.json
