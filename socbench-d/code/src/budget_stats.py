@@ -24,19 +24,19 @@ from scipy.stats import wilcoxon
 
 LOG = "data/logs/codegen_budget_{}.txt"
 CONDITIONS = {
-    "Regel":        ["reqschema", "reqschema_r2", "reqschema_r3"],
+    "rule":         ["reqschema", "reqschema_r2", "reqschema_r3"],
     "AttentionRAG": ["attention40", "attention40_r2", "attention40_r3"],
-    "Identity":     ["identity", "identity_r2", "identity_r3"],
-    "roh k=20":     ["raw20", "raw20_r2", "raw20_r3"],
-    "Attn. fester": ["attention40-fixhint", "attention40-fixhint_r2", "attention40-fixhint_r3"],
+    "identity":     ["identity", "identity_r2", "identity_r3"],
+    "raw k=20":     ["raw20", "raw20_r2", "raw20_r3"],
+    "fixed hint":   ["attention40-fixhint", "attention40-fixhint_r2", "attention40-fixhint_r3"],
 }
 COMPARISONS = [
-    ("Regel", "roh k=10"), ("AttentionRAG", "roh k=10"),
-    ("Identity", "roh k=10"), ("roh k=20", "roh k=10"),
-    ("AttentionRAG", "Regel"), ("Identity", "Regel"), ("Identity", "AttentionRAG"),
-    ("Regel", "roh k=20"), ("AttentionRAG", "roh k=20"), ("Identity", "roh k=20"),
-    ("Attn. fester", "roh k=10"), ("Attn. fester", "Regel"),
-    ("Attn. fester", "AttentionRAG"), ("Attn. fester", "Identity"),
+    ("rule", "raw k=10"), ("AttentionRAG", "raw k=10"),
+    ("identity", "raw k=10"), ("raw k=20", "raw k=10"),
+    ("AttentionRAG", "rule"), ("identity", "rule"), ("identity", "AttentionRAG"),
+    ("rule", "raw k=20"), ("AttentionRAG", "raw k=20"), ("identity", "raw k=20"),
+    ("fixed hint", "raw k=10"), ("fixed hint", "rule"),
+    ("fixed hint", "AttentionRAG"), ("fixed hint", "identity"),
 ]
 
 
@@ -71,11 +71,11 @@ def holm(pvalues: list) -> list:
 
 def main():
     means, baseline = {}, None
-    print(f"{'Bedingung':<14}{'Läufe':<28}{'Mittel':>8}{'± SD':>8}")
+    print(f"{'Condition':<14}{'runs':<28}{'mean':>8}{'± SD':>8}")
     for name, labels in CONDITIONS.items():
         paths = [LOG.format(l) for l in labels if os.path.exists(LOG.format(l))]
         if not paths:
-            print(f"{name:<14}(keine Logs)")
+            print(f"{name:<14}(no logs)")
             continue
         runs = []
         for p in paths:
@@ -88,8 +88,8 @@ def main():
         print(f"{name:<14}{str([round(x, 3) for x in run_means]):<28}"
               f"{st.mean(run_means):>8.3f}{sd:>8.3f}")
         means[name] = {k: sum(r[k] for r in runs) / len(runs) for k in keys}
-    means["roh k=10"] = baseline
-    print(f"{'roh k=10':<14}{'(gecacht, 1 Lauf)':<28}"
+    means["raw k=10"] = baseline
+    print(f"{'raw k=10':<14}{'(cached, 1 run)':<28}"
           f"{sum(baseline.values()) / len(baseline):>8.3f}")
 
     rows = []
@@ -103,11 +103,11 @@ def main():
         rows.append((f"{a} vs {b}", sum(v > 0 for v in d), sum(v < 0 for v in d), p))
     adjusted = holm([r[3] for r in rows])
 
-    print(f"\n{'Vergleich (Mittel je Query)':<32}{'besser':>8}{'schlechter':>12}{'p':>11}{'p (Holm)':>11}")
+    print(f"\n{'Comparison (per-query means)':<32}{'better':>8}{'worse':>12}{'p':>11}{'p (Holm)':>11}")
     for (name, better, worse, p), p_adj in zip(rows, adjusted):
         mark = "  *" if p_adj < 0.05 else ""
         print(f"{name:<32}{better:>8}{worse:>12}{p:>11.2e}{p_adj:>11.2e}{mark}")
-    print("\n* signifikant nach Holm-Korrektur (alpha = 0.05)")
+    print("\n* significant after Holm correction (alpha = 0.05)")
 
 
 if __name__ == "__main__":

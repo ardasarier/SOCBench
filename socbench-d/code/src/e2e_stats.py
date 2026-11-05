@@ -41,25 +41,25 @@ SUITES = {
                   ("tmdb", "restbench-tmdb", "restbench_k10_budget-tmdb-", 100, "/3")],
 }
 CONDITIONS = {                      # display name -> label in file names
-    "Regel": "reqschema",
-    "roh k=20": "raw20",
+    "rule": "reqschema",
+    "raw k=20": "raw20",
     "AttentionRAG": "attention40",
-    "Attn. fester": "attention40-fixhint",
-    "Identity": "identity",
+    "fixed hint": "attention40-fixhint",
+    "identity": "identity",
 }
 COMPARISONS = [
-    ("Regel", "roh k=10"), ("AttentionRAG", "roh k=10"), ("Attn. fester", "roh k=10"),
-    ("Identity", "roh k=10"), ("roh k=20", "roh k=10"),
-    ("AttentionRAG", "Regel"), ("Attn. fester", "Regel"), ("Identity", "Regel"),
-    ("Regel", "roh k=20"),
-    ("Attn. fester", "AttentionRAG"), ("Identity", "AttentionRAG"), ("Identity", "Attn. fester"),
+    ("rule", "raw k=10"), ("AttentionRAG", "raw k=10"), ("fixed hint", "raw k=10"),
+    ("identity", "raw k=10"), ("raw k=20", "raw k=10"),
+    ("AttentionRAG", "rule"), ("fixed hint", "rule"), ("identity", "rule"),
+    ("rule", "raw k=20"),
+    ("fixed hint", "AttentionRAG"), ("identity", "AttentionRAG"), ("identity", "fixed hint"),
 ]
 RUNS = 3
 
 # Without any retrieved context: what the model knows from training. Reported
 # beside the main table and tested on its own against uncompressed k=10, so
 # the Holm family of the main comparisons stays unchanged.
-NOCTX = ("kein Kontext", "noctx")
+NOCTX = ("no context", "noctx")
 MODEL_LABEL = "gpt-6-luna-none"
 
 
@@ -150,12 +150,12 @@ def significance(per_query, title: str, only=None):
         rows.append((f"{a} vs {b}", sum(v > 0 for v in d), sum(v < 0 for v in d), p,
                      f"{agree}/{len(groups)}"))
     adjusted = holm([r[3] for r in rows])
-    print(f"\n{'Vergleich (' + title + ')':<34}{'besser':>8}{'schlechter':>12}{'p (Holm)':>11}{'höher in':>10}")
+    print(f"\n{'Comparison (' + title + ')':<34}{'better':>8}{'worse':>12}{'p (Holm)':>11}{'higher in':>10}")
     for (name, better, worse, _, agree), p_adj in zip(rows, adjusted):
         mark = "  *" if p_adj < 0.05 else ""
         print(f"{name:<34}{better:>8}{worse:>12}{p_adj:>11.2e}{agree:>10}{mark}")
     if only is None:
-        print("* signifikant nach Holm (alpha = 0.05) | höher in: Teile, in denen A im Mittel über B liegt")
+        print("* significant after Holm (alpha = 0.05) | higher in: parts in which A has the higher mean")
 
 
 def load_indices(part, cs, load_benchmark):
@@ -184,7 +184,7 @@ def evaluate(suite: str, parts: list):
                     with_, without = parse_log(path)
                     runs.append(with_)
                     for i, r in without.items():           # the cached reference
-                        per_query["roh k=10"][(key, i)] = r
+                        per_query["raw k=10"][(key, i)] = r
             if not runs:
                 continue
             keys = sorted(runs[0])
@@ -193,8 +193,8 @@ def evaluate(suite: str, parts: list):
                 values = [r[k] for r in runs if k in r]
                 per_query[name][(key, k)] = sum(values) / len(values)
 
-    names = ["roh k=10"] + list(CONDITIONS) + ([NOCTX[0]] if per_query[NOCTX[0]] else [])
-    print(f"{'Bedingung':<14}" + "".join(f"{p[0]:>9}" for p in parts) + f"{'alle':>9}{'n':>6}")
+    names = ["raw k=10"] + list(CONDITIONS) + ([NOCTX[0]] if per_query[NOCTX[0]] else [])
+    print(f"{'Condition':<14}" + "".join(f"{p[0]:>9}" for p in parts) + f"{'all':>9}{'n':>6}")
     for name in names:
         row = f"{name:<14}"
         for part in parts:
@@ -204,8 +204,8 @@ def evaluate(suite: str, parts: list):
         row += f"{sum(allv) / len(allv):>9.3f}{len(allv):>6}" if allv else ""
         print(row)
 
-    print("\nStreuung zwischen Läufen (SD der Lauf-Mittel)\n")
-    print(f"{'Bedingung':<14}" + "".join(f"{p[0]:>9}" for p in parts))
+    print("\nRun-to-run spread (SD of the run means)\n")
+    print(f"{'Condition':<14}" + "".join(f"{p[0]:>9}" for p in parts))
     for name in CONDITIONS:
         row = f"{name:<14}"
         for part in parts:
@@ -213,39 +213,39 @@ def evaluate(suite: str, parts: list):
             row += f"{st.stdev(m):>9.3f}" if len(m) > 1 else f"{'-':>9}"
         print(row)
 
-    significance(per_query, "alle Queries")
+    significance(per_query, "all queries")
     if per_query[NOCTX[0]]:
-        print(f"\nOhne Kontext gegen roh k=10 (eigener, geplanter Test, nicht Holm-korrigiert)")
+        print(f"\nNo context vs raw k=10 (separate planned test, not Holm-adjusted)")
         for only in [None] + ([p[0] for p in parts] if len(parts) > 1 else []):
-            keys = sorted(k for k in set(per_query[NOCTX[0]]) & set(per_query["roh k=10"])
+            keys = sorted(k for k in set(per_query[NOCTX[0]]) & set(per_query["raw k=10"])
                           if only is None or k[0] == only)
             if not keys:
                 continue
             xs = [per_query[NOCTX[0]][k] for k in keys]
-            ys = [per_query["roh k=10"][k] for k in keys]
+            ys = [per_query["raw k=10"][k] for k in keys]
             d = [x - y for x, y in zip(xs, ys)]
             p = wilcoxon(xs, ys).pvalue if any(d) else 1.0
-            print(f"  {('alle' if only is None else only):<10} n={len(keys):<4} "
-                  f"ohne Kontext {sum(xs) / len(xs):.3f}  roh k=10 {sum(ys) / len(ys):.3f}  "
-                  f"besser {sum(v > 0 for v in d):>3} schlechter {sum(v < 0 for v in d):>3}  p = {p:.2e}")
+            print(f"  {('all' if only is None else only):<10} n={len(keys):<4} "
+                  f"no context {sum(xs) / len(xs):.3f}  raw k=10 {sum(ys) / len(ys):.3f}  "
+                  f"better {sum(v > 0 for v in d):>3} worse {sum(v < 0 for v in d):>3}  p = {p:.2e}")
     if suite == "RestBench":
         for part in parts:
-            significance(per_query, f"nur {part[0]}", only=part[0])
+            significance(per_query, f"only {part[0]}", only=part[0])
 
     try:
         sys.path.insert(0, "src")
         import check_schema as cs
         from benchmark_loader import load_benchmark
     except Exception as error:
-        print(f"\n(Schema-Teil übersprungen: {error})")
+        print(f"\n(schema part skipped: {error})")
         return
-    print(f"\n{suite}: Pflichtfelder Body / Query, erfundene Schlüssel, über alle Läufe gepoolt\n")
+    print(f"\n{suite}: required body fields / query parameters, unknown keys, pooled over all runs\n")
     output = suite == "RestBench"
-    header = f"{'Bedingung':<14}" + "".join(f"{p[0]:>17}" for p in parts)
-    print(header + (f"   Output: reads / r-unk je Teil" if output else ""))
+    header = f"{'Condition':<14}" + "".join(f"{p[0]:>17}" for p in parts)
+    print(header + (f"   output: reads / r-unk per part" if output else ""))
     indices = {p[0]: load_indices(p, cs, load_benchmark) for p in parts}
     # the uncompressed reference: cached k=10 code, identical in every file
-    rows = ([("roh k=10", "reqschema", "code_without")]
+    rows = ([("raw k=10", "reqschema", "code_without")]
             + [(n, l, "code_with") for n, l in CONDITIONS.items()]
             + [(NOCTX[0], NOCTX[1], "code_with")])
     for name, label, arm in rows:
@@ -259,9 +259,9 @@ def evaluate(suite: str, parts: list):
             if output and found:
                 out += f"   {reads:>4} / {r_unk:.2f}"
         print(row + out)
-    print("\nje Zelle: Body-Pflichtfelder / Query-Pflichtparameter / erfundene Schlüssel"
-          + ("\nOutput: gelesene Response-Schlüssel / Anteil nicht im Response-Schema" if output else "")
-          + ("\n(Instanz 1: nur der letzte Lauf, sonst drei Läufe)" if suite == "SOCBench-D" else ""))
+    print("\nper cell: required body fields set / required query parameters set / unknown keys"
+          + ("\noutput: response keys read / share not in the response schema" if output else "")
+          + ("\n(instance 1: last run only, otherwise three runs)" if suite == "SOCBench-D" else ""))
 
 
 def main():

@@ -68,8 +68,8 @@ def compare(name_a, a, name_b, b):
     ys = [b[k]["precision"] for k in keys]
     d = [x - y for x, y in zip(xs, ys)]
     p = wilcoxon(xs, ys).pvalue if any(d) else 1.0
-    print(f"precision: {name_a} besser {sum(v > 0 for v in d)}, "
-          f"{name_b} besser {sum(v < 0 for v in d)}, gleich {sum(v == 0 for v in d)}, "
+    print(f"precision: {name_a} better {sum(v > 0 for v in d)}, "
+          f"{name_b} better {sum(v < 0 for v in d)}, equal {sum(v == 0 for v in d)}, "
           f"p = {p:.2e}")
 
 

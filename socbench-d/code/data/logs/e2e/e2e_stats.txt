@@ -2,49 +2,61 @@
   warnings.warn(
 /Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
   warnings.warn(
-Recall bei gleichem Budget, Mittel über Läufe (pro Query gemittelt)
+================================================================================================
+SOCBench-D: recall at equal budget, mean over runs (per-query mean)
 
-Bedingung            1       2       3       4       5     alle     n
-roh k=10         0.567   0.622   0.627   0.603   0.631    0.610   550
-Regel            0.700   0.760   0.743   0.745   0.726    0.735   550
-roh k=20         0.709   0.761   0.771   0.760   0.747    0.750   550
-AttentionRAG     0.756   0.746   0.742   0.748   0.788    0.756   550
-Attn. fester     0.788   0.788   0.796   0.834   0.831    0.808   550
-Identity         0.772   0.821   0.796   0.842   0.856    0.818   550
+Condition             1        2        3        4        5      all     n
+raw k=10          0.567    0.622    0.627    0.603    0.631    0.610   550
+rule              0.700    0.760    0.743    0.745    0.726    0.735   550
+raw k=20          0.709    0.761    0.771    0.760    0.747    0.750   550
+AttentionRAG      0.756    0.746    0.742    0.748    0.788    0.756   550
+fixed hint        0.788    0.788    0.796    0.834    0.831    0.808   550
+identity          0.772    0.821    0.796    0.842    0.856    0.818   550
+no context        0.154    0.189    0.190    0.174    0.195    0.180   550
 
-Streuung zwischen Läufen (SD der Lauf-Mittel, je Instanz)
+Run-to-run spread (SD of the run means)
 
-Bedingung            1       2       3       4       5
-Regel            0.006   0.011   0.008   0.006   0.012
-roh k=20         0.020   0.003   0.003   0.018   0.013
-AttentionRAG     0.025   0.019   0.010   0.006   0.016
-Attn. fester     0.041   0.017   0.011   0.011   0.012
-Identity         0.013   0.008   0.010   0.015   0.009
+Condition             1        2        3        4        5
+rule              0.006    0.011    0.008    0.006    0.012
+raw k=20          0.020    0.003    0.003    0.018    0.013
+AttentionRAG      0.025    0.019    0.010    0.006    0.016
+fixed hint        0.041    0.017    0.011    0.011    0.012
+identity          0.013    0.008    0.010    0.015    0.009
 
-Vergleich (alle Queries)        besser  schlechter   p (Holm)  höher in
-Regel vs roh k=10                  290          35   2.09e-32       5/5  *
-AttentionRAG vs roh k=10           322          72   2.54e-22       5/5  *
-Attn. fester vs roh k=10           347          76   1.63e-33       5/5  *
-Identity vs roh k=10               351          78   7.97e-32       5/5  *
-roh k=20 vs roh k=10               312          49   5.10e-31       5/5  *
-AttentionRAG vs Regel              190          86   9.38e-03       3/5  *
-Attn. fester vs Regel              247          92   2.82e-09       5/5  *
-Identity vs Regel                  256          99   7.03e-10       5/5  *
-Regel vs roh k=20                   73         138   9.38e-03       0/5  *
-Attn. fester vs AttentionRAG       168          87   2.15e-04       5/5  *
-Identity vs AttentionRAG           192          95   2.62e-05       5/5  *
-Identity vs Attn. fester           128          94   2.29e-01       4/5
+Comparison (all queries)            better       worse   p (Holm) higher in
+rule vs raw k=10                       290          35   2.09e-32       5/5  *
+AttentionRAG vs raw k=10               322          72   2.54e-22       5/5  *
+fixed hint vs raw k=10                 347          76   1.63e-33       5/5  *
+identity vs raw k=10                   351          78   7.97e-32       5/5  *
+raw k=20 vs raw k=10                   312          49   5.10e-31       5/5  *
+AttentionRAG vs rule                   190          86   9.38e-03       3/5  *
+fixed hint vs rule                     247          92   2.82e-09       5/5  *
+identity vs rule                       256          99   7.03e-10       5/5  *
+rule vs raw k=20                        73         138   9.38e-03       0/5  *
+fixed hint vs AttentionRAG             168          87   2.15e-04       5/5  *
+identity vs AttentionRAG               192          95   2.62e-05       5/5  *
+identity vs fixed hint                 128          94   2.29e-01       4/5
+* significant after Holm (alpha = 0.05) | higher in: parts in which A has the higher mean
 
-* signifikant nach Holm (alpha = 0.05) | höher in: Instanzen, in denen A im Mittel über B liegt
+No context vs raw k=10 (separate planned test, not Holm-adjusted)
+  all        n=550  no context 0.180  raw k=10 0.610  better  33 worse 462  p = 1.19e-73
+  1          n=110  no context 0.154  raw k=10 0.567  better   4 worse  94  p = 2.63e-16
+  2          n=110  no context 0.189  raw k=10 0.622  better  11 worse  88  p = 1.40e-14
+  3          n=110  no context 0.190  raw k=10 0.627  better   6 worse  94  p = 5.16e-17
+  4          n=110  no context 0.174  raw k=10 0.603  better   5 worse  97  p = 3.46e-16
+  5          n=110  no context 0.195  raw k=10 0.631  better   7 worse  89  p = 2.54e-16
 
-Pflichtfelder Body / Query und erfundene Schlüssel, über alle Läufe gepoolt
+SOCBench-D: required body fields / query parameters, unknown keys, pooled over all runs
 
-Bedingung                     1                2                3                4                5
-Regel            1.00/1.00/0.08   0.98/1.00/0.18   1.00/1.00/0.08   1.00/1.00/0.10   0.98/1.00/0.13
-roh k=20         1.00/1.00/0.09   0.98/1.00/0.18   1.00/0.99/0.08   1.00/1.00/0.10   0.97/1.00/0.14
+Condition                     1                2                3                4                5
+raw k=10         1.00/1.00/0.06   0.98/1.00/0.16   1.00/1.00/0.07   1.00/1.00/0.11   0.97/1.00/0.13
+rule             1.00/1.00/0.08   0.98/1.00/0.18   1.00/1.00/0.08   1.00/1.00/0.10   0.98/1.00/0.13
+raw k=20         1.00/1.00/0.09   0.98/1.00/0.18   1.00/0.99/0.08   1.00/1.00/0.10   0.97/1.00/0.14
 AttentionRAG     0.49/0.52/0.51   0.34/0.43/0.63   0.49/0.68/0.51   0.44/0.43/0.57   0.46/0.41/0.60
-Attn. fester     0.32/0.45/0.71   0.26/0.33/0.73   0.40/0.42/0.66   0.43/0.35/0.57   0.39/0.34/0.69
-Identity         0.22/0.37/0.79   0.24/0.34/0.74   0.35/0.39/0.71   0.41/0.35/0.62   0.35/0.23/0.74
+fixed hint       0.32/0.45/0.71   0.26/0.33/0.73   0.40/0.42/0.66   0.43/0.35/0.57   0.39/0.34/0.69
+identity         0.22/0.37/0.79   0.24/0.34/0.74   0.35/0.39/0.71   0.41/0.35/0.62   0.35/0.23/0.74
+no context       0.23/1.00/0.80   0.45/0.00/0.78   0.36/0.67/0.79   0.14/0.80/0.85   0.27/0.00/0.87
 
-je Zelle: Body-Pflichtfelder / Query-Pflichtparameter / erfundene Schlüssel
-(Instanz 1: nur der letzte Lauf, die anderen: drei Läufe)
+per cell: required body fields set / required query parameters set / unknown keys
+(instance 1: last run only, otherwise three runs)
+

@@ -79,9 +79,9 @@ def collect(parts):
 
 
 def run_to_run(suite, parts, runs):
-    print(f"\n{suite}: Streuung zwischen Läufen, pro Query\n")
-    print(f"{'Bedingung':<14}{'Tiefe':>7}{'Recall':>8}{'SD/Query':>10}"
-          f"{'instabil':>10}{'Spannw.':>9}{'n':>6}")
+    print(f"\n{suite}: run-to-run spread per query\n")
+    print(f"{'Condition':<14}{'depth':>7}{'Recall':>8}{'SD/Query':>10}"
+          f"{'unstable':>10}{'range':>9}{'n':>6}")
     sds = {}
     for name, label in CONDITIONS.items():
         per_query = {k: v for k, v in runs[name].items() if len(v) >= 2}
@@ -95,37 +95,37 @@ def run_to_run(suite, parts, runs):
         mean_recall = st.mean(st.mean(v) for v in per_query.values())
         print(f"{name:<14}{depth:>7}{mean_recall:>8.3f}{st.mean(sds[name].values()):>10.3f}"
               f"{unstable:>9.1%}{st.mean(ranges):>9.3f}{len(per_query):>6}")
-    print("\nSD/Query: mittlere SD des Recalls einer Query über die Läufe | instabil: Anteil"
-          "\nder Queries, deren Recall sich zwischen Läufen ändert | Spannw.: mittlere Spannweite"
-          "\nTiefe: mittlere Zahl Chunks im Budget (aus den Budget-Logs, soweit vorhanden)")
+    print("\nSD/Query: mean SD of a query's recall over the runs | unstable: share"
+          "\nof queries whose recall changes between runs | range: mean range"
+          "\ndepth: mean number of chunks in the budget (from the budget logs, where available)")
 
     names = list(sds)
     common = sorted(set.intersection(*(set(sds[n]) for n in names))) if names else []
     if len(names) >= 3 and common:
         stat, p = friedmanchisquare(*[[sds[n][k] for k in common] for n in names])
-        print(f"\nFriedman über {len(names)} Bedingungen ({len(common)} Queries): "
+        print(f"\nFriedman over {len(names)} conditions ({len(common)} queries): "
               f"chi2 = {stat:.1f}, p = {p:.2e}")
-    if "Regel" in sds:
+    if "rule" in sds:
         rows = []
         for name in names:
-            if name == "Regel":
+            if name == "rule":
                 continue
-            keys = sorted(set(sds[name]) & set(sds["Regel"]))
-            xs, ys = [sds[name][k] for k in keys], [sds["Regel"][k] for k in keys]
+            keys = sorted(set(sds[name]) & set(sds["rule"]))
+            xs, ys = [sds[name][k] for k in keys], [sds["rule"][k] for k in keys]
             d = [x - y for x, y in zip(xs, ys)]
             p = wilcoxon(xs, ys).pvalue if any(d) else 1.0
             rows.append((name, sum(v > 0 for v in d), sum(v < 0 for v in d), p))
         adjusted = holm([r[3] for r in rows])
-        print(f"\n{'SD/Query gegen Regel':<28}{'größer':>8}{'kleiner':>9}{'p (Holm)':>11}")
+        print(f"\n{'SD/query vs rule':<28}{'larger':>8}{'smaller':>9}{'p (Holm)':>11}")
         for (name, more, less, _), p_adj in zip(rows, adjusted):
             print(f"{name:<28}{more:>8}{less:>9}{p_adj:>11.2e}{'  *' if p_adj < 0.05 else ''}")
 
 
 def across_domains(suite, runs, sector, base):
     names = sorted({sector[k] for k in sector})
-    print(f"\n{suite}: Stabilität über Domänen ({len(names)} Sektoren, alle Instanzen gepoolt)\n")
-    print(f"{'Bedingung':<14}{'Mittel':>8}{'SD':>8}{'CV':>8}{'min':>8}{'max':>8}{'> roh k=10':>12}")
-    table = {"roh k=10": base}
+    print(f"\n{suite}: stability across domains ({len(names)} sectors, all instances pooled)\n")
+    print(f"{'Condition':<14}{'mean':>8}{'SD':>8}{'CV':>8}{'min':>8}{'max':>8}{'> raw k=10':>12}")
+    table = {"raw k=10": base}
     for name in CONDITIONS:
         table[name] = {k: st.mean(v) for k, v in runs[name].items()}
     base_by_sector = {}
@@ -134,15 +134,15 @@ def across_domains(suite, runs, sector, base):
         for k, v in values.items():
             by_sector[sector[k]].append(v)
         means = {s: st.mean(v) for s, v in by_sector.items()}
-        if name == "roh k=10":
+        if name == "raw k=10":
             base_by_sector = means
         overall = st.mean(means.values())
         sd = st.stdev(means.values()) if len(means) > 1 else float("nan")
-        better = ("-" if name == "roh k=10" else
+        better = ("-" if name == "raw k=10" else
                   f"{sum(means[s] > base_by_sector[s] for s in means)}/{len(means)}")
         print(f"{name:<14}{overall:>8.3f}{sd:>8.3f}{sd / overall:>8.3f}"
               f"{min(means.values()):>8.3f}{max(means.values()):>8.3f}{better:>12}")
-    print("\nMittel/SD/CV über die Sektor-Mittel; CV = SD / Mittel (wie Pesl et al.)")
+    print("\nmean/SD/CV over the sector means; CV = SD / mean (as in Pesl et al.)")
 
 
 def main():
