@@ -1,0 +1,33 @@
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+7 file(s)
+
+condition                                             arm       b-req ours  b-req SC q-req ours  q-req SC unk ours  unk SC SC fail SC untr SC amb
+socbenchd_1_k10_budget-attention40-fixhint_n110_gpt-6 without        1.000     1.000      1.000     1.000    0.058   0.050       0       3     16
+socbenchd_1_k10_budget-attention40-fixhint_n110_gpt-6 with           0.323     0.320      0.453     0.455    0.710   0.712       0      10     22
+
+socbenchd_1_k10_budget-attention40_n110_gpt-6-luna-no without        1.000     1.000      1.000     1.000    0.058   0.050       0       3     16
+socbenchd_1_k10_budget-attention40_n110_gpt-6-luna-no with           0.488     0.488      0.520     0.491    0.511   0.520       0      18     20
+
+socbenchd_1_k10_budget-attention_n110_gpt-6-luna-none without        1.000     1.000      1.000     1.000    0.058   0.050       0       3     16
+socbenchd_1_k10_budget-attention_n110_gpt-6-luna-none with           0.473     0.483      0.605     0.578    0.542   0.534       1      10     20
+
+socbenchd_1_k10_budget-identity_n110_gpt-6-luna-none  without        1.000     1.000      1.000     1.000    0.058   0.050       0       3     16
+socbenchd_1_k10_budget-identity_n110_gpt-6-luna-none  with           0.219     0.223      0.367     0.360    0.787   0.789       0       7     18
+
+socbenchd_1_k10_budget-noctx_n110_gpt-6-luna-none_r1  without        1.000     1.000      1.000     1.000    0.058   0.050       0       3     16
+socbenchd_1_k10_budget-noctx_n110_gpt-6-luna-none_r1  with           0.231     0.231      1.000     1.000    0.804   0.765       0       7     13
+
+socbenchd_1_k10_budget-raw20_n110_gpt-6-luna-none     without        1.000     1.000      1.000     1.000    0.058   0.050       0       3     16
+socbenchd_1_k10_budget-raw20_n110_gpt-6-luna-none     with           1.000     1.000      1.000     1.000    0.089   0.078       0       7     23
+
+socbenchd_1_k10_budget-reqschema_n110_gpt-6-luna-none without        1.000     1.000      1.000     1.000    0.058   0.050       0       3     16
+socbenchd_1_k10_budget-reqschema_n110_gpt-6-luna-none with           1.000     1.000      1.000     1.000    0.076   0.085       0       6     20
+
+b-req / q-req   required body fields / query parameters set (solution endpoints)
+unk             sent keys not defined in the spec / sent keys
+SC fail         programs SOCBench-SC could not analyse (unsupported syntax)
+SC untr         solution calls whose params or body keys are not fully known
+SC amb          solution calls to an endpoint two services define (not judged by SC)

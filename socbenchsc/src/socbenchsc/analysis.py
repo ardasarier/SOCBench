@@ -1,5 +1,5 @@
 import ast
-from socbenchsc.models import Unknown
+from socbenchsc.models import Invocation, Unknown
 from socbenchsc.node_visitor import AnalysisVisitor
 from urllib.parse import urlparse
 
@@ -20,6 +20,19 @@ def parse_argument(argument: str) -> str | None:
 
 
 VERBS = {"get", "options", "head", "post", "put", "patch", "delete"}
+
+# Names of the positional parameters of the requests API, so that
+# requests.get(url, {"q": 1}) is read like requests.get(url, params={"q": 1}).
+POSITIONAL = {
+    "get": ["url", "params"],
+    "options": ["url"],
+    "head": ["url"],
+    "post": ["url", "data", "json"],
+    "put": ["url", "data"],
+    "patch": ["url", "data"],
+    "delete": ["url"],
+    "request": ["method", "url"],
+}
 FUNCTION_CALLS = {f"requests.{verb}" for verb in VERBS}
 FUNCTION_MAPPING = {f"requests.{verb}": verb.upper() for verb in VERBS}
 
@@ -31,11 +44,24 @@ class Analysis:
         self.request_names = FUNCTION_CALLS.copy()
         self.request_mapping = FUNCTION_MAPPING.copy()
         self.request = {"requests.request"}
+        self.visited = False
+
+    def visit(self):
+        """Runs the dataflow analysis once; both entry points share it."""
+        if not self.visited:
+            self.visitor.visit(self.tree)
+            self.compute_request_names()
+            self.visited = True
 
     def perform_analysis(self):
-        self.visitor.visit(self.tree)
-        self.compute_request_names()
+        self.visit()
         return self.compute_sinks()
+
+    def perform_invocation_analysis(self) -> list[Invocation]:
+        """Like perform_analysis, but one Invocation per call and resolved
+        endpoint, with all parameters of the call instead of only the URL."""
+        self.visit()
+        return self.compute_invocations()
 
     def compute_request_names(self):
         # for request_import in self.visitor.requests:
@@ -61,6 +87,23 @@ class Analysis:
                 for method in methods:
                     sinks.add(f"{method} {url}")
         return sinks
+
+    def compute_invocations(self) -> list[Invocation]:
+        invocations = []
+        for function_call in self.visitor.get_function_calls():
+            if function_call.name in self.request:
+                urls, methods = extract_request(function_call)
+                kind = "request"
+            elif function_call.name in self.request_names:
+                urls, methods = self.extract_attribute(function_call)
+                kind = function_call.name.split(".")[-1].lower()
+            else:
+                continue
+            arguments = named_arguments(function_call, kind)
+            for url in urls:
+                for method in methods:
+                    invocations.append(Invocation(method=method, path=url, arguments=arguments))
+        return invocations
 
     def extract_attribute(self, function_call):
         urls = extract_urls(function_call, 0)
@@ -95,6 +138,16 @@ def extract_url_from(arguments, index):
         return []
     result_arguments = [parse_argument(value.value) for value in arguments[index].values if value != Unknown()]
     return filter_none(result_arguments)
+
+
+def named_arguments(function_call, kind: str) -> dict:
+    """All parameters of a call by name: positional ones named after the
+    requests signature, keyword ones as given. Positional arguments beyond
+    the signature are dropped, as requests itself would reject them."""
+    names = POSITIONAL.get(kind, ["url"])
+    arguments = {name: value for name, value in zip(names, function_call.arguments)}
+    arguments.update(function_call.kwargs)
+    return arguments
 
 
 def filter_none(arguments):

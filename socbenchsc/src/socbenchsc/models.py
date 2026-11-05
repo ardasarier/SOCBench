@@ -121,3 +121,37 @@ class RequestImport:
 
 
 UNKNOWN = Variable(values=frozenset({Unknown()}))
+
+
+class Invocation(BaseModel):
+    """One service invocation found in the code: the endpoint it calls and
+    every parameter it passes, as computed by the reaching definition
+    analysis. perform_analysis() keeps only method and path; this keeps the
+    rest, e.g. to check the call against the endpoint's schema."""
+    method: str
+    path: str
+    arguments: dict[str, Variable] = {}
+
+    def keys(self, name: str) -> tuple[frozenset[str], bool]:
+        """Keys of the dictionary passed as parameter `name` (params, json,
+        data, headers, ...), and whether they are completely known.
+
+        A parameter that is not passed has no keys and is complete. The keys
+        of all possible values are united, so the result overapproximates,
+        like the endpoint analysis itself. Any possible value that is not a
+        dictionary with constant keys -- Unknown, a string body, a computed
+        key -- makes the result incomplete."""
+        if name not in self.arguments:
+            return frozenset(), True
+        keys, complete = set(), True
+        for value in self.arguments[name].values:
+            if isinstance(value, Dict):
+                for key, _ in value.value:
+                    for key_value in key.values:
+                        if isinstance(key_value, Constant):
+                            keys.add(key_value.value)
+                        else:
+                            complete = False
+            else:
+                complete = False
+        return frozenset(keys), complete
