@@ -1,0 +1,116 @@
+
+=== restbench-spotify: contexts
+  $ -u src/prepare_contexts.py --benchmark restbench --skip-existing --api spotify --top-k 10 --keep-fields reqschema
+    exit 0, 0.5 min  (data/logs/e2e/restbench-spotify/prepare_k10_reqschema.txt)
+  $ -u src/prepare_contexts.py --benchmark restbench --skip-existing --api spotify --top-k 50 --keep-fields reqschema
+    exit 0, 0.5 min  (data/logs/e2e/restbench-spotify/prepare_k50_reqschema.txt)
+  $ -u src/prepare_contexts.py --benchmark restbench --skip-existing --api spotify --top-k 50 --identity-only
+    exit 0, 0.4 min  (data/logs/e2e/restbench-spotify/prepare_k50_identity.txt)
+  $ -u src/prepare_contexts.py --benchmark restbench --skip-existing --api spotify --top-k 40
+    exit 0, 40.9 min  (data/logs/e2e/restbench-spotify/prepare_k40_attention.txt)
+  $ -u src/prepare_contexts.py --benchmark restbench --skip-existing --api spotify --top-k 40 --fixed-hint 'The API endpoint required for this task is'
+    exit 0, 24.9 min  (data/logs/e2e/restbench-spotify/prepare_k40_fixhint.txt)
+
+=== restbench-spotify: equal-budget contexts
+  $ -u src/make_budget_contexts.py --reference data/contexts/restbench-spotify_k10_all_noanchor_reqschema_n57.json --source data/contexts/restbench-spotify_k50_all_noanchor_reqschema_n57.json --label spotify-reqschema
+    exit 0, 0.0 min  (data/logs/e2e/restbench-spotify/budget_reqschema.txt)
+  $ -u src/make_budget_contexts.py --reference data/contexts/restbench-spotify_k10_all_noanchor_reqschema_n57.json --source data/contexts/restbench-spotify_k50_all_noanchor_reqschema_n57.json --label spotify-raw20 --raw-k 20
+    exit 0, 0.0 min  (data/logs/e2e/restbench-spotify/budget_raw20.txt)
+  $ -u src/make_budget_contexts.py --reference data/contexts/restbench-spotify_k10_all_noanchor_reqschema_n57.json --source data/contexts/restbench-spotify_k50_all_noanchor_identity_n57.json --label spotify-identity
+    exit 0, 0.0 min  (data/logs/e2e/restbench-spotify/budget_identity.txt)
+  $ -u src/make_budget_contexts.py --reference data/contexts/restbench-spotify_k10_all_noanchor_reqschema_n57.json --source data/contexts/restbench-spotify_k40_all_noanchor_k10_n57.json --label spotify-attention40
+    exit 0, 0.0 min  (data/logs/e2e/restbench-spotify/budget_attention40.txt)
+  $ -u src/make_budget_contexts.py --reference data/contexts/restbench-spotify_k10_all_noanchor_reqschema_n57.json --source data/contexts/restbench-spotify_k40_all_noanchor_k10-fixhint_n57.json --label spotify-attention40-fixhint
+    exit 0, 0.0 min  (data/logs/e2e/restbench-spotify/budget_attention40-fixhint.txt)
+
+=== restbench-spotify: codegen, 3 run(s) per condition
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-spotify-reqschema_n57.json --run 1
+    exit 0, 4.2 min  (data/logs/e2e/restbench-spotify/codegen_reqschema_r1.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-spotify-reqschema_n57.json --run 2
+    exit 0, 2.3 min  (data/logs/e2e/restbench-spotify/codegen_reqschema_r2.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-spotify-reqschema_n57.json --run 3
+    exit 0, 2.3 min  (data/logs/e2e/restbench-spotify/codegen_reqschema_r3.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-spotify-raw20_n57.json --run 1
+    exit 0, 2.3 min  (data/logs/e2e/restbench-spotify/codegen_raw20_r1.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-spotify-raw20_n57.json --run 2
+    exit 0, 2.5 min  (data/logs/e2e/restbench-spotify/codegen_raw20_r2.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-spotify-raw20_n57.json --run 3
+    exit 0, 2.4 min  (data/logs/e2e/restbench-spotify/codegen_raw20_r3.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-spotify-identity_n57.json --run 1
+    exit 0, 2.2 min  (data/logs/e2e/restbench-spotify/codegen_identity_r1.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-spotify-identity_n57.json --run 2
+    exit 0, 2.4 min  (data/logs/e2e/restbench-spotify/codegen_identity_r2.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-spotify-identity_n57.json --run 3
+    exit 0, 2.2 min  (data/logs/e2e/restbench-spotify/codegen_identity_r3.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-spotify-attention40_n57.json --run 1
+    exit 0, 2.4 min  (data/logs/e2e/restbench-spotify/codegen_attention40_r1.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-spotify-attention40_n57.json --run 2
+    exit 0, 2.5 min  (data/logs/e2e/restbench-spotify/codegen_attention40_r2.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-spotify-attention40_n57.json --run 3
+    exit 0, 2.6 min  (data/logs/e2e/restbench-spotify/codegen_attention40_r3.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-spotify-attention40-fixhint_n57.json --run 1
+    exit 0, 2.3 min  (data/logs/e2e/restbench-spotify/codegen_attention40-fixhint_r1.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-spotify-attention40-fixhint_n57.json --run 2
+    exit 0, 2.3 min  (data/logs/e2e/restbench-spotify/codegen_attention40-fixhint_r2.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-spotify-attention40-fixhint_n57.json --run 3
+    exit 0, 2.4 min  (data/logs/e2e/restbench-spotify/codegen_attention40-fixhint_r3.txt)
+
+=== done in 1.7 h, all benchmarks complete
+
+=== restbench-tmdb: contexts
+  $ -u src/prepare_contexts.py --benchmark restbench --skip-existing --api tmdb --top-k 10 --keep-fields reqschema
+    exit 0, 0.5 min  (data/logs/e2e/restbench-tmdb/prepare_k10_reqschema.txt)
+  $ -u src/prepare_contexts.py --benchmark restbench --skip-existing --api tmdb --top-k 50 --keep-fields reqschema
+    exit 0, 0.6 min  (data/logs/e2e/restbench-tmdb/prepare_k50_reqschema.txt)
+  $ -u src/prepare_contexts.py --benchmark restbench --skip-existing --api tmdb --top-k 50 --identity-only
+    exit 0, 0.6 min  (data/logs/e2e/restbench-tmdb/prepare_k50_identity.txt)
+  $ -u src/prepare_contexts.py --benchmark restbench --skip-existing --api tmdb --top-k 40
+    exit 0, 115.9 min  (data/logs/e2e/restbench-tmdb/prepare_k40_attention.txt)
+  $ -u src/prepare_contexts.py --benchmark restbench --skip-existing --api tmdb --top-k 40 --fixed-hint 'The API endpoint required for this task is'
+    exit 0, 85.2 min  (data/logs/e2e/restbench-tmdb/prepare_k40_fixhint.txt)
+
+=== restbench-tmdb: equal-budget contexts
+  $ -u src/make_budget_contexts.py --reference data/contexts/restbench-tmdb_k10_all_noanchor_reqschema_n100.json --source data/contexts/restbench-tmdb_k50_all_noanchor_reqschema_n100.json --label tmdb-reqschema
+    exit 0, 0.0 min  (data/logs/e2e/restbench-tmdb/budget_reqschema.txt)
+  $ -u src/make_budget_contexts.py --reference data/contexts/restbench-tmdb_k10_all_noanchor_reqschema_n100.json --source data/contexts/restbench-tmdb_k50_all_noanchor_reqschema_n100.json --label tmdb-raw20 --raw-k 20
+    exit 0, 0.0 min  (data/logs/e2e/restbench-tmdb/budget_raw20.txt)
+  $ -u src/make_budget_contexts.py --reference data/contexts/restbench-tmdb_k10_all_noanchor_reqschema_n100.json --source data/contexts/restbench-tmdb_k50_all_noanchor_identity_n100.json --label tmdb-identity
+    exit 0, 0.0 min  (data/logs/e2e/restbench-tmdb/budget_identity.txt)
+  $ -u src/make_budget_contexts.py --reference data/contexts/restbench-tmdb_k10_all_noanchor_reqschema_n100.json --source data/contexts/restbench-tmdb_k40_all_noanchor_k10_n100.json --label tmdb-attention40
+    exit 0, 0.0 min  (data/logs/e2e/restbench-tmdb/budget_attention40.txt)
+  $ -u src/make_budget_contexts.py --reference data/contexts/restbench-tmdb_k10_all_noanchor_reqschema_n100.json --source data/contexts/restbench-tmdb_k40_all_noanchor_k10-fixhint_n100.json --label tmdb-attention40-fixhint
+    exit 0, 0.0 min  (data/logs/e2e/restbench-tmdb/budget_attention40-fixhint.txt)
+
+=== restbench-tmdb: codegen, 3 run(s) per condition
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-tmdb-reqschema_n100.json --run 1
+    exit 0, 7.0 min  (data/logs/e2e/restbench-tmdb/codegen_reqschema_r1.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-tmdb-reqschema_n100.json --run 2
+    exit 0, 3.7 min  (data/logs/e2e/restbench-tmdb/codegen_reqschema_r2.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-tmdb-reqschema_n100.json --run 3
+    exit 0, 3.5 min  (data/logs/e2e/restbench-tmdb/codegen_reqschema_r3.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-tmdb-raw20_n100.json --run 1
+    exit 0, 3.5 min  (data/logs/e2e/restbench-tmdb/codegen_raw20_r1.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-tmdb-raw20_n100.json --run 2
+    exit 0, 3.5 min  (data/logs/e2e/restbench-tmdb/codegen_raw20_r2.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-tmdb-raw20_n100.json --run 3
+    exit 0, 3.9 min  (data/logs/e2e/restbench-tmdb/codegen_raw20_r3.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-tmdb-identity_n100.json --run 1
+    exit 0, 3.5 min  (data/logs/e2e/restbench-tmdb/codegen_identity_r1.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-tmdb-identity_n100.json --run 2
+    exit 0, 3.5 min  (data/logs/e2e/restbench-tmdb/codegen_identity_r2.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-tmdb-identity_n100.json --run 3
+    exit 0, 3.5 min  (data/logs/e2e/restbench-tmdb/codegen_identity_r3.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-tmdb-attention40_n100.json --run 1
+    exit 0, 3.4 min  (data/logs/e2e/restbench-tmdb/codegen_attention40_r1.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-tmdb-attention40_n100.json --run 2
+    exit 0, 3.8 min  (data/logs/e2e/restbench-tmdb/codegen_attention40_r2.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-tmdb-attention40_n100.json --run 3
+    exit 0, 3.8 min  (data/logs/e2e/restbench-tmdb/codegen_attention40_r3.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-tmdb-attention40-fixhint_n100.json --run 1
+    exit 0, 3.7 min  (data/logs/e2e/restbench-tmdb/codegen_attention40-fixhint_r1.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-tmdb-attention40-fixhint_n100.json --run 2
+    exit 0, 4.1 min  (data/logs/e2e/restbench-tmdb/codegen_attention40-fixhint_r2.txt)
+  $ -u src/run_codegen.py data/contexts/restbench_k10_budget-tmdb-attention40-fixhint_n100.json --run 3
+    exit 0, 3.8 min  (data/logs/e2e/restbench-tmdb/codegen_attention40-fixhint_r3.txt)
+
+=== done in 4.4 h, all benchmarks complete

@@ -1,0 +1,964 @@
+
+### -u src/run_codegen.py data/contexts/restbench_k10_budget-spotify-identity_n57.json --run 3
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+loaded 57 prepared contexts from data/contexts/restbench_k10_budget-spotify-identity_n57.json
+benchmark restbench, k=10, 1 queryset(s)
+loaded 59 cached baseline generations from data/baselines/restbench_k10_gpt-6-luna-none.json
+saving generated code to data/generated/restbench_k10_budget-spotify-identity_n57_gpt-6-luna-none_r3.json
+
+
+[1/57] (restbench) 'Make me a playlist containing three songs of Mariah Carey and name it '
+    solution: ['GET /search', 'GET /me', 'POST /users/{user_id}/playlists', 'POST /playlists/{playlist_id}/tracks']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 1.00  halluc 0  found ['POST /playlists/{playlist_id}/tracks', 'POST /users/{user_id}/playlists']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /me', 'GET /search', 'POST /playlists/{playlist_id}/tracks', 'POST /users/{user_id}/playlists']
+    3.0s
+
+[2/57] (restbench) 'Add the first song of The Dark Side of the Moon in my playback queue'
+    solution: ['GET /search', 'GET /albums/{id}/tracks', 'POST /me/player/queue']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.33  prec 1.00  halluc 0  found ['POST /me/player/queue']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /albums/{id}/tracks', 'GET /search', 'POST /me/player/queue']
+    2.9s
+
+[3/57] (restbench) 'Add Summertime Sadness by Lana Del Rey in my first playlist'
+    solution: ['GET /search', 'GET /me/playlists', 'POST /playlists/{playlist_id}/tracks']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.33  prec 1.00  halluc 0  found ['POST /playlists/{playlist_id}/tracks']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /me/playlists', 'GET /search', 'POST /playlists/{playlist_id}/tracks']
+    3.0s
+
+[4/57] (restbench) 'Skip to the next track and set the volume to 60'
+    solution: ['POST /me/player/next', 'PUT /me/player/volume']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['POST /me/player/next', 'PUT /me/player/volume']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['POST /me/player/next', 'PUT /me/player/volume']
+    1.2s
+
+[5/57] (restbench) 'Put the song now being played into My Music'
+    solution: ['GET /me/player/currently-playing', 'PUT /me/tracks']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /me/player/currently-playing', 'PUT /me/tracks']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /me/player/currently-playing', 'PUT /me/tracks']
+    1.9s
+
+[6/57] (restbench) 'Append the first song of the newest album of my following first artist'
+    solution: ['GET /me/following', 'GET /artists/{id}/albums', 'GET /albums/{id}/tracks', 'POST /me/player/queue']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /albums/{id}/tracks', 'GET /artists/{id}/albums', 'GET /me/following', 'POST /me/player/queue']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /albums/{id}/tracks', 'GET /artists/{id}/albums', 'GET /me/following', 'POST /me/player/queue']
+    3.9s
+
+[7/57] (restbench) 'Follow the artist of the song now playing'
+    solution: ['GET /me/player/currently-playing', 'GET /tracks/{id}', 'PUT /me/following']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /me/player/currently-playing', 'PUT /me/following']
+    with:    recall 0.67  prec 1.00  halluc 0  found ['GET /me/player/currently-playing', 'PUT /me/following']
+    2.0s
+
+[8/57] (restbench) "Play a song from Taylor Swift's newest album"
+    solution: ['GET /search', 'GET /artists/{id}/albums', 'PUT /me/player/play']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /search', 'PUT /me/player/play']
+    with:    recall 0.67  prec 0.67  halluc 0  found ['GET /albums/{id}/tracks', 'GET /search', 'PUT /me/player/play']
+    3.5s
+
+[9/57] (restbench) 'play me some quiet songs'
+    solution: ['GET /search', 'PUT /me/player/play']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type Slice
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.50  prec 0.50  halluc 0  found ['GET /me/player/recently-played', 'PUT /me/player/play']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /search', 'PUT /me/player/play']
+    2.0s
+
+[10/57] (restbench) 'Follow the artist of the first song recently played'
+    solution: ['GET /me/player/currently-playing', 'GET /tracks/{id}', 'PUT /me/following']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.33  prec 0.50  halluc 0  found ['GET /me/player/recently-played', 'PUT /me/following']
+    with:    recall 0.33  prec 0.50  halluc 0  found ['GET /me/player/recently-played', 'PUT /me/following']
+    2.1s
+
+[11/57] (restbench) 'Switch to the next song and set the single track repeat mode'
+    solution: ['POST /me/player/next', 'PUT /me/player/repeat']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['POST /me/player/next', 'PUT /me/player/repeat']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['POST /me/player/next', 'PUT /me/player/repeat']
+    1.7s
+
+[12/57] (restbench) "Save Jay Chou's album Mojito"
+    solution: ['GET /search', 'PUT /me/albums']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 1.00  halluc 0  found ['PUT /me/albums']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /search', 'PUT /me/albums']
+    2.6s
+
+[13/57] (restbench) 'Rename my first playlist to "My First"'
+    solution: ['GET /me/playlists', 'PUT /playlists/{playlist_id}']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /me/playlists', 'PUT /playlists/{playlist_id}']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /me/playlists', 'PUT /playlists/{playlist_id}']
+    2.0s
+
+[14/57] (restbench) 'Remove following from the artist of the currently playing music'
+    solution: ['GET /me/player/currently-playing', 'GET /tracks/{id}', 'DELETE /me/following']
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type Slice
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.67  prec 1.00  halluc 0  found ['DELETE /me/following', 'GET /me/player/currently-playing']
+    with:    recall 0.67  prec 1.00  halluc 0  found ['DELETE /me/following', 'GET /me/player/currently-playing']
+    1.8s
+
+[15/57] (restbench) 'Pause playback, turn down the volume and resume playing'
+    solution: ['PUT /me/player/pause', 'PUT /me/player/volume', 'PUT /me/player/play']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['PUT /me/player/pause', 'PUT /me/player/play', 'PUT /me/player/volume']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['PUT /me/player/pause', 'PUT /me/player/play', 'PUT /me/player/volume']
+    1.6s
+
+[16/57] (restbench) 'Add songs from the current playing queue to a new playlist called "Cur'
+    solution: ['GET /me/player/queue', 'GET /me', 'POST /users/{user_id}/playlists', 'PUT /playlists/{playlist_id}']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Slice
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Slice
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.75  prec 0.75  halluc 0  found ['GET /me', 'GET /me/player/queue', 'POST /playlists/{playlist_id}/tracks', 'POST /users/{user_id}/playlists']
+    with:    recall 0.75  prec 0.75  halluc 0  found ['GET /me', 'GET /me/player/queue', 'POST /playlists/{playlist_id}/tracks', 'POST /users/{user_id}/playlists']
+    2.6s
+
+[17/57] (restbench) 'What is the name of the song I playing right now?'
+    solution: ['GET /me/player/currently-playing']
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type IfExp
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /me/player/currently-playing']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /me/player/currently-playing']
+    1.5s
+
+[18/57] (restbench) 'Remove the first album from my music'
+    solution: ['GET /me/albums', 'DELETE /me/albums']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['DELETE /me/albums', 'GET /me/albums']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['DELETE /me/albums', 'GET /me/albums']
+    1.9s
+
+[19/57] (restbench) 'Show me the albums I saved'
+    solution: ['GET /me/albums']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type GeneratorExp
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /me/albums']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /me/albums']
+    1.1s
+
+[20/57] (restbench) 'Follow the artist of the song which is playing right now.'
+    solution: ['GET /me/player/currently-playing', 'GET /tracks/{id}', 'PUT /me/following']
+WARNING:root:Unsupported argument type SetComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /me/player/currently-playing', 'PUT /me/following']
+    with:    recall 0.67  prec 1.00  halluc 0  found ['GET /me/player/currently-playing', 'PUT /me/following']
+    2.7s
+
+[21/57] (restbench) 'Recommend me some tracks with the same genre of the music currently pl'
+    solution: ['GET /me/player/currently-playing', 'GET /search']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type Slice
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type Slice
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 0.33  halluc 0  found ['GET /artists/{id}', 'GET /me/player/currently-playing', 'GET /recommendations']
+    with:    recall 0.50  prec 0.33  halluc 0  found ['GET /artists/{id}', 'GET /me/player/currently-playing', 'GET /recommendations']
+    3.8s
+
+[22/57] (restbench) "Append the first track in The Beatle's newest album to my 'My Rock' pl"
+    solution: ['GET /search', 'GET /artists/{id}/albums', 'POST /playlists/{playlist_id}/tracks', 'PUT /playlists/{playlist_id}']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.25  prec 0.50  halluc 0  found ['GET /albums/{id}/tracks', 'POST /playlists/{playlist_id}/tracks']
+    with:    recall 0.75  prec 0.60  halluc 0  found ['GET /albums/{id}/tracks', 'GET /artists/{id}/albums', 'GET /me/playlists', 'GET /search', 'POST /playlists/{playlist_id}/tracks']
+    4.3s
+
+[23/57] (restbench) 'Make top tracks of Taylor Swift a new playlist named "Love Taylor"'
+    solution: ['GET /artists/{id}/top-tracks', 'GET /me', 'POST /users/{user_id}/playlists', 'POST /playlists/{playlist_id}/tracks']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Slice
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Slice
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.75  prec 0.75  halluc 0  found ['GET /artists/{id}/top-tracks', 'GET /me/playlists', 'POST /playlists/{playlist_id}/tracks', 'POST /users/{user_id}/playlists']
+    with:    recall 1.00  prec 0.80  halluc 0  found ['GET /artists/{id}/top-tracks', 'GET /me', 'GET /search', 'POST /playlists/{playlist_id}/tracks', 'POST /users/{user_id}/playlists']
+    2.9s
+
+[24/57] (restbench) 'Who is my favorite artist?'
+    solution: ['GET /me/top/{type}']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /me/top/{type}']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /me/top/{type}']
+    1.6s
+
+[25/57] (restbench) 'Give me a song of my favorite artist'
+    solution: ['GET /me/top/{type}', 'GET /artists/{id}']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 0.50  halluc 0  found ['GET /artists/{id}/top-tracks', 'GET /me/top/{type}']
+    with:    recall 0.00  prec 0.00  halluc 0  found ['GET /artists/{id}/top-tracks', 'GET /me/following']
+    3.5s
+
+[26/57] (restbench) "Delete all music from my 'My R&B' playlist and rename it as 'Test'"
+    solution: ['GET /me/playlists', 'DELETE /playlists/{playlist_id}/tracks', 'PUT /playlists/{playlist_id}']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+    without: recall 1.00  prec 0.75  halluc 0  found ['DELETE /playlists/{playlist_id}/tracks', 'GET /me/playlists', 'GET /playlists/{playlist_id}/tracks', 'PUT /playlists/{playlist_id}']
+    with:    recall 1.00  prec 0.75  halluc 0  found ['DELETE /playlists/{playlist_id}/tracks', 'GET /me/playlists', 'GET /playlists/{playlist_id}/tracks', 'PUT /playlists/{playlist_id}']
+    3.0s
+
+[27/57] (restbench) 'show me the album information of the song currently playing'
+    solution: ['GET /me/player/currently-playing', 'GET /tracks/{id}']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 0.50  halluc 0  found ['GET /albums/{id}', 'GET /me/player/currently-playing']
+    with:    recall 0.50  prec 0.50  halluc 0  found ['GET /albums/{id}', 'GET /me/player/currently-playing']
+    2.2s
+
+[28/57] (restbench) "Pause device 'My PC' if it is now playing something"
+    solution: ['GET /me/player', 'PUT /me/player/pause']
+    without: recall 0.50  prec 0.33  halluc 0  found ['GET /me/player/currently-playing', 'GET /me/player/devices', 'PUT /me/player/pause']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /me/player', 'PUT /me/player/pause']
+    1.4s
+
+[29/57] (restbench) "pause current song and resume it on 'My PC'"
+    solution: ['PUT /me/player/pause', 'GET /me/player/devices', 'PUT /me/player/play']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.67  prec 1.00  halluc 0  found ['PUT /me/player/pause', 'PUT /me/player/play']
+    with:    recall 1.00  prec 0.75  halluc 0  found ['GET /me/player/currently-playing', 'GET /me/player/devices', 'PUT /me/player/pause', 'PUT /me/player/play']
+    3.1s
+
+[30/57] (restbench) "show me the name of Maroon 5's newest album"
+    solution: ['GET /search', 'GET /artists/{id}/albums']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /artists/{id}/albums', 'GET /search']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /artists/{id}/albums', 'GET /search']
+    1.9s
+
+[31/57] (restbench) 'Recommend more artists base on my first following artist'
+    solution: ['GET /me/following', 'GET /artists/{id}/related-artists']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /artists/{id}/related-artists', 'GET /me/following']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /artists/{id}/related-artists', 'GET /me/following']
+    2.8s
+
+[32/57] (restbench) 'Unfollow the artist of the song now playing and skip to the next song'
+    solution: ['GET /me/player/currently-playing', 'DELETE /me/following', 'POST /me/player/next']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type Slice
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+    without: recall 1.00  prec 1.00  halluc 0  found ['DELETE /me/following', 'GET /me/player/currently-playing', 'POST /me/player/next']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['DELETE /me/following', 'GET /me/player/currently-playing', 'POST /me/player/next']
+    2.1s
+
+[33/57] (restbench) 'Follow Taylor Swift'
+    solution: ['GET /search', 'PUT /me/following']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /search', 'PUT /me/following']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['PUT /me/following']
+    1.4s
+
+[34/57] (restbench) "Make my top tracks a new playlist called 'My Top'"
+    solution: ['GET /me/top/{type}', 'GET /me', 'POST /users/{user_id}/playlists', 'POST /playlists/{playlist_id}/tracks']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Slice
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 0.50  halluc 0  found ['GET /me/playlists', 'GET /me/top/{type}', 'POST /playlists/{playlist_id}/tracks', 'PUT /playlists/{playlist_id}']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /me', 'GET /me/top/{type}', 'POST /playlists/{playlist_id}/tracks', 'POST /users/{user_id}/playlists']
+    2.6s
+
+[35/57] (restbench) "Remove the first song from my playlist 'My Rock'"
+    solution: ['GET /me/playlists', 'GET /playlists/{playlist_id}/tracks', 'DELETE /playlists/{playlist_id}/tracks']
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['DELETE /playlists/{playlist_id}/tracks', 'GET /me/playlists', 'GET /playlists/{playlist_id}/tracks']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['DELETE /playlists/{playlist_id}/tracks', 'GET /me/playlists', 'GET /playlists/{playlist_id}/tracks']
+    2.5s
+
+[36/57] (restbench) 'add top songs of the first of my following artist to My Music'
+    solution: ['GET /me/following', 'GET /artists/{id}/top-tracks', 'PUT /me/tracks']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type Slice
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /artists/{id}/top-tracks', 'GET /me/following', 'PUT /me/tracks']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /artists/{id}/top-tracks', 'GET /me/following', 'PUT /me/tracks']
+    2.4s
+
+[37/57] (restbench) "Follow all the artists involved in the playlist 'My R&B'"
+    solution: ['GET /me', 'GET /playlists/{playlist_id}', 'PUT /me/following']
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type BoolOp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type BoolOp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type BoolOp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Slice
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type Slice
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type SetComp
+    without: recall 0.33  prec 0.33  halluc 0  found ['GET /me/playlists', 'GET /playlists/{playlist_id}/tracks', 'PUT /me/following']
+    with:    recall 0.33  prec 0.33  halluc 0  found ['GET /playlists/{playlist_id}/tracks', 'GET /search', 'PUT /me/following']
+    5.0s
+
+[38/57] (restbench) "remove the second track from my playlist 'My R&B'"
+    solution: ['GET /me/playlists', 'GET /playlists/{playlist_id}/tracks', 'DELETE /playlists/{playlist_id}/tracks']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.67  prec 0.67  halluc 0  found ['DELETE /playlists/{playlist_id}/tracks', 'GET /playlists/{playlist_id}', 'GET /playlists/{playlist_id}/tracks']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['DELETE /playlists/{playlist_id}/tracks', 'GET /me/playlists', 'GET /playlists/{playlist_id}/tracks']
+    2.0s
+
+[39/57] (restbench) 'remove the third track from My Music'
+    solution: ['GET /me/tracks', 'DELETE /me/tracks']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 1.00  halluc 0  found ['DELETE /me/tracks']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['DELETE /me/tracks', 'GET /me/tracks']
+    1.8s
+
+[40/57] (restbench) 'Follow all the singers involved in the song When You Believe'
+    solution: ['GET /search', 'GET /tracks/{id}', 'PUT /me/following']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.33  prec 1.00  halluc 0  found ['PUT /me/following']
+    with:    recall 0.67  prec 1.00  halluc 0  found ['GET /search', 'PUT /me/following']
+    2.6s
+
+[41/57] (restbench) 'Skip to the next track'
+    solution: ['POST /me/player/next']
+    without: recall 1.00  prec 1.00  halluc 0  found ['POST /me/player/next']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['POST /me/player/next']
+    1.0s
+
+[42/57] (restbench) "Play my playlist 'My Rock'"
+    solution: ['GET /me/playlists', 'PUT /me/player/play']
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['GET /me/playlists', 'PUT /me/player/play']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /me/playlists', 'PUT /me/player/play']
+    2.3s
+
+[43/57] (restbench) 'Clear my music library and cancel all following singers'
+    solution: ['GET /me/tracks', 'DELETE /me/tracks', 'GET /me/following', 'DELETE /me/following']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type IfExp
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.50  prec 1.00  halluc 2  found ['DELETE /me/following', 'GET /me/following']
+    with:    recall 0.50  prec 1.00  halluc 2  found ['DELETE /me/following', 'GET /me/following']
+    3.6s
+
+[44/57] (restbench) 'Create a new playlist and name it Quiet'
+    solution: ['GET /me', 'POST /users/{user_id}/playlists']
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 1.00  halluc 0  found ['POST /users/{user_id}/playlists']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /me', 'POST /users/{user_id}/playlists']
+    1.5s
+
+[45/57] (restbench) 'Turn down the volume to 20'
+    solution: ['PUT /me/player/volume']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['PUT /me/player/volume']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['PUT /me/player/volume']
+    1.0s
+
+[46/57] (restbench) 'Set the single track repeat mode'
+    solution: ['PUT /me/player/repeat']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['PUT /me/player/repeat']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['PUT /me/player/repeat']
+    1.3s
+
+[47/57] (restbench) 'Pause playback, increase volume to 80 and switch to the next song'
+    solution: ['PUT /me/player/pause', 'PUT /me/player/volume', 'POST /me/player/next']
+    without: recall 1.00  prec 1.00  halluc 0  found ['POST /me/player/next', 'PUT /me/player/pause', 'PUT /me/player/volume']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['POST /me/player/next', 'PUT /me/player/pause', 'PUT /me/player/volume']
+    1.3s
+
+[48/57] (restbench) 'Play the newest album of BIGBANG'
+    solution: ['GET /search', 'GET /artists/{id}/albums', 'PUT /me/player/play']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type Lambda
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.33  prec 0.25  halluc 0  found ['GET /albums/{id}/tracks', 'GET /me/player/currently-playing', 'GET /search', 'POST /me/player/queue']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /artists/{id}/albums', 'GET /search', 'PUT /me/player/play']
+    3.2s
+
+[49/57] (restbench) 'Follow the artist of the album Mojito'
+    solution: ['GET /search', 'GET /albums/{id}', 'PUT /me/following']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Unsupported argument type GeneratorExp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /search', 'PUT /me/following']
+    with:    recall 0.67  prec 1.00  halluc 0  found ['GET /search', 'PUT /me/following']
+    2.2s
+
+[50/57] (restbench) 'Play the third song from my music library and set the single track rep'
+    solution: ['GET /me/tracks', 'GET /tracks/{id}', 'PUT /me/player/play', 'PUT /me/player/repeat']
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.75  prec 1.00  halluc 0  found ['GET /me/tracks', 'PUT /me/player/play', 'PUT /me/player/repeat']
+    with:    recall 0.75  prec 1.00  halluc 0  found ['GET /me/tracks', 'PUT /me/player/play', 'PUT /me/player/repeat']
+    2.4s
+
+[51/57] (restbench) "Create a new playlist named 'BIGBANG' and add a song of BIGBANG to it"
+    solution: ['GET /me', 'POST /users/{user_id}/playlists', 'GET /search', 'POST /playlists/{playlist_id}/tracks']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 1.00  halluc 0  found ['POST /playlists/{playlist_id}/tracks', 'POST /users/{user_id}/playlists']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['POST /playlists/{playlist_id}/tracks', 'POST /users/{user_id}/playlists']
+    2.8s
+
+[52/57] (restbench) 'Delete all songs from my first playlist'
+    solution: ['GET /me/playlists', 'GET /playlists/{playlist_id}', 'DELETE /playlists/{playlist_id}/tracks']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported argument type ListComp
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+    without: recall 0.67  prec 0.67  halluc 0  found ['DELETE /playlists/{playlist_id}/tracks', 'GET /me/playlists', 'GET /playlists/{playlist_id}/tracks']
+    with:    recall 0.67  prec 0.67  halluc 0  found ['DELETE /playlists/{playlist_id}/tracks', 'GET /me/playlists', 'GET /playlists/{playlist_id}/tracks']
+    2.7s
+
+[53/57] (restbench) 'Make my first playlist private'
+    solution: ['GET /me/playlists', 'GET /playlists/{playlist_id}', 'PUT /playlists/{playlist_id}']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.67  prec 1.00  halluc 0  found ['GET /me/playlists', 'PUT /playlists/{playlist_id}']
+    with:    recall 0.67  prec 1.00  halluc 0  found ['GET /me/playlists', 'PUT /playlists/{playlist_id}']
+    1.8s
+
+[54/57] (restbench) 'Add album Mojito to my music library'
+    solution: ['GET /search', 'PUT /me/albums']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.50  prec 1.00  halluc 0  found ['PUT /me/albums']
+    with:    recall 0.50  prec 1.00  halluc 0  found ['PUT /me/albums']
+    1.2s
+
+[55/57] (restbench) 'Add the first song from my music library to the playback queue and ena'
+    solution: ['GET /me/tracks', 'POST /me/player/queue', 'PUT /me/player/repeat']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.67  prec 1.00  halluc 0  found ['POST /me/player/queue', 'PUT /me/player/repeat']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['GET /me/tracks', 'POST /me/player/queue', 'PUT /me/player/repeat']
+    1.9s
+
+[56/57] (restbench) 'What is my user name?'
+    solution: ['GET /me']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Attribute calls are not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 0.00  prec 0.00  halluc 1  found []
+    with:    recall 0.00  prec 0.00  halluc 1  found []
+    1.2s
+
+[57/57] (restbench) 'Pause the player'
+    solution: ['PUT /me/player/pause']
+WARNING:root:Extraction from attributes is not supported yet
+WARNING:root:Unsupported dictionary type Unknown
+    without: recall 1.00  prec 1.00  halluc 0  found ['PUT /me/player/pause']
+    with:    recall 1.00  prec 1.00  halluc 0  found ['PUT /me/player/pause']
+    1.1s
+
+==============================================================================
+condition:          data/contexts/restbench_k10_budget-spotify-identity_n57.json
+baseline cache:     57 hits, 0 generated
+run:                3 (0 resumed, 57 generated)
+generated code:     data/generated/restbench_k10_budget-spotify-identity_n57_gpt-6-luna-none_r3.json
+
+WITHOUT compression    recall 0.713   precision 0.857   f1 0.779   exact 22/57   halluc 3   tokens 269132
+WITH compression       recall 0.829   precision 0.889   f1 0.858   exact 33/57   halluc 3   tokens 240045
+
+Compression ratio:  1.12x
+Recall delta:       +0.115
+
+API usage (gpt-6-luna-none, as reported by the API):
+WITHOUT compression    input    275713   output    10086 (reasoning 0)   cost $0.0326
+WITH compression       input    246752   output    10192 (reasoning 0)   cost $0.0076
+Total time:         2.2 min
+==============================================================================

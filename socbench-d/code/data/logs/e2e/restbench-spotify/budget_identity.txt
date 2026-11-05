@@ -1,0 +1,18 @@
+
+### -u src/make_budget_contexts.py --reference data/contexts/restbench-spotify_k10_all_noanchor_reqschema_n2.json --source data/contexts/restbench-spotify_k50_all_noanchor_identity_n2.json --label spotify-identity
+queries:                  2
+mean depth (chunks):      33.5
+tokens used / raw k=10:   0.988
+retrieval recall:         0.708   (raw k=10: 0.417)
+queries over budget:      0
+
+wrote data/contexts/restbench_k10_budget-spotify-identity_n2.json
+
+### -u src/make_budget_contexts.py --reference data/contexts/restbench-spotify_k10_all_noanchor_reqschema_n57.json --source data/contexts/restbench-spotify_k50_all_noanchor_identity_n57.json --label spotify-identity
+queries:                  57
+mean depth (chunks):      42.8
+tokens used / raw k=10:   0.892
+retrieval recall:         0.971   (raw k=10: 0.770)
+queries over budget:      0
+
+wrote data/contexts/restbench_k10_budget-spotify-identity_n57.json

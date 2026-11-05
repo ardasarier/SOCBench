@@ -1,0 +1,618 @@
+[
+  {
+    "benchmark": "restbench",
+    "queryset": "restbench",
+    "query": "Make me a playlist containing three songs of Mariah Carey and name it 'Love Mariah'",
+    "solution": [
+      "GET /search",
+      "GET /me",
+      "POST /users/{user_id}/playlists",
+      "POST /playlists/{playlist_id}/tracks"
+    ],
+    "base_url": "https://api.spotify.com/v1",
+    "base_path": "/v1",
+    "top_k": 10,
+    "raw_chunks": [
+      "Endpoint: POST /playlists/{playlist_id}/tracks\nSpecification:\n{\"description\": \"Add one or more items to a user's playlist.\\n\", \"operationId\": \"add-tracks-to-playlist\", \"parameters\": [{\"$ref\": \"#/components/parameters/PathPlaylistId\"}, {\"in\": \"query\", \"name\": \"position\", \"required\": \"false\", \"schema\": {\"description\": \"The position to insert the items, a zero-based index. For example, to insert the items in the first position: `position=0`; to insert the items in the third position: `position=2`. If omitted, the items will be appended to the playlist. Items are added in the order they are listed in the query string or request body.\\n\", \"example\": \"0\", \"title\": \"Position (append by default)\", \"type\": \"integer\"}}, {\"in\": \"query\", \"name\": \"uris\", \"required\": \"false\", \"schema\": {\"description\": \"A comma-separated list of [Spotify URIs](/documentation/web-api/#spotify-uris-and-ids) to add, can be track or episode URIs. For example:<br/>`uris=spotify:track:4iV5W9uYEdYUVa79Axb7Rh, spotify:track:1301WleyT98MSxVHPZCA6M, spotify:episode:512ojhOuo1ktJprKbVcKyQ`<br/>A maximum of 100 items can be added in one request. <br/>\\n_**Note**: it is likely that passing a large number of item URIs as a query parameter will exceed the maximum length of the request URI. When adding a large number of items, it is recommended to pass them in the request body, see below._\\n\", \"example\": \"spotify:track:4iV5W9uYEdYUVa79Axb7Rh,spotify:track:1301WleyT98MSxVHPZCA6M\", \"title\": \"Spotify Track URIs\", \"type\": \"string\"}}], \"requestBody\": {\"content\": {\"application/json\": {\"schema\": {\"additionalProperties\": \"true\", \"properties\": {\"position\": {\"description\": \"The position to insert the items, a zero-based index. For example, to insert the items in the first position: `position=0` ; to insert the items in the third position: `position=2`. If omitted, the items will be appended to the playlist. Items are added in the order they appear in the uris array. For example: `{\\\"uris\\\": [\\\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\\\",\\\"spotify:track:1301WleyT98MSxVHPZCA6M\\\"], \\\"position\\\": 3}`\\n\", \"type\": \"integer\"}, \"uris\": {\"description\": \"A JSON array of the [Spotify URIs](/documentation/web-api/#spotify-uris-and-ids) to add. For example: `{\\\"uris\\\": [\\\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\\\",\\\"spotify:track:1301WleyT98MSxVHPZCA6M\\\", \\\"spotify:episode:512ojhOuo1ktJprKbVcKyQ\\\"]}`<br/>A maximum of 100 items can be added in one request. _**Note**: if the `uris` parameter is present in the query string, any URIs listed here in the body will be ignored._\\n\", \"items\": {\"type\": \"string\"}, \"type\": \"array\"}}, \"type\": \"object\"}}}}, \"responses\": {\"201\": {\"$ref\": \"#/components/responses/PlaylistSnapshotId\"}, \"401\": {\"$ref\": \"#/components/responses/Unauthorized\"}, \"403\": {\"$ref\": \"#/components/responses/Forbidden\"}, \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"}}, \"security\": [{\"oauth_2_0\": [\"playlist-modify-public\", \"playlist-modify-private\"]}], \"summary\": \"Add Items to Playlist\\n\", \"tags\": [\"Playlists\", \"Tracks\"], \"x-spotify-docs-console-url\": \"/console/post-playlist-tracks/\", \"x-spotify-docs-endpoint-name\": \"Add Items to a Playlist\"}",
+      "Endpoint: PUT /playlists/{playlist_id}\nSpecification:\n{\"description\": \"Change a playlist's name and public/private state. (The user must, of\\ncourse, own the playlist.)\\n\", \"operationId\": \"change-playlist-details\", \"parameters\": [{\"$ref\": \"#/components/parameters/PathPlaylistId\"}], \"requestBody\": {\"content\": {\"application/json\": {\"schema\": {\"additionalProperties\": \"true\", \"example\": {\"description\": \"Updated playlist description\", \"name\": \"Updated Playlist Name\", \"public\": \"false\"}, \"properties\": {\"collaborative\": {\"description\": \"If `true`, the playlist will become collaborative and other users will be able to modify the playlist in their Spotify client. <br/>\\n_**Note**: You can only set `collaborative` to `true` on non-public playlists._\\n\", \"type\": \"boolean\"}, \"description\": {\"description\": \"Value for playlist description as displayed in Spotify Clients and in the Web API.\\n\", \"type\": \"string\"}, \"name\": {\"description\": \"The new name for the playlist, for example `\\\"My New Playlist Title\\\"`\\n\", \"type\": \"string\"}, \"public\": {\"description\": \"If `true` the playlist will be public, if `false` it will be private.\\n\", \"type\": \"boolean\"}}, \"type\": \"object\"}}}}, \"responses\": {\"200\": {\"description\": \"Playlist updated\"}, \"401\": {\"$ref\": \"#/components/responses/Unauthorized\"}, \"403\": {\"$ref\": \"#/components/responses/Forbidden\"}, \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"}}, \"security\": [{\"oauth_2_0\": [\"playlist-modify-public\", \"playlist-modify-private\"]}], \"summary\": \"Change Playlist Details\\n\", \"tags\": [\"Playlists\", \"Library\"], \"x-spotify-docs-console-url\": \"/console/put-playlist/\", \"x-spotify-docs-endpoint-name\": \"Change a Playlist's Details\"}",
+      "Endpoint: GET /playlists/{playlist_id}\nSpecification:\n{\"description\": \"Get a playlist owned by a Spotify user.\\n\", \"operationId\": \"get-playlist\", \"parameters\": [{\"$ref\": \"#/components/parameters/PathPlaylistId\"}, {\"$ref\": \"#/components/parameters/QueryMarket\"}, {\"in\": \"query\", \"name\": \"fields\", \"required\": \"false\", \"schema\": {\"description\": \"Filters for the query: a comma-separated list of the\\nfields to return. If omitted, all fields are returned. For example, to get\\njust the playlist''s description and URI: `fields=description,uri`. A dot\\nseparator can be used to specify non-reoccurring fields, while parentheses\\ncan be used to specify reoccurring fields within objects. For example, to\\nget just the added date and user ID of the adder: `fields=tracks.items(added_at,added_by.id)`.\\nUse multiple parentheses to drill down into nested objects, for example: `fields=tracks.items(track(name,href,album(name,href)))`.\\nFields can be excluded by prefixing them with an exclamation mark, for example:\\n`fields=tracks.items(track(name,href,album(!name,href)))`\\n\", \"example\": \"items(added_by.id,track(name,href,album(name,href)))\", \"title\": \"Fields\", \"type\": \"string\"}}, {\"$ref\": \"#/components/parameters/QueryAdditionalTypes\"}], \"responses\": {\"200\": {\"$ref\": \"#/components/responses/OnePlaylist\"}, \"401\": {\"$ref\": \"#/components/responses/Unauthorized\"}, \"403\": {\"$ref\": \"#/components/responses/Forbidden\"}, \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"}}, \"security\": [{\"oauth_2_0\": []}], \"summary\": \"Get Playlist\\n\", \"tags\": [\"Playlists\"], \"x-spotify-docs-console-url\": \"/console/get-playlist/?playlist_id=59ZbFPES4DQwEjBpWHzrtC&amp;user_id=spotify\", \"x-spotify-docs-endpoint-name\": \"Get a Playlist\", \"x-spotify-policy-list\": {\"$ref\": \"#/components/x-spotify-policy/metadataPolicyList\"}}",
+      "Endpoint: GET /playlists/{playlist_id}/tracks\nSpecification:\n{\"description\": \"Get full details of the items of a playlist owned by a Spotify user.\\n\", \"operationId\": \"get-playlists-tracks\", \"parameters\": [{\"$ref\": \"#/components/parameters/PathPlaylistId\"}, {\"$ref\": \"#/components/parameters/QueryMarket\"}, {\"in\": \"query\", \"name\": \"fields\", \"required\": \"false\", \"schema\": {\"description\": \"Filters for the query: a comma-separated list of the\\nfields to return. If omitted, all fields are returned. For example, to get\\njust the total number of items and the request limit:<br/>`fields=total,limit`<br/>A\\ndot separator can be used to specify non-reoccurring fields, while parentheses\\ncan be used to specify reoccurring fields within objects. For example, to\\nget just the added date and user ID of the adder:<br/>`fields=items(added_at,added_by.id)`<br/>Use\\nmultiple parentheses to drill down into nested objects, for example:<br/>`fields=items(track(name,href,album(name,href)))`<br/>Fields\\ncan be excluded by prefixing them with an exclamation mark, for example:<br/>`fields=items.track.album(!external_urls,images)`\\n\", \"example\": \"items(added_by.id,track(name,href,album(name,href)))\", \"title\": \"Fields\", \"type\": \"string\"}}, {\"$ref\": \"#/components/parameters/QueryLimit\"}, {\"$ref\": \"#/components/parameters/QueryOffset\"}, {\"$ref\": \"#/components/parameters/QueryAdditionalTypes\"}], \"responses\": {\"200\": {\"$ref\": \"#/components/responses/PagingPlaylistTrackObject\"}, \"401\": {\"$ref\": \"#/components/responses/Unauthorized\"}, \"403\": {\"$ref\": \"#/components/responses/Forbidden\"}, \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"}}, \"security\": [{\"oauth_2_0\": [\"playlist-read-private\"]}], \"summary\": \"Get Playlist Items\\n\", \"tags\": [\"Playlists\", \"Tracks\"], \"x-spotify-docs-console-url\": \"/console/get-playlist-tracks/?playlist_id=21THa8j9TaSGuXYNBU5tsC&amp;user_id=spotify_espa%C3%B1a\", \"x-spotify-docs-endpoint-name\": \"Get a Playlist's Items\", \"x-spotify-policy-list\": {\"$ref\": \"#/components/x-spotify-policy/metadataPolicyList\"}}",
+      "Endpoint: GET /me/playlists\nSpecification:\n{\"description\": \"Get a list of the playlists owned or followed by the current Spotify\\nuser.\\n\", \"operationId\": \"get-a-list-of-current-users-playlists\", \"parameters\": [{\"$ref\": \"#/components/parameters/QueryLimit\"}, {\"in\": \"query\", \"name\": \"offset\", \"required\": \"false\", \"schema\": {\"default\": \"0\", \"description\": \"'The index of the first playlist to return. Default:\\n0 (the first object). Maximum offset: 100.000\\\\. Use with `limit` to get the\\nnext set of playlists.'\\n\", \"example\": \"5\", \"title\": \"Offset\", \"type\": \"integer\"}}], \"responses\": {\"200\": {\"$ref\": \"#/components/responses/PagedPlaylists\"}, \"401\": {\"$ref\": \"#/components/responses/Unauthorized\"}, \"403\": {\"$ref\": \"#/components/responses/Forbidden\"}, \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"}}, \"security\": [{\"oauth_2_0\": [\"playlist-read-private\"]}], \"summary\": \"Get Current User's Playlists\\n\", \"tags\": [\"Playlists\", \"Library\"], \"x-spotify-docs-console-url\": \"/console/get-current-user-playlists/\", \"x-spotify-docs-endpoint-name\": \"Get a List of Current User's Playlists\"}",
+      "Endpoint: PUT /me/player/repeat\nSpecification:\n{\"description\": \"Set the repeat mode for the user's playback. Options are repeat-track,\\nrepeat-context, and off.\\n\", \"operationId\": \"set-repeat-mode-on-users-playback\", \"parameters\": [{\"in\": \"query\", \"name\": \"state\", \"required\": \"true\", \"schema\": {\"description\": \"**track**, **context** or **off**.<br/>\\n**track** will repeat the current track.<br/>\\n**context** will repeat the current context.<br/>\\n**off** will turn repeat off.\\n\", \"example\": \"context\", \"title\": \"State\", \"type\": \"string\"}}], \"responses\": {\"204\": {\"description\": \"Command sent\"}, \"401\": {\"$ref\": \"#/components/responses/Unauthorized\"}, \"403\": {\"$ref\": \"#/components/responses/Forbidden\"}, \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"}}, \"security\": [{\"oauth_2_0\": [\"user-modify-playback-state\"]}], \"summary\": \"Set Repeat Mode\\n\", \"tags\": [\"Player\"], \"x-spotify-docs-console-url\": \"/console/put-repeat/\", \"x-spotify-docs-endpoint-name\": \"Set Repeat Mode On User\\u2019s Playback\"}",
+      "Endpoint: POST /users/{user_id}/playlists\nSpecification:\n{\"description\": \"Create a playlist for a Spotify user (Before calling this API, must call GET /me first to get the user_id). (The playlist will be empty until\\nyou [add tracks](/documentation/web-api/reference/#/operations/add-tracks-to-playlist).)\\n\", \"operationId\": \"create-playlist\", \"parameters\": [{\"$ref\": \"#/components/parameters/PathUserId\"}], \"requestBody\": {\"content\": {\"application/json\": {\"schema\": {\"additionalProperties\": \"true\", \"example\": {\"description\": \"New playlist description\", \"name\": \"New Playlist\", \"public\": \"false\"}, \"properties\": {\"collaborative\": {\"description\": \"Defaults to `false`. If `true` the playlist will be collaborative. _**Note**: to create a collaborative playlist you must also set `public` to `false`. To create collaborative playlists you must have granted `playlist-modify-private` and `playlist-modify-public` [scopes](/documentation/general/guides/authorization-guide/#list-of-scopes)._\\n\", \"type\": \"boolean\"}, \"description\": {\"description\": \"value for playlist description as displayed in Spotify Clients and in the Web API.\\n\", \"type\": \"string\"}, \"name\": {\"description\": \"The name for the new playlist, for example `\\\"Your Coolest Playlist\\\"`. This name does not need to be unique; a user may have several playlists with the same name.\\n\", \"type\": \"string\"}, \"public\": {\"description\": \"Defaults to `true`. If `true` the playlist will be public, if `false` it will be private. To be able to create private playlists, the user must have granted the `playlist-modify-private` [scope](/documentation/general/guides/authorization-guide/#list-of-scopes)\\n\", \"type\": \"boolean\"}}, \"required\": [\"name\"], \"type\": \"object\"}}}}, \"responses\": {\"201\": {\"$ref\": \"#/components/responses/OnePlaylist\"}, \"401\": {\"$ref\": \"#/components/responses/Unauthorized\"}, \"403\": {\"$ref\": \"#/components/responses/Forbidden\"}, \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"}}, \"security\": [{\"oauth_2_0\": [\"playlist-modify-public\", \"playlist-modify-private\"]}], \"summary\": \"Create Playlist\\n\", \"tags\": [\"Playlists\", \"Library\"], \"x-spotify-docs-console-url\": \"/console/post-playlists/\", \"x-spotify-docs-endpoint-name\": \"Create a Playlist\"}",
+      "Endpoint: DELETE /playlists/{playlist_id}/tracks\nSpecification:\n{\"description\": \"Remove one or more items from a user's playlist.\\n\", \"operationId\": \"remove-tracks-playlist\", \"parameters\": [{\"$ref\": \"#/components/parameters/PathPlaylistId\"}], \"requestBody\": {\"content\": {\"application/json\": {\"schema\": {\"properties\": {\"snapshot_id\": {\"description\": \"The playlist's snapshot ID against which you want to make the changes.\\nThe API will validate that the specified items exist and in the specified positions and make the changes,\\neven if more recent changes have been made to the playlist.\\n\", \"type\": \"string\"}, \"tracks\": {\"description\": \"An array of objects containing [Spotify URIs](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) of the tracks or episodes to remove.\\nFor example: `{ \\\"tracks\\\": [{ \\\"uri\\\": \\\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\\\" },{ \\\"uri\\\": \\\"spotify:track:1301WleyT98MSxVHPZCA6M\\\" }] }`. A maximum of 100 objects can be sent at once.\\n\", \"items\": {\"properties\": {\"uri\": {\"description\": \"Spotify URI\", \"type\": \"string\"}}, \"type\": \"object\"}, \"type\": \"array\"}}, \"required\": [\"tracks\"], \"type\": \"object\"}}}}, \"responses\": {\"200\": {\"$ref\": \"#/components/responses/PlaylistSnapshotId\"}, \"401\": {\"$ref\": \"#/components/responses/Unauthorized\"}, \"403\": {\"$ref\": \"#/components/responses/Forbidden\"}, \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"}}, \"security\": [{\"oauth_2_0\": [\"playlist-modify-public\", \"playlist-modify-private\"]}], \"summary\": \"Remove Playlist Items\\n\", \"tags\": [\"Playlists\", \"Tracks\"], \"x-spotify-docs-console-url\": \"/console/delete-playlist-tracks/\", \"x-spotify-docs-endpoint-name\": \"Remove Items from a Playlist\"}",
+      "Endpoint: GET /me/player/recently-played\nSpecification:\n{\"description\": \"Get tracks from the current user's recently played tracks.\\n_**Note**: Currently doesn't support podcast episodes._\\n\", \"operationId\": \"get-recently-played\", \"parameters\": [{\"in\": \"query\", \"name\": \"limit\", \"required\": \"false\", \"schema\": {\"default\": \"20\", \"description\": \"The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\\n\", \"example\": \"10\", \"maximum\": \"50\", \"minimum\": \"0\", \"title\": \"Limit\", \"type\": \"integer\"}}, {\"in\": \"query\", \"name\": \"after\", \"required\": \"false\", \"schema\": {\"description\": \"A Unix timestamp in milliseconds. Returns all items\\nafter (but not including) this cursor position. If `after` is specified, `before`\\nmust not be specified.\\n\", \"example\": \"1484811043508\", \"title\": \"After\", \"type\": \"integer\"}}, {\"in\": \"query\", \"name\": \"before\", \"required\": \"false\", \"schema\": {\"description\": \"A Unix timestamp in milliseconds. Returns all items\\nbefore (but not including) this cursor position. If `before` is specified,\\n`after` must not be specified.\\n\", \"title\": \"Before\", \"type\": \"integer\"}}], \"responses\": {\"200\": {\"$ref\": \"#/components/responses/CursorPagedPlayHistory\"}, \"401\": {\"$ref\": \"#/components/responses/Unauthorized\"}, \"403\": {\"$ref\": \"#/components/responses/Forbidden\"}, \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"}}, \"security\": [{\"oauth_2_0\": [\"user-read-recently-played\"]}], \"summary\": \"Get Recently Played Tracks\\n\", \"tags\": [\"Player\"], \"x-spotify-docs-console-url\": \"/console/get-recently-played/\", \"x-spotify-docs-endpoint-name\": \"Get Current User's Recently Played Tracks\", \"x-spotify-policy-list\": {\"$ref\": \"#/components/x-spotify-policy/playerPolicyList\"}}",
+      "Endpoint: PUT /me/albums\nSpecification:\n{\"description\": \"Save one or more albums to the current user's 'Your Music' library.\\n\", \"operationId\": \"save-albums-user\", \"parameters\": [{\"$ref\": \"#/components/parameters/QueryAlbumIds\"}], \"requestBody\": {\"content\": {\"application/json\": {\"schema\": {\"additionalProperties\": \"true\", \"properties\": {\"ids\": {\"description\": \"A JSON array of the [Spotify IDs](/documentation/web-api/#spotify-uris-and-ids). For example: `[\\\"4iV5W9uYEdYUVa79Axb7Rh\\\", \\\"1301WleyT98MSxVHPZCA6M\\\"]`<br/>A maximum of 50 items can be specified in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\\n\", \"items\": {\"type\": \"string\"}, \"type\": \"array\"}}, \"type\": \"object\"}}}}, \"responses\": {\"200\": {\"description\": \"The album is saved\"}, \"401\": {\"$ref\": \"#/components/responses/Unauthorized\"}, \"403\": {\"$ref\": \"#/components/responses/Forbidden\"}, \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"}}, \"security\": [{\"oauth_2_0\": [\"user-library-modify\"]}], \"summary\": \"Save Albums for Current User\\n\", \"tags\": [\"Albums\", \"Library\"], \"x-spotify-docs-console-url\": \"/console/put-current-user-saved-albums/?ids=07bYtmE3bPsLB6ZbmmFi8d%2C48JYNjh7GMie6NjqYHMmtT%2C27cZdqrQiKt3IT00338dws\", \"x-spotify-docs-endpoint-name\": \"Save Albums for Current User\"}"
+    ],
+    "raw_tokens": 4871,
+    "compressed_chunks": [
+      "Endpoint: POST /playlists/{playlist_id}/tracks\nSpecification: \"description\": \"Add one or more items to a user's playlist.\\n\" \"operationId\": \"add-tracks-to-playlist\" \"description\": \"A comma-separated list of [Spotify URIs](/documentation/web-api/#spotify-uris-and-ids) to add, can be track or episode URIs. For example:<br/>`uris=spotify:track:4iV5W9uYEdYUVa79Axb7Rh, spotify:track:1301WleyT98MSxVHPZCA6M, spotify:episode:512ojhOuo1ktJprKbVcKyQ`<br/>A maximum of 100 items can be added in one request. <br/>\\n_**Note**: it is likely that passing a large number of item URIs as a query parameter will exceed the maximum length of the request URI. When adding a large number of items, it is recommended to pass them in the request body, see below._\\n\" \"description\": \"The position to insert the items, a zero-based index. For example, to insert the items in the first position: `position=0` ; to insert the items in the third position: `position=2`. If omitted, the items will be appended to the playlist. Items are added in the order they appear in the uris array. For example: `{\\\"uris\\\": [\\\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\\\",\\\"spotify:track:1301WleyT98MSxVHPZCA6M\\\"], \\\"position\\\": 3}`\\n\" \"description\": \"A JSON array of the [Spotify URIs](/documentation/web-api/#spotify-uris-and-ids) to add. For example: `{\\\"uris\\\": [\\\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\\\",\\\"spotify:track:1301WleyT98MSxVHPZCA6M\\\", \\\"spotify:episode:512ojhOuo1ktJprKbVcKyQ\\\"]}`<br/>A maximum of 100 items can be added in one request. _**Note**: if the `uris` parameter is present in the query string, any URIs listed here in the body will be ignored._\\n\" \"summary\": \"Add Items to Playlist\\n\" \"x-spotify-docs-console-url\": \"/console/post-playlist-tracks/\" \"x-spotify-docs-endpoint-name\": \"Add Items to a Playlist\"",
+      "Endpoint: PUT /playlists/{playlist_id}\nSpecification: \"description\": \"Change a playlist's name and public/private state. (The user must, of\\ncourse, own the playlist.)\\n\" \"operationId\": \"change-playlist-details\" \"description\": \"If `true`, the playlist will become collaborative and other users will be able to modify the playlist in their Spotify client. <br/>\\n_**Note**: You can only set `collaborative` to `true` on non-public playlists._\\n\" \"summary\": \"Change Playlist Details\\n\" \"x-spotify-docs-console-url\": \"/console/put-playlist/\" \"x-spotify-docs-endpoint-name\": \"Change a Playlist's Details\"",
+      "Endpoint: GET /playlists/{playlist_id}\nSpecification: \"description\": \"Get a playlist owned by a Spotify user.\\n\" \"operationId\": \"get-playlist\" \"description\": \"Filters for the query: a comma-separated list of the\\nfields to return. If omitted, all fields are returned. For example, to get\\njust the playlist''s description and URI: `fields=description,uri`. A dot\\nseparator can be used to specify non-reoccurring fields, while parentheses\\ncan be used to specify reoccurring fields within objects. For example, to\\nget just the added date and user ID of the adder: `fields=tracks.items(added_at,added_by.id)`.\\nUse multiple parentheses to drill down into nested objects, for example: `fields=tracks.items(track(name,href,album(name,href)))`.\\nFields can be excluded by prefixing them with an exclamation mark, for example:\\n`fields=tracks.items(track(name,href,album(!name,href)))`\\n\" \"summary\": \"Get Playlist\\n\" \"x-spotify-docs-console-url\": \"/console/get-playlist/?playlist_id=59ZbFPES4DQwEjBpWHzrtC&amp;user_id=spotify\" \"x-spotify-docs-endpoint-name\": \"Get a Playlist\"",
+      "Endpoint: GET /playlists/{playlist_id}/tracks\nSpecification: \"description\": \"Get full details of the items of a playlist owned by a Spotify user.\\n\" \"operationId\": \"get-playlists-tracks\" \"example\": \"items(added_by.id,track(name,href,album(name,href)))\" \"summary\": \"Get Playlist Items\\n\" \"x-spotify-docs-console-url\": \"/console/get-playlist-tracks/?playlist_id=21THa8j9TaSGuXYNBU5tsC&amp;user_id=spotify_esp \"x-spotify-docs-endpoint-name\": \"Get a Playlist's Items\"",
+      "Endpoint: GET /me/playlists\nSpecification: \"description\": \"Get a list of the playlists owned or followed by the current Spotify\\nuser.\\n\" \"operationId\": \"get-a-list-of-current-users-playlists\" \"description\": \"'The index of the first playlist to return. Default:\\n0 (the first object). Maximum offset: 100.000\\\\. Use with `limit` to get the\\nnext set of playlists.'\\n\" \"summary\": \"Get Current User's Playlists\\n\"",
+      "Endpoint: PUT /me/player/repeat\nSpecification: \"description\": \"Set the repeat mode for the user's playback. Options are repeat-track,\\nrepeat-context, and off.\\n\" \"operationId\": \"set-repeat-mode-on-users-playback\" \"description\": \"**track**, **context** or **off**.<br/>\\n**track** will repeat the current track.<br/>\\n**context** will repeat the current context.<br/>\\n**off** will turn repeat off.\\n\" \"403\": {\"$ref\": \"#/components/responses/Forbidden\"} \"summary\": \"Set Repeat Mode\\n\" \"tags\": [\"Player\"] \"x-spotify-docs-console-url\": \"/console/put-repeat/\" \"x-spotify-docs-endpoint-name\": \"Set Repeat Mode On User\\u2019s Playback\"",
+      "Endpoint: POST /users/{user_id}/playlists\nSpecification: \"description\": \"Create a playlist for a Spotify user (Before calling this API, must call GET /me first to get the user_id). (The playlist will be empty until\\nyou [add tracks](/documentation/web-api/reference/#/operations/add-tracks-to-playlist).)\\n\" \"operationId\": \"create-playlist\" \"403\": {\"$ref\": \"#/components/responses/Forbidden\"} \"summary\": \"Create Playlist\\n\" \"x-spotify-docs-endpoint-name\": \"Create a Playlist\"",
+      "Endpoint: DELETE /playlists/{playlist_id}/tracks\nSpecification: \"description\": \"Remove one or more items from a user's playlist.\\n\" \"operationId\": \"remove-tracks-playlist\" \"description\": \"The playlist's snapshot ID against which you want to make the changes.\\nThe API will validate that the specified items exist and in the specified positions and make the changes,\\neven if more recent changes have been made to the playlist.\\n\" \"description\": \"An array of objects containing [Spotify URIs](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) of the tracks or episodes to remove.\\nFor example: `{ \\\"tracks\\\": [{ \\\"uri\\\": \\\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\\\" },{ \\\"uri\\\": \\\"spotify:track:1301WleyT98MSxVHPZCA6M\\\" }] }`. A maximum of 100 objects can be sent at once.\\n\" \"summary\": \"Remove Playlist Items\\n\" \"x-spotify-docs-console-url\": \"/console/delete-playlist-tracks/\" \"x-spotify-docs-endpoint-name\": \"Remove Items from a Playlist\"",
+      "Endpoint: GET /me/player/recently-played\nSpecification: \"description\": \"Get tracks from the current user's recently played tracks.\\n_**Note**: Currently doesn't support podcast episodes._\\n\" \"operationId\": \"get-recently-played\" \"summary\": \"Get Recently Played Tracks\\n\" \"x-spotify-docs-endpoint-name\": \"Get Current User's Recently Played Tracks\"",
+      "Endpoint: PUT /me/albums\nSpecification: \"description\": \"Save one or more albums to the current user's 'Your Music' library.\\n\" \"operationId\": \"save-albums-user\" \"description\": \"A JSON array of the [Spotify IDs](/documentation/web-api/#spotify-uris-and-ids). For example: `[\\\"4iV5W9uYEdYUVa79Axb7Rh\\\", \\\"1301WleyT98MSxVHPZCA6M\\\"]`<br/>A maximum of 50 items can be specified in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\\n\" \"200\": {\"description\": \"The album is saved\"} \"summary\": \"Save Albums for Current User\\n\" mtT%2C27cZdqrQiKt3IT00338dws\" \"x-spotify-docs-endpoint-name\": \"Save Albums for Current User\"",
+      "Endpoint: PUT /me/following\nSpecification: \"description\": \"Add the current user as a follower of one or more artists or other Spotify users.\\n\" \"operationId\": \"follow-artists-users\" \"description\": \"A JSON array of the artist or user [Spotify IDs](/documentation/web-api/#spotify-uris-and-ids).\\nFor example: `{ids:[\\\"74ASZWbe4lXaubB36ztrGX\\\", \\\"08td7MxkoHQkXnWAYD8d6Q\\\"]}`. A maximum of 50 IDs can be sent in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\\n\" \"204\": {\"description\": \"Artist or user followed\"} \"summary\": \"Follow Artists or Users\\n\" \"x-spotify-docs-console-url\": \"/console/put-following/?type=user&amp;ids=exampleuser01\"",
+      "Endpoint: PUT /me/tracks\nSpecification: \"description\": \"Save one or more tracks to the current user's 'Your Music' library.\\n\" \"operationId\": \"save-tracks-user\" \"description\": \"A JSON array of the [Spotify IDs](/documentation/web-api/#spotify-uris-and-ids). For example: `[\\\"4iV5W9uYEdYUVa79Axb7Rh\\\", \\\"1301WleyT98MSxVHPZCA6M\\\"]`<br/>A maximum of 50 items can be specified in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\\n\" \"200\": {\"description\": \"Track saved\"} \"summary\": \"Save Tracks for Current User\\n\" \"x-spotify-docs-console-url\": \"/console/put-current-user-saved-tracks/?ids=7ouMYWpwJ422jRcDASZB7P%2C4VqPOruhp5EdPBeR92t",
+      "Endpoint: GET /me/following\nSpecification: \"description\": \"Get the current user's followed artists.\\n\" \"operationId\": \"get-followed\" \"description\": \"The maximum number of items to return. Default: 20\\\\. Minimum: 1\\\\. Maximum: 50\\\\.\\n\" \"summary\": \"Get Followed Artists\\n\" \"x-spotify-docs-console-url\": \"/console/get-following/?type=artist&amp;limit=20\" \"x-spotify-docs-endpoint-name\": \"Get User's Followed Artists\"",
+      "Endpoint: GET /search\nSpecification: \"description\": \"Get Spotify catalog information about albums, artists, playlists, tracks, shows, episodes or audiobooks\\nthat match a keyword string.<br />\\n**Note: Audiobooks are only available for the US, UK, Ireland, New Zealand and Australia markets.**\\n\" \"operationId\": \"search\" \"description\": \"If `include_external=audio` is specified it signals that the client can play externally hosted audio content, and marks\\nthe content as playable in the response. By default externally hosted audio content is marked as unplayable in the response.\\n\" \"403\": {\"$ref\": \"#/components/responses/Forbidden\"} \"summary\": \"Search for Item\\n\" \"x-spotify-docs-console-url\": \"/console/get-search-item/?q=tania+bowra&amp;type=artist\"",
+      "Endpoint: GET /recommendations\nSpecification: \"description\": \"Recommendations are generated based on the available information for a given seed entity and matched against similar artists and tracks. If there is sufficient information about the provided seeds, a list of tracks will be returned together with pool size details.\\n\\nFor artists and tracks that are very new or obscure there might not be enough data to generate a list of tracks.\\n\" \"operationId\": \"get-recommendations\" \"summary\": \"Get Recommendations\\n\" \"tags\": [\"Tracks\"] DpzE81m2q797ordA&amp;min_energy=0.4&amp;min_popularity=50&amp;market=US\" \"x-spotify-docs-endpoint-name\": \"Get Recommendations\"",
+      "Endpoint: PUT /me/player/play\nSpecification: \"description\": \"Start a new context or resume current playback on the user's active device.\\n\" \"operationId\": \"start-a-users-playback\" \"example\": {\"context_uri\": \"spotify:album:5ht7ItJgpBH7W6vJ5BqpPr\", \"offset\": {\"position\": \"5\"}, \"position_ms\": \"0\"} \"description\": \"Optional. Spotify URI of the context to play.\\nValid contexts are albums, artists & playlists.\\n`{context_uri:\\\"spotify:album:1Je1IMUlBXcx1Fz0WE7oPT\\\"}`\\n\" \"description\": \"Optional. A JSON array of the Spotify track URIs to play.\\nFor example: `{\\\"uris\\\": [\\\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\\\", \\\"spotify:track:1301WleyT98MSxVHPZCA6M\\\"]}`\\n\" \"summary\": \"Start/Resume Playback\\n\" \"x-spotify-docs-endpoint-name\": \"Start/Resume a User's Playback\"",
+      "seemingly perfect life - a great marriage, overachieving kids, beautiful home, stunning looks and still holding down a career. However she's over-worked, over committed and exhausted to the point that she's about to snap. Fed up, she joins se_date\": \"2016-08-26\", \"genre_ids\": [10749, 18], \"id\": 310888, \"original_title\": \"Southside With You\", \"original_langua vote_count\": 13, \"video\": false, \"vote_average\": 3.12}, {\"poster_path\": \"/wJXku1YhMKeuzYNEHux7XtaYPsE.jpg\", \"adult\": fal se, \"overview\": \"Based on a true story, \\u201cWar Dogs\\u201d follows two friends in their early 20s living in Miami duri ng the first Iraq War who exploit a little-known government initiative that allows small businesses to bid on U.S. Milit ary contracts. Starting small, they begin raking in big money and are living the high life. But the pair gets in over th h some very shady people, not the least of which turns out to be the U.S. Government.\", \"release_date\": \"2016-08-18\", \"g",
+      "All the Boys I've Loved Before\", \"overview\": \"Lara Jean's love life goes from imaginary to out of control when her secr \"vote_count\": 349, \"popularity\": 31.76}, {\"adult\": false, \"backdrop_path\": \"/yRXzrwLfB5tDTIA3lSU9S3N9RUK.jpg\", \"genre_i \"Disenchantment\", \"overview\": \"Set in a ruined medieval city called Dreamland, Disenchantment follows the grubby adventu w student at the exclusive Blackwood Boarding School, confronts the institution's supernatural occurrences and dark powe rs of its headmistress.\", \"poster_path\": \"/wErHaJrD1QZ2FEVneH6w0GZUz2L.jpg\", \"release_date\": \"2018-08-01\", \"title\": \"Dow",
+      "Endpoint: GET /movie/now_playing\nSpecification: \"operationId\": \"GET_movie-now_playing\" \"summary\": \"Get Now Playing\" \"description\": \"Get a list of movies in theatres. This is a release type query that looks for all movies that have a release type of 2 or 3 within the specified date range.\\n\\nYou can optionally specify a `region` prameter which will narrow the search to only look for theatrical release dates within the specified country.\"",
+      "Endpoint: POST /me/player/next\nSpecification: \"description\": \"Skips to next track in the user\\u2019s queue.\\n\" \"operationId\": \"skip-users-playback-to-next-track\" \"summary\": \"Skip To Next\\n\" \"x-spotify-docs-endpoint-name\": \"Skip User\\u2019s Playback To Next Track\"",
+      "ularity\": 7.090989, \"id\": 66776, \"backdrop_path\": \"/1Zv62x7qDSsbGGE95eR3LuAdpQn.jpg\", \"vote_average\": 3, \"overview\": \"Wh at is it that makes a man fall in love with a woman at first sight? Appearance? Aura? Wealth? NO, when campus prince and oth tactics on and off-line to take this beauty\\u2019s heart. Therefore this romance slowly bloomed. ~~ Drama adapted fr e\": \"zh\", \"vote_count\": 6, \"name\": \"Love O2O\", \"original_name\": \"\\u5fae\\u5fae\\u4e00\\u7b11\\u5f88\\u50be\\u57ce\"}, {\"poster_ \"id\": 46880, \"backdrop_path\": \"/mb3pRasvOWT6tQOFYsicCedZi9S.jpg\", \"vote_average\": 4.38, \"overview\": \"The Fosters is a c ompelling, one-hour drama about a multi-ethnic family mix of foster and biological kids being raised by two moms. Stef F e in and out of foster homes. Lena and Stef welcome Callie and her brother, Jude, into their home thinking it's just for rst_air_date\": \"2013-06-03\", \"origin_country\": [\"US\"], \"genre_ids\": [18], \"original_language\": \"en\", \"vote_count\":",
+      "Endpoint: POST /me/player/queue\nSpecification: \"description\": \"Add an item to the end of the user's current playback queue.\\n\" \"operationId\": \"add-to-queue\" \"description\": \"The uri of the item to add to the queue. Must be a track or an episode uri.\\n\" \"example\": \"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\" \"example\": \"0d1841b0976bae2a3a310dd74c0f3df354899bc8\" \"summary\": \"Add Item to Playback Queue\\n\"",
+      "wrong, she goes to wild extremes to get him back.\", \"release_date\": \"2016-08-26\", \"genre_ids\": [18], \"id\": 336011, \"ori B6VxajpPWKhkbTMF.jpg\", \"adult\": false, \"overview\": \"The legendary Roberto Duran and his equally legendary trainer Ray Ar age to query.\"}, {\"name\": \"region\", \"in\": \"query\", \"schema\": {\"type\": \"string\"}, \"description\": \"Specify a ISO 3166-1 co de to filter release dates. Must be uppercase.\"}]}",
+      "Endpoint: PUT /me/player/pause\nSpecification: \"description\": \"Pause playback on the user's account.\\n\" \"operationId\": \"pause-a-users-playback\" \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"} \"security\": [{\"oauth_2_0\": [\"user-modify-playback-state\"]}] \"summary\": \"Pause Playback\\n\" \"x-spotify-docs-console-url\": \"/console/put-pause/\"",
+      "Endpoint: GET /albums/{id}/tracks\nSpecification: \"description\": \"Get Spotify catalog information about an album\\u2019s tracks.\\nOptional parameters can be used to limit the number of tracks returned.\\n\" \"operationId\": \"get-an-albums-tracks\" \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"} \"summary\": \"Get Album Tracks\\n\"",
+      "Endpoint: GET /me/tracks\nSpecification: \"description\": \"Get a list of the songs saved in the current Spotify user's 'Your Music' library.\\n\" \"operationId\": \"get-users-saved-tracks\" \"403\": {\"$ref\": \"#/components/responses/Forbidden\"} \"summary\": \"Get User's Saved Tracks\\n\""
+    ],
+    "compressed_tokens": 4629,
+    "budget": {
+      "label": "spotify-attention40",
+      "source": "restbench-spotify_k40_all_noanchor_k10_n2.json",
+      "tokens": 4871,
+      "depth": 26,
+      "retrieval_recall": 0.75
+    },
+    "retrieval": [
+      {
+        "rank": 0,
+        "distance": 0.744769,
+        "endpoints": [
+          "POST /playlists/{playlist_id}/tracks"
+        ],
+        "raw_tokens": 930,
+        "compressed_tokens": 549,
+        "kept": true
+      },
+      {
+        "rank": 1,
+        "distance": 0.74864,
+        "endpoints": [
+          "PUT /playlists/{playlist_id}"
+        ],
+        "raw_tokens": 429,
+        "compressed_tokens": 153,
+        "kept": true
+      },
+      {
+        "rank": 2,
+        "distance": 0.755151,
+        "endpoints": [
+          "GET /playlists/{playlist_id}"
+        ],
+        "raw_tokens": 488,
+        "compressed_tokens": 279,
+        "kept": true
+      },
+      {
+        "rank": 3,
+        "distance": 0.757195,
+        "endpoints": [
+          "GET /playlists/{playlist_id}/tracks"
+        ],
+        "raw_tokens": 557,
+        "compressed_tokens": 136,
+        "kept": true
+      },
+      {
+        "rank": 4,
+        "distance": 0.764394,
+        "endpoints": [
+          "GET /me/playlists"
+        ],
+        "raw_tokens": 299,
+        "compressed_tokens": 105,
+        "kept": true
+      },
+      {
+        "rank": 5,
+        "distance": 0.770528,
+        "endpoints": [
+          "PUT /me/player/repeat"
+        ],
+        "raw_tokens": 280,
+        "compressed_tokens": 172,
+        "kept": true
+      },
+      {
+        "rank": 6,
+        "distance": 0.776597,
+        "endpoints": [
+          "POST /users/{user_id}/playlists"
+        ],
+        "raw_tokens": 555,
+        "compressed_tokens": 122,
+        "kept": true
+      },
+      {
+        "rank": 7,
+        "distance": 0.788787,
+        "endpoints": [
+          "DELETE /playlists/{playlist_id}/tracks"
+        ],
+        "raw_tokens": 451,
+        "compressed_tokens": 253,
+        "kept": true
+      },
+      {
+        "rank": 8,
+        "distance": 0.793005,
+        "endpoints": [
+          "GET /me/player/recently-played"
+        ],
+        "raw_tokens": 472,
+        "compressed_tokens": 84,
+        "kept": true
+      },
+      {
+        "rank": 9,
+        "distance": 0.797488,
+        "endpoints": [
+          "PUT /me/albums"
+        ],
+        "raw_tokens": 410,
+        "compressed_tokens": 212,
+        "kept": true
+      },
+      {
+        "rank": 10,
+        "distance": 0.801688,
+        "endpoints": [
+          "PUT /me/following"
+        ],
+        "raw_tokens": 559,
+        "compressed_tokens": 206,
+        "kept": true
+      },
+      {
+        "rank": 11,
+        "distance": 0.801936,
+        "endpoints": [
+          "PUT /me/tracks"
+        ],
+        "raw_tokens": 416,
+        "compressed_tokens": 228,
+        "kept": true
+      },
+      {
+        "rank": 12,
+        "distance": 0.807702,
+        "endpoints": [
+          "GET /me/following"
+        ],
+        "raw_tokens": 409,
+        "compressed_tokens": 115,
+        "kept": true
+      },
+      {
+        "rank": 13,
+        "distance": 0.816094,
+        "endpoints": [
+          "GET /search"
+        ],
+        "raw_tokens": 912,
+        "compressed_tokens": 181,
+        "kept": true
+      },
+      {
+        "rank": 14,
+        "distance": 0.81681,
+        "endpoints": [
+          "GET /recommendations"
+        ],
+        "raw_tokens": 762,
+        "compressed_tokens": 153,
+        "kept": true
+      },
+      {
+        "rank": 15,
+        "distance": 0.82069,
+        "endpoints": [
+          "PUT /me/player/play"
+        ],
+        "raw_tokens": 581,
+        "compressed_tokens": 243,
+        "kept": true
+      },
+      {
+        "rank": 16,
+        "distance": 0.824049,
+        "endpoints": [
+          "GET /movie/now_playing"
+        ],
+        "raw_tokens": 1024,
+        "compressed_tokens": 265,
+        "kept": true
+      },
+      {
+        "rank": 17,
+        "distance": 0.826043,
+        "endpoints": [
+          "GET /trending/{media_type}/{time_window}"
+        ],
+        "raw_tokens": 1024,
+        "compressed_tokens": 181,
+        "kept": true
+      },
+      {
+        "rank": 18,
+        "distance": 0.830603,
+        "endpoints": [
+          "GET /movie/now_playing"
+        ],
+        "raw_tokens": 1024,
+        "compressed_tokens": 101,
+        "kept": true
+      },
+      {
+        "rank": 19,
+        "distance": 0.833628,
+        "endpoints": [
+          "POST /me/player/next"
+        ],
+        "raw_tokens": 197,
+        "compressed_tokens": 75,
+        "kept": true
+      },
+      {
+        "rank": 20,
+        "distance": 0.835478,
+        "endpoints": [
+          "GET /tv/airing_today"
+        ],
+        "raw_tokens": 1024,
+        "compressed_tokens": 309,
+        "kept": true
+      },
+      {
+        "rank": 21,
+        "distance": 0.83625,
+        "endpoints": [
+          "POST /me/player/queue"
+        ],
+        "raw_tokens": 376,
+        "compressed_tokens": 132,
+        "kept": true
+      },
+      {
+        "rank": 22,
+        "distance": 0.836876,
+        "endpoints": [
+          "GET /movie/now_playing"
+        ],
+        "raw_tokens": 451,
+        "compressed_tokens": 125,
+        "kept": true
+      },
+      {
+        "rank": 23,
+        "distance": 0.83707,
+        "endpoints": [
+          "PUT /me/player/pause"
+        ],
+        "raw_tokens": 184,
+        "compressed_tokens": 95,
+        "kept": true
+      },
+      {
+        "rank": 24,
+        "distance": 0.83712,
+        "endpoints": [
+          "GET /albums/{id}/tracks"
+        ],
+        "raw_tokens": 271,
+        "compressed_tokens": 83,
+        "kept": true
+      },
+      {
+        "rank": 25,
+        "distance": 0.837922,
+        "endpoints": [
+          "GET /me/tracks"
+        ],
+        "raw_tokens": 230,
+        "compressed_tokens": 72,
+        "kept": true
+      }
+    ]
+  },
+  {
+    "benchmark": "restbench",
+    "queryset": "restbench",
+    "query": "Add the first song of The Dark Side of the Moon in my playback queue",
+    "solution": [
+      "GET /search",
+      "GET /albums/{id}/tracks",
+      "POST /me/player/queue"
+    ],
+    "base_url": "https://api.spotify.com/v1",
+    "base_path": "/v1",
+    "top_k": 10,
+    "raw_chunks": [
+      "Endpoint: PUT /me/player/repeat\nSpecification:\n{\"description\": \"Set the repeat mode for the user's playback. Options are repeat-track,\\nrepeat-context, and off.\\n\", \"operationId\": \"set-repeat-mode-on-users-playback\", \"parameters\": [{\"in\": \"query\", \"name\": \"state\", \"required\": \"true\", \"schema\": {\"description\": \"**track**, **context** or **off**.<br/>\\n**track** will repeat the current track.<br/>\\n**context** will repeat the current context.<br/>\\n**off** will turn repeat off.\\n\", \"example\": \"context\", \"title\": \"State\", \"type\": \"string\"}}], \"responses\": {\"204\": {\"description\": \"Command sent\"}, \"401\": {\"$ref\": \"#/components/responses/Unauthorized\"}, \"403\": {\"$ref\": \"#/components/responses/Forbidden\"}, \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"}}, \"security\": [{\"oauth_2_0\": [\"user-modify-playback-state\"]}], \"summary\": \"Set Repeat Mode\\n\", \"tags\": [\"Player\"], \"x-spotify-docs-console-url\": \"/console/put-repeat/\", \"x-spotify-docs-endpoint-name\": \"Set Repeat Mode On User\\u2019s Playback\"}",
+      "Endpoint: POST /me/player/queue\nSpecification:\n{\"description\": \"Add an item to the end of the user's current playback queue.\\n\", \"operationId\": \"add-to-queue\", \"parameters\": [{\"in\": \"query\", \"name\": \"uri\", \"required\": \"true\", \"schema\": {\"description\": \"The uri of the item to add to the queue. Must be a track or an episode uri.\\n\", \"example\": \"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\", \"title\": \"Spotify URI\", \"type\": \"string\"}}, {\"in\": \"query\", \"name\": \"device_id\", \"required\": \"false\", \"schema\": {\"description\": \"The id of the device this command is targeting. If\\nnot supplied, the user's currently active device is the target.\\n\", \"example\": \"0d1841b0976bae2a3a310dd74c0f3df354899bc8\", \"title\": \"Device ID\", \"type\": \"string\"}}], \"responses\": {\"204\": {\"description\": \"Command received\"}, \"401\": {\"$ref\": \"#/components/responses/Unauthorized\"}, \"403\": {\"$ref\": \"#/components/responses/Forbidden\"}, \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"}}, \"security\": [{\"oauth_2_0\": [\"user-modify-playback-state\"]}], \"summary\": \"Add Item to Playback Queue\\n\", \"tags\": [\"Player\"], \"x-spotify-docs-console-url\": \"/console/post-queue/\", \"x-spotify-docs-endpoint-name\": \"Add an item to queue\", \"x-spotify-policy-list\": {\"$ref\": \"#/components/x-spotify-policy/playerPolicyList\"}}",
+      "Endpoint: POST /playlists/{playlist_id}/tracks\nSpecification:\n{\"description\": \"Add one or more items to a user's playlist.\\n\", \"operationId\": \"add-tracks-to-playlist\", \"parameters\": [{\"$ref\": \"#/components/parameters/PathPlaylistId\"}, {\"in\": \"query\", \"name\": \"position\", \"required\": \"false\", \"schema\": {\"description\": \"The position to insert the items, a zero-based index. For example, to insert the items in the first position: `position=0`; to insert the items in the third position: `position=2`. If omitted, the items will be appended to the playlist. Items are added in the order they are listed in the query string or request body.\\n\", \"example\": \"0\", \"title\": \"Position (append by default)\", \"type\": \"integer\"}}, {\"in\": \"query\", \"name\": \"uris\", \"required\": \"false\", \"schema\": {\"description\": \"A comma-separated list of [Spotify URIs](/documentation/web-api/#spotify-uris-and-ids) to add, can be track or episode URIs. For example:<br/>`uris=spotify:track:4iV5W9uYEdYUVa79Axb7Rh, spotify:track:1301WleyT98MSxVHPZCA6M, spotify:episode:512ojhOuo1ktJprKbVcKyQ`<br/>A maximum of 100 items can be added in one request. <br/>\\n_**Note**: it is likely that passing a large number of item URIs as a query parameter will exceed the maximum length of the request URI. When adding a large number of items, it is recommended to pass them in the request body, see below._\\n\", \"example\": \"spotify:track:4iV5W9uYEdYUVa79Axb7Rh,spotify:track:1301WleyT98MSxVHPZCA6M\", \"title\": \"Spotify Track URIs\", \"type\": \"string\"}}], \"requestBody\": {\"content\": {\"application/json\": {\"schema\": {\"additionalProperties\": \"true\", \"properties\": {\"position\": {\"description\": \"The position to insert the items, a zero-based index. For example, to insert the items in the first position: `position=0` ; to insert the items in the third position: `position=2`. If omitted, the items will be appended to the playlist. Items are added in the order they appear in the uris array. For example: `{\\\"uris\\\": [\\\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\\\",\\\"spotify:track:1301WleyT98MSxVHPZCA6M\\\"], \\\"position\\\": 3}`\\n\", \"type\": \"integer\"}, \"uris\": {\"description\": \"A JSON array of the [Spotify URIs](/documentation/web-api/#spotify-uris-and-ids) to add. For example: `{\\\"uris\\\": [\\\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\\\",\\\"spotify:track:1301WleyT98MSxVHPZCA6M\\\", \\\"spotify:episode:512ojhOuo1ktJprKbVcKyQ\\\"]}`<br/>A maximum of 100 items can be added in one request. _**Note**: if the `uris` parameter is present in the query string, any URIs listed here in the body will be ignored._\\n\", \"items\": {\"type\": \"string\"}, \"type\": \"array\"}}, \"type\": \"object\"}}}}, \"responses\": {\"201\": {\"$ref\": \"#/components/responses/PlaylistSnapshotId\"}, \"401\": {\"$ref\": \"#/components/responses/Unauthorized\"}, \"403\": {\"$ref\": \"#/components/responses/Forbidden\"}, \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"}}, \"security\": [{\"oauth_2_0\": [\"playlist-modify-public\", \"playlist-modify-private\"]}], \"summary\": \"Add Items to Playlist\\n\", \"tags\": [\"Playlists\", \"Tracks\"], \"x-spotify-docs-console-url\": \"/console/post-playlist-tracks/\", \"x-spotify-docs-endpoint-name\": \"Add Items to a Playlist\"}",
+      "Endpoint: GET /me/player/queue\nSpecification:\n{\"description\": \"Get the list of objects that make up the user's queue.\\n\", \"operationId\": \"get-queue\", \"responses\": {\"200\": {\"$ref\": \"#/components/responses/Queue\"}, \"401\": {\"$ref\": \"#/components/responses/Unauthorized\"}, \"403\": {\"$ref\": \"#/components/responses/Forbidden\"}, \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"}}, \"security\": [{\"oauth_2_0\": [\"user-read-playback-state\"]}], \"summary\": \"Get the User's Queue\\n\", \"tags\": [\"Player\"], \"x-spotify-docs-console-url\": \"/console/get-queue/\", \"x-spotify-docs-endpoint-name\": \"Get the User's Queue\", \"x-spotify-policy-list\": {\"$ref\": \"#/components/x-spotify-policy/playerPolicyList\"}}",
+      "Endpoint: GET /me/player/recently-played\nSpecification:\n{\"description\": \"Get tracks from the current user's recently played tracks.\\n_**Note**: Currently doesn't support podcast episodes._\\n\", \"operationId\": \"get-recently-played\", \"parameters\": [{\"in\": \"query\", \"name\": \"limit\", \"required\": \"false\", \"schema\": {\"default\": \"20\", \"description\": \"The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\\n\", \"example\": \"10\", \"maximum\": \"50\", \"minimum\": \"0\", \"title\": \"Limit\", \"type\": \"integer\"}}, {\"in\": \"query\", \"name\": \"after\", \"required\": \"false\", \"schema\": {\"description\": \"A Unix timestamp in milliseconds. Returns all items\\nafter (but not including) this cursor position. If `after` is specified, `before`\\nmust not be specified.\\n\", \"example\": \"1484811043508\", \"title\": \"After\", \"type\": \"integer\"}}, {\"in\": \"query\", \"name\": \"before\", \"required\": \"false\", \"schema\": {\"description\": \"A Unix timestamp in milliseconds. Returns all items\\nbefore (but not including) this cursor position. If `before` is specified,\\n`after` must not be specified.\\n\", \"title\": \"Before\", \"type\": \"integer\"}}], \"responses\": {\"200\": {\"$ref\": \"#/components/responses/CursorPagedPlayHistory\"}, \"401\": {\"$ref\": \"#/components/responses/Unauthorized\"}, \"403\": {\"$ref\": \"#/components/responses/Forbidden\"}, \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"}}, \"security\": [{\"oauth_2_0\": [\"user-read-recently-played\"]}], \"summary\": \"Get Recently Played Tracks\\n\", \"tags\": [\"Player\"], \"x-spotify-docs-console-url\": \"/console/get-recently-played/\", \"x-spotify-docs-endpoint-name\": \"Get Current User's Recently Played Tracks\", \"x-spotify-policy-list\": {\"$ref\": \"#/components/x-spotify-policy/playerPolicyList\"}}",
+      "Endpoint: PUT /playlists/{playlist_id}\nSpecification:\n{\"description\": \"Change a playlist's name and public/private state. (The user must, of\\ncourse, own the playlist.)\\n\", \"operationId\": \"change-playlist-details\", \"parameters\": [{\"$ref\": \"#/components/parameters/PathPlaylistId\"}], \"requestBody\": {\"content\": {\"application/json\": {\"schema\": {\"additionalProperties\": \"true\", \"example\": {\"description\": \"Updated playlist description\", \"name\": \"Updated Playlist Name\", \"public\": \"false\"}, \"properties\": {\"collaborative\": {\"description\": \"If `true`, the playlist will become collaborative and other users will be able to modify the playlist in their Spotify client. <br/>\\n_**Note**: You can only set `collaborative` to `true` on non-public playlists._\\n\", \"type\": \"boolean\"}, \"description\": {\"description\": \"Value for playlist description as displayed in Spotify Clients and in the Web API.\\n\", \"type\": \"string\"}, \"name\": {\"description\": \"The new name for the playlist, for example `\\\"My New Playlist Title\\\"`\\n\", \"type\": \"string\"}, \"public\": {\"description\": \"If `true` the playlist will be public, if `false` it will be private.\\n\", \"type\": \"boolean\"}}, \"type\": \"object\"}}}}, \"responses\": {\"200\": {\"description\": \"Playlist updated\"}, \"401\": {\"$ref\": \"#/components/responses/Unauthorized\"}, \"403\": {\"$ref\": \"#/components/responses/Forbidden\"}, \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"}}, \"security\": [{\"oauth_2_0\": [\"playlist-modify-public\", \"playlist-modify-private\"]}], \"summary\": \"Change Playlist Details\\n\", \"tags\": [\"Playlists\", \"Library\"], \"x-spotify-docs-console-url\": \"/console/put-playlist/\", \"x-spotify-docs-endpoint-name\": \"Change a Playlist's Details\"}",
+      "Endpoint: PUT /me/player/pause\nSpecification:\n{\"description\": \"Pause playback on the user's account.\\n\", \"operationId\": \"pause-a-users-playback\", \"responses\": {\"204\": {\"description\": \"Playback paused\"}, \"401\": {\"$ref\": \"#/components/responses/Unauthorized\"}, \"403\": {\"$ref\": \"#/components/responses/Forbidden\"}, \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"}}, \"security\": [{\"oauth_2_0\": [\"user-modify-playback-state\"]}], \"summary\": \"Pause Playback\\n\", \"tags\": [\"Player\"], \"x-spotify-docs-console-url\": \"/console/put-pause/\", \"x-spotify-docs-endpoint-name\": \"Pause a User's Playback\", \"x-spotify-policy-list\": {\"$ref\": \"#/components/x-spotify-policy/playerPolicyList\"}}",
+      "Endpoint: PUT /me/player/volume\nSpecification:\n{\"description\": \"Set the volume for the user\\u2019s current playback device.\\n\", \"operationId\": \"set-volume-for-users-playback\", \"parameters\": [{\"in\": \"query\", \"name\": \"volume_percent\", \"required\": \"true\", \"schema\": {\"description\": \"The volume to set. Must be a value from 0 to 100 inclusive.\\n\", \"example\": \"50\", \"title\": \"Volume %\", \"type\": \"integer\"}}], \"responses\": {\"204\": {\"description\": \"Command sent\"}, \"401\": {\"$ref\": \"#/components/responses/Unauthorized\"}, \"403\": {\"$ref\": \"#/components/responses/Forbidden\"}, \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"}}, \"security\": [{\"oauth_2_0\": [\"user-modify-playback-state\"]}], \"summary\": \"Set Playback Volume\\n\", \"tags\": [\"Player\"], \"x-spotify-docs-console-url\": \"/console/put-volume/\", \"x-spotify-docs-endpoint-name\": \"Set Volume For User's Playback\"}",
+      "Endpoint: PUT /me/following\nSpecification:\n{\"description\": \"Add the current user as a follower of one or more artists or other Spotify users.\\n\", \"operationId\": \"follow-artists-users\", \"parameters\": [{\"in\": \"query\", \"name\": \"type\", \"required\": \"true\", \"schema\": {\"description\": \"The ID type.\\n\", \"enum\": [\"artist\", \"user\"], \"example\": \"artist\", \"title\": \"Item Type\", \"type\": \"string\"}}, {\"in\": \"query\", \"name\": \"ids\", \"required\": \"true\", \"schema\": {\"description\": \"A comma-separated list of the artist or the user [Spotify IDs](/documentation/web-api/#spotify-uris-and-ids).\\nA maximum of 50 IDs can be sent in one request.\\n\", \"example\": \"2CIMQHirSU0MQqyYHq0eOx,57dN52uHvrHOxijzpIgu3E,1vCWHaC5f2uS3yhpwWbIA6\", \"title\": \"Spotify IDs\", \"type\": \"string\"}}], \"requestBody\": {\"content\": {\"application/json\": {\"schema\": {\"additionalProperties\": \"true\", \"properties\": {\"ids\": {\"description\": \"A JSON array of the artist or user [Spotify IDs](/documentation/web-api/#spotify-uris-and-ids).\\nFor example: `{ids:[\\\"74ASZWbe4lXaubB36ztrGX\\\", \\\"08td7MxkoHQkXnWAYD8d6Q\\\"]}`. A maximum of 50 IDs can be sent in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\\n\", \"items\": {\"type\": \"string\"}, \"type\": \"array\"}}, \"required\": [\"ids\"], \"type\": \"object\"}}}}, \"responses\": {\"204\": {\"description\": \"Artist or user followed\"}, \"401\": {\"$ref\": \"#/components/responses/Unauthorized\"}, \"403\": {\"$ref\": \"#/components/responses/Forbidden\"}, \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"}}, \"security\": [{\"oauth_2_0\": [\"user-follow-modify\"]}], \"summary\": \"Follow Artists or Users\\n\", \"tags\": [\"Users\", \"Artists\", \"Library\"], \"x-spotify-docs-console-url\": \"/console/put-following/?type=user&amp;ids=exampleuser01\", \"x-spotify-docs-endpoint-name\": \"Follow Artists or Users\"}",
+      "Endpoint: POST /me/player/previous\nSpecification:\n{\"description\": \"Skips to previous track in the user\\u2019s queue.\\n\", \"operationId\": \"skip-users-playback-to-previous-track\", \"responses\": {\"204\": {\"description\": \"Command sent\"}, \"401\": {\"$ref\": \"#/components/responses/Unauthorized\"}, \"403\": {\"$ref\": \"#/components/responses/Forbidden\"}, \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"}}, \"security\": [{\"oauth_2_0\": [\"user-modify-playback-state\"]}], \"summary\": \"Skip To Previous\\n\", \"tags\": [\"Player\"], \"x-spotify-docs-console-url\": \"/console/post-previous/\", \"x-spotify-docs-endpoint-name\": \"Skip User\\u2019s Playback To Previous Track\", \"x-spotify-policy-list\": {\"$ref\": \"#/components/x-spotify-policy/playerPolicyList\"}}"
+    ],
+    "raw_tokens": 3861,
+    "compressed_chunks": [
+      "Endpoint: PUT /me/player/repeat\nSpecification: \"description\": \"Set the repeat mode for the user's playback. Options are repeat-track,\\nrepeat-context, and off.\\n\" \"operationId\": \"set-repeat-mode-on-users-playback\" \"description\": \"**track**, **context** or **off**.<br/>\\n**track** will repeat the current track.<br/>\\n**context** will repeat the current context.<br/>\\n**off** will turn repeat off.\\n\" \"summary\": \"Set Repeat Mode\\n\" \"tags\": [\"Player\"] \"x-spotify-docs-console-url\": \"/console/put-repeat/\" \"x-spotify-docs-endpoint-name\": \"Set Repeat Mode On User\\u2019s Playback\"",
+      "Endpoint: POST /me/player/queue\nSpecification: \"description\": \"Add an item to the end of the user's current playback queue.\\n\" \"operationId\": \"add-to-queue\" \"name\": \"uri\" \"description\": \"The uri of the item to add to the queue. Must be a track or an episode uri.\\n\" \"example\": \"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\" \"example\": \"0d1841b0976bae2a3a310dd74c0f3df354899bc8\" \"summary\": \"Add Item to Playback Queue\\n\"",
+      "Endpoint: POST /playlists/{playlist_id}/tracks\nSpecification: \"description\": \"Add one or more items to a user's playlist.\\n\" \"operationId\": \"add-tracks-to-playlist\" \"description\": \"A comma-separated list of [Spotify URIs](/documentation/web-api/#spotify-uris-and-ids) to add, can be track or episode URIs. For example:<br/>`uris=spotify:track:4iV5W9uYEdYUVa79Axb7Rh, spotify:track:1301WleyT98MSxVHPZCA6M, spotify:episode:512ojhOuo1ktJprKbVcKyQ`<br/>A maximum of 100 items can be added in one request. <br/>\\n_**Note**: it is likely that passing a large number of item URIs as a query parameter will exceed the maximum length of the request URI. When adding a large number of items, it is recommended to pass them in the request body, see below._\\n\" \"description\": \"A JSON array of the [Spotify URIs](/documentation/web-api/#spotify-uris-and-ids) to add. For example: `{\\\"uris\\\": [\\\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\\\",\\\"spotify:track:1301WleyT98MSxVHPZCA6M\\\", \\\"spotify:episode:512ojhOuo1ktJprKbVcKyQ\\\"]}`<br/>A maximum of 100 items can be added in one request. _**Note**: if the `uris` parameter is present in the query string, any URIs listed here in the body will be ignored._\\n\" \"403\": {\"$ref\": \"#/components/responses/Forbidden\"} \"summary\": \"Add Items to Playlist\\n\"",
+      "Endpoint: GET /me/player/queue\nSpecification: \"description\": \"Get the list of objects that make up the user's queue.\\n\" \"operationId\": \"get-queue\" \"summary\": \"Get the User's Queue\\n\"",
+      "Endpoint: GET /me/player/recently-played\nSpecification: \"description\": \"Get tracks from the current user's recently played tracks.\\n_**Note**: Currently doesn't support podcast episodes._\\n\" \"operationId\": \"get-recently-played\" \"description\": \"The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.\\n\" \"200\": {\"$ref\": \"#/components/responses/CursorPagedPlayHistory\"} \"summary\": \"Get Recently Played Tracks\\n\"",
+      "Endpoint: PUT /playlists/{playlist_id}\nSpecification: \"description\": \"Change a playlist's name and public/private state. (The user must, of\\ncourse, own the playlist.)\\n\" \"operationId\": \"change-playlist-details\" \"parameters\": [{\"$ref\": \"#/components/parameters/PathPlaylistId\"}] \"description\": \"If `true`, the playlist will become collaborative and other users will be able to modify the playlist in their Spotify client. <br/>\\n_**Note**: You can only set `collaborative` to `true` on non-public playlists._\\n\" \"name\": {\"description\": \"The new name for the playlist, for example `\\\"My New Playlist Title\\\"`\\n\", \"type\": \"string\"} \"summary\": \"Change Playlist Details\\n\"",
+      "Endpoint: PUT /me/player/pause\nSpecification: \"description\": \"Pause playback on the user's account.\\n\" \"operationId\": \"pause-a-users-playback\" \"security\": [{\"oauth_2_0\": [\"user-modify-playback-state\"]}] \"summary\": \"Pause Playback\\n\"",
+      "Endpoint: PUT /me/player/volume\nSpecification: \"description\": \"Set the volume for the user\\u2019s current playback device.\\n\" \"operationId\": \"set-volume-for-users-playback\" \"403\": {\"$ref\": \"#/components/responses/Forbidden\"} \"summary\": \"Set Playback Volume\\n\" \"x-spotify-docs-console-url\": \"/console/put-volume/\"",
+      "Endpoint: PUT /me/following\nSpecification: \"description\": \"Add the current user as a follower of one or more artists or other Spotify users.\\n\" \"operationId\": \"follow-artists-users\" \"example\": \"2CIMQHirSU0MQqyYHq0eOx,57dN52uHvrHOxijzpIgu3E,1vCWHaC5f2uS3yhpwWbIA6\" \"204\": {\"description\": \"Artist or user followed\"} \"summary\": \"Follow Artists or Users\\n\"",
+      "Endpoint: POST /me/player/previous\nSpecification: \"description\": \"Skips to previous track in the user\\u2019s queue.\\n\" \"operationId\": \"skip-users-playback-to-previous-track\" \"summary\": \"Skip To Previous\\n\"",
+      "Endpoint: POST /me/player/next\nSpecification: \"description\": \"Skips to next track in the user\\u2019s queue.\\n\" \"operationId\": \"skip-users-playback-to-next-track\" \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"} \"summary\": \"Skip To Next\\n\"",
+      "Endpoint: GET /movie/now_playing\nSpecification: \"operationId\": \"GET_movie-now_playing\" \"summary\": \"Get Now Playing\" \"description\": \"Get a list of movies in theatres. This is a release type query that looks for all movies that have a release type of 2 or 3 within the specified date range.\\n\\nYou can optionally specify a `region` prameter which will narrow the search to only look for theatrical release dates within the specified country.\"",
+      "Endpoint: PUT /me/player/play\nSpecification: \"description\": \"Start a new context or resume current playback on the user's active device.\\n\" \"operationId\": \"start-a-users-playback\" \"example\": {\"context_uri\": \"spotify:album:5ht7ItJgpBH7W6vJ5BqpPr\", \"offset\": {\"position\": \"5\"}, \"position_ms\": \"0\"} \"description\": \"Optional. Spotify URI of the context to play.\\nValid contexts are albums, artists & playlists.\\n`{context_uri:\\\"spotify:album:1Je1IMUlBXcx1Fz0WE7oPT\\\"}`\\n\" \"description\": \"Optional. A JSON array of the Spotify track URIs to play.\\nFor example: `{\\\"uris\\\": [\\\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\\\", \\\"spotify:track:1301WleyT98MSxVHPZCA6M\\\"]}`\\n\" \"summary\": \"Start/Resume Playback\\n\"",
+      "wrong, she goes to wild extremes to get him back.\", \"release_date\": \"2016-08-26\", \"genre_ids\": [18], \"id\": 336011, \"ori Udiz.jpg\", \"popularity\": 3.485193, \"vote_count\": 8, \"video\": false, \"vote_average\": 1.88}, {\"poster_path\": \"/1SWIUZp4Gi2 popularity\": 3.474028, \"vote_count\": 16, \"video\": false, \"vote_average\": 3.75}], \"dates\": {\"maximum\": \"2016-09-01\", \"min imum\": \"2016-07-21\"}, \"total_pages\": 33, \"total_results\": 649}}}}}}, \"401\": {\"$ref\": \"#/components/responses/trait_stand de to filter release dates. Must be uppercase.\"}]}",
+      "Endpoint: PUT /me/tracks\nSpecification: \"description\": \"Save one or more tracks to the current user's 'Your Music' library.\\n\" \"operationId\": \"save-tracks-user\" \"description\": \"A JSON array of the [Spotify IDs](/documentation/web-api/#spotify-uris-and-ids). For example: `[\\\"4iV5W9uYEdYUVa79Axb7Rh\\\", \\\"1301WleyT98MSxVHPZCA6M\\\"]`<br/>A maximum of 50 items can be specified in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\\n\" \"summary\": \"Save Tracks for Current User\\n\" \"tags\": [\"Tracks\", \"Library\"] \"x-spotify-docs-console-url\": \"/console/put-current-user-saved-tracks/?ids=7ouMYWpwJ422jRcDASZB7P%2C4VqPOruhp5EdPBeR92t 6lQ%2C2takcwOaAZWiXQijPHIx7B\"",
+      "Endpoint: POST /users/{user_id}/playlists\nSpecification: \"description\": \"Create a playlist for a Spotify user (Before calling this API, must call GET /me first to get the user_id). (The playlist will be empty until\\nyou [add tracks](/documentation/web-api/reference/#/operations/add-tracks-to-playlist).)\\n\" \"operationId\": \"create-playlist\" \"parameters\": [{\"$ref\": \"#/components/parameters/PathUserId\"}] \"description\": \"Defaults to `false`. If `true` the playlist will be collaborative. _**Note**: to create a collaborative playlist you must also set `public` to `false`. To create collaborative playlists you must have granted `playlist-modify-private` and `playlist-modify-public` [scopes](/documentation/general/guides/authorization-guide/#list-of-scopes)._\\n\" \"403\": {\"$ref\": \"#/components/responses/Forbidden\"} \"summary\": \"Create Playlist\\n\"",
+      "Endpoint: GET /me/playlists\nSpecification: \"description\": \"Get a list of the playlists owned or followed by the current Spotify\\nuser.\\n\" \"operationId\": \"get-a-list-of-current-users-playlists\" \"description\": \"'The index of the first playlist to return. Default:\\n0 (the first object). Maximum offset: 100.000\\\\. Use with `limit` to get the\\nnext set of playlists.'\\n\" \"summary\": \"Get Current User's Playlists\\n\"",
+      "Endpoint: GET /me/following\nSpecification: \"description\": \"Get the current user's followed artists.\\n\" \"operationId\": \"get-followed\" \"description\": \"The maximum number of items to return. Default: 20\\\\. Minimum: 1\\\\. Maximum: 50\\\\.\\n\" \"200\": {\"$ref\": \"#/components/responses/CursorPagedArtists\"} \"403\": {\"$ref\": \"#/components/responses/Forbidden\"} \"summary\": \"Get Followed Artists\\n\" \"x-spotify-docs-console-url\": \"/console/get-following/?type=artist&amp;limit=20\" \"x-spotify-docs-endpoint-name\": \"Get User's Followed Artists\"",
+      "Endpoint: GET /me/player/currently-playing\nSpecification: \"description\": \"Get the track currently being played on the user's Spotify account.\\n\" \"operationId\": \"get-the-users-currently-playing-track\" \"200\": {\"$ref\": \"#/components/responses/OneCurrentlyPlayingTrack\"} \"429\": {\"$ref\": \"#/components/responses/TooManyRequests\"} \"summary\": \"Get Currently Playing Track\\n\"",
+      "Endpoint: GET /playlists/{playlist_id}/tracks\nSpecification: \"description\": \"Get full details of the items of a playlist owned by a Spotify user.\\n\" \"operationId\": \"get-playlists-tracks\" \"description\": \"Filters for the query: a comma-separated list of the\\nfields to return. If omitted, all fields are returned. For example, to get\\njust the total number of items and the request limit:<br/>`fields=total,limit`<br/>A\\ndot separator can be used to specify non-reoccurring fields, while parentheses\\ncan be used to specify reoccurring fields within objects. For example, to\\nget just the added date and user ID of the adder:<br/>`fields=items(added_at,added_by.id)`<br/>Use\\nmultiple parentheses to drill down into nested objects, for example:<br/>`fields=items(track(name,href,album(name,href)))`<br/>Fields\\ncan be excluded by prefixing them with an exclamation mark, for example:<br/>`fields=items.track.album(!external_urls,images)`\\n\" \"example\": \"items(added_by.id,track(name,href,album(name,href)))\" \"200\": {\"$ref\": \"#/components/responses/PagingPlaylistTrackObject\"} \"summary\": \"Get Playlist Items\\n\"",
+      "Endpoint: GET /playlists/{playlist_id}\nSpecification: \"description\": \"Get a playlist owned by a Spotify user.\\n\" \"operationId\": \"get-playlist\" \"description\": \"Filters for the query: a comma-separated list of the\\nfields to return. If omitted, all fields are returned. For example, to get\\njust the playlist''s description and URI: `fields=description,uri`. A dot\\nseparator can be used to specify non-reoccurring fields, while parentheses\\ncan be used to specify reoccurring fields within objects. For example, to\\nget just the added date and user ID of the adder: `fields=tracks.items(added_at,added_by.id)`.\\nUse multiple parentheses to drill down into nested objects, for example: `fields=tracks.items(track(name,href,album(name,href)))`.\\nFields can be excluded by prefixing them with an exclamation mark, for example:\\n`fields=tracks.items(track(name,href,album(!name,href)))`\\n\" \"example\": \"items(added_by.id,track(name,href,album(name,href)))\" \"security\": [{\"oauth_2_0\": []}] \"summary\": \"Get Playlist\\n\" \"x-spotify-docs-console-url\": \"/console/get-playlist/?playlist_id=59ZbFPES4DQwEjBpWHzrtC&amp;user_id=spotify\"",
+      "_count\": 100}, {\"backdrop_path\": \"/eiq8Xwi06l4ZDNxGW1JfjmkmYfB.jpg\", \"first_air_date\": \"2016-09-01\", \"genre_ids\": [14], uCegP14SuNmUyGARqJOeEUD3Pnq.jpg\", \"popularity\": 6.312121, \"name\": \"Emerald City\", \"vote_average\": 7, \"vote_count\": 1}, { war. As an elite rifle company parachuting into Normandy early on D-Day morning, participants in the Battle of the Bulge he Pacific Theater of Operations within the wider Pacific War. Whereas Band of Brothers followed one company of the 506t iRM8WCrwdRS8.jpg\", \"popularity\": 5.48438, \"name\": \"The Pacific\", \"vote_average\": 7.7, \"vote_count\": 25}, {\"backdrop_path \": \"/uM821Y4vXii5fJaY85cg9gNzatK.jpg\", \"first_air_date\": \"2016-08-14\", \"genre_ids\": [18, 10751], \"id\": 67265, \"original_",
+      "Endpoint: PUT /me/albums\nSpecification: \"description\": \"Save one or more albums to the current user's 'Your Music' library.\\n\" \"operationId\": \"save-albums-user\" \"parameters\": [{\"$ref\": \"#/components/parameters/QueryAlbumIds\"}] \"description\": \"A JSON array of the [Spotify IDs](/documentation/web-api/#spotify-uris-and-ids). For example: `[\\\"4iV5W9uYEdYUVa79Axb7Rh\\\", \\\"1301WleyT98MSxVHPZCA6M\\\"]`<br/>A maximum of 50 items can be specified in one request. _**Note**: if the `ids` parameter is present in the query string, any IDs listed here in the body will be ignored._\\n\" \"200\": {\"description\": \"The album is saved\"} \"summary\": \"Save Albums for Current User\\n\""
+    ],
+    "compressed_tokens": 3758,
+    "budget": {
+      "label": "spotify-attention40",
+      "source": "restbench-spotify_k40_all_noanchor_k10_n2.json",
+      "tokens": 3861,
+      "depth": 23,
+      "retrieval_recall": 0.3333333333333333
+    },
+    "retrieval": [
+      {
+        "rank": 0,
+        "distance": 0.588376,
+        "endpoints": [
+          "PUT /me/player/repeat"
+        ],
+        "raw_tokens": 280,
+        "compressed_tokens": 157,
+        "kept": true
+      },
+      {
+        "rank": 1,
+        "distance": 0.60472,
+        "endpoints": [
+          "POST /me/player/queue"
+        ],
+        "raw_tokens": 376,
+        "compressed_tokens": 138,
+        "kept": true
+      },
+      {
+        "rank": 2,
+        "distance": 0.6168,
+        "endpoints": [
+          "POST /playlists/{playlist_id}/tracks"
+        ],
+        "raw_tokens": 930,
+        "compressed_tokens": 396,
+        "kept": true
+      },
+      {
+        "rank": 3,
+        "distance": 0.620813,
+        "endpoints": [
+          "GET /me/player/queue"
+        ],
+        "raw_tokens": 193,
+        "compressed_tokens": 49,
+        "kept": true
+      },
+      {
+        "rank": 4,
+        "distance": 0.629952,
+        "endpoints": [
+          "GET /me/player/recently-played"
+        ],
+        "raw_tokens": 472,
+        "compressed_tokens": 112,
+        "kept": true
+      },
+      {
+        "rank": 5,
+        "distance": 0.632413,
+        "endpoints": [
+          "PUT /playlists/{playlist_id}"
+        ],
+        "raw_tokens": 429,
+        "compressed_tokens": 170,
+        "kept": true
+      },
+      {
+        "rank": 6,
+        "distance": 0.63284,
+        "endpoints": [
+          "PUT /me/player/pause"
+        ],
+        "raw_tokens": 184,
+        "compressed_tokens": 62,
+        "kept": true
+      },
+      {
+        "rank": 7,
+        "distance": 0.636835,
+        "endpoints": [
+          "PUT /me/player/volume"
+        ],
+        "raw_tokens": 239,
+        "compressed_tokens": 82,
+        "kept": true
+      },
+      {
+        "rank": 8,
+        "distance": 0.638528,
+        "endpoints": [
+          "PUT /me/following"
+        ],
+        "raw_tokens": 559,
+        "compressed_tokens": 123,
+        "kept": true
+      },
+      {
+        "rank": 9,
+        "distance": 0.64528,
+        "endpoints": [
+          "POST /me/player/previous"
+        ],
+        "raw_tokens": 199,
+        "compressed_tokens": 54,
+        "kept": true
+      },
+      {
+        "rank": 10,
+        "distance": 0.64733,
+        "endpoints": [
+          "POST /me/player/next"
+        ],
+        "raw_tokens": 197,
+        "compressed_tokens": 70,
+        "kept": true
+      },
+      {
+        "rank": 11,
+        "distance": 0.650044,
+        "endpoints": [
+          "GET /movie/now_playing"
+        ],
+        "raw_tokens": 1024,
+        "compressed_tokens": 101,
+        "kept": true
+      },
+      {
+        "rank": 12,
+        "distance": 0.650838,
+        "endpoints": [
+          "PUT /me/player/play"
+        ],
+        "raw_tokens": 581,
+        "compressed_tokens": 224,
+        "kept": true
+      },
+      {
+        "rank": 13,
+        "distance": 0.651578,
+        "endpoints": [
+          "GET /movie/now_playing"
+        ],
+        "raw_tokens": 451,
+        "compressed_tokens": 188,
+        "kept": true
+      },
+      {
+        "rank": 14,
+        "distance": 0.656237,
+        "endpoints": [
+          "PUT /me/tracks"
+        ],
+        "raw_tokens": 416,
+        "compressed_tokens": 249,
+        "kept": true
+      },
+      {
+        "rank": 15,
+        "distance": 0.657148,
+        "endpoints": [
+          "POST /users/{user_id}/playlists"
+        ],
+        "raw_tokens": 555,
+        "compressed_tokens": 208,
+        "kept": true
+      },
+      {
+        "rank": 16,
+        "distance": 0.659162,
+        "endpoints": [
+          "GET /me/playlists"
+        ],
+        "raw_tokens": 299,
+        "compressed_tokens": 105,
+        "kept": true
+      },
+      {
+        "rank": 17,
+        "distance": 0.660954,
+        "endpoints": [
+          "GET /me/following"
+        ],
+        "raw_tokens": 409,
+        "compressed_tokens": 147,
+        "kept": true
+      },
+      {
+        "rank": 18,
+        "distance": 0.664251,
+        "endpoints": [
+          "GET /me/player/currently-playing"
+        ],
+        "raw_tokens": 236,
+        "compressed_tokens": 88,
+        "kept": true
+      },
+      {
+        "rank": 19,
+        "distance": 0.664841,
+        "endpoints": [
+          "GET /playlists/{playlist_id}/tracks"
+        ],
+        "raw_tokens": 557,
+        "compressed_tokens": 286,
+        "kept": true
+      },
+      {
+        "rank": 20,
+        "distance": 0.674471,
+        "endpoints": [
+          "GET /playlists/{playlist_id}"
+        ],
+        "raw_tokens": 488,
+        "compressed_tokens": 297,
+        "kept": true
+      },
+      {
+        "rank": 21,
+        "distance": 0.674676,
+        "endpoints": [
+          "GET /tv/{tv_id}/recommendations"
+        ],
+        "raw_tokens": 1024,
+        "compressed_tokens": 257,
+        "kept": true
+      },
+      {
+        "rank": 22,
+        "distance": 0.676705,
+        "endpoints": [
+          "PUT /me/albums"
+        ],
+        "raw_tokens": 410,
+        "compressed_tokens": 195,
+        "kept": true
+      }
+    ]
+  }
+]

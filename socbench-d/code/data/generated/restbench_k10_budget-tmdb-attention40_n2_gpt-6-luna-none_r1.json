@@ -1,0 +1,71 @@
+[
+  {
+    "queryset": "restbench",
+    "query": "give me the number of movies directed by Sofia Coppola",
+    "solution": [
+      "GET /search/person",
+      "GET /person/{person_id}/movie_credits"
+    ],
+    "code_without": "import requests\n\nBASE_URL = \"https://api.themoviedb.org/3\"\nAPI_KEY = \"YOUR_TMDB_API_KEY\"\n\n# The provided documentation does not include endpoints for searching people\n# or retrieving a person's filmography, so the requested count cannot be\n# obtained using only the documented endpoints.",
+    "code_with": "import requests\n\nAPI_KEY = \"YOUR_TMDB_API_KEY\"\nBASE_URL = \"https://api.themoviedb.org/3\"\n\nresponse = requests.get(\n    f\"{BASE_URL}/movie/popular\",\n    params={\"api_key\": API_KEY, \"page\": 1},\n)\nresponse.raise_for_status()\nmovies = response.json().get(\"results\", [])\n\ndirected_count = 0\nfor movie in movies:\n    movie_id = movie.get(\"id\")\n    if not movie_id:\n        continue\n\n    credits_response = requests.get(\n        f\"{BASE_URL}/movie/{movie_id}/credits\",\n        params={\"api_key\": API_KEY},\n    )\n    if credits_response.ok:\n        directed_count += sum(\n            1\n            for person in credits_response.json().get(\"crew\", [])\n            if person.get(\"name\") == \"Sofia Coppola\"\n            and person.get(\"job\") == \"Director\"\n        )\n\nprint(directed_count)",
+    "found_without": [],
+    "found_with": [
+      "GET /movie/popular",
+      "GET /movie/{movie_id}/credits"
+    ],
+    "recall_without": 0.0,
+    "recall_with": 0.0,
+    "usage_without": {
+      "prompt_tokens": 8358,
+      "completion_tokens": 72,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0008718
+    },
+    "usage_with": {
+      "prompt_tokens": 8218,
+      "completion_tokens": 205,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0009243000000000001
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Who was the lead actor in the movie The Dark Knight?",
+    "solution": [
+      "GET /search/movie",
+      "GET /movie/{movie_id}/credits"
+    ],
+    "code_without": "import requests\n\nresponse = requests.get(\n    \"https://api.themoviedb.org/3/search/movie\",\n    params={\"query\": \"The Dark Knight\"},\n)\nresponse.raise_for_status()\nmovies = response.json().get(\"results\", [])\nmovie = next((item for item in movies if item.get(\"title\") == \"The Dark Knight\"), None)\n\nif movie:\n    credits_response = requests.get(\n        f\"https://api.themoviedb.org/3/movie/{movie['id']}/credits\"\n    )\n    credits_response.raise_for_status()\n    cast = credits_response.json().get(\"cast\", [])\n    if cast:\n        print(cast[0].get(\"name\"))",
+    "code_with": "import requests\n\nresponse = requests.get(\n    \"https://api.themoviedb.org/3/search/movie\",\n    params={\"query\": \"The Dark Knight\"},\n)\nresponse.raise_for_status()\nmovies = response.json().get(\"results\", [])\nmovie = next((m for m in movies if m.get(\"title\") == \"The Dark Knight\"), None)\n\nif movie:\n    credits_response = requests.get(\n        f\"https://api.themoviedb.org/3/movie/{movie['id']}/credits\"\n    )\n    credits_response.raise_for_status()\n    cast = credits_response.json().get(\"cast\", [])\n    if cast:\n        print(cast[0].get(\"name\"))",
+    "found_without": [
+      "GET /movie/{movie_id}/credits",
+      "GET /search/movie"
+    ],
+    "found_with": [
+      "GET /movie/{movie_id}/credits",
+      "GET /search/movie"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 9275,
+      "completion_tokens": 142,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0009985
+    },
+    "usage_with": {
+      "prompt_tokens": 9025,
+      "completion_tokens": 142,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0009735
+    }
+  }
+]

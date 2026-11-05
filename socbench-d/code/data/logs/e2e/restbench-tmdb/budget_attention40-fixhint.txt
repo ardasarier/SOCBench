@@ -1,0 +1,18 @@
+
+### -u src/make_budget_contexts.py --reference data/contexts/restbench-tmdb_k10_all_noanchor_reqschema_n2.json --source data/contexts/restbench-tmdb_k40_all_noanchor_k10-fixhint_n2.json --label tmdb-attention40-fixhint
+queries:                  2
+mean depth (chunks):      19.0
+tokens used / raw k=10:   0.917
+retrieval recall:         0.250   (raw k=10: 0.250)
+queries over budget:      0
+
+wrote data/contexts/restbench_k10_budget-tmdb-attention40-fixhint_n2.json
+
+### -u src/make_budget_contexts.py --reference data/contexts/restbench-tmdb_k10_all_noanchor_reqschema_n100.json --source data/contexts/restbench-tmdb_k40_all_noanchor_k10-fixhint_n100.json --label tmdb-attention40-fixhint
+queries:                  100
+mean depth (chunks):      22.3
+tokens used / raw k=10:   0.956
+retrieval recall:         0.507   (raw k=10: 0.392)
+queries over budget:      0
+
+wrote data/contexts/restbench_k10_budget-tmdb-attention40-fixhint_n100.json

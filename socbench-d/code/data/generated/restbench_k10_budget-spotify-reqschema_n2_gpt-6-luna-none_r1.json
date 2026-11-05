@@ -1,0 +1,76 @@
+[
+  {
+    "queryset": "restbench",
+    "query": "Make me a playlist containing three songs of Mariah Carey and name it 'Love Mariah'",
+    "solution": [
+      "GET /search",
+      "GET /me",
+      "POST /users/{user_id}/playlists",
+      "POST /playlists/{playlist_id}/tracks"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nuser_id = \"YOUR_SPOTIFY_USER_ID\"\nsong_uris = [\n    \"spotify:track:YOUR_MARIAH_CAREY_TRACK_ID_1\",\n    \"spotify:track:YOUR_MARIAH_CAREY_TRACK_ID_2\",\n    \"spotify:track:YOUR_MARIAH_CAREY_TRACK_ID_3\",\n]\n\nheaders = {\n    \"Authorization\": f\"Bearer {access_token}\",\n    \"Content-Type\": \"application/json\",\n}\n\nresponse = requests.post(\n    f\"https://api.spotify.com/v1/users/{user_id}/playlists\",\n    headers=headers,\n    json={\"name\": \"Love Mariah\", \"public\": False},\n)\nresponse.raise_for_status()\nplaylist_id = response.json()[\"id\"]\n\nresponse = requests.post(\n    f\"https://api.spotify.com/v1/playlists/{playlist_id}/tracks\",\n    headers=headers,\n    json={\"uris\": song_uris},\n)\nresponse.raise_for_status()",
+    "code_with": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\nbase_url = \"https://api.spotify.com/v1\"\n\n# Get the current user's ID.\nuser_response = requests.get(f\"{base_url}/me\", headers=headers)\nuser_response.raise_for_status()\nuser_id = user_response.json()[\"id\"]\n\n# Create the playlist.\nplaylist_response = requests.post(\n    f\"{base_url}/users/{user_id}/playlists\",\n    headers={**headers, \"Content-Type\": \"application/json\"},\n    json={\"name\": \"Love Mariah\", \"public\": True},\n)\nplaylist_response.raise_for_status()\nplaylist_id = playlist_response.json()[\"id\"]\n\n# Add three Mariah Carey songs.\ntrack_uris = [\n    \"spotify:track:0bRXwKfigvpKZUurwqAlEh\",  # All I Want for Christmas Is You\n    \"spotify:track:4iLqG9SeJSnt0cSPICSjxv\",  # We Belong Together\n    \"spotify:track:2aBxt229cbLDOvtL7Xbb9x\",  # Always Be My Baby\n]\nadd_response = requests.post(\n    f\"{base_url}/playlists/{playlist_id}/tracks\",\n    headers={**headers, \"Content-Type\": \"application/json\"},\n    json={\"uris\": track_uris},\n)\nadd_response.raise_for_status()",
+    "found_without": [
+      "POST /playlists/{playlist_id}/tracks",
+      "POST /users/{user_id}/playlists"
+    ],
+    "found_with": [
+      "GET /me",
+      "POST /playlists/{playlist_id}/tracks",
+      "POST /users/{user_id}/playlists"
+    ],
+    "recall_without": 0.5,
+    "recall_with": 0.75,
+    "usage_without": {
+      "prompt_tokens": 4993,
+      "completion_tokens": 205,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0006018
+    },
+    "usage_with": {
+      "prompt_tokens": 4465,
+      "completion_tokens": 299,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.000596
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Add the first song of The Dark Side of the Moon in my playback queue",
+    "solution": [
+      "GET /search",
+      "GET /albums/{id}/tracks",
+      "POST /me/player/queue"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\ntrack_uri = \"spotify:track:YOUR_TRACK_URI\"\n\nresponse = requests.post(\n    \"https://api.spotify.com/v1/me/player/queue\",\n    headers={\"Authorization\": f\"Bearer {access_token}\"},\n    params={\"uri\": track_uri},\n)\nresponse.raise_for_status()",
+    "code_with": "import requests\n\nresponse = requests.post(\n    \"https://api.spotify.com/v1/me/player/queue\",\n    params={\"uri\": \"spotify:track:3USxtqRwSYz57Ewm6wWRMp\"},\n    headers={\"Authorization\": f\"Bearer {access_token}\"},\n)\nresponse.raise_for_status()",
+    "found_without": [
+      "POST /me/player/queue"
+    ],
+    "found_with": [
+      "POST /me/player/queue"
+    ],
+    "recall_without": 0.3333333333333333,
+    "recall_with": 0.3333333333333333,
+    "usage_without": {
+      "prompt_tokens": 3982,
+      "completion_tokens": 72,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.00043420000000000004
+    },
+    "usage_with": {
+      "prompt_tokens": 3693,
+      "completion_tokens": 69,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0004038
+    }
+  }
+]

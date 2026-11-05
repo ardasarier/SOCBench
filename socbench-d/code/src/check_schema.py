@@ -320,7 +320,10 @@ def to_path(url: str):
 SAMPLES = []                    # filled when run with --sample
 
 
-def check(code: str, solution: list, index: dict, stats: dict, label: str = "") -> None:
+def check(code: str, solution: list, index: dict, stats: dict, label: str = "",
+          base_path: str = "") -> None:
+    """base_path: the API's path prefix (RestBench: /v1 for Spotify, /3 for
+    TMDB), removed before matching against the specified paths."""
     parsed = _http_calls(code)
     if parsed is None:
         stats["unparseable"] += 1
@@ -334,6 +337,9 @@ def check(code: str, solution: list, index: dict, stats: dict, label: str = "") 
         if path is None:
             stats["unresolved"] += 1
             continue
+        prefix = base_path.rstrip("/")
+        if prefix and path.startswith(prefix + "/"):
+            path = path[len(prefix):]
         key = match_template(method, path, index)
         if key is None and path.startswith("/v1/"):
             key = match_template(method, path[3:], index)

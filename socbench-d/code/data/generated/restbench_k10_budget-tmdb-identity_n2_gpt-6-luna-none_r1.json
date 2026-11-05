@@ -1,0 +1,68 @@
+[
+  {
+    "queryset": "restbench",
+    "query": "give me the number of movies directed by Sofia Coppola",
+    "solution": [
+      "GET /search/person",
+      "GET /person/{person_id}/movie_credits"
+    ],
+    "code_without": "import requests\n\nBASE_URL = \"https://api.themoviedb.org/3\"\nAPI_KEY = \"YOUR_TMDB_API_KEY\"\n\n# The provided documentation does not include endpoints for searching people\n# or retrieving a person's filmography, so the requested count cannot be\n# obtained using only the documented endpoints.",
+    "code_with": "import requests\n\nBASE_URL = \"https://api.themoviedb.org/3\"\nAPI_KEY = \"YOUR_TMDB_API_KEY\"\n\n# The provided documentation does not include an endpoint for searching a person's\n# filmography or retrieving movie credits, so the requested count cannot be obtained\n# using only the documented endpoints.",
+    "found_without": [],
+    "found_with": [],
+    "recall_without": 0.0,
+    "recall_with": 0.0,
+    "usage_without": {
+      "prompt_tokens": 8358,
+      "completion_tokens": 72,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0008718
+    },
+    "usage_with": {
+      "prompt_tokens": 8162,
+      "completion_tokens": 74,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0008532
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Who was the lead actor in the movie The Dark Knight?",
+    "solution": [
+      "GET /search/movie",
+      "GET /movie/{movie_id}/credits"
+    ],
+    "code_without": "import requests\n\nresponse = requests.get(\n    \"https://api.themoviedb.org/3/search/movie\",\n    params={\"query\": \"The Dark Knight\"},\n)\nresponse.raise_for_status()\nmovies = response.json().get(\"results\", [])\nmovie = next((item for item in movies if item.get(\"title\") == \"The Dark Knight\"), None)\n\nif movie:\n    credits_response = requests.get(\n        f\"https://api.themoviedb.org/3/movie/{movie['id']}/credits\"\n    )\n    credits_response.raise_for_status()\n    cast = credits_response.json().get(\"cast\", [])\n    if cast:\n        print(cast[0].get(\"name\"))",
+    "code_with": "import requests\n\nresponse = requests.get(\n    \"https://api.themoviedb.org/3/search/movie\",\n    params={\"query\": \"The Dark Knight\"}\n)\nresponse.raise_for_status()\nresults = response.json().get(\"results\", [])\nif results:\n    movie_id = results[0][\"id\"]\n    credits = requests.get(f\"https://api.themoviedb.org/3/movie/{movie_id}/credits\")\n    credits.raise_for_status()\n    cast = credits.json().get(\"cast\", [])\n    if cast:\n        print(cast[0][\"name\"])",
+    "found_without": [
+      "GET /movie/{movie_id}/credits",
+      "GET /search/movie"
+    ],
+    "found_with": [
+      "GET /movie/{movie_id}/credits",
+      "GET /search/movie"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 9275,
+      "completion_tokens": 142,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0009985
+    },
+    "usage_with": {
+      "prompt_tokens": 8817,
+      "completion_tokens": 118,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0009407
+    }
+  }
+]

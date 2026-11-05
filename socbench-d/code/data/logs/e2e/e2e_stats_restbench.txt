@@ -1,0 +1,80 @@
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+================================================================================================
+RestBench: recall at equal budget, mean over runs (per-query mean)
+
+Bedingung       spotify     tmdb     alle     n
+roh k=10          0.714    0.647    0.671   157
+Regel             0.750    0.635    0.677   157
+roh k=20          0.784    0.630    0.686   157
+AttentionRAG      0.809    0.655    0.711   157
+Attn. fester      0.820    0.652    0.713   157
+Identity          0.846    0.680    0.740   157
+
+Streuung zwischen Läufen (SD der Lauf-Mittel)
+
+Bedingung       spotify     tmdb
+Regel             0.003    0.012
+roh k=20          0.013    0.014
+AttentionRAG      0.007    0.025
+Attn. fester      0.029    0.009
+Identity          0.018    0.002
+
+Vergleich (alle Queries)            besser  schlechter   p (Holm)  höher in
+Regel vs roh k=10                       23          20   1.00e+00       1/2
+AttentionRAG vs roh k=10                39          23   3.80e-01       2/2
+Attn. fester vs roh k=10                43          25   3.87e-01       2/2
+Identity vs roh k=10                    45          24   5.70e-02       2/2
+roh k=20 vs roh k=10                    32          26   1.00e+00       1/2
+AttentionRAG vs Regel                   40          29   3.47e-01       2/2
+Attn. fester vs Regel                   48          26   4.68e-01       2/2
+Identity vs Regel                       48          19   3.72e-02       2/2  *
+Regel vs roh k=20                       26          34   1.00e+00       1/2
+Attn. fester vs AttentionRAG            25          21   1.00e+00       1/2
+Identity vs AttentionRAG                30          18   2.33e-01       2/2
+Identity vs Attn. fester                32          24   4.68e-01       2/2
+* signifikant nach Holm (alpha = 0.05) | höher in: Teile, in denen A im Mittel über B liegt
+
+Vergleich (nur spotify)             besser  schlechter   p (Holm)  höher in
+Regel vs roh k=10                       12           4   3.42e-01       1/1
+AttentionRAG vs roh k=10                16           1   2.57e-02       1/1  *
+Attn. fester vs roh k=10                18           2   2.57e-02       1/1  *
+Identity vs roh k=10                    20           2   1.73e-02       1/1  *
+roh k=20 vs roh k=10                    12           3   5.44e-02       1/1
+AttentionRAG vs Regel                   15           6   8.46e-02       1/1
+Attn. fester vs Regel                   18           4   7.11e-02       1/1
+Identity vs Regel                       20           2   2.57e-02       1/1  *
+Regel vs roh k=20                        5          10   3.24e-01       0/1
+Attn. fester vs AttentionRAG             8           3   5.32e-01       1/1
+Identity vs AttentionRAG                10           2   3.24e-01       1/1
+Identity vs Attn. fester                 9           4   3.42e-01       1/1
+
+Vergleich (nur tmdb)                besser  schlechter   p (Holm)  höher in
+Regel vs roh k=10                       11          16   1.00e+00       0/1
+AttentionRAG vs roh k=10                23          22   1.00e+00       1/1
+Attn. fester vs roh k=10                25          23   1.00e+00       1/1
+Identity vs roh k=10                    25          22   1.00e+00       1/1
+roh k=20 vs roh k=10                    20          23   1.00e+00       0/1
+AttentionRAG vs Regel                   25          23   1.00e+00       1/1
+Attn. fester vs Regel                   30          22   1.00e+00       1/1
+Identity vs Regel                       28          17   9.66e-01       1/1
+Regel vs roh k=20                       21          24   1.00e+00       1/1
+Attn. fester vs AttentionRAG            17          18   1.00e+00       0/1
+Identity vs AttentionRAG                20          16   1.00e+00       1/1
+Identity vs Attn. fester                23          20   1.00e+00       1/1
+
+RestBench: Pflichtfelder Body / Query, erfundene Schlüssel, über alle Läufe gepoolt
+
+Bedingung               spotify             tmdb   Output: reads / r-unk je Teil
+roh k=10         0.85/0.62/0.23   nan/1.00/0.58      0 / nan    429 / 0.04
+Regel            0.89/0.60/0.25   nan/1.00/0.58      0 / nan    398 / 0.06
+roh k=20         0.95/0.59/0.27   nan/0.99/0.64      0 / nan    402 / 0.05
+AttentionRAG     1.00/0.57/0.26   nan/1.00/0.67      0 / nan    405 / 0.05
+Attn. fester     1.00/0.58/0.27   nan/1.00/0.68      0 / nan    414 / 0.06
+Identity         1.00/0.56/0.26   nan/1.00/0.67      0 / nan    415 / 0.05
+
+je Zelle: Body-Pflichtfelder / Query-Pflichtparameter / erfundene Schlüssel
+Output: gelesene Response-Schlüssel / Anteil nicht im Response-Schema
+

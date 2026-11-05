@@ -1,0 +1,154 @@
+
+### -u src/prepare_contexts.py --benchmark restbench --skip-existing --api spotify --max-queries 2 --top-k 40
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+[models] using device: mps (torch.float32)
+benchmark restbench: 1 queryset(s), 2 queries
+writing to data/contexts/restbench-spotify_k40_all_noanchor_k10_n2.json
+
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/restbench/bge_small/endpoint_split_1024_0/restbench/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/restbench/bge_small/endpoint_split_1024_0/restbench/vector_store/index_store.json.
+[1/2] (restbench) 'Make me a playlist containing three songs of Mariah Carey and name it '
+    40 -> 40 chunks, 22942 -> 10027 tokens (CR 2.29x), retrieval recall 0.75, 38.1s
+[2/2] (restbench) 'Add the first song of The Dark Side of the Moon in my playback queue'
+    40 -> 40 chunks, 23751 -> 11139 tokens (CR 2.13x), retrieval recall 0.67, 48.9s
+
+wrote 2 records to data/contexts/restbench-spotify_k40_all_noanchor_k10_n2.json
+overall CR: 2.21x
+retrieval recall: 0.708
+qwen: {'hint_calls': 2, 'hint_prompt_tokens': 645, 'hint_generated_tokens': 21, 'attention_passes': 80, 'attention_input_tokens': 59239}
+total time: 1.5 min
+
+### -u src/prepare_contexts.py --benchmark restbench --skip-existing --api spotify --top-k 40
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+[models] using device: mps (torch.float32)
+benchmark restbench: 1 queryset(s), 57 queries
+writing to data/contexts/restbench-spotify_k40_all_noanchor_k10_n57.json
+
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/restbench/bge_small/endpoint_split_1024_0/restbench/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/restbench/bge_small/endpoint_split_1024_0/restbench/vector_store/index_store.json.
+[1/57] (restbench) 'Make me a playlist containing three songs of Mariah Carey and name it '
+    40 -> 40 chunks, 22942 -> 10027 tokens (CR 2.29x), retrieval recall 0.75, 38.4s
+[2/57] (restbench) 'Add the first song of The Dark Side of the Moon in my playback queue'
+    40 -> 40 chunks, 23751 -> 11139 tokens (CR 2.13x), retrieval recall 0.67, 54.4s
+[3/57] (restbench) 'Add Summertime Sadness by Lana Del Rey in my first playlist'
+    40 -> 40 chunks, 19933 -> 7350 tokens (CR 2.71x), retrieval recall 1.00, 42.2s
+[4/57] (restbench) 'Skip to the next track and set the volume to 60'
+    40 -> 40 chunks, 23047 -> 10352 tokens (CR 2.23x), retrieval recall 1.00, 43.3s
+[5/57] (restbench) 'Put the song now being played into My Music'
+    40 -> 40 chunks, 15916 -> 5556 tokens (CR 2.86x), retrieval recall 1.00, 36.6s
+[6/57] (restbench) 'Append the first song of the newest album of my following first artist'
+    40 -> 40 chunks, 16384 -> 6233 tokens (CR 2.63x), retrieval recall 1.00, 37.1s
+[7/57] (restbench) 'Follow the artist of the song now playing'
+    40 -> 40 chunks, 15916 -> 6095 tokens (CR 2.61x), retrieval recall 1.00, 32.6s
+[8/57] (restbench) "Play a song from Taylor Swift's newest album"
+    40 -> 40 chunks, 16905 -> 5338 tokens (CR 3.17x), retrieval recall 1.00, 38.5s
+[9/57] (restbench) 'play me some quiet songs'
+    40 -> 40 chunks, 17707 -> 5851 tokens (CR 3.03x), retrieval recall 1.00, 41.0s
+[10/57] (restbench) 'Follow the artist of the first song recently played'
+    40 -> 40 chunks, 17492 -> 7385 tokens (CR 2.37x), retrieval recall 1.00, 39.0s
+[11/57] (restbench) 'Switch to the next song and set the single track repeat mode'
+    40 -> 40 chunks, 19320 -> 8994 tokens (CR 2.15x), retrieval recall 1.00, 39.0s
+[12/57] (restbench) "Save Jay Chou's album Mojito"
+    40 -> 40 chunks, 23077 -> 9457 tokens (CR 2.44x), retrieval recall 1.00, 50.0s
+[13/57] (restbench) 'Rename my first playlist to "My First"'
+    40 -> 40 chunks, 18437 -> 7152 tokens (CR 2.58x), retrieval recall 1.00, 42.5s
+[14/57] (restbench) 'Remove following from the artist of the currently playing music'
+    40 -> 40 chunks, 17681 -> 7296 tokens (CR 2.42x), retrieval recall 1.00, 42.9s
+[15/57] (restbench) 'Pause playback, turn down the volume and resume playing'
+    40 -> 40 chunks, 24340 -> 9723 tokens (CR 2.50x), retrieval recall 1.00, 48.4s
+[16/57] (restbench) 'Add songs from the current playing queue to a new playlist called "Cur'
+    40 -> 40 chunks, 17735 -> 6622 tokens (CR 2.68x), retrieval recall 0.75, 41.0s
+[17/57] (restbench) 'What is the name of the song I playing right now?'
+    40 -> 40 chunks, 21769 -> 9130 tokens (CR 2.38x), retrieval recall 1.00, 40.5s
+[18/57] (restbench) 'Remove the first album from my music'
+    40 -> 40 chunks, 18322 -> 6770 tokens (CR 2.71x), retrieval recall 1.00, 37.6s
+[19/57] (restbench) 'Show me the albums I saved'
+    40 -> 40 chunks, 24549 -> 10428 tokens (CR 2.35x), retrieval recall 1.00, 47.5s
+[20/57] (restbench) 'Follow the artist of the song which is playing right now.'
+    40 -> 40 chunks, 17838 -> 5661 tokens (CR 3.15x), retrieval recall 1.00, 37.9s
+[21/57] (restbench) 'Recommend me some tracks with the same genre of the music currently pl'
+    40 -> 40 chunks, 20155 -> 8257 tokens (CR 2.44x), retrieval recall 1.00, 46.5s
+[22/57] (restbench) "Append the first track in The Beatle's newest album to my 'My Rock' pl"
+    40 -> 40 chunks, 18652 -> 8144 tokens (CR 2.29x), retrieval recall 1.00, 41.0s
+[23/57] (restbench) 'Make top tracks of Taylor Swift a new playlist named "Love Taylor"'
+    40 -> 40 chunks, 16384 -> 6454 tokens (CR 2.54x), retrieval recall 0.75, 35.7s
+[24/57] (restbench) 'Who is my favorite artist?'
+    40 -> 40 chunks, 19299 -> 7423 tokens (CR 2.60x), retrieval recall 1.00, 38.3s
+[25/57] (restbench) 'Give me a song of my favorite artist'
+    40 -> 40 chunks, 16646 -> 5945 tokens (CR 2.80x), retrieval recall 1.00, 38.5s
+[26/57] (restbench) "Delete all music from my 'My R&B' playlist and rename it as 'Test'"
+    40 -> 40 chunks, 17185 -> 6391 tokens (CR 2.69x), retrieval recall 1.00, 56.0s
+[27/57] (restbench) 'show me the album information of the song currently playing'
+    40 -> 40 chunks, 17585 -> 6653 tokens (CR 2.64x), retrieval recall 1.00, 63.4s
+[28/57] (restbench) "Pause device 'My PC' if it is now playing something"
+    40 -> 40 chunks, 24694 -> 9490 tokens (CR 2.60x), retrieval recall 1.00, 62.9s
+[29/57] (restbench) "pause current song and resume it on 'My PC'"
+    40 -> 40 chunks, 18457 -> 6529 tokens (CR 2.83x), retrieval recall 1.00, 43.5s
+[30/57] (restbench) "show me the name of Maroon 5's newest album"
+    40 -> 40 chunks, 25636 -> 8234 tokens (CR 3.11x), retrieval recall 1.00, 49.1s
+[31/57] (restbench) 'Recommend more artists base on my first following artist'
+    40 -> 39 chunks, 26853 -> 10169 tokens (CR 2.64x), retrieval recall 1.00, 53.3s
+[32/57] (restbench) 'Unfollow the artist of the song now playing and skip to the next song'
+    40 -> 40 chunks, 18582 -> 7850 tokens (CR 2.37x), retrieval recall 1.00, 40.6s
+[33/57] (restbench) 'Follow Taylor Swift'
+    40 -> 39 chunks, 24112 -> 9100 tokens (CR 2.65x), retrieval recall 1.00, 49.3s
+[34/57] (restbench) "Make my top tracks a new playlist called 'My Top'"
+    40 -> 40 chunks, 16864 -> 6456 tokens (CR 2.61x), retrieval recall 1.00, 39.2s
+[35/57] (restbench) "Remove the first song from my playlist 'My Rock'"
+    40 -> 40 chunks, 17938 -> 7010 tokens (CR 2.56x), retrieval recall 1.00, 36.8s
+[36/57] (restbench) 'add top songs of the first of my following artist to My Music'
+    40 -> 40 chunks, 16902 -> 5815 tokens (CR 2.91x), retrieval recall 1.00, 36.4s
+[37/57] (restbench) "Follow all the artists involved in the playlist 'My R&B'"
+    40 -> 40 chunks, 15477 -> 5781 tokens (CR 2.68x), retrieval recall 1.00, 35.3s
+[38/57] (restbench) "remove the second track from my playlist 'My R&B'"
+    40 -> 40 chunks, 16323 -> 6618 tokens (CR 2.47x), retrieval recall 1.00, 33.6s
+[39/57] (restbench) 'remove the third track from My Music'
+    40 -> 40 chunks, 19217 -> 7754 tokens (CR 2.48x), retrieval recall 1.00, 49.4s
+[40/57] (restbench) 'Follow all the singers involved in the song When You Believe'
+    40 -> 40 chunks, 22551 -> 9621 tokens (CR 2.34x), retrieval recall 0.67, 46.8s
+[41/57] (restbench) 'Skip to the next track'
+    40 -> 40 chunks, 31601 -> 15902 tokens (CR 1.99x), retrieval recall 1.00, 58.4s
+[42/57] (restbench) "Play my playlist 'My Rock'"
+    40 -> 40 chunks, 15783 -> 5166 tokens (CR 3.06x), retrieval recall 1.00, 37.0s
+[43/57] (restbench) 'Clear my music library and cancel all following singers'
+    40 -> 40 chunks, 17621 -> 6841 tokens (CR 2.58x), retrieval recall 1.00, 32.7s
+[44/57] (restbench) 'Create a new playlist and name it Quiet'
+    40 -> 40 chunks, 17938 -> 6298 tokens (CR 2.85x), retrieval recall 0.50, 36.9s
+[45/57] (restbench) 'Turn down the volume to 20'
+    40 -> 40 chunks, 30065 -> 12760 tokens (CR 2.36x), retrieval recall 1.00, 53.6s
+[46/57] (restbench) 'Set the single track repeat mode'
+    40 -> 40 chunks, 21973 -> 7973 tokens (CR 2.76x), retrieval recall 1.00, 46.0s
+[47/57] (restbench) 'Pause playback, increase volume to 80 and switch to the next song'
+    40 -> 40 chunks, 17730 -> 7327 tokens (CR 2.42x), retrieval recall 1.00, 37.4s
+[48/57] (restbench) 'Play the newest album of BIGBANG'
+    40 -> 40 chunks, 18032 -> 7499 tokens (CR 2.40x), retrieval recall 1.00, 46.6s
+[49/57] (restbench) 'Follow the artist of the album Mojito'
+    40 -> 40 chunks, 18288 -> 7603 tokens (CR 2.41x), retrieval recall 1.00, 41.6s
+[50/57] (restbench) 'Play the third song from my music library and set the single track rep'
+    40 -> 40 chunks, 16291 -> 5995 tokens (CR 2.72x), retrieval recall 1.00, 37.6s
+[51/57] (restbench) "Create a new playlist named 'BIGBANG' and add a song of BIGBANG to it"
+    40 -> 40 chunks, 17991 -> 6196 tokens (CR 2.90x), retrieval recall 0.75, 38.4s
+[52/57] (restbench) 'Delete all songs from my first playlist'
+    40 -> 40 chunks, 16111 -> 6459 tokens (CR 2.49x), retrieval recall 1.00, 33.5s
+[53/57] (restbench) 'Make my first playlist private'
+    40 -> 40 chunks, 16018 -> 5709 tokens (CR 2.81x), retrieval recall 1.00, 30.4s
+[54/57] (restbench) 'Add album Mojito to my music library'
+    40 -> 40 chunks, 16111 -> 6996 tokens (CR 2.30x), retrieval recall 1.00, 35.7s
+[55/57] (restbench) 'Add the first song from my music library to the playback queue and ena'
+    40 -> 40 chunks, 16018 -> 5012 tokens (CR 3.20x), retrieval recall 1.00, 30.8s
+[56/57] (restbench) 'What is my user name?'
+    40 -> 40 chunks, 37650 -> 13406 tokens (CR 2.81x), retrieval recall 1.00, 80.3s
+[57/57] (restbench) 'Pause the player'
+    40 -> 40 chunks, 30570 -> 30570 tokens (CR 1.00x), retrieval recall 1.00, 14.7s
+
+wrote 57 records to data/contexts/restbench-spotify_k40_all_noanchor_k10_n57.json
+overall CR: 2.45x
+retrieval recall: 0.962
+qwen: {'hint_calls': 57, 'hint_prompt_tokens': 18030, 'hint_generated_tokens': 611, 'attention_passes': 2240, 'attention_input_tokens': 1419984}
+total time: 40.6 min

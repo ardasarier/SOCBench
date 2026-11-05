@@ -1,0 +1,240 @@
+
+### -u src/prepare_contexts.py --benchmark restbench --skip-existing --api tmdb --max-queries 2 --top-k 50 --keep-fields reqschema
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+[models] using device: mps (torch.float32)
+benchmark restbench: 1 queryset(s), 2 queries
+writing to data/contexts/restbench-tmdb_k50_all_noanchor_reqschema_n2.json
+
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/restbench/bge_small/endpoint_split_1024_0/restbench/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/restbench/bge_small/endpoint_split_1024_0/restbench/vector_store/index_store.json.
+[1/2] (restbench) 'give me the number of movies directed by Sofia Coppola'
+    50 -> 50 chunks, 46917 -> 46045 tokens (CR 1.02x), retrieval recall 1.00, 0.5s
+[2/2] (restbench) 'Who was the lead actor in the movie The Dark Knight?'
+    50 -> 50 chunks, 48262 -> 47899 tokens (CR 1.01x), retrieval recall 1.00, 0.1s
+
+wrote 2 records to data/contexts/restbench-tmdb_k50_all_noanchor_reqschema_n2.json
+overall CR: 1.01x
+retrieval recall: 1.000
+qwen: not used
+total time: 0.0 min
+
+### -u src/prepare_contexts.py --benchmark restbench --skip-existing --api tmdb --top-k 50 --keep-fields reqschema
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/Users/arda/dev/SOCBench/socbench-d/code/venv/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:2274: UnsupportedFieldAttributeWarning: The 'validate_default' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'validate_default' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+[models] using device: mps (torch.float32)
+benchmark restbench: 1 queryset(s), 100 queries
+writing to data/contexts/restbench-tmdb_k50_all_noanchor_reqschema_n100.json
+
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/restbench/bge_small/endpoint_split_1024_0/restbench/vector_store/docstore.json.
+Loading llama_index.core.storage.kvstore.simple_kvstore from data/restbench/bge_small/endpoint_split_1024_0/restbench/vector_store/index_store.json.
+[1/100] (restbench) 'give me the number of movies directed by Sofia Coppola'
+    50 -> 50 chunks, 46917 -> 46045 tokens (CR 1.02x), retrieval recall 1.00, 0.3s
+[2/100] (restbench) 'Who was the lead actor in the movie The Dark Knight?'
+    50 -> 50 chunks, 48262 -> 47899 tokens (CR 1.01x), retrieval recall 1.00, 0.1s
+[3/100] (restbench) 'Who directed the top-1 rated movie?'
+    50 -> 50 chunks, 47067 -> 46341 tokens (CR 1.02x), retrieval recall 0.50, 0.1s
+[4/100] (restbench) 'give me a image for the collection Star Wars'
+    50 -> 50 chunks, 46226 -> 41659 tokens (CR 1.11x), retrieval recall 1.00, 0.1s
+[5/100] (restbench) 'What is the logo of the Walt Disney?'
+    50 -> 50 chunks, 47068 -> 45303 tokens (CR 1.04x), retrieval recall 1.00, 0.3s
+[6/100] (restbench) 'What dose the lead actor of Titanic look like?'
+    50 -> 50 chunks, 48397 -> 47671 tokens (CR 1.02x), retrieval recall 0.67, 0.1s
+[7/100] (restbench) 'give me some reviews of the first movie that is similar to Titanic'
+    50 -> 50 chunks, 47931 -> 47205 tokens (CR 1.02x), retrieval recall 1.00, 0.1s
+[8/100] (restbench) 'I just finished watching Titanic and I want some other movie recommend'
+    50 -> 50 chunks, 47088 -> 46216 tokens (CR 1.02x), retrieval recall 1.00, 0.1s
+[9/100] (restbench) 'What is the latest movie directed by Christopher Nolan?'
+    50 -> 50 chunks, 47639 -> 46085 tokens (CR 1.03x), retrieval recall 1.00, 0.1s
+[10/100] (restbench) 'tell me the highest rated movie directed by Martin Scorsese'
+    50 -> 50 chunks, 48404 -> 48041 tokens (CR 1.01x), retrieval recall 1.00, 0.1s
+[11/100] (restbench) "Who is the director of Leonardo DiCaprio's latest movie?"
+    50 -> 50 chunks, 48066 -> 47238 tokens (CR 1.02x), retrieval recall 0.67, 0.1s
+[12/100] (restbench) 'tell me a TV show recently directed by Catherine Hardwicke'
+    50 -> 50 chunks, 48673 -> 47163 tokens (CR 1.03x), retrieval recall 1.00, 0.1s
+[13/100] (restbench) 'Please recommend me some TV shows similar to Breaking Bad'
+    50 -> 50 chunks, 47958 -> 46075 tokens (CR 1.04x), retrieval recall 0.50, 0.1s
+[14/100] (restbench) "Who is the director of today's most trending movie?"
+    50 -> 50 chunks, 45363 -> 44172 tokens (CR 1.03x), retrieval recall 0.50, 0.1s
+[15/100] (restbench) 'Who is the director of the movie "Twilight"?'
+    50 -> 50 chunks, 46507 -> 45781 tokens (CR 1.02x), retrieval recall 0.50, 0.1s
+[16/100] (restbench) 'give me a photo belong to the second episode of the first season of th'
+    50 -> 50 chunks, 47410 -> 46574 tokens (CR 1.02x), retrieval recall 0.50, 0.1s
+[17/100] (restbench) 'What is top-1 rated movie?'
+    50 -> 50 chunks, 47067 -> 46341 tokens (CR 1.02x), retrieval recall 1.00, 0.1s
+[18/100] (restbench) 'What is the release date of the movie "The Matrix"?'
+    50 -> 50 chunks, 46800 -> 46800 tokens (CR 1.00x), retrieval recall 1.00, 0.1s
+[19/100] (restbench) 'Who is the most popular person?'
+    50 -> 50 chunks, 47760 -> 47479 tokens (CR 1.01x), retrieval recall 1.00, 0.1s
+[20/100] (restbench) 'Give me some cover images of movies directed by Christopher Nolan.'
+    50 -> 50 chunks, 48030 -> 46842 tokens (CR 1.03x), retrieval recall 1.00, 0.1s
+[21/100] (restbench) 'What are some common keywords associated with movie "Titanic"?'
+    50 -> 50 chunks, 46680 -> 45646 tokens (CR 1.02x), retrieval recall 1.00, 0.1s
+[22/100] (restbench) 'Give me a show that is currently on the air'
+    50 -> 50 chunks, 46699 -> 43656 tokens (CR 1.07x), retrieval recall 1.00, 0.1s
+[23/100] (restbench) "When is Clint Eastwood's latest movie scheduled to be released?"
+    50 -> 50 chunks, 46506 -> 45678 tokens (CR 1.02x), retrieval recall 1.00, 0.1s
+[24/100] (restbench) 'Give me some movie reviews about The Dark Knight'
+    50 -> 50 chunks, 47020 -> 45610 tokens (CR 1.03x), retrieval recall 1.00, 0.1s
+[25/100] (restbench) 'What are some movies that are similar to one of the movies directed by'
+    50 -> 50 chunks, 48104 -> 47378 tokens (CR 1.02x), retrieval recall 1.00, 0.1s
+[26/100] (restbench) 'Who is the lead actor in the latest released movie?'
+    50 -> 50 chunks, 47639 -> 46085 tokens (CR 1.03x), retrieval recall 0.50, 0.1s
+[27/100] (restbench) 'give me one image of the movie that is currently showing in theaters'
+    50 -> 50 chunks, 46504 -> 44488 tokens (CR 1.05x), retrieval recall 1.00, 0.1s
+[28/100] (restbench) 'What is the most popular movie right now and what is its keywords?'
+    50 -> 50 chunks, 46087 -> 44734 tokens (CR 1.03x), retrieval recall 1.00, 0.1s
+[29/100] (restbench) 'What are the keywords of the most popular movie right now'
+    50 -> 50 chunks, 45517 -> 43801 tokens (CR 1.04x), retrieval recall 1.00, 0.1s
+[30/100] (restbench) 'Who has starred in a movie "Titanic"'
+    50 -> 50 chunks, 47242 -> 46516 tokens (CR 1.02x), retrieval recall 1.00, 0.1s
+[31/100] (restbench) 'What do the logo looks like for Paramount Pictures?'
+    50 -> 50 chunks, 47518 -> 45712 tokens (CR 1.04x), retrieval recall 0.50, 0.1s
+[32/100] (restbench) 'tell me where the company "universal pictures" was founded?'
+    50 -> 50 chunks, 48588 -> 47130 tokens (CR 1.03x), retrieval recall 0.50, 0.1s
+[33/100] (restbench) 'When is the movie "Titanic" released?'
+    50 -> 50 chunks, 47218 -> 46027 tokens (CR 1.03x), retrieval recall 1.00, 0.1s
+[34/100] (restbench) 'Who has starred in the first movie of Star Wars collection?'
+    50 -> 50 chunks, 48443 -> 47717 tokens (CR 1.02x), retrieval recall 0.33, 0.1s
+[35/100] (restbench) 'give me a movie cover of a movie from the collection Harry Potter'
+    50 -> 50 chunks, 48459 -> 47733 tokens (CR 1.02x), retrieval recall 0.00, 0.1s
+[36/100] (restbench) 'What are some keywords for a movie of the collection The Hunger Games?'
+    50 -> 50 chunks, 47196 -> 46308 tokens (CR 1.02x), retrieval recall 0.33, 0.1s
+[37/100] (restbench) 'When are the release dates for the movies of the collection The Hobbit'
+    50 -> 50 chunks, 45866 -> 44166 tokens (CR 1.04x), retrieval recall 0.00, 0.1s
+[38/100] (restbench) 'List movies from The Fast and the Furious collection'
+    50 -> 50 chunks, 45651 -> 44779 tokens (CR 1.02x), retrieval recall 0.00, 0.1s
+[39/100] (restbench) 'Give me a review of a movie from the collection The Fast and the Furio'
+    50 -> 50 chunks, 46485 -> 45759 tokens (CR 1.02x), retrieval recall 0.33, 0.1s
+[40/100] (restbench) 'When was the first movie of the collection Lord of the Rings released?'
+    50 -> 50 chunks, 47420 -> 46694 tokens (CR 1.02x), retrieval recall 0.00, 0.1s
+[41/100] (restbench) 'tell me the directors of the first season of House of Cards'
+    50 -> 50 chunks, 47226 -> 45706 tokens (CR 1.03x), retrieval recall 0.50, 0.1s
+[42/100] (restbench) 'I want some tv shows that similar to House of Cards'
+    50 -> 50 chunks, 48222 -> 46339 tokens (CR 1.04x), retrieval recall 0.50, 0.1s
+[43/100] (restbench) 'When did the most popular TV show currently on the air start?'
+    50 -> 50 chunks, 47532 -> 44792 tokens (CR 1.06x), retrieval recall 1.00, 0.1s
+[44/100] (restbench) 'tell me a few more works directed by the director of Django Unchained'
+    50 -> 50 chunks, 49069 -> 49069 tokens (CR 1.00x), retrieval recall 1.00, 0.1s
+[45/100] (restbench) 'tell me the cast of a TV show on the air'
+    50 -> 50 chunks, 48428 -> 46082 tokens (CR 1.05x), retrieval recall 0.50, 0.1s
+[46/100] (restbench) 'I need a review for Breaking Bad'
+    50 -> 50 chunks, 48146 -> 47099 tokens (CR 1.02x), retrieval recall 0.50, 0.1s
+[47/100] (restbench) "I'm watching the tv series The Last Of Us and I need some more recomme"
+    50 -> 50 chunks, 47894 -> 46484 tokens (CR 1.03x), retrieval recall 0.50, 0.1s
+[48/100] (restbench) "I'm watching a TV show called The Last Of Us and I need some more reco"
+    50 -> 50 chunks, 48435 -> 47388 tokens (CR 1.02x), retrieval recall 0.50, 0.1s
+[49/100] (restbench) 'tell me the guest star from season 3, episode 24 of Friends'
+    50 -> 50 chunks, 47732 -> 46212 tokens (CR 1.03x), retrieval recall 0.50, 0.1s
+[50/100] (restbench) 'Who is the lead actor in the most popular TV show?'
+    50 -> 50 chunks, 49012 -> 48328 tokens (CR 1.01x), retrieval recall 0.50, 0.1s
+[51/100] (restbench) 'give me a keyword of the top-1 rated TV show'
+    50 -> 50 chunks, 45343 -> 42208 tokens (CR 1.07x), retrieval recall 1.00, 0.1s
+[52/100] (restbench) 'give me a poster of 2 Broke Girls'
+    50 -> 50 chunks, 49186 -> 49186 tokens (CR 1.00x), retrieval recall 0.00, 0.1s
+[53/100] (restbench) 'How many episodes does 2 Broke Girls have in total?'
+    50 -> 50 chunks, 48127 -> 46607 tokens (CR 1.03x), retrieval recall 0.00, 0.1s
+[54/100] (restbench) 'When was the company that produced The Big Bang Theory founded?'
+    50 -> 50 chunks, 49076 -> 49076 tokens (CR 1.00x), retrieval recall 0.00, 0.1s
+[55/100] (restbench) 'When was the TV show The Big Bang Theory created?'
+    50 -> 50 chunks, 49656 -> 48972 tokens (CR 1.01x), retrieval recall 0.50, 0.1s
+[56/100] (restbench) 'give me a keyword of the most popular TV show'
+    50 -> 50 chunks, 46667 -> 43926 tokens (CR 1.06x), retrieval recall 1.00, 0.1s
+[57/100] (restbench) 'What did the third episode of the second season of Westworld talk abou'
+    50 -> 50 chunks, 48497 -> 46977 tokens (CR 1.03x), retrieval recall 0.50, 0.1s
+[58/100] (restbench) 'Tell me the air date of the second season of Game of Thrones'
+    50 -> 50 chunks, 47757 -> 45411 tokens (CR 1.05x), retrieval recall 0.50, 0.1s
+[59/100] (restbench) 'give me a poster of the third episode of Band of Brothers'
+    50 -> 50 chunks, 48454 -> 46934 tokens (CR 1.03x), retrieval recall 0.50, 0.1s
+[60/100] (restbench) 'What is the logo of the network that produced Game of Thrones?'
+    50 -> 50 chunks, 46563 -> 44486 tokens (CR 1.05x), retrieval recall 0.67, 0.1s
+[61/100] (restbench) 'give me the homepage of the network that produced Game of Thrones'
+    50 -> 50 chunks, 47545 -> 44953 tokens (CR 1.06x), retrieval recall 0.33, 0.1s
+[62/100] (restbench) 'give me a keyword of the most popular TV show currently'
+    50 -> 50 chunks, 47395 -> 44654 tokens (CR 1.06x), retrieval recall 1.00, 0.1s
+[63/100] (restbench) 'Where is the headquarter of the company that produced currently the mo'
+    50 -> 50 chunks, 49117 -> 46771 tokens (CR 1.05x), retrieval recall 0.67, 0.1s
+[64/100] (restbench) 'What is the genre of The Mandalorian?'
+    50 -> 50 chunks, 45447 -> 44575 tokens (CR 1.02x), retrieval recall 0.00, 0.1s
+[65/100] (restbench) "When is the birthday of the lead actor of today's most trending TV sho"
+    50 -> 50 chunks, 47580 -> 46754 tokens (CR 1.02x), retrieval recall 0.67, 0.1s
+[66/100] (restbench) "What is the homepage of the network that produced today's most trendin"
+    50 -> 50 chunks, 47142 -> 45089 tokens (CR 1.05x), retrieval recall 0.67, 0.1s
+[67/100] (restbench) "give me a review of today's most trending TV show"
+    50 -> 50 chunks, 48319 -> 46809 tokens (CR 1.03x), retrieval recall 1.00, 0.1s
+[68/100] (restbench) "I prefer a TV show that similar to today's most trending TV show"
+    50 -> 50 chunks, 47983 -> 46473 tokens (CR 1.03x), retrieval recall 1.00, 0.1s
+[69/100] (restbench) "I need a poster of today's most trending TV show"
+    50 -> 50 chunks, 48347 -> 46001 tokens (CR 1.05x), retrieval recall 0.50, 0.1s
+[70/100] (restbench) 'Who has worked with Jeremy Clarkson in his most popular TV show?'
+    50 -> 50 chunks, 47985 -> 46465 tokens (CR 1.03x), retrieval recall 0.67, 0.1s
+[71/100] (restbench) 'What does the lead actor of the first episode of second season of Blac'
+    50 -> 50 chunks, 48661 -> 47825 tokens (CR 1.02x), retrieval recall 0.33, 0.1s
+[72/100] (restbench) 'When is the lead actor of The Mandalorian born?'
+    50 -> 50 chunks, 47080 -> 47080 tokens (CR 1.00x), retrieval recall 0.00, 0.1s
+[73/100] (restbench) "Who is the lead actor of today's most popular TV show?"
+    50 -> 50 chunks, 47601 -> 46091 tokens (CR 1.03x), retrieval recall 0.50, 0.1s
+[74/100] (restbench) 'give me a photo of the lead actor of the most popular TV show of this '
+    50 -> 50 chunks, 49207 -> 48371 tokens (CR 1.02x), retrieval recall 0.33, 0.1s
+[75/100] (restbench) "give me some reviews of Cate Blanchett's latest TV show"
+    50 -> 50 chunks, 48498 -> 46625 tokens (CR 1.04x), retrieval recall 1.00, 0.1s
+[76/100] (restbench) "What is David Schwimmer's most popular TV show?"
+    50 -> 50 chunks, 48847 -> 48163 tokens (CR 1.01x), retrieval recall 1.00, 0.1s
+[77/100] (restbench) 'Who directed the third episode of the second season of Black Mirror?'
+    50 -> 50 chunks, 49057 -> 48373 tokens (CR 1.01x), retrieval recall 0.50, 0.1s
+[78/100] (restbench) 'give me some movies that Christopher Nolan known for'
+    50 -> 50 chunks, 47625 -> 46753 tokens (CR 1.02x), retrieval recall 1.00, 0.1s
+[79/100] (restbench) 'Avatar versus Avatar: The Way of Water, which has a higher rating'
+    50 -> 50 chunks, 46815 -> 45405 tokens (CR 1.03x), retrieval recall 1.00, 0.1s
+[80/100] (restbench) 'Show me some English movies rating no less than 7.0 and no earlier tha'
+    50 -> 50 chunks, 43061 -> 40677 tokens (CR 1.06x), retrieval recall 1.00, 0.1s
+[81/100] (restbench) 'What is the genre of the movie Lord of the Ring?'
+    50 -> 50 chunks, 46440 -> 45568 tokens (CR 1.02x), retrieval recall 0.50, 0.1s
+[82/100] (restbench) 'What is the birthday of the most popular person right now?'
+    50 -> 50 chunks, 45673 -> 45086 tokens (CR 1.01x), retrieval recall 1.00, 0.1s
+[83/100] (restbench) 'give me a poster of the second season of Big Bang Theory'
+    50 -> 50 chunks, 49790 -> 48270 tokens (CR 1.03x), retrieval recall 0.50, 0.1s
+[84/100] (restbench) 'What is the name of the third episod of the second season of Mandalori'
+    50 -> 50 chunks, 47679 -> 46480 tokens (CR 1.03x), retrieval recall 0.50, 0.1s
+[85/100] (restbench) 'When is the bitrhday of the lead actor of the movie The Shawshank Rede'
+    50 -> 50 chunks, 47315 -> 47315 tokens (CR 1.00x), retrieval recall 0.33, 0.1s
+[86/100] (restbench) 'When is the birthday of the director of the movie The Shawshank Redemp'
+    50 -> 50 chunks, 49289 -> 49289 tokens (CR 1.00x), retrieval recall 0.67, 0.1s
+[87/100] (restbench) 'Where is the headquarter of the company that created the movie The Sha'
+    50 -> 50 chunks, 48019 -> 47656 tokens (CR 1.01x), retrieval recall 0.67, 0.1s
+[88/100] (restbench) 'Where is the headquarter of the company that created the collection St'
+    50 -> 50 chunks, 46601 -> 45625 tokens (CR 1.02x), retrieval recall 0.33, 0.1s
+[89/100] (restbench) 'Who has an earlier release date, The Double Life of Veronique or Mulho'
+    50 -> 50 chunks, 48898 -> 48898 tokens (CR 1.00x), retrieval recall 0.50, 0.1s
+[90/100] (restbench) 'Is the director of Twin Peaks Season 1 and Mulholland Drive the same p'
+    50 -> 50 chunks, 49466 -> 49466 tokens (CR 1.00x), retrieval recall 0.00, 0.1s
+[91/100] (restbench) 'Where was the director of Mulholland Drive born?'
+    50 -> 50 chunks, 48085 -> 48085 tokens (CR 1.00x), retrieval recall 1.00, 0.1s
+[92/100] (restbench) 'Is Mulholland Drive in the Top-10 rated list of the TMDB?'
+    50 -> 50 chunks, 47439 -> 47293 tokens (CR 1.00x), retrieval recall 1.00, 0.1s
+[93/100] (restbench) 'Who directed more movies, Akira Kurosawa or Spielberg?'
+    50 -> 50 chunks, 46264 -> 45739 tokens (CR 1.01x), retrieval recall 1.00, 0.1s
+[94/100] (restbench) 'What TV series has the director of Mulholland Drive directed?'
+    50 -> 50 chunks, 48845 -> 48845 tokens (CR 1.00x), retrieval recall 1.00, 0.1s
+[95/100] (restbench) "Tell me about actor Scarlett Johansson's birthday"
+    50 -> 50 chunks, 49289 -> 49289 tokens (CR 1.00x), retrieval recall 1.00, 0.1s
+[96/100] (restbench) 'How many seasons of Sword Art Online are there?'
+    50 -> 50 chunks, 47760 -> 45414 tokens (CR 1.05x), retrieval recall 0.50, 0.1s
+[97/100] (restbench) 'Are Yui Aragaki and Gen Hoshino co-starring in We Married as Job?'
+    50 -> 50 chunks, 47274 -> 46911 tokens (CR 1.01x), retrieval recall 0.50, 0.1s
+[98/100] (restbench) 'Who is older, by how many years, the director of film Barbie or the le'
+    50 -> 50 chunks, 47191 -> 46465 tokens (CR 1.02x), retrieval recall 0.25, 0.1s
+[99/100] (restbench) "Tell me about Katherine LaNasa's latest movie appearance."
+    50 -> 50 chunks, 47639 -> 46085 tokens (CR 1.03x), retrieval recall 1.00, 0.1s
+[100/100] (restbench) 'Give me one cover image of the movie Oppenheimer.'
+    50 -> 50 chunks, 49029 -> 48666 tokens (CR 1.01x), retrieval recall 0.50, 0.1s
+
+wrote 100 records to data/contexts/restbench-tmdb_k50_all_noanchor_reqschema_n100.json
+overall CR: 1.03x
+retrieval recall: 0.659
+qwen: not used
+total time: 0.3 min

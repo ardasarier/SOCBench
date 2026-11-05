@@ -1,0 +1,30 @@
+queries:                  110
+
+wrote data/contexts/socbenchd_1_k10_budget-noctx_n110.json
+socbenchd_1 done
+queries:                  110
+
+wrote data/contexts/socbenchd_2_k10_budget-noctx_n110.json
+socbenchd_2 done
+queries:                  110
+
+wrote data/contexts/socbenchd_3_k10_budget-noctx_n110.json
+socbenchd_3 done
+queries:                  110
+
+wrote data/contexts/socbenchd_4_k10_budget-noctx_n110.json
+socbenchd_4 done
+queries:                  110
+
+wrote data/contexts/socbenchd_5_k10_budget-noctx_n110.json
+socbenchd_5 done
+queries:                  57
+
+wrote data/contexts/restbench_k10_budget-spotify-noctx_n57.json
+queries:                  100
+
+wrote data/contexts/restbench_k10_budget-tmdb-noctx_n100.json
+restbench run 1 done
+restbench run 2 done
+restbench run 3 done
+all done

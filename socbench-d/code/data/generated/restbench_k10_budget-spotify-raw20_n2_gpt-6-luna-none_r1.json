@@ -1,0 +1,76 @@
+[
+  {
+    "queryset": "restbench",
+    "query": "Make me a playlist containing three songs of Mariah Carey and name it 'Love Mariah'",
+    "solution": [
+      "GET /search",
+      "GET /me",
+      "POST /users/{user_id}/playlists",
+      "POST /playlists/{playlist_id}/tracks"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nuser_id = \"YOUR_SPOTIFY_USER_ID\"\nsong_uris = [\n    \"spotify:track:YOUR_MARIAH_CAREY_TRACK_ID_1\",\n    \"spotify:track:YOUR_MARIAH_CAREY_TRACK_ID_2\",\n    \"spotify:track:YOUR_MARIAH_CAREY_TRACK_ID_3\",\n]\n\nheaders = {\n    \"Authorization\": f\"Bearer {access_token}\",\n    \"Content-Type\": \"application/json\",\n}\n\nresponse = requests.post(\n    f\"https://api.spotify.com/v1/users/{user_id}/playlists\",\n    headers=headers,\n    json={\"name\": \"Love Mariah\", \"public\": False},\n)\nresponse.raise_for_status()\nplaylist_id = response.json()[\"id\"]\n\nresponse = requests.post(\n    f\"https://api.spotify.com/v1/playlists/{playlist_id}/tracks\",\n    headers=headers,\n    json={\"uris\": song_uris},\n)\nresponse.raise_for_status()",
+    "code_with": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\nbase_url = \"https://api.spotify.com/v1\"\n\n# Find Mariah Carey tracks.\nresponse = requests.get(\n    f\"{base_url}/search\",\n    headers=headers,\n    params={\"q\": \"artist:Mariah Carey\", \"type\": \"track\", \"limit\": 3},\n)\nresponse.raise_for_status()\ntracks = response.json().get(\"tracks\", {}).get(\"items\", [])\n\n# Keep only tracks credited to Mariah Carey, avoiding duplicate URIs.\nuris = []\nfor track in tracks:\n    if any(artist.get(\"name\", \"\").casefold() == \"mariah carey\" for artist in track.get(\"artists\", [])):\n        if track[\"uri\"] not in uris:\n            uris.append(track[\"uri\"])\n    if len(uris) == 3:\n        break\n\nif len(uris) != 3:\n    raise RuntimeError(\"Could not find three Mariah Carey songs.\")\n\n# Create the playlist for the authenticated user.\nresponse = requests.post(\n    f\"{base_url}/users/{os.environ['SPOTIFY_USER_ID']}/playlists\",\n    headers={**headers, \"Content-Type\": \"application/json\"},\n    json={\"name\": \"Love Mariah\", \"public\": False},\n)\nresponse.raise_for_status()\nplaylist_id = response.json()[\"id\"]\n\n# Add the three songs.\nresponse = requests.post(\n    f\"{base_url}/playlists/{playlist_id}/tracks\",\n    headers={**headers, \"Content-Type\": \"application/json\"},\n    json={\"uris\": uris},\n)\nresponse.raise_for_status()",
+    "found_without": [
+      "POST /playlists/{playlist_id}/tracks",
+      "POST /users/{user_id}/playlists"
+    ],
+    "found_with": [
+      "GET /search",
+      "POST /playlists/{playlist_id}/tracks",
+      "POST /users/{user_id}/playlists"
+    ],
+    "recall_without": 0.5,
+    "recall_with": 0.75,
+    "usage_without": {
+      "prompt_tokens": 4993,
+      "completion_tokens": 205,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0006018
+    },
+    "usage_with": {
+      "prompt_tokens": 11905,
+      "completion_tokens": 353,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.001367
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Add the first song of The Dark Side of the Moon in my playback queue",
+    "solution": [
+      "GET /search",
+      "GET /albums/{id}/tracks",
+      "POST /me/player/queue"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\ntrack_uri = \"spotify:track:YOUR_TRACK_URI\"\n\nresponse = requests.post(\n    \"https://api.spotify.com/v1/me/player/queue\",\n    headers={\"Authorization\": f\"Bearer {access_token}\"},\n    params={\"uri\": track_uri},\n)\nresponse.raise_for_status()",
+    "code_with": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\ntrack_uri = \"spotify:track:YOUR_TRACK_ID\"\n\nresponse = requests.post(\n    \"https://api.spotify.com/v1/me/player/queue\",\n    headers={\"Authorization\": f\"Bearer {access_token}\"},\n    params={\"uri\": track_uri},\n)\nresponse.raise_for_status()",
+    "found_without": [
+      "POST /me/player/queue"
+    ],
+    "found_with": [
+      "POST /me/player/queue"
+    ],
+    "recall_without": 0.3333333333333333,
+    "recall_with": 0.3333333333333333,
+    "usage_without": {
+      "prompt_tokens": 3982,
+      "completion_tokens": 72,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.00043420000000000004
+    },
+    "usage_with": {
+      "prompt_tokens": 8712,
+      "completion_tokens": 72,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0009072
+    }
+  }
+]

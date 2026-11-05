@@ -1,0 +1,2106 @@
+[
+  {
+    "queryset": "restbench",
+    "query": "Make me a playlist containing three songs of Mariah Carey and name it 'Love Mariah'",
+    "solution": [
+      "GET /search",
+      "GET /me",
+      "POST /users/{user_id}/playlists",
+      "POST /playlists/{playlist_id}/tracks"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nuser_id = \"YOUR_SPOTIFY_USER_ID\"\nsong_uris = [\n    \"spotify:track:YOUR_MARIAH_CAREY_TRACK_ID_1\",\n    \"spotify:track:YOUR_MARIAH_CAREY_TRACK_ID_2\",\n    \"spotify:track:YOUR_MARIAH_CAREY_TRACK_ID_3\",\n]\n\nheaders = {\n    \"Authorization\": f\"Bearer {access_token}\",\n    \"Content-Type\": \"application/json\",\n}\n\nresponse = requests.post(\n    f\"https://api.spotify.com/v1/users/{user_id}/playlists\",\n    headers=headers,\n    json={\"name\": \"Love Mariah\", \"public\": False},\n)\nresponse.raise_for_status()\nplaylist_id = response.json()[\"id\"]\n\nresponse = requests.post(\n    f\"https://api.spotify.com/v1/playlists/{playlist_id}/tracks\",\n    headers=headers,\n    json={\"uris\": song_uris},\n)\nresponse.raise_for_status()",
+    "code_with": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nuser_id = \"YOUR_SPOTIFY_USER_ID\"\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\n\nplaylist_response = requests.post(\n    f\"https://api.spotify.com/v1/users/{user_id}/playlists\",\n    headers=headers,\n    json={\"name\": \"Love Mariah\", \"public\": False},\n)\nplaylist_response.raise_for_status()\nplaylist_id = playlist_response.json()[\"id\"]\n\nsearch_response = requests.get(\n    \"https://api.spotify.com/v1/search\",\n    headers=headers,\n    params={\"q\": \"artist:Mariah Carey\", \"type\": \"track\", \"limit\": 3},\n)\nsearch_response.raise_for_status()\ntracks = search_response.json()[\"tracks\"][\"items\"]\n\nif len(tracks) < 3:\n    raise RuntimeError(\"Could not find three Mariah Carey songs.\")\n\nrequests.post(\n    f\"https://api.spotify.com/v1/playlists/{playlist_id}/tracks\",\n    headers=headers,\n    json={\"uris\": [track[\"uri\"] for track in tracks]},\n).raise_for_status()",
+    "found_without": [
+      "POST /playlists/{playlist_id}/tracks",
+      "POST /users/{user_id}/playlists"
+    ],
+    "found_with": [
+      "GET /search",
+      "POST /playlists/{playlist_id}/tracks",
+      "POST /users/{user_id}/playlists"
+    ],
+    "recall_without": 0.5,
+    "recall_with": 0.75,
+    "usage_without": {
+      "prompt_tokens": 4993,
+      "completion_tokens": 205,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0006018
+    },
+    "usage_with": {
+      "prompt_tokens": 4465,
+      "completion_tokens": 225,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4462,
+      "finish_reason": "stop",
+      "cost_usd": 0.00015742
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Add the first song of The Dark Side of the Moon in my playback queue",
+    "solution": [
+      "GET /search",
+      "GET /albums/{id}/tracks",
+      "POST /me/player/queue"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\ntrack_uri = \"spotify:track:YOUR_TRACK_URI\"\n\nresponse = requests.post(\n    \"https://api.spotify.com/v1/me/player/queue\",\n    headers={\"Authorization\": f\"Bearer {access_token}\"},\n    params={\"uri\": track_uri},\n)\nresponse.raise_for_status()",
+    "code_with": "import requests\n\nresponse = requests.post(\n    \"https://api.spotify.com/v1/me/player/queue\",\n    params={\"uri\": \"spotify:track:2ctvdKmETyOzPb2GiJJT53\"},\n    headers={\"Authorization\": f\"Bearer {access_token}\"},\n)\nresponse.raise_for_status()",
+    "found_without": [
+      "POST /me/player/queue"
+    ],
+    "found_with": [
+      "POST /me/player/queue"
+    ],
+    "recall_without": 0.3333333333333333,
+    "recall_with": 0.3333333333333333,
+    "usage_without": {
+      "prompt_tokens": 3982,
+      "completion_tokens": 72,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.00043420000000000004
+    },
+    "usage_with": {
+      "prompt_tokens": 3693,
+      "completion_tokens": 68,
+      "reasoning_tokens": 0,
+      "cached_tokens": 3690,
+      "finish_reason": "stop",
+      "cost_usd": 7.119999999999998e-05
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Add Summertime Sadness by Lana Del Rey in my first playlist",
+    "solution": [
+      "GET /search",
+      "GET /me/playlists",
+      "POST /playlists/{playlist_id}/tracks"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nplaylist_id = \"YOUR_FIRST_PLAYLIST_ID\"\ntrack_uri = \"spotify:track:YOUR_SUMMERTIME_SADNESS_TRACK_ID\"\n\nresponse = requests.post(\n    f\"https://api.spotify.com/v1/playlists/{playlist_id}/tracks\",\n    headers={\"Authorization\": f\"Bearer {access_token}\"},\n    json={\"uris\": [track_uri]},\n)\nresponse.raise_for_status()",
+    "code_with": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nplaylist_id = \"YOUR_FIRST_PLAYLIST_ID\"\ntrack_uri = \"spotify:track:YOUR_SUMMERTIME_SADNESS_TRACK_ID\"\n\nresponse = requests.post(\n    f\"https://api.spotify.com/v1/playlists/{playlist_id}/tracks\",\n    headers={\"Authorization\": f\"Bearer {access_token}\"},\n    json={\"uris\": [track_uri], \"position\": 0},\n)\nresponse.raise_for_status()",
+    "found_without": [
+      "POST /playlists/{playlist_id}/tracks"
+    ],
+    "found_with": [
+      "POST /playlists/{playlist_id}/tracks"
+    ],
+    "recall_without": 0.3333333333333333,
+    "recall_with": 0.3333333333333333,
+    "usage_without": {
+      "prompt_tokens": 4931,
+      "completion_tokens": 93,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0005396
+    },
+    "usage_with": {
+      "prompt_tokens": 4815,
+      "completion_tokens": 99,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4812,
+      "finish_reason": "stop",
+      "cost_usd": 9.792e-05
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Skip to the next track and set the volume to 60",
+    "solution": [
+      "POST /me/player/next",
+      "PUT /me/player/volume"
+    ],
+    "code_without": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\n\nrequests.post(\"https://api.spotify.com/v1/me/player/next\", headers=headers)\nrequests.put(\n    \"https://api.spotify.com/v1/me/player/volume\",\n    headers=headers,\n    params={\"volume_percent\": 60},\n)",
+    "code_with": "import requests\n\nheaders = {\"Authorization\": \"Bearer YOUR_ACCESS_TOKEN\"}\n\nrequests.post(\"https://api.spotify.com/v1/me/player/next\", headers=headers)\nrequests.put(\n    \"https://api.spotify.com/v1/me/player/volume\",\n    headers=headers,\n    params={\"volume_percent\": 60},\n)",
+    "found_without": [
+      "POST /me/player/next",
+      "PUT /me/player/volume"
+    ],
+    "found_with": [
+      "POST /me/player/next",
+      "PUT /me/player/volume"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 3970,
+      "completion_tokens": 81,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0004375
+    },
+    "usage_with": {
+      "prompt_tokens": 3335,
+      "completion_tokens": 66,
+      "reasoning_tokens": 0,
+      "cached_tokens": 3332,
+      "finish_reason": "stop",
+      "cost_usd": 6.662000000000001e-05
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Put the song now being played into My Music",
+    "solution": [
+      "GET /me/player/currently-playing",
+      "PUT /me/tracks"
+    ],
+    "code_without": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\n\nresponse = requests.get(\n    \"https://api.spotify.com/v1/me/player/currently-playing\",\n    headers=headers,\n)\nresponse.raise_for_status()\n\ntrack = response.json().get(\"item\")\nif track and track.get(\"type\") == \"track\":\n    save_response = requests.put(\n        \"https://api.spotify.com/v1/me/tracks\",\n        headers={**headers, \"Content-Type\": \"application/json\"},\n        json={\"ids\": [track[\"id\"]]},\n    )\n    save_response.raise_for_status()",
+    "code_with": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\nbase_url = \"https://api.spotify.com/v1\"\n\nresponse = requests.get(\n    f\"{base_url}/me/player/currently-playing\",\n    headers=headers,\n)\nresponse.raise_for_status()\n\ntrack = response.json().get(\"item\")\nif track and track.get(\"type\") == \"track\" and track.get(\"id\"):\n    save_response = requests.put(\n        f\"{base_url}/me/tracks\",\n        headers=headers,\n        json={\"ids\": [track[\"id\"]]},\n    )\n    save_response.raise_for_status()",
+    "found_without": [
+      "GET /me/player/currently-playing",
+      "PUT /me/tracks"
+    ],
+    "found_with": [
+      "GET /me/player/currently-playing",
+      "PUT /me/tracks"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 4440,
+      "completion_tokens": 137,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0005125
+    },
+    "usage_with": {
+      "prompt_tokens": 4304,
+      "completion_tokens": 139,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4301,
+      "finish_reason": "stop",
+      "cost_usd": 0.00011281
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Append the first song of the newest album of my following first artist to my player queue",
+    "solution": [
+      "GET /me/following",
+      "GET /artists/{id}/albums",
+      "GET /albums/{id}/tracks",
+      "POST /me/player/queue"
+    ],
+    "code_without": "import os\nimport requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nheaders = {\"Authorization\": f\"Bearer {os.environ['SPOTIFY_ACCESS_TOKEN']}\"}\n\nfollowed = requests.get(\n    f\"{BASE_URL}/me/following\",\n    headers=headers,\n    params={\"type\": \"artist\", \"limit\": 1},\n)\nfollowed.raise_for_status()\nartists = followed.json()[\"artists\"][\"items\"]\nif not artists:\n    raise RuntimeError(\"You do not follow any artists.\")\n\nartist_id = artists[0][\"id\"]\n\nalbums_response = requests.get(\n    f\"{BASE_URL}/artists/{artist_id}/albums\",\n    headers=headers,\n    params={\"include_groups\": \"album\", \"limit\": 50, \"market\": \"from_token\"},\n)\nalbums_response.raise_for_status()\nalbums = albums_response.json()[\"items\"]\nif not albums:\n    raise RuntimeError(\"The followed artist has no albums.\")\n\nnewest_album = max(albums, key=lambda album: album.get(\"release_date\", \"\"))\ntracks_response = requests.get(\n    f\"{BASE_URL}/albums/{newest_album['id']}/tracks\",\n    headers=headers,\n    params={\"limit\": 1, \"market\": \"from_token\"},\n)\ntracks_response.raise_for_status()\ntracks = tracks_response.json()[\"items\"]\nif not tracks:\n    raise RuntimeError(\"The newest album has no tracks.\")\n\nqueue_response = requests.post(\n    f\"{BASE_URL}/me/player/queue\",\n    headers=headers,\n    params={\"uri\": tracks[0][\"uri\"]},\n)\nqueue_response.raise_for_status()",
+    "code_with": "import os\nimport requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nheaders = {\"Authorization\": f\"Bearer {os.environ['SPOTIFY_ACCESS_TOKEN']}\"}\n\nfollowed = requests.get(\n    f\"{BASE_URL}/me/following\",\n    headers=headers,\n    params={\"type\": \"artist\", \"limit\": 1},\n)\nfollowed.raise_for_status()\nartists = followed.json().get(\"artists\", {}).get(\"items\", [])\nif not artists:\n    raise RuntimeError(\"You do not follow any artists.\")\n\nartist_id = artists[0][\"id\"]\nalbums_response = requests.get(\n    f\"{BASE_URL}/artists/{artist_id}/albums\",\n    headers=headers,\n    params={\"include_groups\": \"album,single\", \"limit\": 50, \"offset\": 0},\n)\nalbums_response.raise_for_status()\nalbums = albums_response.json().get(\"items\", [])\nif not albums:\n    raise RuntimeError(\"No albums found for the first followed artist.\")\n\nalbums.sort(key=lambda album: album.get(\"release_date\", \"\"), reverse=True)\nnewest_album_id = albums[0][\"id\"]\n\ntracks_response = requests.get(\n    f\"{BASE_URL}/albums/{newest_album_id}/tracks\",\n    headers=headers,\n    params={\"limit\": 1},\n)\ntracks_response.raise_for_status()\ntracks = tracks_response.json().get(\"items\", [])\nif not tracks:\n    raise RuntimeError(\"The newest album has no tracks.\")\n\ntrack_uri = tracks[0][\"uri\"]\nqueue_response = requests.post(\n    f\"{BASE_URL}/me/player/queue\",\n    headers=headers,\n    params={\"uri\": track_uri},\n)\nqueue_response.raise_for_status()",
+    "found_without": [
+      "GET /albums/{id}/tracks",
+      "GET /artists/{id}/albums",
+      "GET /me/following",
+      "POST /me/player/queue"
+    ],
+    "found_with": [
+      "GET /albums/{id}/tracks",
+      "GET /artists/{id}/albums",
+      "GET /me/following",
+      "POST /me/player/queue"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 4377,
+      "completion_tokens": 326,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0006007
+    },
+    "usage_with": {
+      "prompt_tokens": 4145,
+      "completion_tokens": 344,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4142,
+      "finish_reason": "stop",
+      "cost_usd": 0.00021372
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Follow the artist of the song now playing",
+    "solution": [
+      "GET /me/player/currently-playing",
+      "GET /tracks/{id}",
+      "PUT /me/following"
+    ],
+    "code_without": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\n\ncurrent = requests.get(\n    \"https://api.spotify.com/v1/me/player/currently-playing\",\n    headers=headers,\n)\ncurrent.raise_for_status()\ndata = current.json()\n\ntrack = data.get(\"item\")\nif track:\n    artist_ids = [artist[\"id\"] for artist in track.get(\"artists\", []) if artist.get(\"id\")]\n    if artist_ids:\n        response = requests.put(\n            \"https://api.spotify.com/v1/me/following\",\n            headers=headers,\n            params={\"type\": \"artist\", \"ids\": \",\".join(artist_ids)},\n        )\n        response.raise_for_status()",
+    "code_with": "import requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nheaders = {\"Authorization\": \"Bearer YOUR_ACCESS_TOKEN\"}\n\nresponse = requests.get(\n    f\"{BASE_URL}/me/player/currently-playing\",\n    headers=headers,\n)\nresponse.raise_for_status()\ntrack = response.json().get(\"item\")\n\nif track:\n    artist_ids = [artist[\"id\"] for artist in track.get(\"artists\", []) if artist.get(\"id\")]\n    if artist_ids:\n        follow_response = requests.put(\n            f\"{BASE_URL}/me/following\",\n            headers=headers,\n            params={\"type\": \"artist\", \"ids\": \",\".join(artist_ids)},\n        )\n        follow_response.raise_for_status()",
+    "found_without": [
+      "GET /me/player/currently-playing",
+      "PUT /me/following"
+    ],
+    "found_with": [
+      "GET /me/player/currently-playing",
+      "PUT /me/following"
+    ],
+    "recall_without": 0.6666666666666666,
+    "recall_with": 0.6666666666666666,
+    "usage_without": {
+      "prompt_tokens": 3926,
+      "completion_tokens": 156,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0004706
+    },
+    "usage_with": {
+      "prompt_tokens": 3880,
+      "completion_tokens": 146,
+      "reasoning_tokens": 0,
+      "cached_tokens": 3877,
+      "finish_reason": "stop",
+      "cost_usd": 0.00011206999999999999
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Play a song from Taylor Swift's newest album",
+    "solution": [
+      "GET /search",
+      "GET /artists/{id}/albums",
+      "PUT /me/player/play"
+    ],
+    "code_without": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\n\nresponse = requests.get(\n    \"https://api.spotify.com/v1/search\",\n    headers=headers,\n    params={\"q\": \"artist:Taylor Swift\", \"type\": \"album\", \"limit\": 50},\n)\nresponse.raise_for_status()\n\nalbums = response.json()[\"albums\"][\"items\"]\nif not albums:\n    raise RuntimeError(\"No Taylor Swift albums found\")\n\nnewest_album = max(albums, key=lambda album: album[\"release_date\"])\nalbum = requests.get(newest_album[\"href\"], headers=headers)\nalbum.raise_for_status()\n\ntracks = album.json()[\"tracks\"][\"items\"]\nif not tracks:\n    raise RuntimeError(\"The newest album has no tracks\")\n\nplay_response = requests.put(\n    \"https://api.spotify.com/v1/me/player/play\",\n    headers={**headers, \"Content-Type\": \"application/json\"},\n    json={\"uris\": [tracks[0][\"uri\"]]},\n)\nplay_response.raise_for_status()",
+    "code_with": "import os\nimport requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nheaders = {\"Authorization\": f\"Bearer {os.environ['SPOTIFY_ACCESS_TOKEN']}\"}\n\nresponse = requests.get(\n    f\"{BASE_URL}/search\",\n    headers=headers,\n    params={\"q\": \"artist:Taylor Swift\", \"type\": \"album\", \"limit\": 50},\n)\nresponse.raise_for_status()\n\nalbums = response.json().get(\"albums\", {}).get(\"items\", [])\nif not albums:\n    raise RuntimeError(\"No Taylor Swift albums found.\")\n\nnewest_album = max(albums, key=lambda album: album.get(\"release_date\", \"\"))\nalbum_tracks = requests.get(\n    f\"{BASE_URL}/playlists/{newest_album['id']}/tracks\",\n    headers=headers,\n)\n# Album tracks are not available through the documented playlist endpoint.\n# Search for a track from the newest album, then start playback.\ntrack_response = requests.get(\n    f\"{BASE_URL}/search\",\n    headers=headers,\n    params={\n        \"q\": f'album:\"{newest_album[\"name\"]}\" artist:\"Taylor Swift\"',\n        \"type\": \"track\",\n        \"limit\": 1,\n    },\n)\ntrack_response.raise_for_status()\n\ntracks = track_response.json().get(\"tracks\", {}).get(\"items\", [])\nif not tracks:\n    raise RuntimeError(\"No tracks found from Taylor Swift's newest album.\")\n\nplay_response = requests.put(\n    f\"{BASE_URL}/me/player/play\",\n    headers=headers,\n    json={\"uris\": [tracks[0][\"uri\"]]},\n)\nplay_response.raise_for_status()",
+    "found_without": [
+      "GET /search",
+      "PUT /me/player/play"
+    ],
+    "found_with": [
+      "GET /playlists/{playlist_id}/tracks",
+      "GET /search",
+      "PUT /me/player/play"
+    ],
+    "recall_without": 0.6666666666666666,
+    "recall_with": 0.6666666666666666,
+    "usage_without": {
+      "prompt_tokens": 5127,
+      "completion_tokens": 218,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0006217000000000001
+    },
+    "usage_with": {
+      "prompt_tokens": 4816,
+      "completion_tokens": 332,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4813,
+      "finish_reason": "stop",
+      "cost_usd": 0.00021443000000000002
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "play me some quiet songs",
+    "solution": [
+      "GET /search",
+      "PUT /me/player/play"
+    ],
+    "code_without": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\n\nresponse = requests.get(\n    \"https://api.spotify.com/v1/me/player/recently-played\",\n    headers=headers,\n    params={\"limit\": 50},\n)\nresponse.raise_for_status()\n\nitems = response.json().get(\"items\", [])\nquiet_tracks = [\n    item[\"track\"][\"uri\"]\n    for item in items\n    if item.get(\"track\")\n    and any(\n        word in item[\"track\"].get(\"name\", \"\").lower()\n        for word in (\"quiet\", \"calm\", \"soft\", \"sleep\", \"ambient\", \"acoustic\")\n    )\n]\n\nif quiet_tracks:\n    play_response = requests.put(\n        \"https://api.spotify.com/v1/me/player/play\",\n        headers=headers,\n        json={\"uris\": quiet_tracks[:20]},\n    )\n    play_response.raise_for_status()",
+    "code_with": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\nbase_url = \"https://api.spotify.com/v1\"\n\nresponse = requests.get(\n    f\"{base_url}/me/player/currently-playing\",\n    headers=headers,\n)\nresponse.raise_for_status()\ncurrent = response.json() if response.content else {}\n\nif current.get(\"is_playing\"):\n    requests.put(f\"{base_url}/me/player/pause\", headers=headers).raise_for_status()\n\nrequests.put(\n    f\"{base_url}/me/player/play\",\n    headers=headers,\n    json={\n        \"uris\": [\n            \"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\",\n            \"spotify:track:1301WleyT98MSxVHPZCA6M\",\n        ]\n    },\n).raise_for_status()",
+    "found_without": [
+      "GET /me/player/recently-played",
+      "PUT /me/player/play"
+    ],
+    "found_with": [
+      "GET /me/player/currently-playing",
+      "PUT /me/player/pause",
+      "PUT /me/player/play"
+    ],
+    "recall_without": 0.5,
+    "recall_with": 0.5,
+    "usage_without": {
+      "prompt_tokens": 4226,
+      "completion_tokens": 198,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0005216
+    },
+    "usage_with": {
+      "prompt_tokens": 4136,
+      "completion_tokens": 188,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4133,
+      "finish_reason": "stop",
+      "cost_usd": 0.00013563
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Follow the artist of the first song recently played",
+    "solution": [
+      "GET /me/player/currently-playing",
+      "GET /tracks/{id}",
+      "PUT /me/following"
+    ],
+    "code_without": "import os\nimport requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nheaders = {\"Authorization\": f\"Bearer {os.environ['SPOTIFY_ACCESS_TOKEN']}\"}\n\nhistory_response = requests.get(\n    f\"{BASE_URL}/me/player/recently-played\",\n    headers=headers,\n    params={\"limit\": 1},\n)\nhistory_response.raise_for_status()\n\nitems = history_response.json().get(\"items\", [])\nif items:\n    artists = items[0].get(\"track\", {}).get(\"artists\", [])\n    if artists:\n        response = requests.put(\n            f\"{BASE_URL}/me/following\",\n            headers=headers,\n            params={\"type\": \"artist\"},\n            json={\"ids\": [artists[0][\"id\"]]},\n        )\n        response.raise_for_status()",
+    "code_with": "import os\nimport requests\n\nbase_url = \"https://api.spotify.com/v1\"\nheaders = {\"Authorization\": f\"Bearer {os.environ['SPOTIFY_ACCESS_TOKEN']}\"}\n\nrecent = requests.get(\n    f\"{base_url}/me/player/recently-played\",\n    headers=headers,\n    params={\"limit\": 1},\n)\nrecent.raise_for_status()\n\nitems = recent.json().get(\"items\", [])\nif items:\n    artist_ids = [artist[\"id\"] for artist in items[0][\"track\"].get(\"artists\", []) if artist.get(\"id\")]\n    if artist_ids:\n        response = requests.put(\n            f\"{base_url}/me/following\",\n            headers=headers,\n            params={\"type\": \"artist\", \"ids\": \",\".join(artist_ids)},\n        )\n        response.raise_for_status()",
+    "found_without": [
+      "GET /me/player/recently-played",
+      "PUT /me/following"
+    ],
+    "found_with": [
+      "GET /me/player/recently-played",
+      "PUT /me/following"
+    ],
+    "recall_without": 0.3333333333333333,
+    "recall_with": 0.3333333333333333,
+    "usage_without": {
+      "prompt_tokens": 4231,
+      "completion_tokens": 165,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0005056
+    },
+    "usage_with": {
+      "prompt_tokens": 3961,
+      "completion_tokens": 172,
+      "reasoning_tokens": 0,
+      "cached_tokens": 3958,
+      "finish_reason": "stop",
+      "cost_usd": 0.00012588
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Switch to the next song and set the single track repeat mode",
+    "solution": [
+      "POST /me/player/next",
+      "PUT /me/player/repeat"
+    ],
+    "code_without": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\n\nnext_response = requests.post(\n    \"https://api.spotify.com/v1/me/player/next\",\n    headers=headers,\n)\nnext_response.raise_for_status()\n\nrepeat_response = requests.put(\n    \"https://api.spotify.com/v1/me/player/repeat\",\n    headers=headers,\n    params={\"state\": \"track\"},\n)\nrepeat_response.raise_for_status()",
+    "code_with": "import requests\n\nheaders = {\"Authorization\": \"Bearer YOUR_ACCESS_TOKEN\"}\n\nrequests.post(\"https://api.spotify.com/v1/me/player/next\", headers=headers)\nrequests.put(\n    \"https://api.spotify.com/v1/me/player/repeat\",\n    headers=headers,\n    params={\"state\": \"track\"},\n)",
+    "found_without": [
+      "POST /me/player/next",
+      "PUT /me/player/repeat"
+    ],
+    "found_with": [
+      "POST /me/player/next",
+      "PUT /me/player/repeat"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 4234,
+      "completion_tokens": 102,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.00047440000000000004
+    },
+    "usage_with": {
+      "prompt_tokens": 4227,
+      "completion_tokens": 65,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4224,
+      "finish_reason": "stop",
+      "cost_usd": 7.503999999999999e-05
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Save Jay Chou's album Mojito",
+    "solution": [
+      "GET /search",
+      "PUT /me/albums"
+    ],
+    "code_without": "import os\nimport requests\n\naccess_token = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nalbum_id = os.environ[\"MOJITO_ALBUM_ID\"]\n\nresponse = requests.put(\n    \"https://api.spotify.com/v1/me/albums\",\n    headers={\"Authorization\": f\"Bearer {access_token}\"},\n    json={\"ids\": [album_id]},\n)\nresponse.raise_for_status()",
+    "code_with": "import requests\n\ntoken = \"YOUR_ACCESS_TOKEN\"\nalbum_id = \"YOUR_MOJITO_ALBUM_SPOTIFY_ID\"\n\nresponse = requests.put(\n    \"https://api.spotify.com/v1/me/albums\",\n    headers={\"Authorization\": f\"Bearer {token}\"},\n    json={\"ids\": [album_id]},\n)\nresponse.raise_for_status()",
+    "found_without": [
+      "PUT /me/albums"
+    ],
+    "found_with": [
+      "PUT /me/albums"
+    ],
+    "recall_without": 0.5,
+    "recall_with": 0.5,
+    "usage_without": {
+      "prompt_tokens": 6115,
+      "completion_tokens": 80,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0006515
+    },
+    "usage_with": {
+      "prompt_tokens": 5207,
+      "completion_tokens": 73,
+      "reasoning_tokens": 0,
+      "cached_tokens": 5204,
+      "finish_reason": "stop",
+      "cost_usd": 8.884000000000001e-05
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Rename my first playlist to \"My First\"",
+    "solution": [
+      "GET /me/playlists",
+      "PUT /playlists/{playlist_id}"
+    ],
+    "code_without": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\n\nresponse = requests.get(\n    \"https://api.spotify.com/v1/me/playlists\",\n    headers=headers,\n    params={\"limit\": 1, \"offset\": 0},\n)\nresponse.raise_for_status()\n\nplaylists = response.json().get(\"items\", [])\nif not playlists:\n    raise ValueError(\"No playlists found.\")\n\nplaylist_id = playlists[0][\"id\"]\nresponse = requests.put(\n    f\"https://api.spotify.com/v1/playlists/{playlist_id}\",\n    headers={**headers, \"Content-Type\": \"application/json\"},\n    json={\"name\": \"My First\"},\n)\nresponse.raise_for_status()",
+    "code_with": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\n\nplaylists_response = requests.get(\n    \"https://api.spotify.com/v1/me/playlists\",\n    headers=headers,\n    params={\"limit\": 1, \"offset\": 0},\n)\nplaylists_response.raise_for_status()\nplaylists = playlists_response.json().get(\"items\", [])\n\nif playlists:\n    playlist_id = playlists[0][\"id\"]\n    response = requests.put(\n        f\"https://api.spotify.com/v1/playlists/{playlist_id}\",\n        headers=headers,\n        json={\"name\": \"My First\"},\n    )\n    response.raise_for_status()",
+    "found_without": [
+      "GET /me/playlists",
+      "PUT /playlists/{playlist_id}"
+    ],
+    "found_with": [
+      "GET /me/playlists",
+      "PUT /playlists/{playlist_id}"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 5282,
+      "completion_tokens": 156,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0006062000000000001
+    },
+    "usage_with": {
+      "prompt_tokens": 5109,
+      "completion_tokens": 145,
+      "reasoning_tokens": 0,
+      "cached_tokens": 5106,
+      "finish_reason": "stop",
+      "cost_usd": 0.00012386
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Remove following from the artist of the currently playing music",
+    "solution": [
+      "GET /me/player/currently-playing",
+      "GET /tracks/{id}",
+      "DELETE /me/following"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\n\ncurrent_response = requests.get(\n    \"https://api.spotify.com/v1/me/player/currently-playing\",\n    headers=headers,\n)\ncurrent_response.raise_for_status()\ncurrent_data = current_response.json()\n\nartist_ids = [\n    artist[\"id\"]\n    for artist in current_data.get(\"item\", {}).get(\"artists\", [])\n    if artist.get(\"id\")\n]\n\nif artist_ids:\n    response = requests.delete(\n        \"https://api.spotify.com/v1/me/following\",\n        headers=headers,\n        params={\"type\": \"artist\", \"ids\": \",\".join(artist_ids[:50])},\n    )\n    response.raise_for_status()",
+    "code_with": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\n\ncurrent = requests.get(\n    \"https://api.spotify.com/v1/me/player/currently-playing\",\n    headers=headers,\n)\ncurrent.raise_for_status()\ntrack = current.json().get(\"item\")\n\nif track and track.get(\"artists\"):\n    artist_ids = [artist[\"id\"] for artist in track[\"artists\"] if artist.get(\"id\")]\n    if artist_ids:\n        response = requests.delete(\n            \"https://api.spotify.com/v1/me/following\",\n            headers=headers,\n            params={\"type\": \"artist\", \"ids\": \",\".join(artist_ids[:50])},\n        )\n        response.raise_for_status()",
+    "found_without": [
+      "DELETE /me/following",
+      "GET /me/player/currently-playing"
+    ],
+    "found_with": [
+      "DELETE /me/following",
+      "GET /me/player/currently-playing"
+    ],
+    "recall_without": 0.6666666666666666,
+    "recall_with": 0.6666666666666666,
+    "usage_without": {
+      "prompt_tokens": 4144,
+      "completion_tokens": 156,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0004924
+    },
+    "usage_with": {
+      "prompt_tokens": 3925,
+      "completion_tokens": 159,
+      "reasoning_tokens": 0,
+      "cached_tokens": 3922,
+      "finish_reason": "stop",
+      "cost_usd": 0.00011902
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Pause playback, turn down the volume and resume playing",
+    "solution": [
+      "PUT /me/player/pause",
+      "PUT /me/player/volume",
+      "PUT /me/player/play"
+    ],
+    "code_without": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\nbase_url = \"https://api.spotify.com/v1/me/player\"\n\npause_response = requests.put(f\"{base_url}/pause\", headers=headers)\npause_response.raise_for_status()\n\nvolume_response = requests.put(\n    f\"{base_url}/volume\",\n    headers=headers,\n    params={\"volume_percent\": 30},\n)\nvolume_response.raise_for_status()\n\nplay_response = requests.put(f\"{base_url}/play\", headers=headers)\nplay_response.raise_for_status()",
+    "code_with": "import requests\n\nbase_url = \"https://api.spotify.com/v1\"\nheaders = {\"Authorization\": \"Bearer YOUR_ACCESS_TOKEN\"}\n\nrequests.put(f\"{base_url}/me/player/pause\", headers=headers)\nrequests.put(\n    f\"{base_url}/me/player/volume\",\n    headers=headers,\n    params={\"volume_percent\": 20},\n)\nrequests.put(f\"{base_url}/me/player/play\", headers=headers)",
+    "found_without": [
+      "PUT /me/player/pause",
+      "PUT /me/player/play",
+      "PUT /me/player/volume"
+    ],
+    "found_with": [
+      "PUT /me/player/pause",
+      "PUT /me/player/play",
+      "PUT /me/player/volume"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 4374,
+      "completion_tokens": 122,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0004984000000000001
+    },
+    "usage_with": {
+      "prompt_tokens": 3354,
+      "completion_tokens": 86,
+      "reasoning_tokens": 0,
+      "cached_tokens": 3351,
+      "finish_reason": "stop",
+      "cost_usd": 7.681e-05
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Add songs from the current playing queue to a new playlist called \"Current\"",
+    "solution": [
+      "GET /me/player/queue",
+      "GET /me",
+      "POST /users/{user_id}/playlists",
+      "PUT /playlists/{playlist_id}"
+    ],
+    "code_without": "import os\nimport requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nTOKEN = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nHEADERS = {\"Authorization\": f\"Bearer {TOKEN}\"}\n\nqueue_response = requests.get(f\"{BASE_URL}/me/player/queue\", headers=HEADERS)\nqueue_response.raise_for_status()\nqueue_items = queue_response.json().get(\"queue\", [])\n\ntrack_uris = [\n    item[\"uri\"]\n    for item in queue_items\n    if item.get(\"type\") == \"track\" and item.get(\"uri\")\n]\n\nuser_response = requests.get(f\"{BASE_URL}/me\", headers=HEADERS)\nuser_response.raise_for_status()\nuser_id = user_response.json()[\"id\"]\n\nplaylist_response = requests.post(\n    f\"{BASE_URL}/users/{user_id}/playlists\",\n    headers={**HEADERS, \"Content-Type\": \"application/json\"},\n    json={\"name\": \"Current\", \"public\": False},\n)\nplaylist_response.raise_for_status()\nplaylist_id = playlist_response.json()[\"id\"]\n\nfor start in range(0, len(track_uris), 100):\n    response = requests.post(\n        f\"{BASE_URL}/playlists/{playlist_id}/tracks\",\n        headers={**HEADERS, \"Content-Type\": \"application/json\"},\n        json={\"uris\": track_uris[start:start + 100]},\n    )\n    response.raise_for_status()",
+    "code_with": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\n\nbase_url = \"https://api.spotify.com/v1\"\n\nqueue_response = requests.get(\n    f\"{base_url}/me/player/queue\",\n    headers=headers,\n)\nqueue_response.raise_for_status()\nqueue_items = queue_response.json().get(\"queue\", [])\n\ntrack_uris = [\n    item[\"uri\"]\n    for item in queue_items\n    if item.get(\"type\") == \"track\" and item.get(\"uri\")\n]\n\nplaylists_response = requests.get(\n    f\"{base_url}/me/playlists\",\n    headers=headers,\n    params={\"limit\": 1},\n)\nplaylists_response.raise_for_status()\nplaylists = playlists_response.json().get(\"items\", [])\n\nif playlists:\n    user_id = playlists[0][\"owner\"][\"id\"]\nelse:\n    raise RuntimeError(\"Could not determine the current user's ID from their playlists.\")\n\ncreate_response = requests.post(\n    f\"{base_url}/users/{user_id}/playlists\",\n    headers={**headers, \"Content-Type\": \"application/json\"},\n    json={\"name\": \"Current\", \"public\": False},\n)\ncreate_response.raise_for_status()\nplaylist_id = create_response.json()[\"id\"]\n\nfor start in range(0, len(track_uris), 100):\n    add_response = requests.post(\n        f\"{base_url}/playlists/{playlist_id}/tracks\",\n        headers={**headers, \"Content-Type\": \"application/json\"},\n        json={\"uris\": track_uris[start:start + 100]},\n    )\n    add_response.raise_for_status()",
+    "found_without": [
+      "GET /me",
+      "GET /me/player/queue",
+      "POST /playlists/{playlist_id}/tracks",
+      "POST /users/{user_id}/playlists"
+    ],
+    "found_with": [
+      "GET /me/player/queue",
+      "GET /me/playlists",
+      "POST /playlists/{playlist_id}/tracks",
+      "POST /users/{user_id}/playlists"
+    ],
+    "recall_without": 0.75,
+    "recall_with": 0.5,
+    "usage_without": {
+      "prompt_tokens": 4707,
+      "completion_tokens": 286,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0006137
+    },
+    "usage_with": {
+      "prompt_tokens": 4556,
+      "completion_tokens": 332,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4553,
+      "finish_reason": "stop",
+      "cost_usd": 0.00021182999999999998
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "What is the name of the song I playing right now?",
+    "solution": [
+      "GET /me/player/currently-playing"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_SPOTIFY_ACCESS_TOKEN\"\n\nresponse = requests.get(\n    \"https://api.spotify.com/v1/me/player/currently-playing\",\n    headers={\"Authorization\": f\"Bearer {access_token}\"},\n)\nresponse.raise_for_status()\n\ndata = response.json()\ntrack = data.get(\"item\")\nprint(track.get(\"name\") if track else \"No song is currently playing.\")",
+    "code_with": "import requests\n\nresponse = requests.get(\n    \"https://api.spotify.com/v1/me/player/currently-playing\",\n    headers={\"Authorization\": \"Bearer YOUR_ACCESS_TOKEN\"},\n)\nresponse.raise_for_status()\ndata = response.json()\nprint(data.get(\"item\", {}).get(\"name\"))",
+    "found_without": [
+      "GET /me/player/currently-playing"
+    ],
+    "found_with": [
+      "GET /me/player/currently-playing"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 6012,
+      "completion_tokens": 84,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0006432
+    },
+    "usage_with": {
+      "prompt_tokens": 5779,
+      "completion_tokens": 59,
+      "reasoning_tokens": 0,
+      "cached_tokens": 5776,
+      "finish_reason": "stop",
+      "cost_usd": 8.756000000000001e-05
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Remove the first album from my music",
+    "solution": [
+      "GET /me/albums",
+      "DELETE /me/albums"
+    ],
+    "code_without": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nresponse = requests.get(\n    \"https://api.spotify.com/v1/me/albums\",\n    headers={\"Authorization\": f\"Bearer {token}\"},\n    params={\"limit\": 1, \"offset\": 0},\n)\nresponse.raise_for_status()\n\nalbums = response.json().get(\"items\", [])\nif albums:\n    album_id = albums[0][\"album\"][\"id\"]\n    remove_response = requests.delete(\n        \"https://api.spotify.com/v1/me/albums\",\n        headers={\"Authorization\": f\"Bearer {token}\"},\n        json={\"ids\": [album_id]},\n    )\n    remove_response.raise_for_status()",
+    "code_with": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\n\nresponse = requests.get(\n    \"https://api.spotify.com/v1/me/albums\",\n    headers=headers,\n    params={\"limit\": 1, \"offset\": 0},\n)\nresponse.raise_for_status()\n\nalbums = response.json().get(\"items\", [])\nif albums:\n    album_id = albums[0][\"album\"][\"id\"]\n    delete_response = requests.delete(\n        \"https://api.spotify.com/v1/me/albums\",\n        headers=headers,\n        json={\"ids\": [album_id]},\n    )\n    delete_response.raise_for_status()",
+    "found_without": [
+      "DELETE /me/albums",
+      "GET /me/albums"
+    ],
+    "found_with": [
+      "DELETE /me/albums",
+      "GET /me/albums"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 4350,
+      "completion_tokens": 145,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0005075
+    },
+    "usage_with": {
+      "prompt_tokens": 4279,
+      "completion_tokens": 141,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4276,
+      "finish_reason": "stop",
+      "cost_usd": 0.00011356
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Show me the albums I saved",
+    "solution": [
+      "GET /me/albums"
+    ],
+    "code_without": "import os\nimport requests\n\nresponse = requests.get(\n    \"https://api.spotify.com/v1/me/albums\",\n    headers={\"Authorization\": f\"Bearer {os.environ['SPOTIFY_ACCESS_TOKEN']}\"},\n    params={\"limit\": 50},\n)\nresponse.raise_for_status()\n\nfor item in response.json().get(\"items\", []):\n    album = item.get(\"album\", {})\n    print(f\"{album.get('name', 'Unknown album')} \u2014 {', '.join(artist.get('name', '') for artist in album.get('artists', []))}\")",
+    "code_with": "import requests\n\nresponse = requests.get(\n    \"https://api.spotify.com/v1/me/albums\",\n    headers={\"Authorization\": f\"Bearer {access_token}\"},\n    params={\"limit\": 50},\n)\nresponse.raise_for_status()\nprint(response.json())",
+    "found_without": [
+      "GET /me/albums"
+    ],
+    "found_with": [
+      "GET /me/albums"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 4128,
+      "completion_tokens": 117,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0004713
+    },
+    "usage_with": {
+      "prompt_tokens": 3778,
+      "completion_tokens": 55,
+      "reasoning_tokens": 0,
+      "cached_tokens": 3775,
+      "finish_reason": "stop",
+      "cost_usd": 6.555e-05
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Follow the artist of the song which is playing right now.",
+    "solution": [
+      "GET /me/player/currently-playing",
+      "GET /tracks/{id}",
+      "PUT /me/following"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\nbase_url = \"https://api.spotify.com/v1\"\n\nresponse = requests.get(\n    f\"{base_url}/me/player/currently-playing\",\n    headers=headers,\n)\nresponse.raise_for_status()\n\ndata = response.json()\nartist_ids = {\n    artist[\"id\"]\n    for artist in data.get(\"item\", {}).get(\"artists\", [])\n    if artist.get(\"id\")\n}\n\nif artist_ids:\n    follow_response = requests.put(\n        f\"{base_url}/me/following\",\n        headers=headers,\n        params={\"type\": \"artist\", \"ids\": \",\".join(artist_ids)},\n    )\n    follow_response.raise_for_status()",
+    "code_with": "import os\nimport requests\n\nbase_url = \"https://api.spotify.com/v1\"\nheaders = {\"Authorization\": f\"Bearer {os.environ['SPOTIFY_ACCESS_TOKEN']}\"}\n\nresponse = requests.get(\n    f\"{base_url}/me/player/currently-playing\",\n    headers=headers,\n)\nresponse.raise_for_status()\ntrack = response.json().get(\"item\")\n\nif track:\n    artist_ids = [artist[\"id\"] for artist in track.get(\"artists\", []) if artist.get(\"id\")]\n    if artist_ids:\n        follow_response = requests.put(\n            f\"{base_url}/me/following\",\n            headers=headers,\n            params={\"type\": \"artist\", \"ids\": \",\".join(artist_ids)},\n        )\n        follow_response.raise_for_status()",
+    "found_without": [
+      "GET /me/player/currently-playing",
+      "PUT /me/following"
+    ],
+    "found_with": [
+      "GET /me/player/currently-playing",
+      "PUT /me/following"
+    ],
+    "recall_without": 0.6666666666666666,
+    "recall_with": 0.6666666666666666,
+    "usage_without": {
+      "prompt_tokens": 4106,
+      "completion_tokens": 156,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0004886000000000001
+    },
+    "usage_with": {
+      "prompt_tokens": 3852,
+      "completion_tokens": 158,
+      "reasoning_tokens": 0,
+      "cached_tokens": 3849,
+      "finish_reason": "stop",
+      "cost_usd": 0.00011779
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Recommend me some tracks with the same genre of the music currently playing",
+    "solution": [
+      "GET /me/player/currently-playing",
+      "GET /search"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\nbase_url = \"https://api.spotify.com/v1\"\n\ncurrent_response = requests.get(\n    f\"{base_url}/me/player/currently-playing\",\n    headers=headers,\n)\ncurrent_response.raise_for_status()\ncurrent_data = current_response.json()\n\ntrack = current_data.get(\"item\")\nif not track or not track.get(\"artists\"):\n    raise RuntimeError(\"No currently playing track or artist was found.\")\n\nartist_id = track[\"artists\"][0][\"id\"]\n\nartist_response = requests.get(\n    f\"{base_url}/artists/{artist_id}\",\n    headers=headers,\n)\nartist_response.raise_for_status()\ngenres = artist_response.json().get(\"genres\", [])\n\nif not genres:\n    raise RuntimeError(\"No genre information is available for the currently playing artist.\")\n\nrecommendations_response = requests.get(\n    f\"{base_url}/recommendations\",\n    headers=headers,\n    params={\n        \"seed_genres\": \",\".join(genres[:5]),\n        \"limit\": 10,\n    },\n)\nrecommendations_response.raise_for_status()\nrecommended_tracks = recommendations_response.json().get(\"tracks\", [])\n\nfor recommended_track in recommended_tracks:\n    artists = \", \".join(artist[\"name\"] for artist in recommended_track.get(\"artists\", []))\n    print(f'{recommended_track[\"name\"]} \u2014 {artists}')",
+    "code_with": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\nbase_url = \"https://api.spotify.com/v1\"\n\ncurrent_response = requests.get(\n    f\"{base_url}/me/player/currently-playing\",\n    headers=headers,\n)\ncurrent_response.raise_for_status()\ncurrent = current_response.json()\n\nartists = current.get(\"item\", {}).get(\"artists\", [])\nif not artists:\n    raise ValueError(\"The currently playing track has no artist information.\")\n\nartist_id = artists[0][\"id\"]\nartist_response = requests.get(\n    f\"{base_url}/artists/{artist_id}\",\n    headers=headers,\n)\nartist_response.raise_for_status()\ngenres = artist_response.json().get(\"genres\", [])\n\nif not genres:\n    raise ValueError(\"No genres are available for the currently playing track's artist.\")\n\nrecommendations_response = requests.get(\n    f\"{base_url}/recommendations\",\n    headers=headers,\n    params={\"seed_genres\": \",\".join(genres[:5]), \"limit\": 10},\n)\nrecommendations_response.raise_for_status()\nprint(recommendations_response.json())",
+    "found_without": [
+      "GET /artists/{id}",
+      "GET /me/player/currently-playing",
+      "GET /recommendations"
+    ],
+    "found_with": [
+      "GET /artists/{id}",
+      "GET /me/player/currently-playing",
+      "GET /recommendations"
+    ],
+    "recall_without": 0.5,
+    "recall_with": 0.5,
+    "usage_without": {
+      "prompt_tokens": 4568,
+      "completion_tokens": 286,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0005997999999999999
+    },
+    "usage_with": {
+      "prompt_tokens": 4096,
+      "completion_tokens": 235,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4093,
+      "finish_reason": "stop",
+      "cost_usd": 0.00015873
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Append the first track in The Beatle's newest album to my 'My Rock' playlist",
+    "solution": [
+      "GET /search",
+      "GET /artists/{id}/albums",
+      "POST /playlists/{playlist_id}/tracks",
+      "PUT /playlists/{playlist_id}"
+    ],
+    "code_without": "import os\nimport requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nTOKEN = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nHEADERS = {\"Authorization\": f\"Bearer {TOKEN}\"}\n\n# The provided endpoints do not include search or album lookup, so supply the\n# newest album's Spotify ID and the \"My Rock\" playlist ID here.\nalbum_id = os.environ[\"BEATLES_NEWEST_ALBUM_ID\"]\nplaylist_id = os.environ[\"MY_ROCK_PLAYLIST_ID\"]\n\nresponse = requests.get(\n    f\"{BASE_URL}/albums/{album_id}/tracks\",\n    headers=HEADERS,\n    params={\"limit\": 1, \"offset\": 0},\n)\nresponse.raise_for_status()\ntracks = response.json().get(\"items\", [])\nif not tracks:\n    raise ValueError(\"The album has no tracks.\")\n\ntrack_uri = tracks[0][\"uri\"]\nresponse = requests.post(\n    f\"{BASE_URL}/playlists/{playlist_id}/tracks\",\n    headers=HEADERS,\n    json={\"uris\": [track_uri]},\n)\nresponse.raise_for_status()",
+    "code_with": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\n\nreleases_response = requests.get(\n    \"https://api.spotify.com/v1/browse/new-releases\",\n    headers=headers,\n    params={\"limit\": 50},\n)\nreleases_response.raise_for_status()\nalbums = releases_response.json()[\"albums\"][\"items\"]\n\nbeatles_albums = [\n    album for album in albums\n    if any(artist[\"name\"].casefold() == \"the beatles\" for artist in album.get(\"artists\", []))\n]\nif not beatles_albums:\n    raise ValueError(\"No new album by The Beatles was found.\")\n\nnewest_album = max(beatles_albums, key=lambda album: album.get(\"release_date\", \"\"))\ntracks_response = requests.get(\n    f\"https://api.spotify.com/v1/albums/{newest_album['id']}/tracks\",\n    headers=headers,\n    params={\"limit\": 1},\n)\ntracks_response.raise_for_status()\ntracks = tracks_response.json()[\"items\"]\nif not tracks:\n    raise ValueError(\"The newest album has no tracks.\")\n\nplaylist_id = os.environ[\"MY_ROCK_PLAYLIST_ID\"]\nadd_response = requests.post(\n    f\"https://api.spotify.com/v1/playlists/{playlist_id}/tracks\",\n    headers=headers,\n    json={\"uris\": [tracks[0][\"uri\"]]},\n)\nadd_response.raise_for_status()",
+    "found_without": [
+      "GET /albums/{id}/tracks",
+      "POST /playlists/{playlist_id}/tracks"
+    ],
+    "found_with": [
+      "GET /albums/{id}/tracks",
+      "GET /browse/new-releases",
+      "POST /playlists/{playlist_id}/tracks"
+    ],
+    "recall_without": 0.25,
+    "recall_with": 0.25,
+    "usage_without": {
+      "prompt_tokens": 4855,
+      "completion_tokens": 223,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.000597
+    },
+    "usage_with": {
+      "prompt_tokens": 4422,
+      "completion_tokens": 299,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4419,
+      "finish_reason": "stop",
+      "cost_usd": 0.00019399
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Make top tracks of Taylor Swift a new playlist named \"Love Taylor\"",
+    "solution": [
+      "GET /artists/{id}/top-tracks",
+      "GET /me",
+      "POST /users/{user_id}/playlists",
+      "POST /playlists/{playlist_id}/tracks"
+    ],
+    "code_without": "import os\nimport requests\n\naccess_token = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\n\nartist_id = \"06HL4z0CvFAxyc27GXpf02\"  # Taylor Swift\n\ntracks_response = requests.get(\n    f\"https://api.spotify.com/v1/artists/{artist_id}/top-tracks\",\n    headers=headers,\n    params={\"market\": \"US\"},\n)\ntracks_response.raise_for_status()\ntrack_uris = [\n    track[\"uri\"] for track in tracks_response.json().get(\"tracks\", [])\n]\n\nuser_playlists_response = requests.get(\n    \"https://api.spotify.com/v1/me/playlists\",\n    headers=headers,\n    params={\"limit\": 1},\n)\nuser_playlists_response.raise_for_status()\n\n# The documented endpoints do not include GET /me, which is required to obtain\n# the user ID for playlist creation. Supply it via the environment.\nuser_id = os.environ[\"SPOTIFY_USER_ID\"]\n\nplaylist_response = requests.post(\n    f\"https://api.spotify.com/v1/users/{user_id}/playlists\",\n    headers={**headers, \"Content-Type\": \"application/json\"},\n    json={\"name\": \"Love Taylor\", \"public\": False},\n)\nplaylist_response.raise_for_status()\nplaylist_id = playlist_response.json()[\"id\"]\n\nfor start in range(0, len(track_uris), 100):\n    response = requests.post(\n        f\"https://api.spotify.com/v1/playlists/{playlist_id}/tracks\",\n        headers={**headers, \"Content-Type\": \"application/json\"},\n        json={\"uris\": track_uris[start:start + 100]},\n    )\n    response.raise_for_status()",
+    "code_with": "import requests\n\ntoken = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {token}\"}\nbase_url = \"https://api.spotify.com/v1\"\n\nuser_response = requests.get(f\"{base_url}/me\", headers=headers)\nuser_response.raise_for_status()\nuser_id = user_response.json()[\"id\"]\n\nartist_response = requests.get(\n    f\"{base_url}/search\",\n    headers=headers,\n    params={\"q\": \"Taylor Swift\", \"type\": \"artist\", \"limit\": 1},\n)\nartist_response.raise_for_status()\nartist_id = artist_response.json()[\"artists\"][\"items\"][0][\"id\"]\n\ntracks_response = requests.get(\n    f\"{base_url}/artists/{artist_id}/top-tracks\",\n    headers=headers,\n    params={\"market\": \"US\"},\n)\ntracks_response.raise_for_status()\ntrack_uris = [track[\"uri\"] for track in tracks_response.json()[\"tracks\"]]\n\nplaylist_response = requests.post(\n    f\"{base_url}/users/{user_id}/playlists\",\n    headers={**headers, \"Content-Type\": \"application/json\"},\n    json={\"name\": \"Love Taylor\", \"public\": False},\n)\nplaylist_response.raise_for_status()\nplaylist_id = playlist_response.json()[\"id\"]\n\nif track_uris:\n    add_response = requests.post(\n        f\"{base_url}/playlists/{playlist_id}/tracks\",\n        headers={**headers, \"Content-Type\": \"application/json\"},\n        json={\"uris\": track_uris[:100]},\n    )\n    add_response.raise_for_status()",
+    "found_without": [
+      "GET /artists/{id}/top-tracks",
+      "GET /me/playlists",
+      "POST /playlists/{playlist_id}/tracks",
+      "POST /users/{user_id}/playlists"
+    ],
+    "found_with": [
+      "GET /artists/{id}/top-tracks",
+      "GET /me",
+      "GET /search",
+      "POST /playlists/{playlist_id}/tracks",
+      "POST /users/{user_id}/playlists"
+    ],
+    "recall_without": 0.75,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 4897,
+      "completion_tokens": 350,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0006647000000000001
+    },
+    "usage_with": {
+      "prompt_tokens": 4886,
+      "completion_tokens": 311,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4883,
+      "finish_reason": "stop",
+      "cost_usd": 0.00020463
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Who is my favorite artist?",
+    "solution": [
+      "GET /me/top/{type}"
+    ],
+    "code_without": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nresponse = requests.get(\n    \"https://api.spotify.com/v1/me/top/artists\",\n    headers={\"Authorization\": f\"Bearer {token}\"},\n    params={\"time_range\": \"long_term\", \"limit\": 1},\n)\nresponse.raise_for_status()\n\nartists = response.json().get(\"items\", [])\nprint(artists[0][\"name\"] if artists else \"No top artist found.\")",
+    "code_with": "import os\nimport requests\n\nresponse = requests.get(\n    \"https://api.spotify.com/v1/me/top/artists\",\n    headers={\"Authorization\": f\"Bearer {os.environ['SPOTIFY_ACCESS_TOKEN']}\"},\n    params={\"time_range\": \"long_term\", \"limit\": 1},\n)\nresponse.raise_for_status()\n\nartists = response.json().get(\"items\", [])\nprint(artists[0][\"name\"] if artists else \"No top artist found.\")",
+    "found_without": [
+      "GET /me/top/{type}"
+    ],
+    "found_with": [
+      "GET /me/top/{type}"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 3529,
+      "completion_tokens": 100,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.00040290000000000004
+    },
+    "usage_with": {
+      "prompt_tokens": 3372,
+      "completion_tokens": 96,
+      "reasoning_tokens": 0,
+      "cached_tokens": 3369,
+      "finish_reason": "stop",
+      "cost_usd": 8.198999999999999e-05
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Give me a song of my favorite artist",
+    "solution": [
+      "GET /me/top/{type}",
+      "GET /artists/{id}"
+    ],
+    "code_without": "import os\nimport requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nTOKEN = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {TOKEN}\"}\n\n# Use the user's top artist as a proxy for their favorite artist.\nartists_response = requests.get(\n    f\"{BASE_URL}/me/top/artists\",\n    headers=headers,\n    params={\"limit\": 1, \"time_range\": \"long_term\"},\n)\nartists_response.raise_for_status()\nartists = artists_response.json().get(\"items\", [])\n\nif not artists:\n    raise RuntimeError(\"No top artist was found.\")\n\nartist = artists[0]\ntracks_response = requests.get(\n    f\"{BASE_URL}/artists/{artist['id']}/top-tracks\",\n    headers=headers,\n    params={\"market\": \"US\"},\n)\ntracks_response.raise_for_status()\ntracks = tracks_response.json().get(\"tracks\", [])\n\nif not tracks:\n    raise RuntimeError(f\"No top tracks were found for {artist['name']}.\")\n\nprint(f\"{tracks[0]['name']} \u2014 {artist['name']}\")",
+    "code_with": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\n\nresponse = requests.get(\n    \"https://api.spotify.com/v1/me/top/artists\",\n    headers=headers,\n    params={\"limit\": 1, \"time_range\": \"long_term\"},\n)\nresponse.raise_for_status()\nartists = response.json().get(\"items\", [])\n\nif not artists:\n    print(\"No favorite artist found.\")\nelse:\n    artist_id = artists[0][\"id\"]\n    response = requests.get(\n        f\"https://api.spotify.com/v1/artists/{artist_id}/top-tracks\",\n        headers=headers,\n        params={\"market\": \"US\"},\n    )\n    response.raise_for_status()\n    tracks = response.json().get(\"tracks\", [])\n    if tracks:\n        print(f\"{tracks[0]['name']} \u2014 {artists[0]['name']}\")\n    else:\n        print(f\"No top tracks found for {artists[0]['name']}.\")",
+    "found_without": [
+      "GET /artists/{id}/top-tracks",
+      "GET /me/top/{type}"
+    ],
+    "found_with": [
+      "GET /artists/{id}/top-tracks",
+      "GET /me/top/{type}"
+    ],
+    "recall_without": 0.5,
+    "recall_with": 0.5,
+    "usage_without": {
+      "prompt_tokens": 3908,
+      "completion_tokens": 224,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0005028
+    },
+    "usage_with": {
+      "prompt_tokens": 3567,
+      "completion_tokens": 210,
+      "reasoning_tokens": 0,
+      "cached_tokens": 3564,
+      "finish_reason": "stop",
+      "cost_usd": 0.00014094
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Delete all music from my 'My R&B' playlist and rename it as 'Test'",
+    "solution": [
+      "GET /me/playlists",
+      "DELETE /playlists/{playlist_id}/tracks",
+      "PUT /playlists/{playlist_id}"
+    ],
+    "code_without": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\nbase_url = \"https://api.spotify.com/v1\"\n\nresponse = requests.get(\n    f\"{base_url}/me/playlists\",\n    headers=headers,\n    params={\"limit\": 50},\n)\nresponse.raise_for_status()\n\nplaylist = next(\n    (item for item in response.json().get(\"items\", []) if item.get(\"name\") == \"My R&B\"),\n    None,\n)\nif playlist is None:\n    raise ValueError(\"Playlist 'My R&B' was not found.\")\n\nplaylist_id = playlist[\"id\"]\n\nresponse = requests.get(\n    f\"{base_url}/playlists/{playlist_id}/tracks\",\n    headers=headers,\n    params={\"limit\": 100},\n)\nresponse.raise_for_status()\n\ntracks = response.json().get(\"items\", [])\nwhile True:\n    uris = [\n        item[\"track\"][\"uri\"]\n        for item in tracks\n        if item.get(\"track\") and item[\"track\"].get(\"uri\")\n    ]\n    if not uris:\n        break\n\n    response = requests.delete(\n        f\"{base_url}/playlists/{playlist_id}/tracks\",\n        headers=headers,\n        json={\"tracks\": [{\"uri\": uri} for uri in uris]},\n    )\n    response.raise_for_status()\n\n    next_url = response.json().get(\"next\")\n    if not next_url:\n        break\n    response = requests.get(next_url, headers=headers)\n    response.raise_for_status()\n    tracks = response.json().get(\"items\", [])\n\nresponse = requests.put(\n    f\"{base_url}/playlists/{playlist_id}\",\n    headers={**headers, \"Content-Type\": \"application/json\"},\n    json={\"name\": \"Test\"},\n)\nresponse.raise_for_status()",
+    "code_with": "import os\nimport requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nTOKEN = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nHEADERS = {\"Authorization\": f\"Bearer {TOKEN}\"}\n\nresponse = requests.get(\n    f\"{BASE_URL}/me/playlists\",\n    headers=HEADERS,\n    params={\"limit\": 50},\n)\nresponse.raise_for_status()\n\nplaylist = next(\n    (item for item in response.json().get(\"items\", []) if item.get(\"name\") == \"My R&B\"),\n    None,\n)\nif playlist is None:\n    raise ValueError(\"Playlist 'My R&B' was not found.\")\n\nplaylist_id = playlist[\"id\"]\n\nresponse = requests.get(\n    f\"{BASE_URL}/playlists/{playlist_id}/tracks\",\n    headers=HEADERS,\n    params={\"limit\": 100},\n)\nresponse.raise_for_status()\ndata = response.json()\n\nwhile True:\n    items = data.get(\"items\", [])\n    tracks = [\n        {\"uri\": item[\"track\"][\"uri\"]}\n        for item in items\n        if item.get(\"track\") and item[\"track\"].get(\"uri\")\n    ]\n\n    if tracks:\n        payload = {\"tracks\": tracks}\n        if data.get(\"snapshot_id\"):\n            payload[\"snapshot_id\"] = data[\"snapshot_id\"]\n        response = requests.delete(\n            f\"{BASE_URL}/playlists/{playlist_id}/tracks\",\n            headers=HEADERS,\n            json=payload,\n        )\n        response.raise_for_status()\n\n    next_url = data.get(\"next\")\n    if not next_url:\n        break\n\n    response = requests.get(next_url, headers=HEADERS)\n    response.raise_for_status()\n    data = response.json()\n\nresponse = requests.put(\n    f\"{BASE_URL}/playlists/{playlist_id}\",\n    headers=HEADERS,\n    json={\"name\": \"Test\"},\n)\nresponse.raise_for_status()",
+    "found_without": [
+      "DELETE /playlists/{playlist_id}/tracks",
+      "GET /me/playlists",
+      "GET /playlists/{playlist_id}/tracks",
+      "PUT /playlists/{playlist_id}"
+    ],
+    "found_with": [
+      "DELETE /playlists/{playlist_id}/tracks",
+      "GET /me/playlists",
+      "GET /playlists/{playlist_id}/tracks",
+      "PUT /playlists/{playlist_id}"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 5401,
+      "completion_tokens": 374,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0007271000000000001
+    },
+    "usage_with": {
+      "prompt_tokens": 5304,
+      "completion_tokens": 386,
+      "reasoning_tokens": 0,
+      "cached_tokens": 5301,
+      "finish_reason": "stop",
+      "cost_usd": 0.00024631
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "show me the album information of the song currently playing",
+    "solution": [
+      "GET /me/player/currently-playing",
+      "GET /tracks/{id}"
+    ],
+    "code_without": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\n\nresponse = requests.get(\n    \"https://api.spotify.com/v1/me/player/currently-playing\",\n    headers=headers,\n)\nresponse.raise_for_status()\n\ncurrently_playing = response.json()\ntrack = currently_playing.get(\"item\")\n\nif track and track.get(\"album\", {}).get(\"id\"):\n    album_response = requests.get(\n        f\"https://api.spotify.com/v1/albums/{track['album']['id']}\",\n        headers=headers,\n    )\n    album_response.raise_for_status()\n    print(album_response.json())\nelse:\n    print(\"No track is currently playing.\")",
+    "code_with": "import os\nimport requests\n\nheaders = {\"Authorization\": f\"Bearer {os.environ['SPOTIFY_ACCESS_TOKEN']}\"}\nbase_url = \"https://api.spotify.com/v1\"\n\nresponse = requests.get(\n    f\"{base_url}/me/player/currently-playing\",\n    headers=headers,\n    params={\"additional_types\": \"track\"},\n)\nresponse.raise_for_status()\ncurrently_playing = response.json()\n\ntrack = currently_playing.get(\"item\")\nif track and track.get(\"album\", {}).get(\"id\"):\n    album_response = requests.get(\n        f\"{base_url}/albums/{track['album']['id']}\",\n        headers=headers,\n    )\n    album_response.raise_for_status()\n    print(album_response.json())\nelse:\n    print(\"No track is currently playing.\")",
+    "found_without": [
+      "GET /albums/{id}",
+      "GET /me/player/currently-playing"
+    ],
+    "found_with": [
+      "GET /albums/{id}",
+      "GET /me/player/currently-playing"
+    ],
+    "recall_without": 0.5,
+    "recall_with": 0.5,
+    "usage_without": {
+      "prompt_tokens": 4770,
+      "completion_tokens": 147,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0005505
+    },
+    "usage_with": {
+      "prompt_tokens": 4717,
+      "completion_tokens": 158,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4714,
+      "finish_reason": "stop",
+      "cost_usd": 0.00012644
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Pause device 'My PC' if it is now playing something",
+    "solution": [
+      "GET /me/player",
+      "PUT /me/player/pause"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\n\ndevices_response = requests.get(\n    \"https://api.spotify.com/v1/me/player/devices\",\n    headers=headers,\n)\ndevices_response.raise_for_status()\n\nif any(device.get(\"name\") == \"My PC\" and device.get(\"is_active\") for device in devices_response.json().get(\"devices\", [])):\n    playback_response = requests.get(\n        \"https://api.spotify.com/v1/me/player/currently-playing\",\n        headers=headers,\n    )\n    if playback_response.status_code == 200 and playback_response.json().get(\"is_playing\"):\n        pause_response = requests.put(\n            \"https://api.spotify.com/v1/me/player/pause\",\n            headers=headers,\n        )\n        pause_response.raise_for_status()",
+    "code_with": "import requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nTOKEN = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {TOKEN}\"}\n\ndevices_response = requests.get(f\"{BASE_URL}/me/player/devices\", headers=headers)\ndevices_response.raise_for_status()\ndevices = devices_response.json().get(\"devices\", [])\n\ndevice = next((d for d in devices if d.get(\"name\") == \"My PC\"), None)\n\nif device and device.get(\"is_active\"):\n    playback_response = requests.get(f\"{BASE_URL}/me/player\", headers=headers)\n    if playback_response.status_code == 200:\n        playback = playback_response.json()\n        if playback.get(\"is_playing\") and playback.get(\"device\", {}).get(\"id\") == device.get(\"id\"):\n            response = requests.put(\n                f\"{BASE_URL}/me/player/pause\",\n                headers=headers,\n                params={\"device_id\": device[\"id\"]},\n            )\n            response.raise_for_status()",
+    "found_without": [
+      "GET /me/player/currently-playing",
+      "GET /me/player/devices",
+      "PUT /me/player/pause"
+    ],
+    "found_with": [
+      "GET /me/player",
+      "GET /me/player/devices",
+      "PUT /me/player/pause"
+    ],
+    "recall_without": 0.5,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 3889,
+      "completion_tokens": 172,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.00047490000000000005
+    },
+    "usage_with": {
+      "prompt_tokens": 3553,
+      "completion_tokens": 203,
+      "reasoning_tokens": 0,
+      "cached_tokens": 3550,
+      "finish_reason": "stop",
+      "cost_usd": 0.0001373
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "pause current song and resume it on 'My PC'",
+    "solution": [
+      "PUT /me/player/pause",
+      "GET /me/player/devices",
+      "PUT /me/player/play"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\nbase_url = \"https://api.spotify.com/v1\"\n\npause_response = requests.put(f\"{base_url}/me/player/pause\", headers=headers)\npause_response.raise_for_status()\n\n# Resume playback on the active device. The documented play endpoint does not\n# provide a device_id parameter, so \"My PC\" must be the active device.\nplay_response = requests.put(f\"{base_url}/me/player/play\", headers=headers)\nplay_response.raise_for_status()",
+    "code_with": "import requests\n\ntoken = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {token}\"}\nbase_url = \"https://api.spotify.com/v1\"\n\nrequests.put(f\"{base_url}/me/player/pause\", headers=headers)\n\nrequests.put(\n    f\"{base_url}/me/player/play\",\n    headers=headers,\n    json={},\n    params={\"device_id\": \"YOUR_MY_PC_DEVICE_ID\"},\n)",
+    "found_without": [
+      "PUT /me/player/pause",
+      "PUT /me/player/play"
+    ],
+    "found_with": [
+      "PUT /me/player/pause",
+      "PUT /me/player/play"
+    ],
+    "recall_without": 0.6666666666666666,
+    "recall_with": 0.6666666666666666,
+    "usage_without": {
+      "prompt_tokens": 4023,
+      "completion_tokens": 119,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0004618
+    },
+    "usage_with": {
+      "prompt_tokens": 3810,
+      "completion_tokens": 87,
+      "reasoning_tokens": 0,
+      "cached_tokens": 3807,
+      "finish_reason": "stop",
+      "cost_usd": 8.187e-05
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "show me the name of Maroon 5's newest album",
+    "solution": [
+      "GET /search",
+      "GET /artists/{id}/albums"
+    ],
+    "code_without": "import requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nACCESS_TOKEN = \"YOUR_ACCESS_TOKEN\"\n\nheaders = {\"Authorization\": f\"Bearer {ACCESS_TOKEN}\"}\n\nsearch_response = requests.get(\n    f\"{BASE_URL}/search\",\n    headers=headers,\n    params={\"q\": \"Maroon 5\", \"type\": \"artist\", \"limit\": 1},\n)\nsearch_response.raise_for_status()\nartists = search_response.json()[\"artists\"][\"items\"]\n\nif not artists:\n    print(\"Maroon 5 was not found.\")\nelse:\n    artist_id = artists[0][\"id\"]\n    albums_response = requests.get(\n        f\"{BASE_URL}/artists/{artist_id}/albums\",\n        headers=headers,\n        params={\"include_groups\": \"album,single\", \"limit\": 50, \"market\": \"US\"},\n    )\n    albums_response.raise_for_status()\n    albums = albums_response.json()[\"items\"]\n\n    if albums:\n        newest_album = max(albums, key=lambda album: album.get(\"release_date\", \"\"))\n        print(newest_album[\"name\"])\n    else:\n        print(\"No albums found.\")",
+    "code_with": "import requests\n\nresponse = requests.get(\n    \"https://api.spotify.com/v1/search\",\n    params={\"q\": \"artist:Maroon 5\", \"type\": \"album\", \"limit\": 50},\n)\nresponse.raise_for_status()\n\nalbums = response.json().get(\"albums\", {}).get(\"items\", [])\nalbums.sort(key=lambda album: album.get(\"release_date\", \"\"), reverse=True)\n\nif albums:\n    print(albums[0][\"name\"])",
+    "found_without": [
+      "GET /artists/{id}/albums",
+      "GET /search"
+    ],
+    "found_with": [
+      "GET /search"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 0.5,
+    "usage_without": {
+      "prompt_tokens": 5579,
+      "completion_tokens": 231,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0006734
+    },
+    "usage_with": {
+      "prompt_tokens": 5568,
+      "completion_tokens": 96,
+      "reasoning_tokens": 0,
+      "cached_tokens": 5565,
+      "finish_reason": "stop",
+      "cost_usd": 0.00010394999999999999
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Recommend more artists base on my first following artist",
+    "solution": [
+      "GET /me/following",
+      "GET /artists/{id}/related-artists"
+    ],
+    "code_without": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\n\nfollowing_response = requests.get(\n    \"https://api.spotify.com/v1/me/following\",\n    headers=headers,\n    params={\"type\": \"artist\", \"limit\": 1},\n)\nfollowing_response.raise_for_status()\n\nartists = following_response.json().get(\"artists\", {}).get(\"items\", [])\nif artists:\n    artist_id = artists[0][\"id\"]\n    related_response = requests.get(\n        f\"https://api.spotify.com/v1/artists/{artist_id}/related-artists\",\n        headers=headers,\n    )\n    related_response.raise_for_status()\n    recommended_artists = related_response.json().get(\"artists\", [])\n    print(recommended_artists)\nelse:\n    print(\"No followed artists found.\")",
+    "code_with": "import os\nimport requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nheaders = {\"Authorization\": f\"Bearer {os.environ['SPOTIFY_ACCESS_TOKEN']}\"}\n\nresponse = requests.get(\n    f\"{BASE_URL}/me/following\",\n    headers=headers,\n    params={\"type\": \"artist\", \"limit\": 1},\n)\nresponse.raise_for_status()\n\nartists = response.json().get(\"artists\", {}).get(\"items\", [])\nif not artists:\n    raise RuntimeError(\"No followed artists found.\")\n\nartist_id = artists[0][\"id\"]\nresponse = requests.get(\n    f\"{BASE_URL}/artists/{artist_id}/related-artists\",\n    headers=headers,\n)\nresponse.raise_for_status()\n\nprint(response.json())",
+    "found_without": [
+      "GET /artists/{id}/related-artists",
+      "GET /me/following"
+    ],
+    "found_with": [
+      "GET /artists/{id}/related-artists",
+      "GET /me/following"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 4656,
+      "completion_tokens": 176,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0005536
+    },
+    "usage_with": {
+      "prompt_tokens": 3781,
+      "completion_tokens": 153,
+      "reasoning_tokens": 0,
+      "cached_tokens": 3778,
+      "finish_reason": "stop",
+      "cost_usd": 0.00011458
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Unfollow the artist of the song now playing and skip to the next song",
+    "solution": [
+      "GET /me/player/currently-playing",
+      "DELETE /me/following",
+      "POST /me/player/next"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\n\ncurrent = requests.get(\n    \"https://api.spotify.com/v1/me/player/currently-playing\",\n    headers=headers,\n)\ncurrent.raise_for_status()\ntrack = current.json().get(\"item\")\nif not track:\n    raise RuntimeError(\"No song is currently playing.\")\n\nartist_ids = [artist[\"id\"] for artist in track.get(\"artists\", []) if artist.get(\"id\")]\nif artist_ids:\n    response = requests.delete(\n        \"https://api.spotify.com/v1/me/following\",\n        headers=headers,\n        params={\"type\": \"artist\", \"ids\": \",\".join(artist_ids[:50])},\n    )\n    response.raise_for_status()\n\nresponse = requests.post(\n    \"https://api.spotify.com/v1/me/player/next\",\n    headers=headers,\n)\nresponse.raise_for_status()",
+    "code_with": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\n\ncurrent = requests.get(\n    \"https://api.spotify.com/v1/me/player/currently-playing\",\n    headers=headers,\n)\ncurrent.raise_for_status()\ntrack = current.json().get(\"item\")\nif track:\n    artist_ids = [artist[\"id\"] for artist in track.get(\"artists\", []) if artist.get(\"id\")]\n    if artist_ids:\n        response = requests.delete(\n            \"https://api.spotify.com/v1/me/following\",\n            headers=headers,\n            params={\"type\": \"artist\", \"ids\": \",\".join(artist_ids[:50])},\n        )\n        response.raise_for_status()\n\nresponse = requests.post(\n    \"https://api.spotify.com/v1/me/player/next\",\n    headers=headers,\n)\nresponse.raise_for_status()",
+    "found_without": [
+      "DELETE /me/following",
+      "GET /me/player/currently-playing",
+      "POST /me/player/next"
+    ],
+    "found_with": [
+      "DELETE /me/following",
+      "GET /me/player/currently-playing",
+      "POST /me/player/next"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 3933,
+      "completion_tokens": 190,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0004883
+    },
+    "usage_with": {
+      "prompt_tokens": 3798,
+      "completion_tokens": 185,
+      "reasoning_tokens": 0,
+      "cached_tokens": 3795,
+      "finish_reason": "stop",
+      "cost_usd": 0.00013075
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Follow Taylor Swift",
+    "solution": [
+      "GET /search",
+      "PUT /me/following"
+    ],
+    "code_without": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nresponse = requests.get(\n    \"https://api.spotify.com/v1/search\",\n    headers={\"Authorization\": f\"Bearer {token}\"},\n    params={\"q\": \"artist:Taylor Swift\", \"type\": \"artist\", \"limit\": 1},\n)\nresponse.raise_for_status()\n\nartists = response.json().get(\"artists\", {}).get(\"items\", [])\nif not artists:\n    raise ValueError(\"Taylor Swift was not found\")\n\nfollow_response = requests.put(\n    \"https://api.spotify.com/v1/me/following\",\n    headers={\"Authorization\": f\"Bearer {token}\"},\n    params={\"type\": \"artist\", \"ids\": artists[0][\"id\"]},\n)\nfollow_response.raise_for_status()",
+    "code_with": "import requests\n\nresponse = requests.put(\n    \"https://api.spotify.com/v1/me/following\",\n    params={\"type\": \"artist\", \"ids\": \"06HL4z0CvFAxyc27GXpf02\"},\n)\nresponse.raise_for_status()",
+    "found_without": [
+      "GET /search",
+      "PUT /me/following"
+    ],
+    "found_with": [
+      "PUT /me/following"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 0.5,
+    "usage_without": {
+      "prompt_tokens": 6931,
+      "completion_tokens": 164,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0007751
+    },
+    "usage_with": {
+      "prompt_tokens": 6870,
+      "completion_tokens": 57,
+      "reasoning_tokens": 0,
+      "cached_tokens": 6867,
+      "finish_reason": "stop",
+      "cost_usd": 9.747e-05
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Make my top tracks a new playlist called 'My Top'",
+    "solution": [
+      "GET /me/top/{type}",
+      "GET /me",
+      "POST /users/{user_id}/playlists",
+      "POST /playlists/{playlist_id}/tracks"
+    ],
+    "code_without": "import os\nimport requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nheaders = {\"Authorization\": f\"Bearer {os.environ['SPOTIFY_ACCESS_TOKEN']}\"}\n\ntop_tracks_response = requests.get(\n    f\"{BASE_URL}/me/top/tracks\",\n    headers=headers,\n    params={\"limit\": 50},\n)\ntop_tracks_response.raise_for_status()\ntrack_uris = [\n    item[\"uri\"] for item in top_tracks_response.json().get(\"items\", [])\n]\n\nplaylists_response = requests.get(\n    f\"{BASE_URL}/me/playlists\",\n    headers=headers,\n    params={\"limit\": 50},\n)\nplaylists_response.raise_for_status()\nplaylists = playlists_response.json().get(\"items\", [])\n\nif not playlists:\n    raise RuntimeError(\"No playlist is available to rename as 'My Top'.\")\n\nplaylist_id = playlists[0][\"id\"]\nupdate_response = requests.put(\n    f\"{BASE_URL}/playlists/{playlist_id}\",\n    headers={**headers, \"Content-Type\": \"application/json\"},\n    json={\"name\": \"My Top\"},\n)\nupdate_response.raise_for_status()\n\nif track_uris:\n    add_response = requests.post(\n        f\"{BASE_URL}/playlists/{playlist_id}/tracks\",\n        headers={**headers, \"Content-Type\": \"application/json\"},\n        json={\"uris\": track_uris[:100]},\n    )\n    add_response.raise_for_status()",
+    "code_with": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\nbase_url = \"https://api.spotify.com/v1\"\n\ntop_tracks_response = requests.get(\n    f\"{base_url}/me/top/tracks\",\n    headers=headers,\n    params={\"limit\": 50},\n)\ntop_tracks_response.raise_for_status()\ntrack_uris = [\n    item[\"uri\"] for item in top_tracks_response.json().get(\"items\", [])\n]\n\nuser_playlists_response = requests.get(\n    f\"{base_url}/me/playlists\",\n    headers=headers,\n    params={\"limit\": 1},\n)\nuser_playlists_response.raise_for_status()\nplaylists = user_playlists_response.json().get(\"items\", [])\n\nif playlists:\n    user_id = playlists[0][\"owner\"][\"id\"]\nelse:\n    raise RuntimeError(\"Could not determine the current user's ID from their playlists.\")\n\nplaylist_response = requests.post(\n    f\"{base_url}/users/{user_id}/playlists\",\n    headers={**headers, \"Content-Type\": \"application/json\"},\n    json={\"name\": \"My Top\"},\n)\nplaylist_response.raise_for_status()\nplaylist_id = playlist_response.json()[\"id\"]\n\nif track_uris:\n    add_response = requests.post(\n        f\"{base_url}/playlists/{playlist_id}/tracks\",\n        headers={**headers, \"Content-Type\": \"application/json\"},\n        json={\"uris\": track_uris},\n    )\n    add_response.raise_for_status()",
+    "found_without": [
+      "GET /me/playlists",
+      "GET /me/top/{type}",
+      "POST /playlists/{playlist_id}/tracks",
+      "PUT /playlists/{playlist_id}"
+    ],
+    "found_with": [
+      "GET /me/playlists",
+      "GET /me/top/{type}",
+      "POST /playlists/{playlist_id}/tracks",
+      "POST /users/{user_id}/playlists"
+    ],
+    "recall_without": 0.5,
+    "recall_with": 0.75,
+    "usage_without": {
+      "prompt_tokens": 4620,
+      "completion_tokens": 290,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.000607
+    },
+    "usage_with": {
+      "prompt_tokens": 4553,
+      "completion_tokens": 309,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4550,
+      "finish_reason": "stop",
+      "cost_usd": 0.00020030000000000002
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Remove the first song from my playlist 'My Rock'",
+    "solution": [
+      "GET /me/playlists",
+      "GET /playlists/{playlist_id}/tracks",
+      "DELETE /playlists/{playlist_id}/tracks"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\n\nplaylists_response = requests.get(\n    \"https://api.spotify.com/v1/me/playlists\",\n    headers=headers,\n    params={\"limit\": 50},\n)\nplaylists_response.raise_for_status()\n\nplaylist = next(\n    (item for item in playlists_response.json().get(\"items\", []) if item.get(\"name\") == \"My Rock\"),\n    None,\n)\nif playlist is None:\n    raise ValueError(\"Playlist 'My Rock' was not found.\")\n\nplaylist_id = playlist[\"id\"]\ntracks_response = requests.get(\n    f\"https://api.spotify.com/v1/playlists/{playlist_id}/tracks\",\n    headers=headers,\n    params={\"limit\": 1, \"offset\": 0},\n)\ntracks_response.raise_for_status()\n\nitems = tracks_response.json().get(\"items\", [])\nif not items or not items[0].get(\"track\", {}).get(\"uri\"):\n    raise ValueError(\"The playlist has no removable first song.\")\n\nrequests.delete(\n    f\"https://api.spotify.com/v1/playlists/{playlist_id}/tracks\",\n    headers={**headers, \"Content-Type\": \"application/json\"},\n    json={\"tracks\": [{\"uri\": items[0][\"track\"][\"uri\"]}]},\n).raise_for_status()",
+    "code_with": "import os\nimport requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nheaders = {\"Authorization\": f\"Bearer {os.environ['SPOTIFY_ACCESS_TOKEN']}\"}\n\nplaylists_response = requests.get(\n    f\"{BASE_URL}/me/playlists\",\n    headers=headers,\n    params={\"limit\": 50},\n)\nplaylists_response.raise_for_status()\n\nplaylist = next(\n    (item for item in playlists_response.json().get(\"items\", []) if item.get(\"name\") == \"My Rock\"),\n    None,\n)\nif playlist is None:\n    raise ValueError(\"Playlist 'My Rock' was not found.\")\n\nplaylist_id = playlist[\"id\"]\ntracks_response = requests.get(\n    f\"{BASE_URL}/playlists/{playlist_id}/tracks\",\n    headers=headers,\n    params={\"limit\": 1},\n)\ntracks_response.raise_for_status()\n\nitems = tracks_response.json().get(\"items\", [])\nif not items or not items[0].get(\"track\", {}).get(\"uri\"):\n    raise ValueError(\"Playlist 'My Rock' has no removable first song.\")\n\nrequests.delete(\n    f\"{BASE_URL}/playlists/{playlist_id}/tracks\",\n    headers=headers,\n    json={\n        \"tracks\": [{\"uri\": items[0][\"track\"][\"uri\"], \"positions\": [0]}],\n        \"snapshot_id\": playlist.get(\"snapshot_id\"),\n    },\n).raise_for_status()",
+    "found_without": [
+      "DELETE /playlists/{playlist_id}/tracks",
+      "GET /me/playlists",
+      "GET /playlists/{playlist_id}/tracks"
+    ],
+    "found_with": [
+      "DELETE /playlists/{playlist_id}/tracks",
+      "GET /me/playlists",
+      "GET /playlists/{playlist_id}/tracks"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 4971,
+      "completion_tokens": 274,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0006341000000000001
+    },
+    "usage_with": {
+      "prompt_tokens": 4733,
+      "completion_tokens": 286,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4730,
+      "finish_reason": "stop",
+      "cost_usd": 0.0001906
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "add top songs of the first of my following artist to My Music",
+    "solution": [
+      "GET /me/following",
+      "GET /artists/{id}/top-tracks",
+      "PUT /me/tracks"
+    ],
+    "code_without": "import os\nimport requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nheaders = {\"Authorization\": f\"Bearer {os.environ['SPOTIFY_ACCESS_TOKEN']}\"}\n\nfollowed = requests.get(\n    f\"{BASE_URL}/me/following\",\n    headers=headers,\n    params={\"type\": \"artist\", \"limit\": 1},\n)\nfollowed.raise_for_status()\n\nartists = followed.json().get(\"artists\", {}).get(\"items\", [])\nif artists:\n    artist_id = artists[0][\"id\"]\n    top_tracks = requests.get(\n        f\"{BASE_URL}/artists/{artist_id}/top-tracks\",\n        headers=headers,\n        params={\"market\": \"from_token\"},\n    )\n    top_tracks.raise_for_status()\n\n    track_ids = [\n        track[\"id\"]\n        for track in top_tracks.json().get(\"tracks\", [])\n        if track.get(\"id\")\n    ]\n    if track_ids:\n        saved = requests.put(\n            f\"{BASE_URL}/me/tracks\",\n            headers=headers,\n            json={\"ids\": track_ids[:50]},\n        )\n        saved.raise_for_status()",
+    "code_with": "import os\nimport requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nheaders = {\"Authorization\": f\"Bearer {os.environ['SPOTIFY_ACCESS_TOKEN']}\"}\n\nfollowed = requests.get(\n    f\"{BASE_URL}/me/following\",\n    headers=headers,\n    params={\"type\": \"artist\", \"limit\": 1},\n)\nfollowed.raise_for_status()\nartists = followed.json().get(\"artists\", {}).get(\"items\", [])\n\nif artists:\n    top_tracks = requests.get(\n        f\"{BASE_URL}/artists/{artists[0]['id']}/top-tracks\",\n        headers=headers,\n        params={\"market\": \"from_token\"},\n    )\n    top_tracks.raise_for_status()\n    track_ids = [track[\"id\"] for track in top_tracks.json().get(\"tracks\", [])]\n\n    if track_ids:\n        saved = requests.put(\n            f\"{BASE_URL}/me/tracks\",\n            headers=headers,\n            json={\"ids\": track_ids[:50]},\n        )\n        saved.raise_for_status()",
+    "found_without": [
+      "GET /artists/{id}/top-tracks",
+      "GET /me/following",
+      "PUT /me/tracks"
+    ],
+    "found_with": [
+      "GET /artists/{id}/top-tracks",
+      "GET /me/following",
+      "PUT /me/tracks"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 4774,
+      "completion_tokens": 236,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0005954
+    },
+    "usage_with": {
+      "prompt_tokens": 4759,
+      "completion_tokens": 214,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4756,
+      "finish_reason": "stop",
+      "cost_usd": 0.00015486000000000002
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Follow all the artists involved in the playlist 'My R&B'",
+    "solution": [
+      "GET /me",
+      "GET /playlists/{playlist_id}",
+      "PUT /me/following"
+    ],
+    "code_without": "import requests\n\nACCESS_TOKEN = \"YOUR_ACCESS_TOKEN\"\nBASE_URL = \"https://api.spotify.com/v1\"\nheaders = {\"Authorization\": f\"Bearer {ACCESS_TOKEN}\"}\n\nplaylists_response = requests.get(\n    f\"{BASE_URL}/me/playlists\",\n    headers=headers,\n    params={\"limit\": 50},\n)\nplaylists_response.raise_for_status()\n\nplaylist = next(\n    (item for item in playlists_response.json().get(\"items\", []) if item.get(\"name\") == \"My R&B\"),\n    None,\n)\nif playlist is None:\n    raise ValueError(\"Playlist 'My R&B' was not found.\")\n\nplaylist_id = playlist[\"id\"]\nartist_ids = set()\noffset = 0\n\nwhile True:\n    tracks_response = requests.get(\n        f\"{BASE_URL}/playlists/{playlist_id}/tracks\",\n        headers=headers,\n        params={\"limit\": 100, \"offset\": offset},\n    )\n    tracks_response.raise_for_status()\n    data = tracks_response.json()\n\n    for item in data.get(\"items\", []):\n        track = item.get(\"track\") or {}\n        for artist in track.get(\"artists\", []):\n            if artist.get(\"id\"):\n                artist_ids.add(artist[\"id\"])\n\n    offset += len(data.get(\"items\", []))\n    if not data.get(\"next\") or not data.get(\"items\"):\n        break\n\nfor start in range(0, len(artist_ids), 50):\n    batch = list(artist_ids)[start:start + 50]\n    response = requests.put(\n        f\"{BASE_URL}/me/following\",\n        headers=headers,\n        params={\"type\": \"artist\", \"ids\": \",\".join(batch)},\n    )\n    response.raise_for_status()",
+    "code_with": "import requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nTOKEN = \"YOUR_ACCESS_TOKEN\"\nHEADERS = {\"Authorization\": f\"Bearer {TOKEN}\"}\n\nresponse = requests.get(\n    f\"{BASE_URL}/me/playlists\",\n    headers=HEADERS,\n    params={\"limit\": 50},\n)\nresponse.raise_for_status()\n\nplaylist = next(\n    (item for item in response.json().get(\"items\", []) if item.get(\"name\") == \"My R&B\"),\n    None,\n)\nif playlist is None:\n    raise ValueError(\"Playlist 'My R&B' was not found.\")\n\nplaylist_id = playlist[\"id\"]\nartist_ids = set()\noffset = 0\n\nwhile True:\n    response = requests.get(\n        f\"{BASE_URL}/playlists/{playlist_id}/tracks\",\n        headers=HEADERS,\n        params={\"limit\": 100, \"offset\": offset},\n    )\n    response.raise_for_status()\n    data = response.json()\n    items = data.get(\"items\", [])\n\n    for item in items:\n        track = item.get(\"track\") or {}\n        for artist in track.get(\"artists\", []):\n            artist_id = artist.get(\"id\")\n            if artist_id:\n                artist_ids.add(artist_id)\n\n    offset += len(items)\n    if not items or offset >= data.get(\"total\", 0):\n        break\n\nfor start in range(0, len(artist_ids), 50):\n    ids = list(artist_ids)[start:start + 50]\n    response = requests.put(\n        f\"{BASE_URL}/me/following\",\n        headers=HEADERS,\n        params={\"type\": \"artist\", \"ids\": \",\".join(ids)},\n    )\n    response.raise_for_status()",
+    "found_without": [
+      "GET /me/playlists",
+      "GET /playlists/{playlist_id}/tracks",
+      "PUT /me/following"
+    ],
+    "found_with": [
+      "GET /me/playlists",
+      "GET /playlists/{playlist_id}/tracks",
+      "PUT /me/following"
+    ],
+    "recall_without": 0.3333333333333333,
+    "recall_with": 0.3333333333333333,
+    "usage_without": {
+      "prompt_tokens": 4872,
+      "completion_tokens": 356,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0006652
+    },
+    "usage_with": {
+      "prompt_tokens": 4805,
+      "completion_tokens": 358,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4802,
+      "finish_reason": "stop",
+      "cost_usd": 0.00022731999999999999
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "remove the second track from my playlist 'My R&B'",
+    "solution": [
+      "GET /me/playlists",
+      "GET /playlists/{playlist_id}/tracks",
+      "DELETE /playlists/{playlist_id}/tracks"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nplaylist_id = \"YOUR_PLAYLIST_ID\"\n\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\nbase_url = \"https://api.spotify.com/v1\"\n\nplaylist = requests.get(\n    f\"{base_url}/playlists/{playlist_id}\",\n    headers=headers,\n)\nplaylist.raise_for_status()\n\nif playlist.json().get(\"name\") != \"My R&B\":\n    raise ValueError(\"The specified playlist is not named 'My R&B'.\")\n\ntracks_response = requests.get(\n    f\"{base_url}/playlists/{playlist_id}/tracks\",\n    headers=headers,\n    params={\"limit\": 2, \"fields\": \"items(track(uri))\"},\n)\ntracks_response.raise_for_status()\n\nitems = tracks_response.json().get(\"items\", [])\nif len(items) < 2 or not items[1].get(\"track\"):\n    raise ValueError(\"The playlist does not have a second track.\")\n\nresponse = requests.delete(\n    f\"{base_url}/playlists/{playlist_id}/tracks\",\n    headers={**headers, \"Content-Type\": \"application/json\"},\n    json={\"tracks\": [{\"uri\": items[1][\"track\"][\"uri\"]}]},\n)\nresponse.raise_for_status()",
+    "code_with": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\nbase_url = \"https://api.spotify.com/v1\"\n\nplaylists_response = requests.get(\n    f\"{base_url}/me/playlists\",\n    headers=headers,\n    params={\"limit\": 50},\n)\nplaylists_response.raise_for_status()\n\nplaylist = next(\n    (item for item in playlists_response.json().get(\"items\", [])\n     if item.get(\"name\") == \"My R&B\"),\n    None,\n)\nif playlist is None:\n    raise ValueError(\"Playlist 'My R&B' was not found.\")\n\nplaylist_id = playlist[\"id\"]\ntracks_response = requests.get(\n    f\"{base_url}/playlists/{playlist_id}/tracks\",\n    headers=headers,\n    params={\"limit\": 2},\n)\ntracks_response.raise_for_status()\n\nitems = tracks_response.json().get(\"items\", [])\nif len(items) < 2 or not items[1].get(\"track\"):\n    raise ValueError(\"The playlist does not have a second track.\")\n\nsecond_track = items[1][\"track\"]\nrequests.delete(\n    f\"{base_url}/playlists/{playlist_id}/tracks\",\n    headers=headers,\n    json={\n        \"tracks\": [{\"uri\": second_track[\"uri\"], \"positions\": [1]}],\n        \"snapshot_id\": tracks_response.json().get(\"snapshot_id\"),\n    },\n).raise_for_status()",
+    "found_without": [
+      "DELETE /playlists/{playlist_id}/tracks",
+      "GET /playlists/{playlist_id}",
+      "GET /playlists/{playlist_id}/tracks"
+    ],
+    "found_with": [
+      "DELETE /playlists/{playlist_id}/tracks",
+      "GET /me/playlists",
+      "GET /playlists/{playlist_id}/tracks"
+    ],
+    "recall_without": 0.6666666666666666,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 4823,
+      "completion_tokens": 253,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0006087999999999999
+    },
+    "usage_with": {
+      "prompt_tokens": 4626,
+      "completion_tokens": 293,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4623,
+      "finish_reason": "stop",
+      "cost_usd": 0.00019303000000000001
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "remove the third track from My Music",
+    "solution": [
+      "GET /me/tracks",
+      "DELETE /me/tracks"
+    ],
+    "code_without": "import os\nimport requests\n\ntrack_id = \"YOUR_TRACK_ID\"\naccess_token = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\n\nresponse = requests.delete(\n    \"https://api.spotify.com/v1/me/tracks\",\n    headers={\"Authorization\": f\"Bearer {access_token}\"},\n    json={\"ids\": [track_id]},\n)\nresponse.raise_for_status()",
+    "code_with": "import os\nimport requests\n\ntrack_id = \"YOUR_TRACK_ID\"\nresponse = requests.delete(\n    \"https://api.spotify.com/v1/me/tracks\",\n    headers={\"Authorization\": f\"Bearer {os.environ['SPOTIFY_ACCESS_TOKEN']}\"},\n    params={\"ids\": track_id},\n)\nresponse.raise_for_status()",
+    "found_without": [
+      "DELETE /me/tracks"
+    ],
+    "found_with": [
+      "DELETE /me/tracks"
+    ],
+    "recall_without": 0.5,
+    "recall_with": 0.5,
+    "usage_without": {
+      "prompt_tokens": 4721,
+      "completion_tokens": 75,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0005096
+    },
+    "usage_with": {
+      "prompt_tokens": 4019,
+      "completion_tokens": 68,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4016,
+      "finish_reason": "stop",
+      "cost_usd": 7.446e-05
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Follow all the singers involved in the song When You Believe",
+    "solution": [
+      "GET /search",
+      "GET /tracks/{id}",
+      "PUT /me/following"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nartist_ids = [\"5NGO30tJxFlKixkPSgXcFE\", \"2wY79sveU1sp5g7SokKOiI\"]  # Mariah Carey and Whitney Houston\n\nresponse = requests.put(\n    \"https://api.spotify.com/v1/me/following\",\n    params={\"type\": \"artist\"},\n    json={\"ids\": artist_ids},\n    headers={\"Authorization\": f\"Bearer {access_token}\"},\n)\nresponse.raise_for_status()",
+    "code_with": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\n\n# The song features Whitney Houston and Mariah Carey.\nartist_ids = [\"6XpaIBNiVzIetEPCWDvAFP\", \"4iHNK0tOyZPYnBU7nGAgpQ\"]\n\nresponse = requests.put(\n    \"https://api.spotify.com/v1/me/following\",\n    headers=headers,\n    params={\"type\": \"artist\"},\n    json={\"ids\": artist_ids},\n)\nresponse.raise_for_status()",
+    "found_without": [
+      "PUT /me/following"
+    ],
+    "found_with": [
+      "PUT /me/following"
+    ],
+    "recall_without": 0.3333333333333333,
+    "recall_with": 0.3333333333333333,
+    "usage_without": {
+      "prompt_tokens": 4690,
+      "completion_tokens": 117,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0005275
+    },
+    "usage_with": {
+      "prompt_tokens": 4561,
+      "completion_tokens": 125,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4558,
+      "finish_reason": "stop",
+      "cost_usd": 0.00010837999999999999
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Skip to the next track",
+    "solution": [
+      "POST /me/player/next"
+    ],
+    "code_without": "import requests\n\nresponse = requests.post(\n    \"https://api.spotify.com/v1/me/player/next\",\n    headers={\"Authorization\": f\"Bearer {access_token}\"},\n)\nresponse.raise_for_status()",
+    "code_with": "import requests\n\nresponse = requests.post(\"https://api.spotify.com/v1/me/player/next\")\nresponse.raise_for_status()",
+    "found_without": [
+      "POST /me/player/next"
+    ],
+    "found_with": [
+      "POST /me/player/next"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 7341,
+      "completion_tokens": 44,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0007561
+    },
+    "usage_with": {
+      "prompt_tokens": 7177,
+      "completion_tokens": 28,
+      "reasoning_tokens": 0,
+      "cached_tokens": 7174,
+      "finish_reason": "stop",
+      "cost_usd": 8.604e-05
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Play my playlist 'My Rock'",
+    "solution": [
+      "GET /me/playlists",
+      "PUT /me/player/play"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\n\nresponse = requests.get(\n    \"https://api.spotify.com/v1/me/playlists\",\n    headers=headers,\n    params={\"limit\": 50},\n)\nresponse.raise_for_status()\n\nplaylist = next(\n    (item for item in response.json().get(\"items\", []) if item.get(\"name\") == \"My Rock\"),\n    None,\n)\n\nif playlist is None:\n    raise ValueError(\"Playlist 'My Rock' was not found.\")\n\nresponse = requests.put(\n    \"https://api.spotify.com/v1/me/player/play\",\n    headers=headers,\n    json={\"context_uri\": playlist[\"uri\"]},\n)\nresponse.raise_for_status()",
+    "code_with": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\nbase_url = \"https://api.spotify.com/v1\"\n\nresponse = requests.get(f\"{base_url}/me/playlists\", headers=headers)\nresponse.raise_for_status()\n\nplaylist = next(\n    (item for item in response.json().get(\"items\", []) if item.get(\"name\") == \"My Rock\"),\n    None,\n)\nif playlist is None:\n    raise ValueError(\"Playlist 'My Rock' was not found.\")\n\nplay_response = requests.put(\n    f\"{base_url}/me/player/play\",\n    headers=headers,\n    json={\"context_uri\": playlist[\"uri\"]},\n)\nplay_response.raise_for_status()",
+    "found_without": [
+      "GET /me/playlists",
+      "PUT /me/player/play"
+    ],
+    "found_with": [
+      "GET /me/playlists",
+      "PUT /me/player/play"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 4939,
+      "completion_tokens": 154,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0005709
+    },
+    "usage_with": {
+      "prompt_tokens": 4758,
+      "completion_tokens": 150,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4755,
+      "finish_reason": "stop",
+      "cost_usd": 0.00012285
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Clear my music library and cancel all following singers",
+    "solution": [
+      "GET /me/tracks",
+      "DELETE /me/tracks",
+      "GET /me/following",
+      "DELETE /me/following"
+    ],
+    "code_without": "import os\nimport requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nTOKEN = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nHEADERS = {\"Authorization\": f\"Bearer {TOKEN}\"}\n\n# Remove saved tracks and albums in batches of up to 50.\nfor endpoint in (\"/me/tracks\", \"/me/albums\"):\n    while True:\n        response = requests.get(\n            f\"{BASE_URL}{endpoint}\",\n            headers=HEADERS,\n            params={\"limit\": 50, \"offset\": 0},\n        )\n        response.raise_for_status()\n        items = response.json().get(\"items\", [])\n        if not items:\n            break\n\n        id_key = \"track\" if endpoint == \"/me/tracks\" else \"album\"\n        ids = [item[id_key][\"id\"] for item in items if item.get(id_key)]\n        if not ids:\n            break\n\n        delete_response = requests.delete(\n            f\"{BASE_URL}{endpoint}\",\n            headers={**HEADERS, \"Content-Type\": \"application/json\"},\n            json={\"ids\": ids},\n        )\n        delete_response.raise_for_status()\n\n# Unfollow all followed artists, paging through the cursor-based results.\nafter = None\nwhile True:\n    params = {\"type\": \"artist\", \"limit\": 50}\n    if after:\n        params[\"after\"] = after\n\n    response = requests.get(\n        f\"{BASE_URL}/me/following\",\n        headers=HEADERS,\n        params=params,\n    )\n    response.raise_for_status()\n    artists = response.json().get(\"artists\", {})\n    items = artists.get(\"items\", [])\n    if not items:\n        break\n\n    ids = [artist[\"id\"] for artist in items if artist.get(\"id\")]\n    if ids:\n        delete_response = requests.delete(\n            f\"{BASE_URL}/me/following\",\n            headers=HEADERS,\n            params={\"type\": \"artist\", \"ids\": \",\".join(ids)},\n        )\n        delete_response.raise_for_status()\n\n    after = artists.get(\"cursors\", {}).get(\"after\")\n    if not after:\n        break",
+    "code_with": "import os\nimport requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nheaders = {\"Authorization\": f\"Bearer {os.environ['SPOTIFY_ACCESS_TOKEN']}\"}\n\nfor endpoint in (\"tracks\", \"albums\"):\n    response = requests.delete(\n        f\"{BASE_URL}/me/{endpoint}\",\n        headers=headers,\n        json={\"ids\": []},\n    )\n    response.raise_for_status()\n\nparams = {\"type\": \"artist\", \"limit\": 50}\nwhile True:\n    response = requests.get(\n        f\"{BASE_URL}/me/following\",\n        headers=headers,\n        params=params,\n    )\n    response.raise_for_status()\n    artists = response.json().get(\"artists\", {})\n    items = artists.get(\"items\", [])\n    if not items:\n        break\n\n    ids = [artist[\"id\"] for artist in items]\n    response = requests.delete(\n        f\"{BASE_URL}/me/following\",\n        headers=headers,\n        params={\"type\": \"artist\"},\n        json={\"ids\": ids},\n    )\n    response.raise_for_status()\n\n    next_after = artists.get(\"cursors\", {}).get(\"after\")\n    if not next_after:\n        break\n    params[\"after\"] = next_after",
+    "found_without": [
+      "DELETE /me/following",
+      "GET /me/following"
+    ],
+    "found_with": [
+      "DELETE /me/following",
+      "GET /me/following"
+    ],
+    "recall_without": 0.5,
+    "recall_with": 0.5,
+    "usage_without": {
+      "prompt_tokens": 4244,
+      "completion_tokens": 434,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0006414000000000001
+    },
+    "usage_with": {
+      "prompt_tokens": 3918,
+      "completion_tokens": 252,
+      "reasoning_tokens": 0,
+      "cached_tokens": 3915,
+      "finish_reason": "stop",
+      "cost_usd": 0.00016544999999999998
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Create a new playlist and name it Quiet",
+    "solution": [
+      "GET /me",
+      "POST /users/{user_id}/playlists"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nuser_id = \"YOUR_SPOTIFY_USER_ID\"\n\nresponse = requests.post(\n    f\"https://api.spotify.com/v1/users/{user_id}/playlists\",\n    headers={\n        \"Authorization\": f\"Bearer {access_token}\",\n        \"Content-Type\": \"application/json\",\n    },\n    json={\"name\": \"Quiet\"},\n)\nresponse.raise_for_status()",
+    "code_with": "import requests\n\ntoken = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {token}\", \"Content-Type\": \"application/json\"}\n\nuser_response = requests.get(\"https://api.spotify.com/v1/me\", headers=headers)\nuser_response.raise_for_status()\nuser_id = user_response.json()[\"id\"]\n\nresponse = requests.post(\n    f\"https://api.spotify.com/v1/users/{user_id}/playlists\",\n    headers=headers,\n    json={\"name\": \"Quiet\"},\n)\nresponse.raise_for_status()",
+    "found_without": [
+      "POST /users/{user_id}/playlists"
+    ],
+    "found_with": [
+      "GET /me",
+      "POST /users/{user_id}/playlists"
+    ],
+    "recall_without": 0.5,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 5563,
+      "completion_tokens": 86,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0005993000000000001
+    },
+    "usage_with": {
+      "prompt_tokens": 5322,
+      "completion_tokens": 105,
+      "reasoning_tokens": 0,
+      "cached_tokens": 5319,
+      "finish_reason": "stop",
+      "cost_usd": 0.00010598999999999999
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Turn down the volume to 20",
+    "solution": [
+      "PUT /me/player/volume"
+    ],
+    "code_without": "import os\nimport requests\n\nresponse = requests.put(\n    \"https://api.spotify.com/v1/me/player/volume\",\n    params={\"volume_percent\": 20},\n    headers={\"Authorization\": f\"Bearer {os.environ['SPOTIFY_ACCESS_TOKEN']}\"},\n)\nresponse.raise_for_status()",
+    "code_with": "import requests\n\nresponse = requests.put(\n    \"https://api.spotify.com/v1/me/player/volume\",\n    params={\"volume_percent\": 20},\n    headers={\"Authorization\": \"Bearer YOUR_ACCESS_TOKEN\"},\n)\nresponse.raise_for_status()",
+    "found_without": [
+      "PUT /me/player/volume"
+    ],
+    "found_with": [
+      "PUT /me/player/volume"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 4990,
+      "completion_tokens": 62,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.00053
+    },
+    "usage_with": {
+      "prompt_tokens": 3977,
+      "completion_tokens": 51,
+      "reasoning_tokens": 0,
+      "cached_tokens": 3974,
+      "finish_reason": "stop",
+      "cost_usd": 6.553999999999999e-05
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Set the single track repeat mode",
+    "solution": [
+      "PUT /me/player/repeat"
+    ],
+    "code_without": "import os\nimport requests\n\nresponse = requests.put(\n    \"https://api.spotify.com/v1/me/player/repeat\",\n    params={\"state\": \"track\"},\n    headers={\"Authorization\": f\"Bearer {os.environ['SPOTIFY_ACCESS_TOKEN']}\"},\n)\nresponse.raise_for_status()",
+    "code_with": "import requests\n\nresponse = requests.put(\n    \"https://api.spotify.com/v1/me/player/repeat\",\n    params={\"state\": \"track\"},\n    headers={\"Authorization\": f\"Bearer {access_token}\"},\n)\nresponse.raise_for_status()",
+    "found_without": [
+      "PUT /me/player/repeat"
+    ],
+    "found_with": [
+      "PUT /me/player/repeat"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 4460,
+      "completion_tokens": 61,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0004765
+    },
+    "usage_with": {
+      "prompt_tokens": 4194,
+      "completion_tokens": 52,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4191,
+      "finish_reason": "stop",
+      "cost_usd": 6.821000000000001e-05
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Pause playback, increase volume to 80 and switch to the next song",
+    "solution": [
+      "PUT /me/player/pause",
+      "PUT /me/player/volume",
+      "POST /me/player/next"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\n\nrequests.put(\"https://api.spotify.com/v1/me/player/pause\", headers=headers)\nrequests.put(\n    \"https://api.spotify.com/v1/me/player/volume\",\n    headers=headers,\n    params={\"volume_percent\": 80},\n)\nrequests.post(\"https://api.spotify.com/v1/me/player/next\", headers=headers)",
+    "code_with": "import requests\n\nheaders = {\"Authorization\": \"Bearer YOUR_ACCESS_TOKEN\"}\n\nrequests.put(\"https://api.spotify.com/v1/me/player/pause\", headers=headers)\nrequests.put(\n    \"https://api.spotify.com/v1/me/player/volume\",\n    headers=headers,\n    params={\"volume_percent\": 80},\n)\nrequests.post(\"https://api.spotify.com/v1/me/player/next\", headers=headers)",
+    "found_without": [
+      "POST /me/player/next",
+      "PUT /me/player/pause",
+      "PUT /me/player/volume"
+    ],
+    "found_with": [
+      "POST /me/player/next",
+      "PUT /me/player/pause",
+      "PUT /me/player/volume"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 4138,
+      "completion_tokens": 94,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.00046080000000000003
+    },
+    "usage_with": {
+      "prompt_tokens": 4016,
+      "completion_tokens": 84,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4013,
+      "finish_reason": "stop",
+      "cost_usd": 8.243000000000001e-05
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Play the newest album of BIGBANG",
+    "solution": [
+      "GET /search",
+      "GET /artists/{id}/albums",
+      "PUT /me/player/play"
+    ],
+    "code_without": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\nbase_url = \"https://api.spotify.com/v1\"\n\nsearch_response = requests.get(\n    f\"{base_url}/search\",\n    headers=headers,\n    params={\"q\": \"artist:BIGBANG\", \"type\": \"album\", \"limit\": 50},\n)\nsearch_response.raise_for_status()\n\nalbums = search_response.json().get(\"albums\", {}).get(\"items\", [])\nif not albums:\n    raise RuntimeError(\"No BIGBANG albums found.\")\n\nnewest_album = max(albums, key=lambda album: album.get(\"release_date\", \"\"))\ntracks_response = requests.get(\n    f\"{base_url}/albums/{newest_album['id']}/tracks\",\n    headers=headers,\n    params={\"limit\": 1},\n)\ntracks_response.raise_for_status()\n\ntracks = tracks_response.json().get(\"items\", [])\nif not tracks:\n    raise RuntimeError(\"The newest BIGBANG album has no tracks.\")\n\nqueue_response = requests.post(\n    f\"{base_url}/me/player/queue\",\n    headers=headers,\n    params={\"uri\": tracks[0][\"uri\"]},\n)\nqueue_response.raise_for_status()\n\nplayback_response = requests.get(\n    f\"{base_url}/me/player/currently-playing\",\n    headers=headers,\n)\nif playback_response.status_code == 204:\n    raise RuntimeError(\"Track added to the queue, but no active playback is available to start it.\")\nplayback_response.raise_for_status()",
+    "code_with": "import os\nimport requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nheaders = {\"Authorization\": f\"Bearer {os.environ['SPOTIFY_ACCESS_TOKEN']}\"}\n\nartist_response = requests.get(\n    f\"{BASE_URL}/search\",\n    headers=headers,\n    params={\"q\": \"BIGBANG\", \"type\": \"artist\", \"limit\": 10},\n)\nartist_response.raise_for_status()\nartists = artist_response.json().get(\"artists\", {}).get(\"items\", [])\nartist = next((item for item in artists if item.get(\"name\", \"\").casefold() == \"bigbang\"), None)\n\nif artist:\n    albums_response = requests.get(\n        f\"{BASE_URL}/artists/{artist['id']}/albums\",\n        headers=headers,\n        params={\"include_groups\": \"album,single\", \"limit\": 50, \"market\": \"US\"},\n    )\n    albums_response.raise_for_status()\n    albums = albums_response.json().get(\"items\", [])\n\n    unique_albums = {}\n    for album in albums:\n        unique_albums.setdefault(album[\"id\"], album)\n\n    if unique_albums:\n        newest_album = max(\n            unique_albums.values(),\n            key=lambda album: album.get(\"release_date\", \"\"),\n        )\n        tracks_response = requests.get(\n            f\"{BASE_URL}/albums/{newest_album['id']}/tracks\",\n            headers=headers,\n            params={\"limit\": 50, \"market\": \"US\"},\n        )\n        tracks_response.raise_for_status()\n        tracks = tracks_response.json().get(\"items\", [])\n        track_uris = [track[\"uri\"] for track in tracks if track.get(\"uri\")]\n\n        if track_uris:\n            queue_response = requests.get(\n                f\"{BASE_URL}/me/player/queue\",\n                headers=headers,\n            )\n            queue_response.raise_for_status()\n            queue = queue_response.json()\n            current_track = queue.get(\"currently_playing\")\n            device_id = current_track.get(\"device\", {}).get(\"id\") if current_track else None\n\n            for uri in track_uris:\n                params = {\"uri\": uri}\n                if device_id:\n                    params[\"device_id\"] = device_id\n                response = requests.post(\n                    f\"{BASE_URL}/me/player/queue\",\n                    headers=headers,\n                    params=params,\n                )\n                response.raise_for_status()",
+    "found_without": [
+      "GET /albums/{id}/tracks",
+      "GET /me/player/currently-playing",
+      "GET /search",
+      "POST /me/player/queue"
+    ],
+    "found_with": [
+      "GET /albums/{id}/tracks",
+      "GET /artists/{id}/albums",
+      "GET /me/player/queue",
+      "GET /search",
+      "POST /me/player/queue"
+    ],
+    "recall_without": 0.3333333333333333,
+    "recall_with": 0.6666666666666666,
+    "usage_without": {
+      "prompt_tokens": 4896,
+      "completion_tokens": 318,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0006486
+    },
+    "usage_with": {
+      "prompt_tokens": 4348,
+      "completion_tokens": 482,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4345,
+      "finish_reason": "stop",
+      "cost_usd": 0.00028475
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Follow the artist of the album Mojito",
+    "solution": [
+      "GET /search",
+      "GET /albums/{id}",
+      "PUT /me/following"
+    ],
+    "code_without": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\n\nsearch_response = requests.get(\n    \"https://api.spotify.com/v1/search\",\n    headers=headers,\n    params={\"q\": \"album:Mojito\", \"type\": \"album\", \"limit\": 50},\n)\nsearch_response.raise_for_status()\n\nalbums = search_response.json().get(\"albums\", {}).get(\"items\", [])\nalbum = next(\n    (item for item in albums if item.get(\"name\", \"\").casefold() == \"mojito\"),\n    None,\n)\nif album is None:\n    raise LookupError(\"Could not find the album Mojito\")\n\nartist_ids = list(\n    dict.fromkeys(artist[\"id\"] for artist in album.get(\"artists\", []) if artist.get(\"id\"))\n)\nif not artist_ids:\n    raise LookupError(\"The album has no artist IDs\")\n\nfollow_response = requests.put(\n    \"https://api.spotify.com/v1/me/following\",\n    headers=headers,\n    params={\"type\": \"artist\", \"ids\": \",\".join(artist_ids)},\n)\nfollow_response.raise_for_status()",
+    "code_with": "import requests\n\nbase_url = \"https://api.spotify.com/v1\"\nheaders = {\"Authorization\": \"Bearer YOUR_ACCESS_TOKEN\"}\n\nsearch_response = requests.get(\n    f\"{base_url}/search\",\n    headers=headers,\n    params={\"q\": \"album:Mojito\", \"type\": \"album\", \"limit\": 50},\n)\nsearch_response.raise_for_status()\n\nalbums = search_response.json().get(\"albums\", {}).get(\"items\", [])\nalbum = next(\n    (item for item in albums if item.get(\"name\", \"\").casefold() == \"mojito\"),\n    None,\n)\n\nif album and album.get(\"artists\"):\n    artist_ids = [artist[\"id\"] for artist in album[\"artists\"] if artist.get(\"id\")]\n    if artist_ids:\n        response = requests.put(\n            f\"{base_url}/me/following\",\n            headers=headers,\n            params={\"type\": \"artist\", \"ids\": \",\".join(artist_ids)},\n        )\n        response.raise_for_status()",
+    "found_without": [
+      "GET /search",
+      "PUT /me/following"
+    ],
+    "found_with": [
+      "GET /search",
+      "PUT /me/following"
+    ],
+    "recall_without": 0.6666666666666666,
+    "recall_with": 0.6666666666666666,
+    "usage_without": {
+      "prompt_tokens": 3789,
+      "completion_tokens": 244,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0005009000000000001
+    },
+    "usage_with": {
+      "prompt_tokens": 3090,
+      "completion_tokens": 206,
+      "reasoning_tokens": 0,
+      "cached_tokens": 3087,
+      "finish_reason": "stop",
+      "cost_usd": 0.00013417000000000002
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Play the third song from my music library and set the single track repeat mode",
+    "solution": [
+      "GET /me/tracks",
+      "GET /tracks/{id}",
+      "PUT /me/player/play",
+      "PUT /me/player/repeat"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\n\ntracks_response = requests.get(\n    \"https://api.spotify.com/v1/me/tracks\",\n    headers=headers,\n    params={\"limit\": 3, \"offset\": 0},\n)\ntracks_response.raise_for_status()\ntracks = tracks_response.json()[\"items\"]\n\nif len(tracks) < 3:\n    raise ValueError(\"Your music library contains fewer than three tracks.\")\n\ntrack_uri = tracks[2][\"track\"][\"uri\"]\n\nplay_response = requests.put(\n    \"https://api.spotify.com/v1/me/player/play\",\n    headers=headers,\n    json={\"uris\": [track_uri]},\n)\nplay_response.raise_for_status()\n\nrepeat_response = requests.put(\n    \"https://api.spotify.com/v1/me/player/repeat\",\n    headers=headers,\n    params={\"state\": \"track\"},\n)\nrepeat_response.raise_for_status()",
+    "code_with": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\n\ntracks_response = requests.get(\n    \"https://api.spotify.com/v1/me/tracks\",\n    headers=headers,\n    params={\"limit\": 3, \"offset\": 2},\n)\ntracks_response.raise_for_status()\ntracks = tracks_response.json()[\"items\"]\n\nif len(tracks) < 1:\n    raise ValueError(\"No third saved track was found.\")\n\ntrack_uri = tracks[0][\"track\"][\"uri\"]\n\nplay_response = requests.put(\n    \"https://api.spotify.com/v1/me/player/play\",\n    headers=headers,\n    json={\"uris\": [track_uri]},\n)\nplay_response.raise_for_status()\n\nrepeat_response = requests.put(\n    \"https://api.spotify.com/v1/me/player/repeat\",\n    headers=headers,\n    params={\"state\": \"track\"},\n)\nrepeat_response.raise_for_status()",
+    "found_without": [
+      "GET /me/tracks",
+      "PUT /me/player/play",
+      "PUT /me/player/repeat"
+    ],
+    "found_with": [
+      "GET /me/tracks",
+      "PUT /me/player/play",
+      "PUT /me/player/repeat"
+    ],
+    "recall_without": 0.75,
+    "recall_with": 0.75,
+    "usage_without": {
+      "prompt_tokens": 4445,
+      "completion_tokens": 191,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.00054
+    },
+    "usage_with": {
+      "prompt_tokens": 4184,
+      "completion_tokens": 189,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4181,
+      "finish_reason": "stop",
+      "cost_usd": 0.00013661
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Create a new playlist named 'BIGBANG' and add a song of BIGBANG to it",
+    "solution": [
+      "GET /me",
+      "POST /users/{user_id}/playlists",
+      "GET /search",
+      "POST /playlists/{playlist_id}/tracks"
+    ],
+    "code_without": "import os\nimport requests\n\naccess_token = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\n    \"Authorization\": f\"Bearer {access_token}\",\n    \"Content-Type\": \"application/json\",\n}\n\n# Create the playlist for the authenticated user.\nresponse = requests.post(\n    \"https://api.spotify.com/v1/users/{user_id}/playlists\",\n    headers=headers,\n    json={\"name\": \"BIGBANG\"},\n)\nresponse.raise_for_status()\nplaylist_id = response.json()[\"id\"]\n\n# Add a BIGBANG track. Replace this with the Spotify track URI you want.\ntrack_uri = \"spotify:track:REPLACE_WITH_BIGBANG_TRACK_ID\"\nresponse = requests.post(\n    f\"https://api.spotify.com/v1/playlists/{playlist_id}/tracks\",\n    headers=headers,\n    json={\"uris\": [track_uri]},\n)\nresponse.raise_for_status()",
+    "code_with": "import os\nimport requests\n\nBASE_URL = \"https://api.spotify.com/v1\"\nACCESS_TOKEN = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\n    \"Authorization\": f\"Bearer {ACCESS_TOKEN}\",\n    \"Content-Type\": \"application/json\",\n}\n\n# Get the current user's ID.\nuser_response = requests.get(f\"{BASE_URL}/me\", headers=headers)\nuser_response.raise_for_status()\nuser_id = user_response.json()[\"id\"]\n\n# Create the playlist.\nplaylist_response = requests.post(\n    f\"{BASE_URL}/users/{user_id}/playlists\",\n    headers=headers,\n    json={\"name\": \"BIGBANG\"},\n)\nplaylist_response.raise_for_status()\nplaylist_id = playlist_response.json()[\"id\"]\n\n# Add a BIGBANG song (Fantastic Baby) to the playlist.\ntrack_uri = \"spotify:track:3EEvRKj8p4ujZ3p7ee5o5V\"\nadd_response = requests.post(\n    f\"{BASE_URL}/playlists/{playlist_id}/tracks\",\n    headers=headers,\n    json={\"uris\": [track_uri]},\n)\nadd_response.raise_for_status()",
+    "found_without": [
+      "POST /playlists/{playlist_id}/tracks",
+      "POST /users/{user_id}/playlists"
+    ],
+    "found_with": [
+      "GET /me",
+      "POST /playlists/{playlist_id}/tracks",
+      "POST /users/{user_id}/playlists"
+    ],
+    "recall_without": 0.5,
+    "recall_with": 0.75,
+    "usage_without": {
+      "prompt_tokens": 5187,
+      "completion_tokens": 180,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0006087
+    },
+    "usage_with": {
+      "prompt_tokens": 4920,
+      "completion_tokens": 231,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4917,
+      "finish_reason": "stop",
+      "cost_usd": 0.00016497
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Delete all songs from my first playlist",
+    "solution": [
+      "GET /me/playlists",
+      "GET /playlists/{playlist_id}",
+      "DELETE /playlists/{playlist_id}/tracks"
+    ],
+    "code_without": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\n\nplaylists_response = requests.get(\n    \"https://api.spotify.com/v1/me/playlists\",\n    headers=headers,\n    params={\"limit\": 1, \"offset\": 0},\n)\nplaylists_response.raise_for_status()\nplaylists = playlists_response.json().get(\"items\", [])\n\nif playlists:\n    playlist_id = playlists[0][\"id\"]\n    tracks_url = f\"https://api.spotify.com/v1/playlists/{playlist_id}/tracks\"\n    offset = 0\n\n    while True:\n        response = requests.get(\n            tracks_url,\n            headers=headers,\n            params={\"limit\": 100, \"offset\": offset},\n        )\n        response.raise_for_status()\n        page = response.json()\n        items = page.get(\"items\", [])\n        uris = [\n            item[\"track\"][\"uri\"]\n            for item in items\n            if item.get(\"track\") and item[\"track\"].get(\"uri\")\n        ]\n\n        if not uris:\n            break\n\n        for start in range(0, len(uris), 100):\n            delete_response = requests.delete(\n                tracks_url,\n                headers=headers,\n                json={\"tracks\": [{\"uri\": uri} for uri in uris[start:start + 100]]},\n            )\n            delete_response.raise_for_status()\n\n        if offset + len(items) >= page.get(\"total\", 0):\n            break\n        # Deletions shift later items forward, so continue from the same offset.",
+    "code_with": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {token}\"}\nbase_url = \"https://api.spotify.com/v1\"\n\nresponse = requests.get(\n    f\"{base_url}/me/playlists\",\n    headers=headers,\n    params={\"limit\": 1, \"offset\": 0},\n)\nresponse.raise_for_status()\nplaylists = response.json().get(\"items\", [])\n\nif playlists:\n    playlist_id = playlists[0][\"id\"]\n    tracks_url = f\"{base_url}/playlists/{playlist_id}/tracks\"\n    params = {\"limit\": 100}\n    items_to_remove = []\n\n    while tracks_url:\n        response = requests.get(\n            tracks_url,\n            headers=headers,\n            params=params,\n        )\n        response.raise_for_status()\n        page = response.json()\n        items_to_remove.extend(\n            {\"uri\": item[\"track\"][\"uri\"]}\n            for item in page.get(\"items\", [])\n            if item.get(\"track\") and item[\"track\"].get(\"uri\")\n        )\n        tracks_url = page.get(\"next\")\n        params = None\n\n    for start in range(0, len(items_to_remove), 100):\n        response = requests.delete(\n            f\"{base_url}/playlists/{playlist_id}/tracks\",\n            headers=headers,\n            json={\"tracks\": items_to_remove[start:start + 100]},\n        )\n        response.raise_for_status()",
+    "found_without": [
+      "DELETE /playlists/{playlist_id}/tracks",
+      "GET /me/playlists",
+      "GET /playlists/{playlist_id}/tracks"
+    ],
+    "found_with": [
+      "DELETE /playlists/{playlist_id}/tracks",
+      "GET /me/playlists",
+      "GET /playlists/{playlist_id}/tracks"
+    ],
+    "recall_without": 0.6666666666666666,
+    "recall_with": 0.6666666666666666,
+    "usage_without": {
+      "prompt_tokens": 4968,
+      "completion_tokens": 325,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0006592999999999999
+    },
+    "usage_with": {
+      "prompt_tokens": 4191,
+      "completion_tokens": 296,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4188,
+      "finish_reason": "stop",
+      "cost_usd": 0.00019018
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Make my first playlist private",
+    "solution": [
+      "GET /me/playlists",
+      "GET /playlists/{playlist_id}",
+      "PUT /playlists/{playlist_id}"
+    ],
+    "code_without": "import os\nimport requests\n\naccess_token = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\nbase_url = \"https://api.spotify.com/v1\"\n\nplaylists_response = requests.get(\n    f\"{base_url}/me/playlists\",\n    headers=headers,\n    params={\"limit\": 1, \"offset\": 0},\n)\nplaylists_response.raise_for_status()\nplaylists = playlists_response.json().get(\"items\", [])\n\nif playlists:\n    playlist_id = playlists[0][\"id\"]\n    response = requests.put(\n        f\"{base_url}/playlists/{playlist_id}\",\n        headers=headers,\n        json={\"public\": False},\n    )\n    response.raise_for_status()",
+    "code_with": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\n\nplaylists_response = requests.get(\n    \"https://api.spotify.com/v1/me/playlists\",\n    headers=headers,\n    params={\"limit\": 1, \"offset\": 0},\n)\nplaylists_response.raise_for_status()\nplaylists = playlists_response.json().get(\"items\", [])\n\nif playlists:\n    playlist_id = playlists[0][\"id\"]\n    response = requests.put(\n        f\"https://api.spotify.com/v1/playlists/{playlist_id}\",\n        headers={**headers, \"Content-Type\": \"application/json\"},\n        json={\"public\": False},\n    )\n    response.raise_for_status()",
+    "found_without": [
+      "GET /me/playlists",
+      "PUT /playlists/{playlist_id}"
+    ],
+    "found_with": [
+      "GET /me/playlists",
+      "PUT /playlists/{playlist_id}"
+    ],
+    "recall_without": 0.6666666666666666,
+    "recall_with": 0.6666666666666666,
+    "usage_without": {
+      "prompt_tokens": 5332,
+      "completion_tokens": 151,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0006087
+    },
+    "usage_with": {
+      "prompt_tokens": 5316,
+      "completion_tokens": 148,
+      "reasoning_tokens": 0,
+      "cached_tokens": 5313,
+      "finish_reason": "stop",
+      "cost_usd": 0.00012743000000000002
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Add album Mojito to my music library",
+    "solution": [
+      "GET /search",
+      "PUT /me/albums"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nalbum_id = \"ALBUM_ID_FOR_MOJITO\"\n\nresponse = requests.put(\n    \"https://api.spotify.com/v1/me/albums\",\n    headers={\"Authorization\": f\"Bearer {access_token}\"},\n    json={\"ids\": [album_id]},\n)\nresponse.raise_for_status()",
+    "code_with": "import os\nimport requests\n\ntoken = os.environ[\"SPOTIFY_ACCESS_TOKEN\"]\nresponse = requests.get(\n    \"https://api.spotify.com/v1/search\",\n    headers={\"Authorization\": f\"Bearer {token}\"},\n    params={\"q\": \"album:Mojito\", \"type\": \"album\", \"limit\": 50},\n)\nresponse.raise_for_status()\n\nalbums = response.json().get(\"albums\", {}).get(\"items\", [])\nalbum = next(\n    (item for item in albums if item.get(\"name\", \"\").casefold() == \"mojito\"),\n    None,\n)\nif album is None:\n    raise ValueError(\"Could not find the album Mojito\")\n\nresponse = requests.put(\n    \"https://api.spotify.com/v1/me/albums\",\n    headers={\n        \"Authorization\": f\"Bearer {token}\",\n        \"Content-Type\": \"application/json\",\n    },\n    json={\"ids\": [album[\"id\"]]},\n)\nresponse.raise_for_status()",
+    "found_without": [
+      "PUT /me/albums"
+    ],
+    "found_with": [
+      "GET /search",
+      "PUT /me/albums"
+    ],
+    "recall_without": 0.5,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 4949,
+      "completion_tokens": 72,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0005309000000000001
+    },
+    "usage_with": {
+      "prompt_tokens": 4696,
+      "completion_tokens": 200,
+      "reasoning_tokens": 0,
+      "cached_tokens": 4693,
+      "finish_reason": "stop",
+      "cost_usd": 0.00014722999999999998
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Add the first song from my music library to the playback queue and enable single song repeat mode",
+    "solution": [
+      "GET /me/tracks",
+      "POST /me/player/queue",
+      "PUT /me/player/repeat"
+    ],
+    "code_without": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\n\n# Spotify does not provide an endpoint here to retrieve the first song in the\n# user's music library, so supply its track URI.\nfirst_song_uri = \"spotify:track:YOUR_TRACK_ID\"\n\nqueue_response = requests.post(\n    \"https://api.spotify.com/v1/me/player/queue\",\n    headers=headers,\n    params={\"uri\": first_song_uri},\n)\nqueue_response.raise_for_status()\n\nrepeat_response = requests.put(\n    \"https://api.spotify.com/v1/me/player/repeat\",\n    headers=headers,\n    params={\"state\": \"track\"},\n)\nrepeat_response.raise_for_status()",
+    "code_with": "import requests\n\naccess_token = \"YOUR_ACCESS_TOKEN\"\nheaders = {\"Authorization\": f\"Bearer {access_token}\"}\n\nlibrary_response = requests.get(\n    \"https://api.spotify.com/v1/me/tracks\",\n    headers=headers,\n    params={\"limit\": 1},\n)\nlibrary_response.raise_for_status()\ntracks = library_response.json()[\"items\"]\n\nif tracks:\n    track_uri = tracks[0][\"track\"][\"uri\"]\n    queue_response = requests.post(\n        \"https://api.spotify.com/v1/me/player/queue\",\n        headers=headers,\n        params={\"uri\": track_uri},\n    )\n    queue_response.raise_for_status()\n\n    repeat_response = requests.put(\n        \"https://api.spotify.com/v1/me/player/repeat\",\n        headers=headers,\n        params={\"state\": \"track\"},\n    )\n    repeat_response.raise_for_status()",
+    "found_without": [
+      "POST /me/player/queue",
+      "PUT /me/player/repeat"
+    ],
+    "found_with": [
+      "GET /me/tracks",
+      "POST /me/player/queue",
+      "PUT /me/player/repeat"
+    ],
+    "recall_without": 0.6666666666666666,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 4094,
+      "completion_tokens": 146,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0004824
+    },
+    "usage_with": {
+      "prompt_tokens": 3749,
+      "completion_tokens": 172,
+      "reasoning_tokens": 0,
+      "cached_tokens": 3746,
+      "finish_reason": "stop",
+      "cost_usd": 0.00012376
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "What is my user name?",
+    "solution": [
+      "GET /me"
+    ],
+    "code_without": "import os\nimport requests\n\nresponse = requests.get(\n    \"https://api.themoviedb.org/3/account\",\n    params={\"api_key\": os.environ.get(\"TMDB_API_KEY\", \"\")},\n)\nresponse.raise_for_status()\nprint(response.json().get(\"username\"))",
+    "code_with": "import os\nimport requests\n\nusername = os.getenv(\"TMDB_USERNAME\")\nprint(username if username else \"Username is not available from the documented API endpoints.\")",
+    "found_without": [],
+    "found_with": [],
+    "recall_without": 0.0,
+    "recall_with": 0.0,
+    "usage_without": {
+      "prompt_tokens": 9460,
+      "completion_tokens": 59,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0009755
+    },
+    "usage_with": {
+      "prompt_tokens": 9460,
+      "completion_tokens": 34,
+      "reasoning_tokens": 0,
+      "cached_tokens": 9457,
+      "finish_reason": "stop",
+      "cost_usd": 0.00011187
+    }
+  },
+  {
+    "queryset": "restbench",
+    "query": "Pause the player",
+    "solution": [
+      "PUT /me/player/pause"
+    ],
+    "code_without": "import os\nimport requests\n\nresponse = requests.put(\n    \"https://api.spotify.com/v1/me/player/pause\",\n    headers={\"Authorization\": f\"Bearer {os.environ['SPOTIFY_ACCESS_TOKEN']}\"},\n)\nresponse.raise_for_status()",
+    "code_with": "import requests\n\nresponse = requests.put(\"https://api.spotify.com/v1/me/player/pause\")\nresponse.raise_for_status()",
+    "found_without": [
+      "PUT /me/player/pause"
+    ],
+    "found_with": [
+      "PUT /me/player/pause"
+    ],
+    "recall_without": 1.0,
+    "recall_with": 1.0,
+    "usage_without": {
+      "prompt_tokens": 6853,
+      "completion_tokens": 53,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "finish_reason": "stop",
+      "cost_usd": 0.0007118000000000001
+    },
+    "usage_with": {
+      "prompt_tokens": 6422,
+      "completion_tokens": 28,
+      "reasoning_tokens": 0,
+      "cached_tokens": 6419,
+      "finish_reason": "stop",
+      "cost_usd": 7.848999999999999e-05
+    }
+  }
+]
