@@ -63,9 +63,11 @@ RUNS = 3
 #   AttnRAG anchor  -- AttentionRAG with a generated anchor token per chunk
 #                      (chunks answered "none" dropped), as in the original
 #                      method; instance 1 only
+#   fixed+anchor    -- the same with the fixed hint prefix; instance 1 only
 EXTRAS = [
     ("no context", "noctx", "raw k=10"),
     ("AttnRAG anchor", "attention40-anchor", "AttentionRAG"),
+    ("fixed+anchor", "attention40-fixhint-anchor", "fixed hint"),
 ]
 MODEL_LABEL = "gpt-6-luna-none"
 

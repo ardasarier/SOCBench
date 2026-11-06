@@ -38,6 +38,7 @@ from .anchor_token import generate_anchor_token
 from .attention_features import compute_attention_feature
 from .compression import compress_chunk
 from .hint_prefix import generate_answer_hint_prefix
+from .usage import record
 
 
 class AttentionRAGPostprocessor(BaseNodePostprocessor):
@@ -150,6 +151,16 @@ class AttentionRAGPostprocessor(BaseNodePostprocessor):
 
             if self.use_anchor:
                 anchor = generate_anchor_token(chunk, query, hint)
+                # Logged per query (qwen_tokens in the contexts file): which
+                # anchors the model produces, and how often the "none" gate
+                # fires. On SOCBench-D's instruction queries the anchor turned
+                # out to be punctuation or filler with the generated hint and
+                # an HTTP verb or "/" with the fixed hint -- never "none".
+                record("anchor_calls")
+                token = anchor.strip().lower()
+                record(f"anchor:{token[:20] or '<empty>'}")
+                if token == "none":
+                    record("anchor_none")
                 if self.skip_on_none and anchor.strip().lower() == "none":
                     if self.verbose:
                         print("[AttentionRAG] dropped chunk (anchor='none')")
