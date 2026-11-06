@@ -1,0 +1,9 @@
+generated hint + anchor: contexts done
+fixed hint + anchor: contexts done
+attention40-anchor run 1 done
+attention40-anchor run 2 done
+attention40-anchor run 3 done
+attention40-fixhint-anchor run 1 done
+attention40-fixhint-anchor run 2 done
+attention40-fixhint-anchor run 3 done
+all done

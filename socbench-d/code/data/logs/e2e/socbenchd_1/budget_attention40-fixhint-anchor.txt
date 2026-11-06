@@ -1,0 +1,7 @@
+queries:                  110
+mean depth (chunks):      34.5
+tokens used / raw k=10:   0.945
+retrieval recall:         0.948   (raw k=10: 0.632)
+queries over budget:      0
+
+wrote data/contexts/socbenchd_1_k10_budget-attention40-fixhint-anchor_n110.json
