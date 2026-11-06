@@ -56,10 +56,17 @@ COMPARISONS = [
 ]
 RUNS = 3
 
-# Without any retrieved context: what the model knows from training. Reported
-# beside the main table and tested on its own against uncompressed k=10, so
-# the Holm family of the main comparisons stays unchanged.
-NOCTX = ("no context", "noctx")
+# Conditions reported beside the main table, each with its own planned test
+# against one reference, so the Holm family of the main comparisons stays
+# unchanged: (display name, label, reference condition).
+#   no context      -- what the model knows from training
+#   AttnRAG anchor  -- AttentionRAG with a generated anchor token per chunk
+#                      (chunks answered "none" dropped), as in the original
+#                      method; instance 1 only
+EXTRAS = [
+    ("no context", "noctx", "raw k=10"),
+    ("AttnRAG anchor", "attention40-anchor", "AttentionRAG"),
+]
 MODEL_LABEL = "gpt-6-luna-none"
 
 
@@ -177,7 +184,7 @@ def evaluate(suite: str, parts: list):
     run_means = defaultdict(dict)       # condition -> {part: [mean per run]}
     for part in parts:
         key = part[0]
-        for name, label in list(CONDITIONS.items()) + [NOCTX]:
+        for name, label in list(CONDITIONS.items()) + [(n, l) for n, l, _ in EXTRAS]:
             runs = []
             for path in log_paths(part, label):
                 if os.path.exists(path):
@@ -193,7 +200,7 @@ def evaluate(suite: str, parts: list):
                 values = [r[k] for r in runs if k in r]
                 per_query[name][(key, k)] = sum(values) / len(values)
 
-    names = ["raw k=10"] + list(CONDITIONS) + ([NOCTX[0]] if per_query[NOCTX[0]] else [])
+    names = ["raw k=10"] + list(CONDITIONS) + [n for n, _, _ in EXTRAS if per_query[n]]
     print(f"{'Condition':<14}" + "".join(f"{p[0]:>9}" for p in parts) + f"{'all':>9}{'n':>6}")
     for name in names:
         row = f"{name:<14}"
@@ -214,19 +221,22 @@ def evaluate(suite: str, parts: list):
         print(row)
 
     significance(per_query, "all queries")
-    if per_query[NOCTX[0]]:
-        print(f"\nNo context vs raw k=10 (separate planned test, not Holm-adjusted)")
-        for only in [None] + ([p[0] for p in parts] if len(parts) > 1 else []):
-            keys = sorted(k for k in set(per_query[NOCTX[0]]) & set(per_query["raw k=10"])
+    for extra, _, reference in EXTRAS:
+        if not per_query[extra]:
+            continue
+        print(f"\n{extra} vs {reference} (separate planned test, not Holm-adjusted)")
+        groups = sorted({g for g, _ in per_query[extra]})
+        for only in [None] + (groups if len(groups) > 1 else []):
+            keys = sorted(k for k in set(per_query[extra]) & set(per_query[reference])
                           if only is None or k[0] == only)
             if not keys:
                 continue
-            xs = [per_query[NOCTX[0]][k] for k in keys]
-            ys = [per_query["raw k=10"][k] for k in keys]
+            xs = [per_query[extra][k] for k in keys]
+            ys = [per_query[reference][k] for k in keys]
             d = [x - y for x, y in zip(xs, ys)]
             p = wilcoxon(xs, ys).pvalue if any(d) else 1.0
             print(f"  {('all' if only is None else only):<10} n={len(keys):<4} "
-                  f"no context {sum(xs) / len(xs):.3f}  raw k=10 {sum(ys) / len(ys):.3f}  "
+                  f"{extra} {sum(xs) / len(xs):.3f}  {reference} {sum(ys) / len(ys):.3f}  "
                   f"better {sum(v > 0 for v in d):>3} worse {sum(v < 0 for v in d):>3}  p = {p:.2e}")
     if suite == "RestBench":
         for part in parts:
@@ -247,7 +257,7 @@ def evaluate(suite: str, parts: list):
     # the uncompressed reference: cached k=10 code, identical in every file
     rows = ([("raw k=10", "reqschema", "code_without")]
             + [(n, l, "code_with") for n, l in CONDITIONS.items()]
-            + [(NOCTX[0], NOCTX[1], "code_with")])
+            + [(n, l, "code_with") for n, l, _ in EXTRAS])
     for name, label, arm in rows:
         row, out = f"{name:<14}", ""
         for part in parts:
